@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.unity3d.player" android:installLocation="preferExternal" android:theme="@android:style/Theme.NoTitleBar" android:versionCode="1" android:versionName="1.0">
+  <supports-screens android:smallScreens="true" android:normalScreens="true" android:largeScreens="true" android:xlargeScreens="true" android:anyDensity="true" />
+  <uses-sdk android:targetSdkVersion="23" android:minSdkVersion="15" />
+  <application android:icon="@drawable/app_icon" android:label="@string/app_name" android:debuggable="true">
+    <activity android:name="com.unity3d.player.UnityPlayerActivity" android:launchMode="singleTask" android:label="GetSocial Unity Test App" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:windowSoftInputMode="adjustResize">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity android:name="im.getsocial.sdk.core.unity.GetSocialDeepLinkingActivity" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="getsocial" android:host="ti70h8r9x8Q74" />
+      </intent-filter>
+    </activity>
+    <activity android:name="com.facebook.unity.FBUnityLoginActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+    </activity>
+    <activity android:name="com.facebook.LoginActivity" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+    </activity>
+    <activity android:name="com.facebook.unity.FBUnityDeepLinkingActivity" android:exported="true">
+    </activity>
+    <activity android:name="com.facebook.unity.FBUnityDialogsActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.NoTitleBar">
+    </activity>
+    <receiver android:name="im.getsocial.sdk.core.gms.InstallReferrerReceiver">
+      <intent-filter>
+        <action android:name="com.android.vending.INSTALL_REFERRER"/>
+      </intent-filter>
+    </receiver>
+    <receiver android:name="im.getsocial.sdk.core.GetSocialReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        <category android:name=".gcm" />
+      </intent-filter>
+      <intent-filter>
+        <action android:name="im.getsocial.sdk.intent.RECEIVE" />
+        <data android:scheme="getSocialNotificationId" />
+      </intent-filter>
+    </receiver>
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="\ 824182900954160" />
+    <provider android:name="im.getsocial.sdk.core.provider.ImageContentProvider" android:authorities="im.getsocial.testapp.unity.testing.smartinvite.images.provider" android:exported="true" />
+  </application>
+  <!--Permissions required by GetSocial SDK-->
+  <!--INTERNET permission is required to communicate with GetSocial API-->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <!--ACCESS_NETWORK_STATE permission is required to handle network connectivity changes-->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <!--end of GetSocial SDK permissions-->
+  <!-- google plus login -->
+  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+  <permission android:name="im.getsocial.testapp.unity.master.gcm.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+  <uses-permission android:name="im.getsocial.testapp.unity.master.gcm.permission.C2D_MESSAGE" />
+  <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+</manifest>
