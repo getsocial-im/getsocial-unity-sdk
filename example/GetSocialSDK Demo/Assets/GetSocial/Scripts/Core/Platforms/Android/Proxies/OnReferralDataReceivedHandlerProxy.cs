@@ -41,7 +41,7 @@ namespace GetSocialSdk.Core
                     referralDataList.Add(referralDataJSONDictionary.ToDictionary());
                 }
 
-                onReferralDataReceivedAction(referralDataList);
+                MainThreadExecutor.Queue(() => onReferralDataReceivedAction(referralDataList));
             }
         }
     }

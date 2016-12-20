@@ -2,6 +2,12 @@
 
 ## Version History
 
+### v5.2.2
+
++ FIXED Rare bug the caused occasional crashes on Android
+
+---
+
 ### v5.2.1
 
 + UPDATED underlying iOS SDK to [5.2.1](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v5.2.1) which improves network communications

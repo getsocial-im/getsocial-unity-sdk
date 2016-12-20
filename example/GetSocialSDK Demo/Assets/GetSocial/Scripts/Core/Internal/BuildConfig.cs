@@ -22,6 +22,6 @@ namespace GetSocialSdk.Core
         /// <summary>
         /// Version of GetSocial Unity SDK
         /// </summary>
-        public const string UnitySdkVersion = "5.2.1";
+        public const string UnitySdkVersion = "5.2.2";
     }
 }
