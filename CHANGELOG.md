@@ -2,6 +2,13 @@
 
 ## Version History
 
+### v5.2.4
+
++ UPDATED underlying Android SDK to [v5.2.1](https://github.com/getsocial-im/getsocial-android-sdk/releases/tag/v5.2.1)
++ UPDATED underlying iOS SDK to [5.2.3](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v5.2.3)
+
+---
+
 ### v5.2.3
 
 + UPDATED underlying iOS SDK to [5.2.2](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v5.2.2)
