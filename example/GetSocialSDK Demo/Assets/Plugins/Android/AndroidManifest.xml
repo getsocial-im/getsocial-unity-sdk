@@ -42,7 +42,7 @@
       </intent-filter>
     </receiver>
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="\ 824182900954160" />
-    <provider android:name="im.getsocial.sdk.core.provider.ImageContentProvider" android:authorities="im.getsocial.testapp.unity.testing.smartinvite.images.provider" android:exported="true" />
+    <provider android:name="im.getsocial.sdk.core.provider.ImageContentProvider" android:authorities="im.getsocial.testapp.unity.master.smartinvite.images.provider" android:exported="true" />
   </application>
   <!--Permissions required by GetSocial SDK-->
   <!--INTERNET permission is required to communicate with GetSocial API-->

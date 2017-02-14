@@ -2,6 +2,14 @@
 
 ## Version History
 
+### v5.3.0
+
++ UPDATED underlying Android SDK to [v5.3.2](https://github.com/getsocial-im/getsocial-android-sdk/releases/tag/v5.3.2)
++ UPDATED underlying iOS SDK to [5.3.1](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v5.3.1)
++ REMOVED warninigs about showing view from the logs
+
+---
+
 ### v5.2.4
 
 + UPDATED underlying Android SDK to [v5.2.1](https://github.com/getsocial-im/getsocial-android-sdk/releases/tag/v5.2.1)

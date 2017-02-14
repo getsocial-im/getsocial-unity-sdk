@@ -30,10 +30,10 @@ public class SettingsSection : DemoMenuSection
 
     private static readonly string[] supportedLanguagesRow1 = {"da", "de", "en", "es"};
     private static readonly string[] supportedLanguagesRow2 = {"fr", "it", "nb", "nl"};
-    private static readonly string[] supportedLanguagesRow3 = {"pt", "ru", "sv", "tr"};
-    private static readonly string[] supportedLanguagesRow4 = {"is", "ja", "ko", "zh-Hans"};
-    private static readonly string[] supportedLanguagesRow5 = {"zh-Hant", "id", "tl", "ms"};
-    private static readonly string[] supportedLanguagesRow6 = {"pt-br", "vi"};
+    private static readonly string[] supportedLanguagesRow3 = {"pl", "pt", "ru", "sv"};
+    private static readonly string[] supportedLanguagesRow4 = {"tr", "is", "ja", "ko"};
+    private static readonly string[] supportedLanguagesRow5 = {"zh-Hans", "zh-Hant", "id", "tl"};
+    private static readonly string[] supportedLanguagesRow6 = {"pt-br", "vi", "ms", "uk"};
     private Dictionary<string, Action> languageButtonsRow1 = new Dictionary<string, Action>();
     private Dictionary<string, Action> languageButtonsRow2 = new Dictionary<string, Action>();
     private Dictionary<string, Action> languageButtonsRow3 = new Dictionary<string, Action>();
@@ -230,6 +230,7 @@ public class SettingsSection : DemoMenuSection
         DrawLanguagesRow(languageButtonsRow3);
         DrawLanguagesRow(languageButtonsRow4);
         DrawLanguagesRow(languageButtonsRow5);
+        DrawLanguagesRow(languageButtonsRow6);
         GSStyles.Button.fixedWidth = 0;
         GUILayout.Space(10f);
     }

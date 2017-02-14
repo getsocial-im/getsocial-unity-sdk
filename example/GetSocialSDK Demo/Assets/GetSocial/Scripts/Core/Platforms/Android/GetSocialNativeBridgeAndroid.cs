@@ -253,7 +253,6 @@ namespace GetSocialSdk.Core
 
         public void ShowView(string serializedViewBuilder, ViewBuilder.OnViewActionDelegate onViewAction = null)
         {
-            Debug.LogWarning("ShowView: " + onViewAction);
             getSocialJavaObject.Call("showSerializedView", serializedViewBuilder,
                 new ViewBuilderActionObserverProxy(onViewAction));
         }
