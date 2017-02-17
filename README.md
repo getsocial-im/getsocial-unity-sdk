@@ -14,7 +14,7 @@ GetSocial provides the whole social layer stack that powers **engagement**, **re
 * Community Management
 * Player Feedback and support
 * Smart invites and tracking
-* Localisation to 17 languages
+* Localisation to 24 languages
 * In-app Notification Center
 * Socially triggered push notifications
 * And more...
