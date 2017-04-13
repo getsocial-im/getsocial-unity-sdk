@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Liga-te com o Facebook";
+"LogInWithEmail" = "Entrar com e-mail";
+"SignUpTitle" = "Regista-te";
+"SignInTitle" = "Entrar";
+"TermsAndConditionsText" = "Ao criares uma conta, estás a aceitar os nossos Termos e Condições.";
+"TermsAndConditions" = "Termos e Condições";
+"OkButton" = "OK";
+"OrText" = "Ou";
+"BackButton" = "Voltar";
+"NextButton" = "Seguinte";
+"CancelButton" = "Cancelar";
+"PostButton" = "Mensagem";
+"SendButton" = "Enviar";
+"SaveButton" = "Guardar";
+"ConnectionLostTitle" = "Ligação perdida";
+"ConnectionLostMessage" = "Uh oh! Parece que a tua ligação à internet perdeu-se. Por favor, liga-te novamente.";
+"NoInternetConnection" = "Sem ligação à internet";
+"LeaveButton" = "Sair";
+"Followers" = "Seguidores";
+"Following" = "Seguindo";
+"CopyContentTitle" = "Opções de mensagens";
+"PullDownToRefresh" = "Puxa para cima para carregar";
+"PullUpToLoadMore" = "Puxa para baixo para carregar mais";
+"ReleaseToRefresh" = "Larga para recarregar";
+"ReleaseToLoadMore" = "Solta para carregar mais";
+"ErrorAlertMessageTitle" = "Oops!";
+"ErrorAlertMessage" = "Algo de errado se passou. Por favor, tenta novamente!";
+"InviteFriends" = "Convidar amigos";
+"NoFriendsPlaceholderTitle" = "Convida os teus amigos";
+"NoFriendsPlaceholderMessage" = "Convida os teus amigos para uma experiência social completa.";
+
+//Timestamp
+"TimestampJustNow" = "agora mesmo";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0fh";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fsem";
+"TimestampYesterday" = "Ontem";
+
+//Camera
+"TakeScreenshotOption" = "Tirar screenshot";
+"TakePhotoOption" = "Tirar fotografia";
+"ChooseExistingPhotoOption" = "Escolher existente";
+"ChoosePhoto" = "Escolher imagem";
+"RetakePhotoButton" = "Tirar novamente";
+"UsePhotoButton" = "Usar";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Entrar";
+"LogInEmailPlaceholder" = "E-mail ou nome de utilizador";
+"LogIn" = "Entrar";
+"LogInForgotPassword" = "Esqueceste-te da tua palavra-chave?";
+"LogInSignUp" = "Regista-te com e-mail";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Introduz o teu email ou nome de utilizador";
+"LogInPasswordEmptyErrorMessage" = "Precisamos de uma palavra-chave";
+"LogInInvalidCredentialsErrorMessage" = "Não existe nenhuma conta com esse nome de utilizador e palavra-chave.";
+"SignUpPasswordInvalidErrorMessage" = "A tua palavra-chave deve ter pelo menos 6 caracteres";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Utilizador";
+"EmailTitle" = "Email";
+"PasswordTitle" = "Palavra-chave";
+"SignUpPassword2Placeholder" = "Introduzir novamente palavra-chave";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "Qual é o teu novo nome de utilizador?";
+"SignUpEmailEmptyErrorMessage" = "Introduz o email que queres usar para te ligares.";
+"SignUpEmailInvalidErrorMessage" = "Algo não está bem. Por favor, verifica e tenta novamente!";
+"SignUpPasswordEmptyErrorMessage" = "Precisas de escolher uma palavra-chave por questões de segurança.";
+"SignUpReenterPasswordEmptyErrorMessage" = "Introduz a tua palavra-chave novamente para verificar.";
+"SignUpPasswordMismatchErrorMessage" = "As palavras-chave não coincidem. Tenta novamente.";
+"SignUpUsernameInUseErrorMessage" = "Esse nome de utilizador já existe!";
+"SignUpEmailInUseErrorMessage" = "Já temos uma conta com esse email.";
+"SignUpGenericErrorMessage" = "Algo de errado se passou. Por favor, tenta novamente!";
+"SignUpUsernameInvalidErrorMessage" = "O nome de utilizador deve ter um mínimo de 4 caracteres. Não uses caracteres especiais ou espaços.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Esqueceste-te da tua palavra-chave?";
+"ForgotPasswordDirections" = "Não há problema, introduz apenas o email que usaste para te registares e nós enviamos-te um link para criares uma nova.";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "E-mail enviado";
+"RememberPasswordConfirmationDirections" = "Por favor, verifica o email com um link que enviámos para a tua caixa de correio (ou spam). O link deixará de ser válido ao fim de 7 dias.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "Precisamos do teu email para podermos enviar um link para redefinires a tua palavra-chave.";
+"RememberPasswordEmailInvalidErrorMessage" = "Há algo de errado com este email.";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Não temos nenhuma conta com este email.";
+
+//Activity View
+"ActivityTitle" = "Atividade";
+"ActivityNewStatusButton" = "Estado";
+"ActivityNewPhotoButton" = "Foto";
+"ActivityPostPlaceholder" = "Diz qualquer coisa";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Sem actividades";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Ainda não há nenhuma atividade aqui. Porque não começas algo?";
+"ActivityMoreActivityButton" = "%d novas atividades";
+"ActivityOneMoreActivityButton" = "%d nova atividade";
+"ActivityInAppPurchaseAnonymousUser" = "Alguém";
+"ActivityInAppPurchaseCTA" = "Obtenha agora";
+
+//Comments View
+"ViewCommentsLink" = "comentários";
+"ViewCommentLink" = "comentário";
+"CommentsTitle" = "Comentários";
+"CommentsPostPlaceholder" = "Comenta";
+"CommentsMoreCommentsButton" = "Ver comentários mais antigos";
+
+//Likes View
+"LikesTitle" = "%d gostos";
+"ViewLikesLink" = "gostos";
+"ViewLikeLink" = "gostar";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Iniciar Conversação";
+"UploadProfilePictureFailure" = "Falha ao carregar a sua imagem, por favor, tenta novamente";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Leaderboards";
+"LeaderboardNoScore" = "Sem pontuação ainda";
+"LeaderboardRank" = "Posição";
+"LeaderboardWorldButton" = "Mundo";
+"LeaderboardSuggestedPlayers" = "Sugeridos";
+"LeaderboardPlaceholderTitle" = "Oh não!";
+"LeaderboardWorldNoScoresMessage" = "Nenhum jogador apresentou uma pontuação para este ranking. Seja o primeiro!";
+
+//Achievements View
+"AchievementsTitle" = "Conquistas";
+
+//Settings View
+"SettingsTitle" = "Configurações";
+"SettingsItemPrivacyPolicy" = "Política de Privacidade";
+"SettingsItemLogOut" = "Sair";
+"SettingsSharePurchases" = "Publicar em seu nome";
+
+//Help & Support View
+"HelpAndSupportTitle" = "Ajuda e Suporte";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Conquista desbloqueada!";
+"TopNotificationHighscoreMessageLoggedIn" = "Novo recorde guardado!";
+"TopNotificationSaveGameMessageLoggedIn" = "Impressionante, estás dentro! Agora tudo será gravado.";
+"TopNotificationAchievementMessageLoggedOut" = "Queres guardar esta conquista?";
+"TopNotificationHighscoreMessageLoggedOut" = "Você quer salvar esta pontuação?";
+"TopNotificationSaveGameMessageLoggedOut" = "Uh oh, você não está logado, nada será salvo";
+"TopNotificationButtonLoggedOut" = "Ver";
+
+//Notifications View
+"NotificationTitle" = "Notificações";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** comentou sobre sua atividade, diz algo de volta ...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** gostou da tua atividade, OMG!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** gostou do teu comentário, bom trabalho.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** está a seguir-te, és tão popular!";
+"NotificationPlaceholderTitle" = "Nenhuma notificação?";
+"NotificationPlaceholderMessage" = "Ninguém gostou ou comentou a tua atividade. Portanto, mãos à obra e faz qualquer coisa!";
+"NotificationPlaceholderButton" = "Publicar actividade";
+
+//Chat View
+"ChatListTitle" = "Chat";
+"ChatListPlaceholderTitle" = "Olá!";
+"ChatListPlaceholderMessage" = "Nenhuma conversa? Vá, diz algo aos teus amigos!";
+"ChatListInviteFriendsPlaceholderMessage" = "Convida amigos para falar!";
+"ChatInputFieldPlaceholder" = "Diz algo!";
+"ChatListBlockUser" = "Bloquear";
+"ChatViewTimestampYesterday" = "ontem";
+"ChatViewMessageFailure" = "A tua mensagem não foi entregue. Por favor, tenta novamente mais tarde.";
+"ChatLogInFailure" = "Chat indisponível de momento";
+"ChatListCreateGroup" = "Criar novo grupo";
+"GroupChatCreateNoFollowingsAlertMessage" = "Precisas de seguir alguém para poderes criar um novo grupo de chat.";
+"GroupChatRemoveUser" = "Remover";
+"GroupChatAddParticipants" = "Adicionar participantes";
+"GroupNameHint" = "Escolhe o nome do grupo";
+"CreateGroupTitle" = "Criar Grupo";
+"EditGroupTitle" = "Editar Grupo";
+"GroupChatNoName" = "Por favor, escreve um nome para o grupo";
+"GroupChatNoParticipants" = "Um grupo precisa pelo menos 2 participantes";
+"ChatUploadImageFail" = "Falha ao enviar. Toca para tentar novamente.";
+"ChatListImageText" = "Imagem";
+"ChatMessageUpdateGame" = "O teu amigo precisa de actualizar a aplicação para falar contigo";
+"ChatMessageUpdateYou" = "Actualiza a aplicação para poderes falar.";
+"NewChatToolTip" = "Envia uma mensagem!";
+
+//Share App
+"CopyLink" = "Copiar link";
+"InviteByMessageMessage" = "Junta-te a mim no [APP_NAME], é incrível! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Junta-te a mim no [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "Conectado";
+"PresenceOffline" = "Off-line";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Por favor, atualize a aplicação para ver esta mensagem";

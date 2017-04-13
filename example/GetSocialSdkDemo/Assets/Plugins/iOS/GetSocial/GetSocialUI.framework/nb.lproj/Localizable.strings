@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Koble til med Facebook";
+"LogInWithEmail" = "Logg inn med e-post";
+"SignUpTitle" = "Registrer deg";
+"SignInTitle" = "Logg inn";
+"TermsAndConditionsText" = "Ved å opprette en konto, aksepterer du vilkårene og betingelsene våre.";
+"TermsAndConditions" = "vilkårene og betingelsene";
+"OkButton" = "OK";
+"OrText" = "ELLER";
+"BackButton" = "Tilbake";
+"NextButton" = "Neste";
+"CancelButton" = "Avbryt";
+"PostButton" = "Publiser";
+"SendButton" = "Send";
+"SaveButton" = "Lagre";
+"ConnectionLostTitle" = "Mistet tilkoblingen";
+"ConnectionLostMessage" = "Oi sann! Ser ut som om du har mistet Internett-tilkoblingen. Koble deg til på nytt.";
+"NoInternetConnection" = "Ingen Internett-tilkobling";
+"LeaveButton" = "Dra";
+"Followers" = "Følgere";
+"Following" = "Følger";
+"CopyContentTitle" = "Meldingsalternativer";
+"PullDownToRefresh" = "Trekk ned for å oppdatere";
+"PullUpToLoadMore" = "Trekk opp til å laste mer";
+"ReleaseToRefresh" = "Slipp for å oppdatere";
+"ReleaseToLoadMore" = "Slipp for å laste mer";
+"ErrorAlertMessageTitle" = "Oi!";
+"ErrorAlertMessage" = "Noe gikk galt. Vennligst prøv igjen!";
+"InviteFriends" = "Inviter venner";
+"NoFriendsPlaceholderTitle" = "Kom i kontakt med venner";
+"NoFriendsPlaceholderMessage" = "Få den komplette sosiale opplevelsen og inviter vennene dine";
+
+//Timestamp
+"TimestampJustNow" = "akkurat nå";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0ft";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fu";
+"TimestampYesterday" = "I går";
+
+//Camera
+"TakeScreenshotOption" = "Ta skjermbilde";
+"TakePhotoOption" = "Ta bilde";
+"ChooseExistingPhotoOption" = "Velg eksisterende";
+"ChoosePhoto" = "Velg bilde";
+"RetakePhotoButton" = "Ta på nytt";
+"UsePhotoButton" = "Bruk";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Logg inn";
+"LogInEmailPlaceholder" = "E-post eller brukernavn";
+"LogIn" = "Logg inn";
+"LogInForgotPassword" = "Glemt passordet?";
+"LogInSignUp" = "Registrer deg med e-post";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Skriv inn e-postadressen din eller brukernavnet ditt for å fortelle oss hvem du er";
+"LogInPasswordEmptyErrorMessage" = "Vi kan ikke slippe deg inn uten passord!";
+"LogInInvalidCredentialsErrorMessage" = "Vi finner ingen konto med denne informasjonen";
+"SignUpPasswordInvalidErrorMessage" = "Passordet må bestå av minst 6 tegn";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Brukernavn";
+"EmailTitle" = "E-post";
+"PasswordTitle" = "Passord";
+"SignUpPassword2Placeholder" = "Skriv inn passordet på nytt";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "Hva slags brukernavnet vil du ha?";
+"SignUpEmailEmptyErrorMessage" = "Skriv inn e-postadressen du ønsker å bruke til å logge deg inn";
+"SignUpEmailInvalidErrorMessage" = "Hmm, det ser ikke helt riktig ut. Kontroller og prøv igjen!";
+"SignUpPasswordEmptyErrorMessage" = "Du må velge et passord for å holde kontoen din privat";
+"SignUpReenterPasswordEmptyErrorMessage" = "Skriv inn passordet på nytt for å bekrefte";
+"SignUpPasswordMismatchErrorMessage" = "Passordene stemmer ikke overens. Prøv på nytt.";
+"SignUpUsernameInUseErrorMessage" = "Beklager, dette brukernavnet er opptatt!";
+"SignUpEmailInUseErrorMessage" = "Vi har allerede en konto med denne e-postadressen ...";
+"SignUpGenericErrorMessage" = "Oi, noe gikk galt. Prøv på nytt!";
+"SignUpUsernameInvalidErrorMessage" = "Brukernavnet må være minst 4 tegn. Ingen mellomrom eller spesialtegn.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Glemt passordet?";
+"ForgotPasswordDirections" = "Ikke noe problem, bare skriv inn e-postadressen du brukte til å registrere deg, så sender vi deg en kobling for å lage deg et nytt!";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "E-post sendt";
+"RememberPasswordConfirmationDirections" = "Sjekk e-posten din (eller mappen for søppelpost). Du skal ha fått en e-post fra oss med en kobling som du kan bruke til å tilbakestille passordet ditt. Denne koblingen vil utløpe om 7 dager.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "Vi trenger e-postadressen din for å kunne sende deg en kobling for tilbakestilling av passordet";
+"RememberPasswordEmailInvalidErrorMessage" = "Det er noe galt med denne e-postadressen";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Hmm, vi finner ikke en konto for denne e-postadressen";
+
+//Activity View
+"ActivityTitle" = "Aktivitet";
+"ActivityNewStatusButton" = "Status";
+"ActivityNewPhotoButton" = "Foto";
+"ActivityPostPlaceholder" = "Hva skjer?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Ingen aktivitet";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Det er ingen aktivitet her ennå. Hvorfor ikke starte noe?";
+"ActivityMoreActivityButton" = "%d nye aktiviteter";
+"ActivityOneMoreActivityButton" = "%d ny aktivitet";
+"ActivityInAppPurchaseAnonymousUser" = "Noen";
+"ActivityInAppPurchaseCTA" = "Hent nå";
+
+//Comments View
+"ViewCommentsLink" = "kommentarer";
+"ViewCommentLink" = "kommentar";
+"CommentsTitle" = "Kommentarer";
+"CommentsPostPlaceholder" = "Legg inn en kommentar";
+"CommentsMoreCommentsButton" = "Se eldre kommentarer";
+
+//Likes View
+"LikesTitle" = "%d liker";
+"ViewLikesLink" = "liker";
+"ViewLikeLink" = "lik";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Start en samtale";
+"UploadProfilePictureFailure" = "Klarte ikke å laste opp bildet ditt; prøv på nytt";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Poengtavler";
+"LeaderboardNoScore" = "Ingen poengsum ennå";
+"LeaderboardRank" = "Ranger";
+"LeaderboardWorldButton" = "Verden";
+"LeaderboardSuggestedPlayers" = "Anbefalt";
+"LeaderboardPlaceholderTitle" = "Å nei!";
+"LeaderboardWorldNoScoresMessage" = "Ingen spillere har en poengsum på denne poengtavlen. Bli den første!";
+
+//Achievements View
+"AchievementsTitle" = "Bragder";
+
+//Settings View
+"SettingsTitle" = "Innstillinger";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "Logg ut";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Bragd låst opp!";
+"TopNotificationHighscoreMessageLoggedIn" = "Ny toppscore lagret!";
+"TopNotificationSaveGameMessageLoggedIn" = "Supert, du er inne! Nå vil alt bli lagret.";
+"TopNotificationAchievementMessageLoggedOut" = "Vil du lagre denne bragden?";
+"TopNotificationHighscoreMessageLoggedOut" = "Vil du lagre denne poengsummen?";
+"TopNotificationSaveGameMessageLoggedOut" = "Oi da, du er ikke logget inn, så ingenting vil bli lagret";
+"TopNotificationButtonLoggedOut" = "Visning";
+
+//Notifications View
+"NotificationTitle" = "Meldinger";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** kommenterte aktiviteten din, si noe tilbake ...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** likte aktiviteten din – jippi!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** likte kommentaren din – bra jobbet.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** følger deg – du er kjempepopulær!";
+"NotificationPlaceholderTitle" = "Ingen meldinger?";
+"NotificationPlaceholderMessage" = "Ingen har likt eller kommentert aktiviteten din ennå.";
+"NotificationPlaceholderButton" = "Publiser aktivitet";
+
+//Chat View
+"ChatListTitle" = "Samtale";
+"ChatListPlaceholderTitle" = "Hallo!";
+"ChatListPlaceholderMessage" = "Du har ingen samtaler. Kom igjen, vær sosial!";
+"ChatListInviteFriendsPlaceholderMessage" = "Inviter venner til å starte en chat!";
+"ChatInputFieldPlaceholder" = "Si noe!";
+"ChatListBlockUser" = "Blokker";
+"ChatViewTimestampYesterday" = "I går";
+"ChatViewMessageFailure" = "Meldingen kunne ikke sendes. Prøv på nytt senere.";
+"ChatLogInFailure" = "Nettpraten er for øyeblikket utilgjengelig";
+"ChatListCreateGroup" = "Opprett ny gruppe";
+"GroupChatCreateNoFollowingsAlertMessage" = "Du må følge noen brukere for å opprette en gruppenettprat.";
+"GroupChatRemoveUser" = "Fjern";
+"GroupChatAddParticipants" = "Legg til deltakere";
+"GroupNameHint" = "Angi gruppenavn";
+"CreateGroupTitle" = "Opprett Gruppe";
+"EditGroupTitle" = "Rediger Gruppe";
+"GroupChatNoName" = "Skriv inn et gruppenavn";
+"GroupChatNoParticipants" = "En gruppe må ha minst 2 deltakere";
+"ChatUploadImageFail" = "Klarte ikke å sende. Trykk for å prøve på nytt. ";
+"ChatListImageText" = "Bilde";
+"ChatMessageUpdateGame" = "Vennen din må oppdatere appen for å ha en samtale.";
+"ChatMessageUpdateYou" = "Oppdatere programmet å begynne å chatte!";
+"NewChatToolTip" = "Begynne å chatte!";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "Bli med og bruk [APP_NAME] – det er kjempebra! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Bli med og bruk [APP_NAME] ";
+
+//Presence
+"PresenceOnline" = "Online";
+"PresenceOffline" = "Offline";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Vennligst oppdater appen for å se denne meldingen.";

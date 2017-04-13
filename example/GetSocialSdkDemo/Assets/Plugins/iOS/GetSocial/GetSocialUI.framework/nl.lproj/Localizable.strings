@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Login met Facebook";
+"LogInWithEmail" = "Inloggen met e-mailadres";
+"SignUpTitle" = "Registreren";
+"SignInTitle" = "Inloggen";
+"TermsAndConditionsText" = "Door het creëren van een account, ga je akkoord met de Algemene Voorwaarden.";
+"TermsAndConditions" = "Algemene Voorwaarden";
+"OkButton" = "OK";
+"OrText" = "OF";
+"BackButton" = "Terug";
+"NextButton" = "Verder";
+"CancelButton" = "Annuleren";
+"PostButton" = "Post";
+"SendButton" = "Verzenen";
+"SaveButton" = "Opslaan";
+"ConnectionLostTitle" = "Verbinding verbroken";
+"ConnectionLostMessage" = "O jee! Het lijkt erop dat je internetverbinding verbroken is. Probeer opnieuw verbinding te maken.";
+"NoInternetConnection" = "Geen internetverbinding";
+"LeaveButton" = "Verlaten";
+"Followers" = "Volgers";
+"Following" = "Aan het volgen";
+"CopyContentTitle" = "Berichtopties";
+"PullDownToRefresh" = "Pull down to refresh";
+"PullUpToLoadMore" = "Pull up to load more";
+"ReleaseToRefresh" = "Release to refresh";
+"ReleaseToLoadMore" = "Release to load more";
+"ErrorAlertMessageTitle" = "Oeps!";
+"ErrorAlertMessage" = "Er is iets fout gegaan. Probeer het opnieuw!";
+"InviteFriends" = "Vrienden uitnodigen";
+"NoFriendsPlaceholderTitle" = "Maak contact met je vrienden";
+"NoFriendsPlaceholderMessage" = "Nodig je vrienden uit voor een volledige sociale ervaring";
+
+//Timestamp
+"TimestampJustNow" = "zojuist";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0fu";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fw";
+"TimestampYesterday" = "Gisteren";
+
+//Camera
+"TakeScreenshotOption" = "Screenshot maken";
+"TakePhotoOption" = "Foto nemen";
+"ChooseExistingPhotoOption" = "Kies bestaande";
+"ChoosePhoto" = "Kies afbeelding";
+"RetakePhotoButton" = "Opnieuw nemen";
+"UsePhotoButton" = "Gebruiken";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Inloggen";
+"LogInEmailPlaceholder" = "E-mailadres of gebruikersnaam";
+"LogIn" = "Inloggen";
+"LogInForgotPassword" = "Wachtwoord vergeten?";
+"LogInSignUp" = "Registreren met e-mailadres";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Voer je e-mailadres of gebruikersnaam in";
+"LogInPasswordEmptyErrorMessage" = "We kunnen je niet toelaten zonder een wachtwoord!";
+"LogInInvalidCredentialsErrorMessage" = "We hebben geen account met die informatie";
+"SignUpPasswordInvalidErrorMessage" = "Je wachtwoord moet minstens 6 tekens bevatten";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Gebruikersnaam";
+"EmailTitle" = "E-mailadres";
+"PasswordTitle" = "Wachtwoord";
+"SignUpPassword2Placeholder" = "Wachtwoord opnieuw invoeren";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "Wat gaat je gebruikersnaam worden?";
+"SignUpEmailEmptyErrorMessage" = "Voer het e-mailadres in dat je wilt gebruiken om in te loggen";
+"SignUpEmailInvalidErrorMessage" = "Hmm, dat ziet er niet goed uit. Controleer en probeer het opnieuw!";
+"SignUpPasswordEmptyErrorMessage" = "Je moet een wachtwoord kiezen om je account privé te houden";
+"SignUpReenterPasswordEmptyErrorMessage" = "Voer je wachtwoord opnieuw in om te verifiëren";
+"SignUpPasswordMismatchErrorMessage" = "De wachtwoorden komen niet overeen. Probeer het opnieuw.";
+"SignUpUsernameInUseErrorMessage" = "Sorry, dit wachtwoord is al in gebruik!";
+"SignUpEmailInUseErrorMessage" = "We hebben al een account voor dit e-mailadres.";
+"SignUpGenericErrorMessage" = "Oeps, er is iets fout gegaan. Probeer het opnieuw!";
+"SignUpUsernameInvalidErrorMessage" = "Gebruikersnaam moet min. 4 karakters bevatten. Geen speciale tekens of spaties.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Wachtwoord vergeten?";
+"ForgotPasswordDirections" = "Geen probleem, voer gewoon het e-mailadres in waarmee je bent geregistreerd en wij sturen je een link om een nieuwe aan te maken!";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "E-mail verzonden";
+"RememberPasswordConfirmationDirections" = "Controleer je inbox (of spammap) voor de e-mail die we hebben gestuurd met een link om je wachtwoord opnieuw in te stellen. Deze link verloopt over 7 dagen.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "Wij hebben je e-mailadres nodig om een link te sturen om je wachtwoord opnieuw in te stellen.";
+"RememberPasswordEmailInvalidErrorMessage" = "Er is iets mis met dit e-mailadres";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Hmm, we hebben geen account voor dit e-mailadres";
+
+//Activity View
+"ActivityTitle" = "Activiteit";
+"ActivityNewStatusButton" = "Status";
+"ActivityNewPhotoButton" = "Foto";
+"ActivityPostPlaceholder" = "Zeg iets!";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Geen activiteit";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Er is hier nog geen activiteit. Waarom begin je niet iets?";
+"ActivityMoreActivityButton" = "%d nieuwe activiteiten";
+"ActivityOneMoreActivityButton" = "%d nieuwe activiteit";
+"ActivityInAppPurchaseAnonymousUser" = "Iemand";
+"ActivityInAppPurchaseCTA" = "Neem het nu";
+
+//Comments View
+"ViewCommentsLink" = "reacties";
+"ViewCommentLink" = "reactie";
+"CommentsTitle" = "Reacties";
+"CommentsPostPlaceholder" = "Laat een reactie achter";
+"CommentsMoreCommentsButton" = "Zie oudere reacties";
+
+//Likes View
+"LikesTitle" = "%d likes";
+"ViewLikesLink" = "likes";
+"ViewLikeLink" = "like";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Chat starten";
+"UploadProfilePictureFailure" = "Kan je foto niet opladen, probeer het opnieuw";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Leaderboards";
+"LeaderboardNoScore" = "Nog geen score";
+"LeaderboardRank" = "Positie";
+"LeaderboardWorldButton" = "Wereld";
+"LeaderboardSuggestedPlayers" = "Aanbevolen";
+"LeaderboardPlaceholderTitle" = "O nee!";
+"LeaderboardWorldNoScoresMessage" = "Er zijn nog geen spelers die een score op dit leaderboard hebben. Wees de eerste!";
+
+//Achievements View
+"AchievementsTitle" = "Prestaties";
+
+//Settings View
+"SettingsTitle" = "Instellingen";
+"SettingsItemPrivacyPolicy" = "Privacybeleid";
+"SettingsItemLogOut" = "Uitloggen";
+"SettingsSharePurchases" = "Plaatsen namens jou";
+
+//Help & Support View
+"HelpAndSupportTitle" = "Hulp & Ondersteuning";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Prestatie ontgrendeld!";
+"TopNotificationHighscoreMessageLoggedIn" = "Nieuwe highscore opgeslagen!";
+"TopNotificationSaveGameMessageLoggedIn" = "Schitterend, je bent binnen! Nu wordt alles opgeslagen.";
+"TopNotificationAchievementMessageLoggedOut" = "Wil je deze prestatie opslaan?";
+"TopNotificationHighscoreMessageLoggedOut" = "Wil je deze score opslaan?";
+"TopNotificationSaveGameMessageLoggedOut" = "O jee, je bent niet ingelogd, er zal dus niets worden opgeslagen";
+"TopNotificationButtonLoggedOut" = "Bekijken";
+
+//Notifications View
+"NotificationTitle" = "Meldingen";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** heeft gereageerd op jouw activiteit, zeg iets terug.";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** vond je activiteit leuk, OMG!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** vond je reactie leuk, goed werk.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** volgt je, je bent zo populair!";
+"NotificationPlaceholderTitle" = "Geen meldingen?";
+"NotificationPlaceholderMessage" = "Niemand heeft iets leuk gevonden of gereageerd op jouw activiteit. Dus aan de slag en doe iets!";
+"NotificationPlaceholderButton" = "Post activiteit";
+
+//Chat View
+"ChatListTitle" = "Chatten";
+"ChatListPlaceholderTitle" = "Hallo!";
+"ChatListPlaceholderMessage" = "Je hebt geen berichten, kom op en zeg iets tegen je vrienden. ";
+"ChatListInviteFriendsPlaceholderMessage" = "Nodig je vrienden uit om te chatten!";
+"ChatInputFieldPlaceholder" = "Zeg iets!";
+"ChatListBlockUser" = "Blokkeren";
+"ChatViewTimestampYesterday" = "Gisteren";
+"ChatViewMessageFailure" = "Je bericht kon niet worden afgeleverd. Probeer het later opnieuw.";
+"ChatLogInFailure" = "De chat is momenteel niet beschikbaar";
+"ChatListCreateGroup" = "Een nieuwe groep aanmaken";
+"GroupChatCreateNoFollowingsAlertMessage" = "Je moet een aantal gebruikers volgen om een groepschat aan te kunnen maken.";
+"GroupChatRemoveUser" = "Verwijderen";
+"GroupChatAddParticipants" = "Deelnemers toevoegen";
+"GroupNameHint" = "Naam van de groep invoeren";
+"CreateGroupTitle" = "Groep Aanmaken";
+"EditGroupTitle" = "Groep Bewerken";
+"GroupChatNoName" = "Naam van een groep invoeren";
+"GroupChatNoParticipants" = "Een groep moet minstens 2 deelnemers hebben";
+"ChatUploadImageFail" = "Kon niet worden verzonden. Probeer opnieuw.";
+"ChatListImageText" = "Afbeelding";
+"ChatMessageUpdateGame" = "Je vriend moet de app updaten om te kunnen chatten.";
+"ChatMessageUpdateYou" = "Update de app om te beginnen met chatten";
+"NewChatToolTip" = "Stuur een bericht!";
+
+//Share App
+"CopyLink" = "Link kopiëren";
+"InviteByMessageMessage" = "Doe met me mee op [APP_NAME], het is geweldig! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Doe met me mee op [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "Online";
+"PresenceOffline" = "Offline";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Update de app om dit bericht te zien.";

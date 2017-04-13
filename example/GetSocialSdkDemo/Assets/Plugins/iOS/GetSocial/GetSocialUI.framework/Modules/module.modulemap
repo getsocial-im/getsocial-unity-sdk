@@ -1,0 +1,6 @@
+framework module GetSocialUI {
+  umbrella header "GetSocialUI.h"
+
+  export *
+  module * { export * }
+}

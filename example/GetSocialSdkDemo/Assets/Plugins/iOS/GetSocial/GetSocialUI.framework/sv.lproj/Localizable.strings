@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Anslut med Facebook";
+"LogInWithEmail" = "Logga in med e-post";
+"SignUpTitle" = "Registrera dig";
+"SignInTitle" = "Logga in";
+"TermsAndConditionsText" = "Genom att skapa ett konto, så accepterar du våra villkor och regler.";
+"TermsAndConditions" = "Villkor och Regler";
+"OkButton" = "OK";
+"OrText" = "ELLER";
+"BackButton" = "Bakåt";
+"NextButton" = "Nästa";
+"CancelButton" = "Avbryt";
+"PostButton" = "Posta";
+"SendButton" = "Skicka";
+"SaveButton" = "Spara";
+"ConnectionLostTitle" = "Anslutning förlorad";
+"ConnectionLostMessage" = "Uh oh! Det verkar som att internetanslutningen förlorades. Var vänlig anslut igen.";
+"NoInternetConnection" = "Ingen internetanslutning";
+"LeaveButton" = "Lämna";
+"Followers" = "Följare";
+"Following" = "Följer";
+"CopyContentTitle" = "Alternativ för meddelande";
+"PullDownToRefresh" = "Dra ner för att uppdatera";
+"PullUpToLoadMore" = "Dra upp för att läsa in fler";
+"ReleaseToRefresh" = "Släpp för att uppdatera";
+"ReleaseToLoadMore" = "Släpp för att läsa in fler";
+"ErrorAlertMessageTitle" = "Ojdå!";
+"ErrorAlertMessage" = "Något gick fel. Försök igen!";
+"InviteFriends" = "Bjud in vänner";
+"NoFriendsPlaceholderTitle" = "Poveži s prijatelji";
+"NoFriendsPlaceholderMessage" = "Doživi popolno socialno izkušnjo in povabi svoje prijatelje";
+
+//Timestamp
+"TimestampJustNow" = "just nu";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0ft";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fv";
+"TimestampYesterday" = "Igår";
+
+//Camera
+"TakeScreenshotOption" = "Ta skärmavbild";
+"TakePhotoOption" = "Ta foto";
+"ChooseExistingPhotoOption" = "Välj existerande";
+"ChoosePhoto" = "Välj bild";
+"RetakePhotoButton" = "Ta om";
+"UsePhotoButton" = "Använd";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Logga in";
+"LogInEmailPlaceholder" = "E-post eller användarnamn";
+"LogIn" = "Logga in";
+"LogInForgotPassword" = "Glömt lösenordet?";
+"LogInSignUp" = "Registrera dig med e-post";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Ange e-postadress eller användarnamn för att låta oss veta vem du är";
+"LogInPasswordEmptyErrorMessage" = "Vi kan inte släppa in dig utan ett lösenord!";
+"LogInInvalidCredentialsErrorMessage" = "Vi har inget konto med de uppgifterna";
+"SignUpPasswordInvalidErrorMessage" = "Ditt lösenord måste bestå av minst 6 tecken";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Användarnamn";
+"EmailTitle" = "E-post";
+"PasswordTitle" = "Lösenord";
+"SignUpPassword2Placeholder" = "Ange lösenord igen";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "Vilket användarnamn väljer du?";
+"SignUpEmailEmptyErrorMessage" = "Ange e-postadressen som du vill logga in med";
+"SignUpEmailInvalidErrorMessage" = "Hmm, det ser fel ut. Kontrollera och försök igen!";
+"SignUpPasswordEmptyErrorMessage" = "Du måste välja ett lösenord för att skydda ditt konto ";
+"SignUpReenterPasswordEmptyErrorMessage" = "Ange ditt lösenord igen som bekräftelse";
+"SignUpPasswordMismatchErrorMessage" = "Lösenorden matchar inte. Försök igen.";
+"SignUpUsernameInUseErrorMessage" = "Tyvärr, det användarnamnet finns redan!";
+"SignUpEmailInUseErrorMessage" = "Det finns redan ett konto med den här e-postadressen...";
+"SignUpGenericErrorMessage" = "Ojdå, något gick fel. Försök igen!";
+"SignUpUsernameInvalidErrorMessage" = "Användarnamn måste bestå av minst 4 tecken. Inga specialtecken eller mellanslag.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Glömt lösenordet?";
+"ForgotPasswordDirections" = "Inga problem. Skriv bara in e-postadressen som du angav under registreringen. Vi skickar en länk till dig för att skapa ett nytt!";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "E-brev skickat";
+"RememberPasswordConfirmationDirections" = "Kontrollera din e-postinkorg (eller skräpmapp) efter ett e-brev från oss med en länk för att nollställa lösenordet. Länken gäller i 7 dagar.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "Vi behöver din e-postadress för att skicka en länk till att nollställa lösenord";
+"RememberPasswordEmailInvalidErrorMessage" = "Något är fel med den här e-postadressen";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Hmm, det finns inget konto med den här e-postadressen";
+
+//Activity View
+"ActivityTitle" = "Aktivitet";
+"ActivityNewStatusButton" = "Status";
+"ActivityNewPhotoButton" = "Foto";
+"ActivityPostPlaceholder" = "Vad händer?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Ingen aktivitet";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Det finns ingen aktivitet här ännu. Du kanske kan starta något?";
+"ActivityMoreActivityButton" = "%d nya aktiviteter";
+"ActivityOneMoreActivityButton" = "%d ny aktivitet";
+"ActivityInAppPurchaseAnonymousUser" = "Någon";
+"ActivityInAppPurchaseCTA" = "Skaffa det nu";
+
+//Comments View
+"ViewCommentsLink" = "kommentarer";
+"ViewCommentLink" = "kommentar";
+"CommentsTitle" = "Kommentarer";
+"CommentsPostPlaceholder" = "Lämna en kommentar";
+"CommentsMoreCommentsButton" = "Se äldre kommentarer";
+
+//Likes View
+"LikesTitle" = "%d gillar";
+"ViewLikesLink" = "gillar";
+"ViewLikeLink" = "gilla";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Starta chat";
+"UploadProfilePictureFailure" = "Det gick inte att överföra din bild. Försök igen";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Ledartavlor";
+"LeaderboardNoScore" = "Inga poäng ännu";
+"LeaderboardRank" = "Rankning";
+"LeaderboardWorldButton" = "Världen";
+"LeaderboardSuggestedPlayers" = "Föreslagna";
+"LeaderboardPlaceholderTitle" = "Oh nej!";
+"LeaderboardWorldNoScoresMessage" = "Inga spelare har skickat in poäng till den här ledartavlan. Bli först!";
+
+//Achievements View
+"AchievementsTitle" = "Prestationer";
+
+//Settings View
+"SettingsTitle" = "Inställningar";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "Logga ut";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Prestation upplåst!";
+"TopNotificationHighscoreMessageLoggedIn" = "Ny högsta poäng sparad!";
+"TopNotificationSaveGameMessageLoggedIn" = "Fantastiskt, du är inne! Nu sparas allt.";
+"TopNotificationAchievementMessageLoggedOut" = "Vill du spara denna prestation?";
+"TopNotificationHighscoreMessageLoggedOut" = "Vill du spara denna poäng?";
+"TopNotificationSaveGameMessageLoggedOut" = "Uh oh, du är inte inloggad, så inget sparas";
+"TopNotificationButtonLoggedOut" = "Visa";
+
+//Notifications View
+"NotificationTitle" = "Notiser";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** kommenterade din aktivitet. Svara på kommentaren...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** gillade din aktivitet, OMG!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** gillade din kommentar. Bra jobbat.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** följer dig. Du är så populär!";
+"NotificationPlaceholderTitle" = "Inga notiser?";
+"NotificationPlaceholderMessage" = "Ingen har gillat eller kommenterat din aktivitet ännu.";
+"NotificationPlaceholderButton" = "Posta aktivitet";
+
+//Chat View
+"ChatListTitle" = "Chatt";
+"ChatListPlaceholderTitle" = "Hejsan!";
+"ChatListPlaceholderMessage" = "Du har inga chattar. Kom igen och var social!";
+"ChatListInviteFriendsPlaceholderMessage" = "Bjud in vänner och börja chatta!";
+"ChatInputFieldPlaceholder" = "Säg något!";
+"ChatListBlockUser" = "Blockera";
+"ChatViewTimestampYesterday" = "Igår";
+"ChatViewMessageFailure" = "Ditt meddelande kunde inte levereras. Försök igen senare.";
+"ChatLogInFailure" = "Chatten är inte tillgänglig just nu";
+"ChatListCreateGroup" = "Skapa ny grupp";
+"GroupChatCreateNoFollowingsAlertMessage" = "Du måste följa några användare för att skapa en gruppchatt.";
+"GroupChatRemoveUser" = "Ta bort";
+"GroupChatAddParticipants" = "Lägg till deltagare";
+"GroupNameHint" = "Ange gruppnamn";
+"CreateGroupTitle" = "Skapa Grupp";
+"EditGroupTitle" = "Redigera Grupp";
+"GroupChatNoName" = "Ange ett gruppnamn";
+"GroupChatNoParticipants" = "En grupp måste bestå av minst 2 deltagare";
+"ChatUploadImageFail" = "Kunde inte skicka. Tryck för att försöka igen. ";
+"ChatListImageText" = "Bild";
+"ChatMessageUpdateGame" = "Din vän måste uppdatera appen för att chatta.";
+"ChatMessageUpdateYou" = "Uppdatera appen för att börja chatta!";
+"NewChatToolTip" = "Börja chatta!";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "Gå med mig på [APP_NAME]. Det är fantastiskt! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Gå med mig på [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "Uppkopplad";
+"PresenceOffline" = "Off-line";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Uppdatera appen för att se detta meddelande.";

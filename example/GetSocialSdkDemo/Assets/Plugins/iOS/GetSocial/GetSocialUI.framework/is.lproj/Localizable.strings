@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "";
+"LogInWithEmail" = "";
+"SignUpTitle" = "";
+"SignInTitle" = "";
+"TermsAndConditionsText" = "";
+"TermsAndConditions" = "";
+"OkButton" = "";
+"OrText" = "";
+"BackButton" = "";
+"NextButton" = "";
+"CancelButton" = "";
+"PostButton" = "Birta";
+"SendButton" = "";
+"SaveButton" = "";
+"ConnectionLostTitle" = "Tengingin rofnaði";
+"ConnectionLostMessage" = "Æ, æ! Tengingin þín virðist hafa rofnað. Vinsamlegast tengstu aftur.";
+"NoInternetConnection" = "Ekkert netsamband";
+"LeaveButton" = "Hætta";
+"Followers" = "";
+"Following" = "";
+"CopyContentTitle" = "Valmöguleikar skilaboða";
+"PullDownToRefresh" = "Dragðu niður til að endurhlaða";
+"PullUpToLoadMore" = "Dragðu upp til að hlaða fleiru";
+"ReleaseToRefresh" = "Slepptu til að endurhlaða";
+"ReleaseToLoadMore" = "Slepptu til að hlaða fleiru";
+"ErrorAlertMessageTitle" = "";
+"ErrorAlertMessage" = "Eitthvað fór úrskeiðis. Vinsamlegast reyndu aftur!";
+"InviteFriends" = "Bjóða vinum";
+"NoFriendsPlaceholderTitle" = "Tengjast vinum";
+"NoFriendsPlaceholderMessage" = "Njóttu upplifunarinnar til fulls og bjóddu vinum þínum";
+
+//Timestamp
+"TimestampJustNow" = "rétt í þessu";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0fh";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fw";
+"TimestampYesterday" = "í gær";
+
+//Camera
+"TakeScreenshotOption" = "";
+"TakePhotoOption" = "";
+"ChooseExistingPhotoOption" = "";
+"ChoosePhoto" = "";
+"RetakePhotoButton" = "";
+"UsePhotoButton" = "";
+
+//Menu View
+"MenuTitle" = "";
+
+//Login View
+"LogInTitle" = "";
+"LogInEmailPlaceholder" = "";
+"LogIn" = "";
+"LogInForgotPassword" = "";
+"LogInSignUp" = "";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "";
+"LogInPasswordEmptyErrorMessage" = "";
+"LogInInvalidCredentialsErrorMessage" = "";
+"SignUpPasswordInvalidErrorMessage" = "";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "";
+"EmailTitle" = "";
+"PasswordTitle" = "";
+"SignUpPassword2Placeholder" = "";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "";
+"SignUpEmailEmptyErrorMessage" = "";
+"SignUpEmailInvalidErrorMessage" = "";
+"SignUpPasswordEmptyErrorMessage" = "";
+"SignUpReenterPasswordEmptyErrorMessage" = "";
+"SignUpPasswordMismatchErrorMessage" = "";
+"SignUpUsernameInUseErrorMessage" = "";
+"SignUpEmailInUseErrorMessage" = "";
+"SignUpGenericErrorMessage" = "";
+"SignUpUsernameInvalidErrorMessage" = "";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "";
+"ForgotPasswordDirections" = "";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "";
+"RememberPasswordConfirmationDirections" = "";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "";
+"RememberPasswordEmailInvalidErrorMessage" = "";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "";
+
+//Activity View
+"ActivityTitle" = "Virkni";
+"ActivityNewStatusButton" = "";
+"ActivityNewPhotoButton" = "";
+"ActivityPostPlaceholder" = "Hvað segirðu?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Engin virkni";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Þetta svæði er óvirkt ennþá. Viltu ekki byrja á einhverju?";
+"ActivityMoreActivityButton" = "%d ý virkni";
+"ActivityOneMoreActivityButton" = "%d ý virkni";
+"ActivityInAppPurchaseAnonymousUser" = "";
+"ActivityInAppPurchaseCTA" = "";
+
+//Comments View
+"ViewCommentsLink" = "Athugasemdir";
+"ViewCommentLink" = "athugasemd";
+"CommentsTitle" = "Athugasemdir";
+"CommentsPostPlaceholder" = "Skildu eftir athugasemd";
+"CommentsMoreCommentsButton" = "Sjá eldri athugasemdir";
+
+//Likes View
+"LikesTitle" = "%d líkar við";
+"ViewLikesLink" = "líkar við";
+"ViewLikeLink" = "líka við";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Byrja spjall";
+"UploadProfilePictureFailure" = "";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "";
+"LeaderboardNoScore" = "";
+"LeaderboardRank" = "";
+"LeaderboardWorldButton" = "";
+"LeaderboardSuggestedPlayers" = "";
+"LeaderboardPlaceholderTitle" = "";
+"LeaderboardWorldNoScoresMessage" = "";
+
+//Achievements View
+"AchievementsTitle" = "";
+
+//Settings View
+"SettingsTitle" = "";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "";
+"TopNotificationHighscoreMessageLoggedIn" = "";
+"TopNotificationSaveGameMessageLoggedIn" = "";
+"TopNotificationAchievementMessageLoggedOut" = "";
+"TopNotificationHighscoreMessageLoggedOut" = "";
+"TopNotificationSaveGameMessageLoggedOut" = "";
+"TopNotificationButtonLoggedOut" = "";
+
+//Notifications View
+"NotificationTitle" = "Tilkynningar";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** skrifuðu athugasemd við virkni þína, segðu eitthvað á móti...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** líkaði við virkni þína, OMG!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** líkaði við athugasemdina þína, vel gert.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** fylgjendur, þú ert svo vinsæl/-l!";
+"NotificationPlaceholderTitle" = "Engar tilkynningar?";
+"NotificationPlaceholderMessage" = "Enginn hefur enn líkað við eða skrifað athugasemd við virkni þína. Af stað með þig og gerðu eitthvað!";
+"NotificationPlaceholderButton" = "Birta virkni";
+
+//Chat View
+"ChatListTitle" = "spjall";
+"ChatListPlaceholderTitle" = "Halló!";
+"ChatListPlaceholderMessage" = "Þú ert ekki virk/-ur í neinu spjalli. Svona, vertu félagslynd/-ur!";
+"ChatListInviteFriendsPlaceholderMessage" = "Bjóddu vinum að hefja spjall!";
+"ChatInputFieldPlaceholder" = "Segðu eitthvað!";
+"ChatListBlockUser" = "Loka á";
+"ChatViewTimestampYesterday" = "í gær";
+"ChatViewMessageFailure" = "Ekki var hægt að senda skilaboðin. Vinsamlegast reyndu aftur síðar.";
+"ChatLogInFailure" = "Spjallið er óaðgengilegt eins og er";
+"ChatListCreateGroup" = "Búa til nýjan hóp";
+"GroupChatCreateNoFollowingsAlertMessage" = "Þú þarft að fylgja einhverjum notendum til að búa til hópspjall.";
+"GroupChatRemoveUser" = "Fjarlægja";
+"GroupChatAddParticipants" = "Bæta við þátttakendum";
+"GroupNameHint" = "Sláðu inn nafn hóps";
+"CreateGroupTitle" = "Búa til hóp";
+"EditGroupTitle" = "Breyta hópi";
+"GroupChatNoName" = "Vinsamlegast sláðu inn nafn hóps";
+"GroupChatNoParticipants" = "Það þarf minnst 2 þátttakendur í hóp";
+"ChatUploadImageFail" = "Tókst ekki að senda. Ýttu til að reyna aftur.";
+"ChatListImageText" = "Mynd";
+"ChatMessageUpdateGame" = "Vinur þinn þarf að uppfæra appið til að geta spjallað.";
+"ChatMessageUpdateYou" = "Uppfærðu appið til að byrja að spjalla!";
+"NewChatToolTip" = "Byrjaðu að spjalla";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "Komdu með mér á [APP_NAME], það er frábært!  [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Komdu með mér á [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "Online";
+"PresenceOffline" = "Offline";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Til þess að sjá þessi skilaboð þarf að uppfæra appið.";

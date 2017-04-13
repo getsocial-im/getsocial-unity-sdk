@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Facebook ile bağlan";
+"LogInWithEmail" = "E-posta ile giriş";
+"SignUpTitle" = "Kaydol";
+"SignInTitle" = "Giriş";
+"TermsAndConditionsText" = "Bir hesap oluşturarak, bize ait Şartlar ve Koşulları kabul ediyorsunuz.";
+"TermsAndConditions" = "Şartlar ve Koşullar";
+"OkButton" = "Tamam";
+"OrText" = "veya";
+"BackButton" = "Geri";
+"NextButton" = "İleri";
+"CancelButton" = "İptal";
+"PostButton" = "Yayınla";
+"SendButton" = "Gönder";
+"SaveButton" = "Kaydet";
+"ConnectionLostTitle" = "Bağlantı Kayıp";
+"ConnectionLostMessage" = "Uh oh! Internet bağlantınızı kaybettiğinizi gözlemledik. Lütfen yeniden bağlayın.";
+"NoInternetConnection" = "Internet bağlantınız yok.";
+"LeaveButton" = "Ayrıl";
+"Followers" = "Takipçiler";
+"Following" = "Takip Ettiklerin";
+"CopyContentTitle" = "Mesaj seçenekleri";
+"PullDownToRefresh" = "Yenilemek için aşşağı çek";
+"PullUpToLoadMore" = "Fazlası için yukarı çek";
+"ReleaseToRefresh" = "Yenilemek için serbest bırak";
+"ReleaseToLoadMore" = "Fazlası için serbest bırak";
+"ErrorAlertMessageTitle" = "Oops!";
+"ErrorAlertMessage" = "Birseyler ters gitti. Lütfen tekrar deneyin!";
+"InviteFriends" = "Arkadaşlarını davet et";
+"NoFriendsPlaceholderTitle" = "Arkadaslarinla baglan";
+"NoFriendsPlaceholderMessage" = "Tam sosyal tecrübeye geçmek için arkadaslarini davet et";
+
+//Timestamp
+"TimestampJustNow" = "Şimdi";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0fh";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fw";
+"TimestampYesterday" = "Dün";
+
+//Camera
+"TakeScreenshotOption" = "Ekran görüntüsü al";
+"TakePhotoOption" = "Fotoğraf çekin";
+"ChooseExistingPhotoOption" = "Varolanı seçin";
+"ChoosePhoto" = "Fotoğraf seçin";
+"RetakePhotoButton" = "Tekrar çek";
+"UsePhotoButton" = "Kullan";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Oturum aç";
+"LogInEmailPlaceholder" = "E-posta veya kullanıcı adı";
+"LogIn" = "Oturum aç";
+"LogInForgotPassword" = "Şifrenizi mi unuttunuz?";
+"LogInSignUp" = "E-posta ile kaydol";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Lütfen e-posta adresinizi veya kullanıcı adınızı giriniz ki, sizin hakkınızda bilgilere ulaşabilelim.";
+"LogInPasswordEmptyErrorMessage" = "Şifre girişi yapmadığınızdan, oturum açmanıza izin veremeyiz!";
+"LogInInvalidCredentialsErrorMessage" = "Bu kullanıcı adı/şifre kombinasyonunda bir hesap bulamadık.";
+"SignUpPasswordInvalidErrorMessage" = "Şifreniz en az 6 karakter uzunluğunda olmalı";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Kullanıcı Adı";
+"EmailTitle" = "E-posta";
+"PasswordTitle" = "Şifre";
+"SignUpPassword2Placeholder" = "Şifreyi tekrar girin";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "Yeni kullanıcı adınız nedir?";
+"SignUpEmailEmptyErrorMessage" = "Giriş için kullanmak istediğiniz e-posta adresinizi giriniz";
+"SignUpEmailInvalidErrorMessage" = "Hmm, bu doğru görünmüyor. Kontrol edin ve tekrar deneyin!";
+"SignUpPasswordEmptyErrorMessage" = "Hesabınızı özel tutmak için bir şifre almanız gerekir.";
+"SignUpReenterPasswordEmptyErrorMessage" = "Doğrulamak için şifrenizi tekrar girin";
+"SignUpPasswordMismatchErrorMessage" = "Şifreler eşleşmiyor. Tekrar deneyin.";
+"SignUpUsernameInUseErrorMessage" = "Üzgünüz, bu kullanıcı adı alınmış!";
+"SignUpEmailInUseErrorMessage" = "Bizde zaten bu e-posta adresi için bir hesap bulunmakta ...";
+"SignUpGenericErrorMessage" = "Üzgünüz, bir şeyler ters gitti. Lütfen tekrar deneyin!";
+"SignUpUsernameInvalidErrorMessage" = "Kullanıcı adı 4 karakterden az olmalıdır. Özel karakter veya boşluk kullanmayınız.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Parolanızı mı unuttunuz?";
+"ForgotPasswordDirections" = "Sorun yok, sadece kaydolmak için kullandığınız e-posta adresinizi girin ve biz yeni bir tane oluşturmak için bir bağlantı göndereceğiz!";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "E-posta gönderildi";
+"RememberPasswordConfirmationDirections" = "Lütfen e-posta adresinizi bizim tarafımızdan gelicek bir e-postaya karşılık kontrol ediniz(spam klasörüde dahil olmak üzere).Bu bağlantı 7 gün içinde işlevsiz hale gelecektir.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "Size bir parola sıfırlama bağlantısı göndermemiz için e-posta adresine ihtiyacımız var";
+"RememberPasswordEmailInvalidErrorMessage" = "Bu e-posta adresinde bir terslik var";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Hmm, bu e-posta adresi için bir hesap yok";
+
+//Activity View
+"ActivityTitle" = "Etkinlik";
+"ActivityNewStatusButton" = "Durum";
+"ActivityNewPhotoButton" = "Fotoğraf";
+"ActivityPostPlaceholder" = "Naber?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Eylem Eksik!";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Burada herhangi bir etkinlik yapılmamış. Neden sen başlatmıyorsun ?";
+"ActivityMoreActivityButton" = "%d yeni etkinlikler";
+"ActivityOneMoreActivityButton" = "%d yeni etkinlik";
+"ActivityInAppPurchaseAnonymousUser" = "Birisi";
+"ActivityInAppPurchaseCTA" = "Şimdi alın";
+
+//Comments View
+"ViewCommentsLink" = "yorumlar";
+"ViewCommentLink" = "yorum";
+"CommentsTitle" = "Yorumlar";
+"CommentsPostPlaceholder" = "Yorum bırak";
+"CommentsMoreCommentsButton" = "Eski yorumları göster";
+
+//Likes View
+"LikesTitle" = "%d beğeni";
+"ViewLikesLink" = "beğeniler";
+"ViewLikeLink" = "beğeni";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Sohbete Başla";
+"UploadProfilePictureFailure" = "Resminiz yüklenemedi, lütfen tekrar deneyin";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Skorbordlar";
+"LeaderboardNoScore" = "Henüz skor yok";
+"LeaderboardRank" = "Rütbe";
+"LeaderboardWorldButton" = "Dünya";
+"LeaderboardSuggestedPlayers" = "Önerilen";
+"LeaderboardPlaceholderTitle" = "Oh hayır!";
+"LeaderboardWorldNoScoresMessage" = "Hiçbir oyuncu bu skorborda skorunu göndermemiş. İlk olun!";
+
+//Achievements View
+"AchievementsTitle" = "Başarılar";
+
+//Settings View
+"SettingsTitle" = "Ayarlar";
+"SettingsItemPrivacyPolicy" = "Gizlilik Politikası";
+"SettingsItemLogOut" = "Oturumu Kapat";
+"SettingsSharePurchases" = "Sizin Adınıza gönderi";
+
+//Help & Support View
+"HelpAndSupportTitle" = "Yardım ve Destek";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Başarı açıldı!";
+"TopNotificationHighscoreMessageLoggedIn" = "Yeni yüksek puan kaydedildi!";
+"TopNotificationSaveGameMessageLoggedIn" = "Mükemmel, içerdesin ! Şimdi herşey kayıt edilicek.";
+"TopNotificationAchievementMessageLoggedOut" = "Bu başarıyı kaydetmek istiyor musunuz?";
+"TopNotificationHighscoreMessageLoggedOut" = "Bu skoru kaydetmek istiyor musunuz?";
+"TopNotificationSaveGameMessageLoggedOut" = "Uh oh, sen oturum açmamışsın, bu yüzden hiçbir şey kaydedilebilir değil";
+"TopNotificationButtonLoggedOut" = "Göster";
+
+//Notifications View
+"NotificationTitle" = "Bildirimler";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** senin etkinliğine yorum yaptı, hadi cevap ver...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** senin etkinliğini sevdi, OMG!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** yorumunuzu sevdi, iyi iş.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** sizi izliyor, ne kadar popülersin!";
+"NotificationPlaceholderTitle" = "Bildirim yok?";
+"NotificationPlaceholderMessage" = "Kimse bir aktivitenizi beğenmedi yada yorum yapmadı. Hadi kolları sıva ve işe giriş !";
+"NotificationPlaceholderButton" = "Aktivite yolla";
+
+//Chat View
+"ChatListTitle" = "Sohbet";
+"ChatListPlaceholderTitle" = "Merhaba!";
+"ChatListPlaceholderMessage" = "Sohbet yok? Hadi, arkadaşlarınıza müthiş bir şey söyleyin!";
+"ChatListInviteFriendsPlaceholderMessage" = "Sohbete başlamak için arkadaşlarını davet et!";
+"ChatInputFieldPlaceholder" = "Birşey söyle!";
+"ChatListBlockUser" = "Blok";
+"ChatViewTimestampYesterday" = "dün";
+"ChatViewMessageFailure" = "Mesajınız teslim edilemedi. Lütfen sonra tekrar deneyin.";
+"ChatLogInFailure" = "Sohbet şu anda kullanılamıyor";
+"ChatListCreateGroup" = "Yeni grup oluştur";
+"GroupChatCreateNoFollowingsAlertMessage" = "Bir grup sohbeti oluşturmak için takip ettiğiniz oyuncular olması gerekir.";
+"GroupChatRemoveUser" = "Kaldır";
+"GroupChatAddParticipants" = "Katılımcı ekle";
+"GroupNameHint" = "Grup adını girin";
+"CreateGroupTitle" = "Grup Oluştur";
+"EditGroupTitle" = "Grup Düzenle";
+"GroupChatNoName" = "Lütfen bir grup ismi giriniz.";
+"GroupChatNoParticipants" = "Bır grubun en az 2 katılımcıya ihtiyacı vardır.";
+"ChatUploadImageFail" = "Gönderilemedi. Yeniden denemek için dokunun.";
+"ChatListImageText" = "İmaj";
+"ChatMessageUpdateGame" = "Arkadaşın sohbet etmek için uygulamayı güncellemesi gerekiyor.";
+"ChatMessageUpdateYou" = "Sohbet edebilmek için uygulamayi güncelleyin";
+"NewChatToolTip" = "Sohbete başla!";
+
+//Share App
+"CopyLink" = "Link Kopyala";
+"InviteByMessageMessage" = "Bana [APP_NAME] da katıl, çok beğendim! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Bana [APP_NAME] da katıl.";
+
+//Presence
+"PresenceOnline" = "Çevrimiçi";
+"PresenceOffline" = "Çevrimdışı";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Bu mesajı görmek için lütfen uygulamayı güncelleyin.";

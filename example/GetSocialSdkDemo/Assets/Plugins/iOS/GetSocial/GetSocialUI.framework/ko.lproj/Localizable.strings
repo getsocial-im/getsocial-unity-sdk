@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "";
+"LogInWithEmail" = "";
+"SignUpTitle" = "";
+"SignInTitle" = "";
+"TermsAndConditionsText" = "";
+"TermsAndConditions" = "";
+"OkButton" = "";
+"OrText" = "";
+"BackButton" = "";
+"NextButton" = "";
+"CancelButton" = "";
+"PostButton" = "게시";
+"SendButton" = "";
+"SaveButton" = "";
+"ConnectionLostTitle" = "연결 손실";
+"ConnectionLostMessage" = "어머! 인터넷 연결이 끊어진 것 같습니다. 다시 연결하십시오.";
+"NoInternetConnection" = "인터넷 연결없음";
+"LeaveButton" = "종료";
+"Followers" = "";
+"Following" = "";
+"CopyContentTitle" = "메시지 옵션";
+"PullDownToRefresh" = "아래로 당겨 새로 고침";
+"PullUpToLoadMore" = "위로 당겨 기타 로드";
+"ReleaseToRefresh" = "선택 해제하여 새로 고침";
+"ReleaseToLoadMore" = "선택 해제하여 기타 로드";
+"ErrorAlertMessageTitle" = "";
+"ErrorAlertMessage" = "문제가 발생했습니다. 다시 시도하십시오!";
+"InviteFriends" = "친구 초대";
+"NoFriendsPlaceholderTitle" = "친구들과 연결";
+"NoFriendsPlaceholderMessage" = "전체 소셜 경험을 얻고 친구 초대";
+
+//Timestamp
+"TimestampJustNow" = "지금 막";
+"TimestampSeconds" = "%1.0f초";
+"TimestampMinutes" = "%1.0f분";
+"TimestampHours" = "%1.0f시 ";
+"TimestampDays" = "%1.0f일";
+"TimestampWeeks" = "%1.0f주";
+"TimestampYesterday" = "어제";
+
+//Camera
+"TakeScreenshotOption" = "";
+"TakePhotoOption" = "";
+"ChooseExistingPhotoOption" = "";
+"ChoosePhoto" = "";
+"RetakePhotoButton" = "";
+"UsePhotoButton" = "";
+
+//Menu View
+"MenuTitle" = "";
+
+//Login View
+"LogInTitle" = "";
+"LogInEmailPlaceholder" = "";
+"LogIn" = "";
+"LogInForgotPassword" = "";
+"LogInSignUp" = "";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "";
+"LogInPasswordEmptyErrorMessage" = "";
+"LogInInvalidCredentialsErrorMessage" = "";
+"SignUpPasswordInvalidErrorMessage" = "";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "";
+"EmailTitle" = "";
+"PasswordTitle" = "";
+"SignUpPassword2Placeholder" = "";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "";
+"SignUpEmailEmptyErrorMessage" = "";
+"SignUpEmailInvalidErrorMessage" = "";
+"SignUpPasswordEmptyErrorMessage" = "";
+"SignUpReenterPasswordEmptyErrorMessage" = "";
+"SignUpPasswordMismatchErrorMessage" = "";
+"SignUpUsernameInUseErrorMessage" = "";
+"SignUpEmailInUseErrorMessage" = "";
+"SignUpGenericErrorMessage" = "";
+"SignUpUsernameInvalidErrorMessage" = "";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "";
+"ForgotPasswordDirections" = "";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "";
+"RememberPasswordConfirmationDirections" = "";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "";
+"RememberPasswordEmailInvalidErrorMessage" = "";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "";
+
+//Activity View
+"ActivityTitle" = "활동";
+"ActivityNewStatusButton" = "";
+"ActivityNewPhotoButton" = "";
+"ActivityPostPlaceholder" = "무슨 일이야?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "활동이 없습니다";
+"ActivityAllNoActivitiesPlaceholderMessage" = "여기에 활동 사항이 아직 없습니다. 무언가 시작하는 게 어떻습니까?";
+"ActivityMoreActivityButton" = "%d 새로운 활동";
+"ActivityOneMoreActivityButton" = "%d 새로운 활동";
+"ActivityInAppPurchaseAnonymousUser" = "";
+"ActivityInAppPurchaseCTA" = "";
+
+//Comments View
+"ViewCommentsLink" = "댓글";
+"ViewCommentLink" = "댓글";
+"CommentsTitle" = "댓글";
+"CommentsPostPlaceholder" = "댓글 남기기";
+"CommentsMoreCommentsButton" = "이전 댓글 보기";
+
+//Likes View
+"LikesTitle" = "%d 좋아요";
+"ViewLikesLink" = "좋아요";
+"ViewLikeLink" = "좋아요";
+
+//Profile View
+"ProfileSendChatMessageButton" = "채팅 시작";
+"UploadProfilePictureFailure" = "";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "";
+"LeaderboardNoScore" = "";
+"LeaderboardRank" = "";
+"LeaderboardWorldButton" = "";
+"LeaderboardSuggestedPlayers" = "";
+"LeaderboardPlaceholderTitle" = "";
+"LeaderboardWorldNoScoresMessage" = "";
+
+//Achievements View
+"AchievementsTitle" = "";
+
+//Settings View
+"SettingsTitle" = "";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "";
+"TopNotificationHighscoreMessageLoggedIn" = "";
+"TopNotificationSaveGameMessageLoggedIn" = "";
+"TopNotificationAchievementMessageLoggedOut" = "";
+"TopNotificationHighscoreMessageLoggedOut" = "";
+"TopNotificationSaveGameMessageLoggedOut" = "";
+"TopNotificationButtonLoggedOut" = "";
+
+//Notifications View
+"NotificationTitle" = "알림";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]**(이)가  당신의 활동에 댓글을 달았으므로, 이 댓글에 답변하세요...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]**(이)가  당신의 활동을 좋아합니다, 오마이갓!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]**(이)가 당신의 댓글을 좋아합니다, 잘했어요.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]**(이)가 당신을 팔로윙합니다, 너무 인기있어요!";
+"NotificationPlaceholderTitle" = "알림이 없습니까?";
+"NotificationPlaceholderMessage" = "아무도 당신의 활동에 좋아하거나 댓글을 달지 않았습니다. 그러므로, 서둘러 무언가 하십시오!";
+"NotificationPlaceholderButton" = "활동 게시";
+
+//Chat View
+"ChatListTitle" = "잡담";
+"ChatListPlaceholderTitle" = "안녕하세요!";
+"ChatListPlaceholderMessage" = "채팅이 없습니다. 어서, 사교적으로 되세요!";
+"ChatListInviteFriendsPlaceholderMessage" = "채팅을 시작하도록 친구를 초대하세요!";
+"ChatInputFieldPlaceholder" = "말 좀 해 보세요!";
+"ChatListBlockUser" = "차단";
+"ChatViewTimestampYesterday" = "어제";
+"ChatViewMessageFailure" = "메시지를 전송할 수 없습니다. 나중에 다시 시도하십시오.";
+"ChatLogInFailure" = "현재 채팅을 사용할 수 없습니다.";
+"ChatListCreateGroup" = "새 그룹 만들기";
+"GroupChatCreateNoFollowingsAlertMessage" = "일부 사용자를 팔로우하여 그룹 채팅을 만들어야 합니다.";
+"GroupChatRemoveUser" = "제거";
+"GroupChatAddParticipants" = "참가자 추가";
+"GroupNameHint" = "그룹 이름 입력";
+"CreateGroupTitle" = "그룹 만들기";
+"EditGroupTitle" = "그룹 편집";
+"GroupChatNoName" = "그룹 이름을 입력하십시오.";
+"GroupChatNoParticipants" = "그룹은 적어도 2명의 참가자가 필요합니다.";
+"ChatUploadImageFail" = "전송에 실패했습니다. 눌러서 다시 시도하십시오.";
+"ChatListImageText" = "이미지";
+"ChatMessageUpdateGame" = "대화를 하려면 친구가 앱 업데이트를 해야 합니다.";
+"ChatMessageUpdateYou" = "대화 시작을 위해 앱 업데이트를 하세요!";
+"NewChatToolTip" = "대화 시작!";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "[APP_NAME]에서 만나요, 정말 좋아요! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "[APP_NAME]에서 만나요.";
+
+//Presence
+"PresenceOnline" = "온라인으로";
+"PresenceOffline" = "오프라인";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ 본 메시지를 보려면 이 앱을 업데이트하시기 바랍니다.";

@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "";
+"LogInWithEmail" = "";
+"SignUpTitle" = "";
+"SignInTitle" = "";
+"TermsAndConditionsText" = "";
+"TermsAndConditions" = "";
+"OkButton" = "";
+"OrText" = "";
+"BackButton" = "";
+"NextButton" = "";
+"CancelButton" = "";
+"PostButton" = "投稿";
+"SendButton" = "";
+"SaveButton" = "";
+"ConnectionLostTitle" = "接続が切れました";
+"ConnectionLostMessage" = "あっ! インターネット接続が切れたようです。再接続してください。";
+"NoInternetConnection" = "インターネット接続なし";
+"LeaveButton" = "終了";
+"Followers" = "";
+"Following" = "";
+"CopyContentTitle" = "メッセージオプション";
+"PullDownToRefresh" = "プルダウンで更新";
+"PullUpToLoadMore" = "プルアップでさらに読み込み";
+"ReleaseToRefresh" = "リリースで更新";
+"ReleaseToLoadMore" = "リリースでさらに読み込み";
+"ErrorAlertMessageTitle" = "";
+"ErrorAlertMessage" = "問題が発生しました。再試行してください!";
+"InviteFriends" = "友達を招待";
+"NoFriendsPlaceholderTitle" = "友達と接続";
+"NoFriendsPlaceholderMessage" = "友達を招待してソーシャル体験を存分に";
+
+//Timestamp
+"TimestampJustNow" = "たった今";
+"TimestampSeconds" = "%1.0f 秒";
+"TimestampMinutes" = "%1.0f 分";
+"TimestampHours" = "%1.0f 時間";
+"TimestampDays" = "%1.0f 日";
+"TimestampWeeks" = "%1.0f 週";
+"TimestampYesterday" = "昨日";
+
+//Camera
+"TakeScreenshotOption" = "";
+"TakePhotoOption" = "";
+"ChooseExistingPhotoOption" = "";
+"ChoosePhoto" = "";
+"RetakePhotoButton" = "";
+"UsePhotoButton" = "";
+
+//Menu View
+"MenuTitle" = "";
+
+//Login View
+"LogInTitle" = "";
+"LogInEmailPlaceholder" = "";
+"LogIn" = "";
+"LogInForgotPassword" = "";
+"LogInSignUp" = "";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "";
+"LogInPasswordEmptyErrorMessage" = "";
+"LogInInvalidCredentialsErrorMessage" = "";
+"SignUpPasswordInvalidErrorMessage" = "";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "";
+"EmailTitle" = "";
+"PasswordTitle" = "";
+"SignUpPassword2Placeholder" = "";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "";
+"SignUpEmailEmptyErrorMessage" = "";
+"SignUpEmailInvalidErrorMessage" = "";
+"SignUpPasswordEmptyErrorMessage" = "";
+"SignUpReenterPasswordEmptyErrorMessage" = "";
+"SignUpPasswordMismatchErrorMessage" = "";
+"SignUpUsernameInUseErrorMessage" = "";
+"SignUpEmailInUseErrorMessage" = "";
+"SignUpGenericErrorMessage" = "";
+"SignUpUsernameInvalidErrorMessage" = "";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "";
+"ForgotPasswordDirections" = "";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "";
+"RememberPasswordConfirmationDirections" = "";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "";
+"RememberPasswordEmailInvalidErrorMessage" = "";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "";
+
+//Activity View
+"ActivityTitle" = "アクティビティ";
+"ActivityNewStatusButton" = "";
+"ActivityNewPhotoButton" = "";
+"ActivityPostPlaceholder" = "何してる?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "アクティビティなし";
+"ActivityAllNoActivitiesPlaceholderMessage" = "ここではまだアクティビティがありません。何か始めませんか?";
+"ActivityMoreActivityButton" = "%d 新規アクティビティ";
+"ActivityOneMoreActivityButton" = "%d 新規アクティビティ";
+"ActivityInAppPurchaseAnonymousUser" = "";
+"ActivityInAppPurchaseCTA" = "";
+
+//Comments View
+"ViewCommentsLink" = "コメント";
+"ViewCommentLink" = "コメント";
+"CommentsTitle" = "コメント";
+"CommentsPostPlaceholder" = "コメントを残す";
+"CommentsMoreCommentsButton" = "古いコメントを見る";
+
+//Likes View
+"LikesTitle" = "%d いいね";
+"ViewLikesLink" = "いいね";
+"ViewLikeLink" = "いいね";
+
+//Profile View
+"ProfileSendChatMessageButton" = "チャット開始";
+"UploadProfilePictureFailure" = "";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "";
+"LeaderboardNoScore" = "";
+"LeaderboardRank" = "";
+"LeaderboardWorldButton" = "";
+"LeaderboardSuggestedPlayers" = "";
+"LeaderboardPlaceholderTitle" = "";
+"LeaderboardWorldNoScoresMessage" = "";
+
+//Achievements View
+"AchievementsTitle" = "";
+
+//Settings View
+"SettingsTitle" = "";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "";
+"TopNotificationHighscoreMessageLoggedIn" = "";
+"TopNotificationSaveGameMessageLoggedIn" = "";
+"TopNotificationAchievementMessageLoggedOut" = "";
+"TopNotificationHighscoreMessageLoggedOut" = "";
+"TopNotificationSaveGameMessageLoggedOut" = "";
+"TopNotificationButtonLoggedOut" = "";
+
+//Notifications View
+"NotificationTitle" = "通知";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** があなたのアクティビティについてコメントしました。何か言い返しましょう…";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** はあなたのアクティビティが好き。オドロキ!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** はあなたのコメントが好き。良かった。";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** がフォローしてます。あなたは人気者!";
+"NotificationPlaceholderTitle" = "通知なし?";
+"NotificationPlaceholderMessage" = "あなたのアクティビティに対していいねやコメントがありません。今すぐ何かを始めましょう!";
+"NotificationPlaceholderButton" = "アクティビティを投稿";
+
+//Chat View
+"ChatListTitle" = "チャット";
+"ChatListPlaceholderTitle" = "こんにちは!";
+"ChatListPlaceholderMessage" = "チャットがありません。皆と交流を!";
+"ChatListInviteFriendsPlaceholderMessage" = "友達を招待してチャットを開始させましょう!";
+"ChatInputFieldPlaceholder" = "何か言ってください!";
+"ChatListBlockUser" = "ブロック";
+"ChatViewTimestampYesterday" = "昨日";
+"ChatViewMessageFailure" = "メッセージを配達できませんでした。後で再試行してください。";
+"ChatLogInFailure" = "チャットは現在利用できません。";
+"ChatListCreateGroup" = "新規グループを作成";
+"GroupChatCreateNoFollowingsAlertMessage" = "グループチャットの作成にはユーザーをフォローする必要があります。";
+"GroupChatRemoveUser" = "削除";
+"GroupChatAddParticipants" = "参加者を追加";
+"GroupNameHint" = "グループ名を入力してください";
+"CreateGroupTitle" = "グループを作成";
+"EditGroupTitle" = "グループを編集";
+"GroupChatNoName" = "グループ名を入力してください";
+"GroupChatNoParticipants" = "グループには参加者が最低2名必要です。";
+"ChatUploadImageFail" = "送信に失敗。タップして再試行を。";
+"ChatListImageText" = "画像";
+"ChatMessageUpdateGame" = "チャットをするには、友達がアプリをアップデートする必要があります。";
+"ChatMessageUpdateYou" = "アプリをアップデートしてチャットを開始!";
+"NewChatToolTip" = "チャットを開始!";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "に一緒に参加してください。[APP_NAME] 凄いです! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "に一緒に参加してください [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "オンライン";
+"PresenceOffline" = "オフライン";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ このメッセージを見るにはアプリを更新してください。";

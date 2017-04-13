@@ -1,6 +1,28 @@
 # GetSocial Unity SDK
 
 ## Version History
+### v6.0.0
+
+We have released version 6.0 of our SDK, codename Sangria.  This is a major update that brings a lot of improvements and new features. 
+
+**New:**
+
++ Data API. With GetSocial's Data API developers can now access the data layer of all our features breaking dependency on our UI and giving them more flexibility.  
++ Dynamic Activity feeds. Developers can now create activity feeds on the fly. They can have a feed per clan, per fraction, per geo, or even level specific.
++ Sticky activities are now Announcements. Developers can now post multiple announcements (announcements are always pinned on top) expiring at different time periods. All their announcements are accessible from one convenient location and can be rescheduled even after they expire. 
++ Auto-initialization. Integration just got easier, SDK will automatically initialize with your app, no need to take care of that.
+
+Learn more about new features in brand new GetSocial Documentation: http://docs.getsocial.im
+
+**Updated:**
+
++ Simplified API. We, at GetSocial, strive to provide the best integration experience. To achive this we had to rework our public API from scratch, it become easier to use and understand. It won't be possible without breaking changes, GetSocial SKD version 6 is not backward compatible with SDK version 5.
+
+**Removed:**
+
++ GetSocial Chat is no longer a part of GetSocial services. All customers using Chat via SDK v5 and v4 can continue usage as usual. 
+
+---
 
 ### v5.3.0
 

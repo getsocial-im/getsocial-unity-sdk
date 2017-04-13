@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "";
+"LogInWithEmail" = "";
+"SignUpTitle" = "";
+"SignInTitle" = "";
+"TermsAndConditionsText" = "";
+"TermsAndConditions" = "";
+"OkButton" = "";
+"OrText" = "";
+"BackButton" = "";
+"NextButton" = "";
+"CancelButton" = "";
+"PostButton" = "發佈";
+"SendButton" = "";
+"SaveButton" = "";
+"ConnectionLostTitle" = "連接丟失";
+"ConnectionLostMessage" = "啊哦！似乎您的網絡連接已丟失。請重新連接。";
+"NoInternetConnection" = "無網絡連接";
+"LeaveButton" = "離開";
+"Followers" = "";
+"Following" = "";
+"CopyContentTitle" = "訊息選項";
+"PullDownToRefresh" = "下拉來刷新";
+"PullUpToLoadMore" = "上拉來載入更多";
+"ReleaseToRefresh" = "釋放來刷新";
+"ReleaseToLoadMore" = "釋放來載入更多";
+"ErrorAlertMessageTitle" = "";
+"ErrorAlertMessage" = "出現了問題。請重試！";
+"InviteFriends" = "邀請朋友";
+"NoFriendsPlaceholderTitle" = "與朋友聯繫";
+"NoFriendsPlaceholderMessage" = "獲得完整的社交體驗，邀請朋友";
+
+//Timestamp
+"TimestampJustNow" = "剛剛";
+"TimestampSeconds" = "%1.0f 秒";
+"TimestampMinutes" = "%1.0f分";
+"TimestampHours" = "%1.0f小時";
+"TimestampDays" = "%1.0f天 ";
+"TimestampWeeks" = "%1.0f週";
+"TimestampYesterday" = "昨天";
+
+//Camera
+"TakeScreenshotOption" = "";
+"TakePhotoOption" = "";
+"ChooseExistingPhotoOption" = "";
+"ChoosePhoto" = "";
+"RetakePhotoButton" = "";
+"UsePhotoButton" = "";
+
+//Menu View
+"MenuTitle" = "";
+
+//Login View
+"LogInTitle" = "";
+"LogInEmailPlaceholder" = "";
+"LogIn" = "";
+"LogInForgotPassword" = "";
+"LogInSignUp" = "";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "";
+"LogInPasswordEmptyErrorMessage" = "";
+"LogInInvalidCredentialsErrorMessage" = "";
+"SignUpPasswordInvalidErrorMessage" = "";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "";
+"EmailTitle" = "";
+"PasswordTitle" = "";
+"SignUpPassword2Placeholder" = "";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "";
+"SignUpEmailEmptyErrorMessage" = "";
+"SignUpEmailInvalidErrorMessage" = "";
+"SignUpPasswordEmptyErrorMessage" = "";
+"SignUpReenterPasswordEmptyErrorMessage" = "";
+"SignUpPasswordMismatchErrorMessage" = "";
+"SignUpUsernameInUseErrorMessage" = "";
+"SignUpEmailInUseErrorMessage" = "";
+"SignUpGenericErrorMessage" = "";
+"SignUpUsernameInvalidErrorMessage" = "";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "";
+"ForgotPasswordDirections" = "";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "";
+"RememberPasswordConfirmationDirections" = "";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "";
+"RememberPasswordEmailInvalidErrorMessage" = "";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "";
+
+//Activity View
+"ActivityTitle" = "活動";
+"ActivityNewStatusButton" = "";
+"ActivityNewPhotoButton" = "";
+"ActivityPostPlaceholder" = "近來怎樣";
+"ActivityAllNoActivitiesPlaceholderTitle" = "無活動";
+"ActivityAllNoActivitiesPlaceholderMessage" = "這里尚無活動。你為什麽不開始做些什麽呢？";
+"ActivityMoreActivityButton" = "%d 新活動";
+"ActivityOneMoreActivityButton" = "%d 新活動";
+"ActivityInAppPurchaseAnonymousUser" = "";
+"ActivityInAppPurchaseCTA" = "";
+
+//Comments View
+"ViewCommentsLink" = "評論";
+"ViewCommentLink" = "評論";
+"CommentsTitle" = "評論";
+"CommentsPostPlaceholder" = "留下評論";
+"CommentsMoreCommentsButton" = "查看更早的評論";
+
+//Likes View
+"LikesTitle" = "%d 贊";
+"ViewLikesLink" = "贊";
+"ViewLikeLink" = "贊";
+
+//Profile View
+"ProfileSendChatMessageButton" = "開始聊天";
+"UploadProfilePictureFailure" = "";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "";
+"LeaderboardNoScore" = "";
+"LeaderboardRank" = "";
+"LeaderboardWorldButton" = "";
+"LeaderboardSuggestedPlayers" = "";
+"LeaderboardPlaceholderTitle" = "";
+"LeaderboardWorldNoScoresMessage" = "";
+
+//Achievements View
+"AchievementsTitle" = "";
+
+//Settings View
+"SettingsTitle" = "";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "";
+"TopNotificationHighscoreMessageLoggedIn" = "";
+"TopNotificationSaveGameMessageLoggedIn" = "";
+"TopNotificationAchievementMessageLoggedOut" = "";
+"TopNotificationHighscoreMessageLoggedOut" = "";
+"TopNotificationSaveGameMessageLoggedOut" = "";
+"TopNotificationButtonLoggedOut" = "";
+
+//Notifications View
+"NotificationTitle" = "通知";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** 評論了你的活動，回點什麽吧...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** 贊了你的活動，天啊！";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** 贊了你的評論，干得漂亮。";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** 正在關注你，你太受歡迎了！";
+"NotificationPlaceholderTitle" = "沒有通知？";
+"NotificationPlaceholderMessage" = "目前還沒有人贊或者評論你的活動。所以，快點行動起來，做點什麽吧！";
+"NotificationPlaceholderButton" = "發佈活動";
+
+//Chat View
+"ChatListTitle" = "聊";
+"ChatListPlaceholderTitle" = "哈羅！";
+"ChatListPlaceholderMessage" = "你沒有任何聊天。繼續，參與社交！";
+"ChatListInviteFriendsPlaceholderMessage" = "邀請朋友開始聊天";
+"ChatInputFieldPlaceholder" = "說點什麽吧！";
+"ChatListBlockUser" = "阻止";
+"ChatViewTimestampYesterday" = "昨天";
+"ChatViewMessageFailure" = "無法提交你的訊息。請以後重試。";
+"ChatLogInFailure" = "聊天目前不可用";
+"ChatListCreateGroup" = "創建新組";
+"GroupChatCreateNoFollowingsAlertMessage" = "你需要關注一些用戶以創建一個組聊天";
+"GroupChatRemoveUser" = "刪除";
+"GroupChatAddParticipants" = "添加參與者";
+"GroupNameHint" = "輸入組名";
+"CreateGroupTitle" = "創建組";
+"EditGroupTitle" = "編輯組";
+"GroupChatNoName" = "請輸入一個組名";
+"GroupChatNoParticipants" = "一個組需要至少有2名參與者";
+"ChatUploadImageFail" = "發送失敗。點擊重試。";
+"ChatListImageText" = "圖片";
+"ChatMessageUpdateGame" = "你的朋友需要更新應用以聊天。";
+"ChatMessageUpdateYou" = "更新應用開始聊天！";
+"NewChatToolTip" = "開始聊天！";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "在 [APP_NAME] 上加入我，太棒了！[APP_INVITE_URL]";
+"InviteByEmailSubject" = "在 [APP_NAME]上加入了";
+
+//Presence
+"PresenceOnline" = "線上";
+"PresenceOffline" = "當前離線";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ 請更新應用以查看這條消息。";

@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "";
+"LogInWithEmail" = "";
+"SignUpTitle" = "";
+"SignInTitle" = "";
+"TermsAndConditionsText" = "";
+"TermsAndConditions" = "";
+"OkButton" = "";
+"OrText" = "";
+"BackButton" = "";
+"NextButton" = "";
+"CancelButton" = "";
+"PostButton" = "发布";
+"SendButton" = "";
+"SaveButton" = "";
+"ConnectionLostTitle" = "失去连接";
+"ConnectionLostMessage" = "哦！看来您失去了互联网连接。请重新连接。";
+"NoInternetConnection" = "无互联网连接";
+"LeaveButton" = "退出";
+"Followers" = "";
+"Following" = "";
+"CopyContentTitle" = "消息选项";
+"PullDownToRefresh" = "下拉刷新";
+"PullUpToLoadMore" = "上拉加载更多";
+"ReleaseToRefresh" = "释放刷新";
+"ReleaseToLoadMore" = "释放加载更多";
+"ErrorAlertMessageTitle" = "";
+"ErrorAlertMessage" = "出错了。请重试！";
+"InviteFriends" = "邀请好友";
+"NoFriendsPlaceholderTitle" = "与好友联系";
+"NoFriendsPlaceholderMessage" = "获得丰富的社交经验，并邀请您的好友";
+
+//Timestamp
+"TimestampJustNow" = "立即";
+"TimestampSeconds" = "%1.0f秒";
+"TimestampMinutes" = "%1.0f分";
+"TimestampHours" = "%1.0f小时";
+"TimestampDays" = "%1.0f天";
+"TimestampWeeks" = "%1.0f周";
+"TimestampYesterday" = "";
+
+//Camera
+"TakeScreenshotOption" = "";
+"TakePhotoOption" = "";
+"ChooseExistingPhotoOption" = "";
+"ChoosePhoto" = "";
+"RetakePhotoButton" = "";
+"UsePhotoButton" = "";
+
+//Menu View
+"MenuTitle" = "";
+
+//Login View
+"LogInTitle" = "";
+"LogInEmailPlaceholder" = "";
+"LogIn" = "";
+"LogInForgotPassword" = "";
+"LogInSignUp" = "";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "";
+"LogInPasswordEmptyErrorMessage" = "";
+"LogInInvalidCredentialsErrorMessage" = "";
+"SignUpPasswordInvalidErrorMessage" = "";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "";
+"EmailTitle" = "";
+"PasswordTitle" = "";
+"SignUpPassword2Placeholder" = "";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "";
+"SignUpEmailEmptyErrorMessage" = "";
+"SignUpEmailInvalidErrorMessage" = "";
+"SignUpPasswordEmptyErrorMessage" = "";
+"SignUpReenterPasswordEmptyErrorMessage" = "";
+"SignUpPasswordMismatchErrorMessage" = "";
+"SignUpUsernameInUseErrorMessage" = "";
+"SignUpEmailInUseErrorMessage" = "";
+"SignUpGenericErrorMessage" = "";
+"SignUpUsernameInvalidErrorMessage" = "";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "";
+"ForgotPasswordDirections" = "";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "";
+"RememberPasswordConfirmationDirections" = "";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "";
+"RememberPasswordEmailInvalidErrorMessage" = "";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "";
+
+//Activity View
+"ActivityTitle" = "活动";
+"ActivityNewStatusButton" = "";
+"ActivityNewPhotoButton" = "";
+"ActivityPostPlaceholder" = "发生了什么？";
+"ActivityAllNoActivitiesPlaceholderTitle" = "无活动";
+"ActivityAllNoActivitiesPlaceholderMessage" = "尚无活动。您为何不发起活动？";
+"ActivityMoreActivityButton" = "%d新活动";
+"ActivityOneMoreActivityButton" = "%d新活动";
+"ActivityInAppPurchaseAnonymousUser" = "";
+"ActivityInAppPurchaseCTA" = "";
+
+//Comments View
+"ViewCommentsLink" = "评论";
+"ViewCommentLink" = "评论";
+"CommentsTitle" = "评论";
+"CommentsPostPlaceholder" = "发表评论";
+"CommentsMoreCommentsButton" = "查看旧评论";
+
+//Likes View
+"LikesTitle" = "%d 喜欢";
+"ViewLikesLink" = "喜欢";
+"ViewLikeLink" = "喜欢";
+
+//Profile View
+"ProfileSendChatMessageButton" = "开始聊天";
+"UploadProfilePictureFailure" = "";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "";
+"LeaderboardNoScore" = "";
+"LeaderboardRank" = "";
+"LeaderboardWorldButton" = "";
+"LeaderboardSuggestedPlayers" = "";
+"LeaderboardPlaceholderTitle" = "";
+"LeaderboardWorldNoScoresMessage" = "";
+
+//Achievements View
+"AchievementsTitle" = "";
+
+//Settings View
+"SettingsTitle" = "";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "";
+"TopNotificationHighscoreMessageLoggedIn" = "";
+"TopNotificationSaveGameMessageLoggedIn" = "";
+"TopNotificationAchievementMessageLoggedOut" = "";
+"TopNotificationHighscoreMessageLoggedOut" = "";
+"TopNotificationSaveGameMessageLoggedOut" = "";
+"TopNotificationButtonLoggedOut" = "";
+
+//Notifications View
+"NotificationTitle" = "通知";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** 评论了您的活动，回复他…";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** 喜欢您的活动，天哪！";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** 喜欢您的评论，干得好。";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** 在追随您，您真受欢迎！";
+"NotificationPlaceholderTitle" = "没有通知？";
+"NotificationPlaceholderMessage" = "还没人喜欢或评论您的活动。开始行动吧！";
+"NotificationPlaceholderButton" = "发布活动";
+
+//Chat View
+"ChatListTitle" = "聊";
+"ChatListPlaceholderTitle" = "嗨！";
+"ChatListPlaceholderMessage" = "您还没开始聊天。来吧，来社交！";
+"ChatListInviteFriendsPlaceholderMessage" = "邀请好友开始聊天！";
+"ChatInputFieldPlaceholder" = "说些什么！";
+"ChatListBlockUser" = "屏蔽";
+"ChatViewTimestampYesterday" = "昨天";
+"ChatViewMessageFailure" = "无法发送您的消息。请稍后再试。";
+"ChatLogInFailure" = "聊天当前不可用";
+"ChatListCreateGroup" = "创建新群";
+"GroupChatCreateNoFollowingsAlertMessage" = "您需要追随一些用户才能创建群聊。";
+"GroupChatRemoveUser" = "删除";
+"GroupChatAddParticipants" = "添加参与者";
+"GroupNameHint" = "输入群组名称";
+"CreateGroupTitle" = "创建群组";
+"EditGroupTitle" = "编辑群组";
+"GroupChatNoName" = "请输入一个群组名称";
+"GroupChatNoParticipants" = "一个群组需要至少2名参与者";
+"ChatUploadImageFail" = "发送失败。点按以重试。";
+"ChatListImageText" = "图片";
+"ChatMessageUpdateGame" = "您的朋友需要更新应用才能聊天。";
+"ChatMessageUpdateYou" = "更新应用开始聊天！";
+"NewChatToolTip" = "开始聊天！";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "和我一起使用 [APP_NAME]，其乐无穷！[APP_INVITE_URL]";
+"InviteByEmailSubject" = "和我一起使用 [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "线上";
+"PresenceOffline" = "当前离线";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ 请更新应用以查看这条消息。";

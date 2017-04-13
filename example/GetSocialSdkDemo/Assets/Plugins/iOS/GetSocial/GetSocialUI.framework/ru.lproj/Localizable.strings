@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Подключиться через Facebook";
+"LogInWithEmail" = "Войти с помощью электронной почты";
+"SignUpTitle" = "Зарегистрироваться";
+"SignInTitle" = "Войти";
+"TermsAndConditionsText" = "Создавая аккаунт, Вы принимаете наши Условия и положения.";
+"TermsAndConditions" = "Условия и положения.";
+"OkButton" = "OK";
+"OrText" = "ИЛИ";
+"BackButton" = "Назад";
+"NextButton" = "Далее";
+"CancelButton" = "Отмена";
+"PostButton" = "Опубликовать";
+"SendButton" = "Отправить";
+"SaveButton" = "Сохранить";
+"ConnectionLostTitle" = "Обрыв связи";
+"ConnectionLostMessage" = "Ого! Похоже, что у Вас проблема с подключением к Интернету. Пожалуйста, подключитесь повторно.";
+"NoInternetConnection" = "Нет подключения к Интернету";
+"LeaveButton" = "Оставить";
+"Followers" = "Подписчики";
+"Following" = "Отслеживается";
+"CopyContentTitle" = "Параметры сообщения";
+"PullDownToRefresh" = "Потяните вниз для обновления";
+"PullUpToLoadMore" = "Потяните вверх, чтобы загрузить больше";
+"ReleaseToRefresh" = "Отпустите для обновления";
+"ReleaseToLoadMore" = "Отпустите, чтобы загрузить больше";
+"ErrorAlertMessageTitle" = "Ой!";
+"ErrorAlertMessage" = "Что-то пошло не так. Пожалуйста, повторите попытку!";
+"InviteFriends" = "Пригласить друзей";
+"NoFriendsPlaceholderTitle" = "Список друзей пока пустой ";
+"NoFriendsPlaceholderMessage" = "Приглашай друзей и социализуйся вместе ";
+
+//Timestamp
+"TimestampJustNow" = "только сейчас";
+"TimestampSeconds" = "%1.0fс";
+"TimestampMinutes" = "%1.0fм";
+"TimestampHours" = "%1.0fч";
+"TimestampDays" = "%1.0fд";
+"TimestampWeeks" = "%1.0fн";
+"TimestampYesterday" = "Вчера";
+
+//Camera
+"TakeScreenshotOption" = "Сделать скриншот";
+"TakePhotoOption" = "Сделать фотографию";
+"ChooseExistingPhotoOption" = "Выбрать файл";
+"ChoosePhoto" = "Выбрать изображение";
+"RetakePhotoButton" = "Сделать снова";
+"UsePhotoButton" = "Использовать";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Вход";
+"LogInEmailPlaceholder" = "Имя пользователя или адрес электронной почты";
+"LogIn" = "Вход";
+"LogInForgotPassword" = "Забыли пароль?";
+"LogInSignUp" = "Зарегистрироваться по электронной почте";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Пожалуйста, укажите Логин или e-mail.";
+"LogInPasswordEmptyErrorMessage" = "Вы не можете войти без пароля!";
+"LogInInvalidCredentialsErrorMessage" = "Пользователь не найден. Пожалуйста, убедитесь, что правильно ввели логин или e-mail.";
+"SignUpPasswordInvalidErrorMessage" = "Длина пароля должна быть не менее 6 символов";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Имя пользователя";
+"EmailTitle" = "Электронная почта";
+"PasswordTitle" = "Пароль";
+"SignUpPassword2Placeholder" = "Введите пароль еще раз";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "Выберите имя пользователя";
+"SignUpEmailEmptyErrorMessage" = "Пожалуйста, введите адрес электронной почты, который Вы хотите использовать для входа";
+"SignUpEmailInvalidErrorMessage" = "Хмм, это выглядит неправильно. Пожалуйста, проверьте и повторите попытку!";
+"SignUpPasswordEmptyErrorMessage" = "Вы должны выбрать пароль для сохранения конфиденциальности аккаунта.";
+"SignUpReenterPasswordEmptyErrorMessage" = "Введите пароль еще раз для подтверждения.";
+"SignUpPasswordMismatchErrorMessage" = "Пароли не совпадают. Повторите попытку.";
+"SignUpUsernameInUseErrorMessage" = "Извините, этот логин уже занят!";
+"SignUpEmailInUseErrorMessage" = "У нас уже есть аккаунт с этим адресом электронной почты...";
+"SignUpGenericErrorMessage" = "Ой, что-то пошло не так. Пожалуйста, повторите попытку!";
+"SignUpUsernameInvalidErrorMessage" = "Длина имени пользователя должна быть не менее 4 символов. Без специальных символов или пробелов.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Забыли пароль?";
+"ForgotPasswordDirections" = "Нет проблем, введите адрес электронной почты, который Вы использовали для входа, и мы отправим Вам ссылку для создания нового!";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "Письмо отправлено";
+"RememberPasswordConfirmationDirections" = "Пожалуйста, поищите наше письмо со ссылкой для смены пароля в папке входящих сообщений (или папке спама). Срок действия ссылки истекает через 7 дней.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "Нам нужен Ваш адрес электронной почты, чтобы отправить ссылку для смены пароля.";
+"RememberPasswordEmailInvalidErrorMessage" = "Неправильный адрес электронной почты.";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Хмм, у нас нет аккаунта с этим адресом электронной почты.";
+
+//Activity View
+"ActivityTitle" = "Лента новостей";
+"ActivityNewStatusButton" = "Статус";
+"ActivityNewPhotoButton" = "Фото";
+"ActivityPostPlaceholder" = "Что нового?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "Новостей нет";
+"ActivityAllNoActivitiesPlaceholderMessage" = "Никакой активности еще нет. Первый пошел!";
+"ActivityMoreActivityButton" = "%d новостей";
+"ActivityOneMoreActivityButton" = "%d новость";
+"ActivityInAppPurchaseAnonymousUser" = "Некто";
+"ActivityInAppPurchaseCTA" = "Хочу это сейчас же!";
+
+//Comments View
+"ViewCommentsLink" = "комменты";
+"ViewCommentLink" = "коммент";
+"CommentsTitle" = "Комменты";
+"CommentsPostPlaceholder" = "Прокомментировать";
+"CommentsMoreCommentsButton" = "Просмотреть все комменты";
+
+//Likes View
+"LikesTitle" = "%d лайков";
+"ViewLikesLink" = "лайков";
+"ViewLikeLink" = "лайк";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Начать чат";
+"UploadProfilePictureFailure" = "Не удалось загрузить Вашу фотографию, попробуйте еще раз.";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Таблица достижений";
+"LeaderboardNoScore" = "Еще нет очков";
+"LeaderboardRank" = "Ранг";
+"LeaderboardWorldButton" = "Мир";
+"LeaderboardSuggestedPlayers" = "Рекомендуемые (игроки)";
+"LeaderboardPlaceholderTitle" = "О нет!";
+"LeaderboardWorldNoScoresMessage" = "Никто еще не отправлял очки для этой таблицы достижений. Будь первым!";
+
+//Achievements View
+"AchievementsTitle" = "Достижения";
+
+//Settings View
+"SettingsTitle" = "Настройки";
+"SettingsItemPrivacyPolicy" = "";
+"SettingsItemLogOut" = "Выход";
+"SettingsSharePurchases" = "";
+
+//Help & Support View
+"HelpAndSupportTitle" = "";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Открыто!";
+"TopNotificationHighscoreMessageLoggedIn" = "Новый рекорд (сохранен)!";
+"TopNotificationSaveGameMessageLoggedIn" = "Превосходно, Вы вошли! Теперь все будет сохранено.";
+"TopNotificationAchievementMessageLoggedOut" = "Хотите сохранить это достижение?";
+"TopNotificationHighscoreMessageLoggedOut" = "Хотите сохранить этот результат?";
+"TopNotificationSaveGameMessageLoggedOut" = "О нет, Вы не вошли, ничего не будет сохраняться!";
+"TopNotificationButtonLoggedOut" = "Просмотр";
+
+//Notifications View
+"NotificationTitle" = "Уведомления";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** прокомментировал Вашу активность, ответьте что-нибудь...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** нравиться Ваша активность, Боже ты мой!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** нравиться Ваш коммент. Совпадение? Не думаю.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** отслеживает Вашу активность, вы так популярны!";
+"NotificationPlaceholderTitle" = "Нет уведомлений?";
+"NotificationPlaceholderMessage" = "Еще никто не поставил лайк или прокомментировал Ваше действие.";
+"NotificationPlaceholderButton" = "Опубликовать активность";
+
+//Chat View
+"ChatListTitle" = "Чат";
+"ChatListPlaceholderTitle" = "Здрасте!";
+"ChatListPlaceholderMessage" = "Вы еще ни с кем не общались! Давайте, социализируйтесь!";
+"ChatListInviteFriendsPlaceholderMessage" = "Пригласите друзей, чтобы начать чат!";
+"ChatInputFieldPlaceholder" = "Стесняшка, скажите что-нибудь!";
+"ChatListBlockUser" = "Заблокировать";
+"ChatViewTimestampYesterday" = "Вчера";
+"ChatViewMessageFailure" = "Ваше сообщение невозможно доставить. Пожалуйста, повторите попытку позже.";
+"ChatLogInFailure" = "В настоящее время чат недоступен.";
+"ChatListCreateGroup" = "Создать новую группу";
+"GroupChatCreateNoFollowingsAlertMessage" = "Вы должны отслеживать нескольких пользователей, чтобы создать групповой чат.";
+"GroupChatRemoveUser" = "Удалить";
+"GroupChatAddParticipants" = "Добавить участников";
+"GroupNameHint" = "Назовите группу";
+"CreateGroupTitle" = "Создать группу";
+"EditGroupTitle" = "Редактировать группу";
+"GroupChatNoName" = "Пожалуйста, введите имя группы.";
+"GroupChatNoParticipants" = "В группе должно быть хотя бы 2 участника.";
+"ChatUploadImageFail" = "Не удалось отправить. Нажмите, чтобы повторить. ";
+"ChatListImageText" = "Изображение";
+"ChatMessageUpdateGame" = "Ваш друг должен обновить приложение для чата.";
+"ChatMessageUpdateYou" = "Обновите приложение для обмена сообщениями.";
+"NewChatToolTip" = "Начать чат";
+
+//Share App
+"CopyLink" = "";
+"InviteByMessageMessage" = "Присоединяйтесь ко мне на [APP_NAME], это потрясающе ! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Присоединяйтесь ко мне на [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "В сети";
+"PresenceOffline" = "Не в сети";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Пожалуйста, обновите приложение, чтобы увидеть это сообщение.";

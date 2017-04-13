@@ -1,30 +1,24 @@
-# GetSocial Unity SDK
+# GetSocial Unity SDK 
 
-Build and manage the community within your apps with **GetSocial**.
+## Overview
+GetSocial in-app social network is a strong marketing platform that supports the entire user lifecycle. No need to go to different providers for different services. With full stack solutions by GetSocial, you get it all. We made it incredibly easy to seamlessly blend user acquisition and social engagement into your app.
 
-GetSocial provides the whole social layer stack that powers **engagement**, **retention**, **acquisition** and **revenue tools**.
+Learn more about GetSocial at [getsocial.im](http://getsocial.im).
 
-**Features Include:**
+## Getting Started
 
-* Fully customizable UI
-* Player-to-player chat
-* Developer-to-player communication
-* Group Chats
-* Segmented and Global Activity Feeds
-* Community Management
-* Player Feedback and support
-* Smart invites and tracking
-* Localisation to 24 languages
-* In-app Notification Center
-* Socially triggered push notifications
-* And more...
+Follow the Getting Started guide for Unity at: [docs.getsocial.im/guides/getting-started/unity/](http://docs.getsocial.im/guides/getting-started/unity/).
 
-Documentation and reference guide are available at [docs.getsocial.im](http://docs.getsocial.im/).
+GetSocial Unity SDK Reference can be found at: [docs.getsocial.im/reference/unity/](http://docs.getsocial.im/reference/unity/).
 
-For more information on GetSocial, visit our [website](http://www.getsocial.im/) or [contact us](mailto:info@getsocial.im).
+## Repo Structure
 
-To manage the integration of the GetSocial SDK, login to the [GetSocial Developer Portal](https://developers.getsocial.im).
+This repository contains all you need to start working with GetSocial:
 
-## License
+- GetSocial Unity SDK is distributed as `.unitypackage` in the `bin/` folder.
+- An example application that showcases all GetSocial features in `example/` folder.
+- GetSocial Invite Channel plugins in `plugins/` folder. 
 
-Example project is published under the [Apache 2.0](https://github.com/getsocial-im/getsocial-unity-sdk/blob/master/LICENSE)
+## Licence
+
+Example app and GetSocial Invite Channel plugins are distributed under [Apache 2](https://choosealicense.com/licenses/apache-2.0/) license. GetSocial Unity SDK is distributed under the [commercial license](https://www.getsocial.im/legal/).

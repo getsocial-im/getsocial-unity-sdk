@@ -1,0 +1,211 @@
+//
+//  Localizable.strings
+//  GetSocial SDK
+//
+//  Created by Google Docs on March 17, 2016.
+//  Copyright (c) 2014 GetSocial. All rights reserved.
+//
+
+"LogInConnectWithFacebook" = "Connect with Facebook";
+"LogInWithEmail" = "Log in with email";
+"SignUpTitle" = "Sign up";
+"SignInTitle" = "Sign in";
+"TermsAndConditionsText" = "By creating an account, you accept our Terms and Conditions.";
+"TermsAndConditions" = "Terms and Conditions";
+"OkButton" = "OK";
+"OrText" = "OR";
+"BackButton" = "Back";
+"NextButton" = "Next";
+"CancelButton" = "Cancel";
+"PostButton" = "Post";
+"SendButton" = "Send";
+"SaveButton" = "Save";
+"ConnectionLostTitle" = "Connection Lost";
+"ConnectionLostMessage" = "Uh oh! Looks like your internet connection is lost. Please reconnect.";
+"NoInternetConnection" = "No internet connection";
+"LeaveButton" = "Leave";
+"Followers" = "Followers";
+"Following" = "Following";
+"CopyContentTitle" = "Message options";
+"PullDownToRefresh" = "Pull down to refresh";
+"PullUpToLoadMore" = "Pull up to load more";
+"ReleaseToRefresh" = "Release to refresh";
+"ReleaseToLoadMore" = "Release to load more";
+"ErrorAlertMessageTitle" = "Oops!";
+"ErrorAlertMessage" = "Something went wrong. Please try again!";
+"InviteFriends" = "Invite friends";
+"NoFriendsPlaceholderTitle" = "Connect with friends";
+"NoFriendsPlaceholderMessage" = "Get the full social experience and invite your friends";
+
+//Timestamp
+"TimestampJustNow" = "just now";
+"TimestampSeconds" = "%1.0fs";
+"TimestampMinutes" = "%1.0fm";
+"TimestampHours" = "%1.0fh";
+"TimestampDays" = "%1.0fd";
+"TimestampWeeks" = "%1.0fw";
+"TimestampYesterday" = "Yesterday";
+
+//Camera
+"TakeScreenshotOption" = "Take screenshot";
+"TakePhotoOption" = "Take photo";
+"ChooseExistingPhotoOption" = "Choose existing";
+"ChoosePhoto" = "Choose Image";
+"RetakePhotoButton" = "Retake";
+"UsePhotoButton" = "Use";
+
+//Menu View
+"MenuTitle" = "Social Bar";
+
+//Login View
+"LogInTitle" = "Log In";
+"LogInEmailPlaceholder" = "Email or username";
+"LogIn" = "Log in";
+"LogInForgotPassword" = "Forgot password?";
+"LogInSignUp" = "Sign up with email";
+
+//Login Validation View
+"LogInEmailEmptyErrorMessage" = "Please enter your email or username to tell us who you are";
+"LogInPasswordEmptyErrorMessage" = "We can't let you in without a password!";
+"LogInInvalidCredentialsErrorMessage" = "We don't have an account with that information";
+"SignUpPasswordInvalidErrorMessage" = "Your password must be at least 6 characters long";
+
+//Signup View
+"SignUpUsernamePlaceholder" = "Username";
+"EmailTitle" = "Email";
+"PasswordTitle" = "Password";
+"SignUpPassword2Placeholder" = "Re-enter password";
+
+//Signup Validation View
+"SignUpUsernameEmptyErrorMessage" = "What's your username going to be?";
+"SignUpEmailEmptyErrorMessage" = "Please enter the email you want to use to log in";
+"SignUpEmailInvalidErrorMessage" = "Hmm, that doesn't look right. Please check and try again!";
+"SignUpPasswordEmptyErrorMessage" = "You need to pick a password to keep your account private";
+"SignUpReenterPasswordEmptyErrorMessage" = "Enter your password again to verify";
+"SignUpPasswordMismatchErrorMessage" = "The passwords don't match. Try again.";
+"SignUpUsernameInUseErrorMessage" = "Sorry, that username is taken!";
+"SignUpEmailInUseErrorMessage" = "We already have an account for this email address...";
+"SignUpGenericErrorMessage" = "Oops, something went wrong. Please try again!";
+"SignUpUsernameInvalidErrorMessage" = "Username must be min 4 characters. No special characters or spaces.";
+
+//ForgotPassword View
+"ForgotPasswordTitle" = "Forgot password?";
+"ForgotPasswordDirections" = "No problem, just enter the email you used to sign up, and we'll send you a link to create a new one!";
+
+//Reset Password Confirmation View
+"RememberPasswordConfirmationTitle" = "Email sent";
+"RememberPasswordConfirmationDirections" = "Please check your email inbox (or spam folder) for an email from us with a password reset link. This link will expire in 7 days.";
+
+//Reset Password Validation View
+"RememberPasswordEmailEmptyErrorMessage" = "We need your email address to send a password reset link";
+"RememberPasswordEmailInvalidErrorMessage" = "There's something wrong with this email address";
+"RememberPasswordEmailInvalidCredentialsErrorMessage" = "Hmm, we don't have an account for this email address";
+
+//Activity View
+"ActivityTitle" = "Activity";
+"ActivityNewStatusButton" = "Status";
+"ActivityNewPhotoButton" = "Photo";
+"ActivityPostPlaceholder" = "What's up?";
+"ActivityAllNoActivitiesPlaceholderTitle" = "No activity";
+"ActivityAllNoActivitiesPlaceholderMessage" = "There is no activity here yet. Why don't you start something?";
+"ActivityMoreActivityButton" = "%d new activities";
+"ActivityOneMoreActivityButton" = "%d new activity";
+"ActivityInAppPurchaseAnonymousUser" = "Someone";
+"ActivityInAppPurchaseCTA" = "Get it now";
+
+//Comments View
+"ViewCommentsLink" = "comments";
+"ViewCommentLink" = "comment";
+"CommentsTitle" = "Comments";
+"CommentsPostPlaceholder" = "Leave a comment";
+"CommentsMoreCommentsButton" = "See older comments";
+
+//Likes View
+"LikesTitle" = "%d likes";
+"ViewLikesLink" = "likes";
+"ViewLikeLink" = "like";
+
+//Profile View
+"ProfileSendChatMessageButton" = "Start chat";
+"UploadProfilePictureFailure" = "Failed to upload your picture, please try again";
+
+//Leaderboards View
+"LeaderboardsListTitle" = "Leaderboards";
+"LeaderboardNoScore" = "No score yet";
+"LeaderboardRank" = "Rank";
+"LeaderboardWorldButton" = "World";
+"LeaderboardSuggestedPlayers" = "Suggested";
+"LeaderboardPlaceholderTitle" = "Oh no!";
+"LeaderboardWorldNoScoresMessage" = "No players have submitted a score for this leaderboard. Be the first one!";
+
+//Achievements View
+"AchievementsTitle" = "Achievements";
+
+//Settings View
+"SettingsTitle" = "Settings";
+"SettingsItemPrivacyPolicy" = "Privacy Policy";
+"SettingsItemLogOut" = "Log out";
+"SettingsSharePurchases" = "Post on Your Behalf";
+
+//Help & Support View
+"HelpAndSupportTitle" = "Help & Support";
+
+//Top Notifications View
+"AchievementUnlockTitle" = "Achievement unlocked!";
+"TopNotificationHighscoreMessageLoggedIn" = "New highscore saved!";
+"TopNotificationSaveGameMessageLoggedIn" = "Awesome, you're in! Now everything will be saved.";
+"TopNotificationAchievementMessageLoggedOut" = "Do you want to save this achievement?";
+"TopNotificationHighscoreMessageLoggedOut" = "Do you want to save this score?";
+"TopNotificationSaveGameMessageLoggedOut" = "Uh oh, you're not logged in, so nothing will be saved";
+"TopNotificationButtonLoggedOut" = "View";
+
+//Notifications View
+"NotificationTitle" = "Notifications";
+"NotificationCommentedOnActivity" = "**[OTHER_USER_DISPLAY_NAME]** commented on your activity, say something back...";
+"NotificationLikedActivity" = "**[OTHER_USER_DISPLAY_NAME]** liked your activity, OMG!";
+"NotificationLikedComment" = "**[OTHER_USER_DISPLAY_NAME]** liked your comment, good work.";
+"NotificationFollowUser" = "**[OTHER_USER_DISPLAY_NAME]** is following you, you're so popular!";
+"NotificationPlaceholderTitle" = "No notifications?";
+"NotificationPlaceholderMessage" = "No one has liked or commented on your activity yet. So get cracking and do something!";
+"NotificationPlaceholderButton" = "Post activity";
+
+//Chat View
+"ChatListTitle" = "Chat";
+"ChatListPlaceholderTitle" = "Hello!";
+"ChatListPlaceholderMessage" = "You don't have any chats. Go on, be social!";
+"ChatListInviteFriendsPlaceholderMessage" = "Invite friends to start a chat!";
+"ChatInputFieldPlaceholder" = "Say something!";
+"ChatListBlockUser" = "Block";
+"ChatViewTimestampYesterday" = "yesterday";
+"ChatViewMessageFailure" = "Your message could not be delivered. Please try again later.";
+"ChatLogInFailure" = "Chat is currently unavailable";
+"ChatListCreateGroup" = "Create new group";
+"GroupChatCreateNoFollowingsAlertMessage" = "You need to follow some users to create a group chat.";
+"GroupChatRemoveUser" = "Remove";
+"GroupChatAddParticipants" = "Add participants";
+"GroupNameHint" = "Enter group name";
+"CreateGroupTitle" = "Create Group";
+"EditGroupTitle" = "Edit Group";
+"GroupChatNoName" = "Please enter a group name";
+"GroupChatNoParticipants" = "A group needs at least 2 participants";
+"ChatUploadImageFail" = "Failed to send. Tap to retry. ";
+"ChatListImageText" = "Image";
+"ChatMessageUpdateGame" = "Your friend needs to update the app to chat.";
+"ChatMessageUpdateYou" = "Update the app to start chatting! ";
+"NewChatToolTip" = "Start chatting!";
+
+//Share App
+"CopyLink" = "Copy Link";
+"InviteByMessageMessage" = "Join me on [APP_NAME], it's awesome! [APP_INVITE_URL]";
+"InviteByEmailSubject" = "Join me on [APP_NAME]";
+
+//Presence
+"PresenceOnline" = "Online";
+"PresenceOffline" = "Offline";
+
+//User Status
+"UserIsTyping" = "";
+"UsersAreTyping" = "";
+
+//Friend list
+"UnsupportedMessageType" = "⚠️ Please update the app to see this message.";

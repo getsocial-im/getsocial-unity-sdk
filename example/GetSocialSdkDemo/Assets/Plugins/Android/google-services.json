@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "42995003083",
+    "firebase_url": "https://getsocial-unity-demo.firebaseio.com",
+    "project_id": "getsocial-unity-demo",
+    "storage_bucket": "getsocial-unity-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42995003083:android:ab2f25e230c98d0f",
+        "android_client_info": {
+          "package_name": "im.getsocial.demo.unity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42995003083-1nl1fuq9ld0r3jntrhnkt64qf9j8hgl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqFgYHAG4l-qidZj3o1EpX_9SYCNDzYYM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

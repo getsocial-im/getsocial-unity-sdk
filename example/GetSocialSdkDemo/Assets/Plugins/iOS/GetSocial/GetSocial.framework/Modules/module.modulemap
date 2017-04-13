@@ -1,0 +1,6 @@
+framework module GetSocial {
+  umbrella header "GetSocial.h"
+
+  export *
+  module * { export * }
+}

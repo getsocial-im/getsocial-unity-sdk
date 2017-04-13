@@ -1,6 +1,0 @@
-lastUpgrade=00925
-proj.AppId=32521481182
-proj.ConstantsClassName=GetSocialGooglePlayGamesConstants
-and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0a%3c%21--%0aGoogle+Play+game+services+IDs.%0aSave+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.%0a--%3e%0a%3cresources%3e%0a++%3cstring+name%3d%22app_id%22%3e32521481182%3c%2fstring%3e%0a++%3cstring+name%3d%22package_name%22%3eim.getsocial.testapp.unity.master%3c%2fstring%3e%0a++%3cstring+name%3d%22achievement_achievement_1%22%3eCggI3te5k3kQAhAB%3c%2fstring%3e%0a++%3cstring+name%3d%22achievement_achievement_2%22%3eCggI3te5k3kQAhAC%3c%2fstring%3e%0a++%3cstring+name%3d%22achievement_achievement_3%22%3eCggI3te5k3kQAhAD%3c%2fstring%3e%0a++%3cstring+name%3d%22achievement_achievement_4%22%3eCggI3te5k3kQAhAE%3c%2fstring%3e%0a++%3cstring+name%3d%22achievement_achievement_5%22%3eCggI3te5k3kQAhAF%3c%2fstring%3e%0a%3c%2fresources%3e%0a
-and.ClientId=
-android.SetupDone=true
