@@ -21,6 +21,8 @@ public abstract class DemoMenuSection : MonoBehaviour
     protected GetSocialDemoController demoController;
     protected DemoAppConsole _console;
 
+    private bool started = false;
+
     protected abstract string GetTitle();
     protected abstract void DrawSectionBody();
 
@@ -28,7 +30,7 @@ public abstract class DemoMenuSection : MonoBehaviour
 
     protected virtual void Start()
     {
-
+        started = true;
     }
 
     protected virtual void InitGuiElements()
@@ -63,6 +65,10 @@ public abstract class DemoMenuSection : MonoBehaviour
 
     void OnGUI()
     {
+        if (!started)
+        {
+            return;
+        }
         _scrollPos = DemoGuiUtils.DrawScrollBodyWrapper(_scrollPos, DrawBody);
     }
     #endregion

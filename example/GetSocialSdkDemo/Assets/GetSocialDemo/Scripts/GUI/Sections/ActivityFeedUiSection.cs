@@ -28,7 +28,7 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.СreateActivityFeedView(_feed)
             .SetWindowTitle(_feed + " Title")
-            .WithButtonActionListener(OnActivityActionClicked)
+            .SetButtonActionListener(OnActivityActionClicked)
             .Show();
     }
 
@@ -36,7 +36,8 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.СreateGlobalActivityFeedView()
             .SetWindowTitle("Unity Global")
-            .WithButtonActionListener(OnActivityActionClicked)
+            .SetViewStateCallbacks(() => _console.LogD("Global feed opened"), () => _console.LogD("Global feed closed"))
+            .SetButtonActionListener(OnActivityActionClicked)
             .Show();
     }
 

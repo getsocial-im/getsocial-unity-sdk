@@ -1,3 +1,4 @@
+using System;
 using GetSocialSdk.Core;
 using UnityEngine;
 
@@ -11,11 +12,19 @@ namespace GetSocialSdk.Ui
     /// <typeparam name="T">Type of view to create</typeparam>
     public abstract class ViewBuilder<T> where T : ViewBuilder<T>
     {
+        protected Action _onOpen, _onClose;
         protected string _customWindowTitle;
 
         public T SetWindowTitle(string title)
         {
             _customWindowTitle = title;
+            return (T) this;
+        }
+
+        public T SetViewStateCallbacks(Action onOpen, Action onClose)
+        {
+            _onOpen = onOpen;
+            _onClose = onClose;
             return (T) this;
         }
 
@@ -42,6 +51,15 @@ namespace GetSocialSdk.Ui
             if (_customWindowTitle != null)
             {
                 builderAJO.CallAJO("setWindowTitle", _customWindowTitle);
+            }
+        }
+
+        protected void SetViewStateListener(AndroidJavaObject builderAJO)
+        {
+            if (_onOpen != null || _onClose != null)
+            {
+                builderAJO.CallAJO("setViewStateListener",
+                    new ViewStateListener(_onOpen, _onClose));
             }
         }
 

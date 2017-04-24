@@ -98,13 +98,13 @@ namespace GetSocialSdk.Editor
             _areMetaTagsPresent &= androidManifest.ContainsMetaTag(SdkRuntimeVersionMetaTagName, Application.unityVersion);
             _areMetaTagsPresent &= androidManifest.ContainsMetaTag(SdkWrapperVesrionMetaTagName, BuildConfig.UnitySdkVersion);
 
-            _isAutoInitcontentProviderPresent = androidManifest.ContainsContentProvider(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettings.bundleIdentifier));
+            _isAutoInitcontentProviderPresent = androidManifest.ContainsContentProvider(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettingsCompat.bundleIdentifier));
 
             // deeplinking and referral data
             _isGetSocialDeepLinkingActivityPresent = androidManifest.ContainsDeepLinkingActivity(GetSocialDeepLinkingActivityName, GetSocialDeepLinkingActivityScheme, GetSocialSettings.AppId);
 
             // smart invites image sharing
-            _isImageContentProviderPresent = androidManifest.ContainsContentProvider(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettings.bundleIdentifier));
+            _isImageContentProviderPresent = androidManifest.ContainsContentProvider(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettingsCompat.bundleIdentifier));
 
             // install tracking
             _isInstallReferrerReceiverPresent = androidManifest.ContainsReceiver(InstallReferrerReceiverName);
@@ -249,7 +249,7 @@ namespace GetSocialSdk.Editor
         static void AddAutoInitContentProvider()
         {
             UseAndroidManifest(androidManifest =>
-                androidManifest.AddContentProvider(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettings.bundleIdentifier))
+                androidManifest.AddContentProvider(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettingsCompat.bundleIdentifier))
             );
         }
 
@@ -279,7 +279,7 @@ namespace GetSocialSdk.Editor
         static void AddImageContentProvider()
         {
             UseAndroidManifest(androidManifest =>
-                androidManifest.AddContentProvider(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettings.bundleIdentifier), true)
+                androidManifest.AddContentProvider(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettingsCompat.bundleIdentifier), true)
             );
         }
 
@@ -334,7 +334,7 @@ namespace GetSocialSdk.Editor
 
         public static void DrawCheckIfNotDefaultPackageGUI()
         {
-            var package = PlayerSettings.bundleIdentifier;
+            var package = PlayerSettingsCompat.bundleIdentifier;
             if (string.IsNullOrEmpty(package))
             {
                 EditorGUILayout.HelpBox("Package name is empty, please specify it in Android Player settings", MessageType.Warning);

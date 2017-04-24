@@ -81,7 +81,9 @@ namespace GetSocialSdk.Ui
 
             return _showSmartInvitesView(_customWindowTitle, serializedInviteContent, serializedCustomReferralData,
                 Callbacks.StringCallback, _onInviteComplete.GetPointer(), _onInviteCancel.GetPointer(),
-                Callbacks.FailureWithDataCallback, _onInviteFailure.GetPointer());
+                Callbacks.FailureWithDataCallback, _onInviteFailure.GetPointer(),
+                Callbacks.ActionCallback, _onOpen.GetPointer(),
+                Callbacks.ActionCallback, _onClose.GetPointer());
 #else
             return false;
 #endif
@@ -95,6 +97,7 @@ namespace GetSocialSdk.Ui
             var invitesBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.ui.invites.InvitesViewBuilder");
 
             SetTitleAJO(invitesBuilderAJO);
+            SetViewStateListener(invitesBuilderAJO);
 
             if (_customReferralData != null)
             {
@@ -123,7 +126,9 @@ namespace GetSocialSdk.Ui
             string serializedInviteContent,
             string serializedCustomReferralData,
             StringCallbackDelegate stringCallback, IntPtr onInviteCompletePtr, IntPtr onInviteCancelPtr,
-            FailureWithDataCallbackDelegate failureCallback, IntPtr onFailurePtr);
+            FailureWithDataCallbackDelegate failureCallback, IntPtr onFailurePtr,
+            Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
+            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr);
 
 #endif
     }

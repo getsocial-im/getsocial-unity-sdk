@@ -119,14 +119,14 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: im.getsocial.demo.unity
-  bundleVersion: 6.0.0
+  bundleVersion: 6.0.1
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 0
   protectGraphicsMemory: 0
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 15
+  AndroidMinSdkVersion: 16
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   apiCompatibilityLevel: 2

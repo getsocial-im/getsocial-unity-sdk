@@ -18,6 +18,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+using GetSocialSdk.Editor;
+
 namespace Facebook.Unity.Editor
 {
     using System.Collections;
@@ -202,7 +204,7 @@ namespace Facebook.Unity.Editor
 
                 EditorGUILayout.LabelField(
                     "Copy and Paste these into your \"Native Android App\" Settings on developers.facebook.com/apps");
-                this.SelectableLabelField(this.packageNameLabel, PlayerSettings.bundleIdentifier);
+                this.SelectableLabelField(this.packageNameLabel, PlayerSettingsCompat.bundleIdentifier);
                 this.SelectableLabelField(this.classNameLabel, ManifestMod.DeepLinkingActivityName);
                 this.SelectableLabelField(this.debugAndroidKeyLabel, FacebookAndroidUtil.DebugKeyHash);
                 if (GUILayout.Button("Regenerate Android Manifest"))

@@ -31,7 +31,7 @@ namespace GetSocialSdk.Ui
         /// </summary>
         /// <param name="onButtonClicked">Called when activity action button was clicked.</param>
         /// <returns><see cref="ActivityFeedViewBuilder" instance./></returns>
-        public ActivityFeedViewBuilder WithButtonActionListener(Action<string, ActivityPost> onButtonClicked)
+        public ActivityFeedViewBuilder SetButtonActionListener(Action<string, ActivityPost> onButtonClicked)
         {
             _onButtonClicked = onButtonClicked;
 
@@ -43,7 +43,13 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _showActivityFeedView(_feed, ActivityFeedActionButtonCallback.OnActionButtonClick, _onButtonClicked.GetPointer());
+            return _showActivityFeedView(_feed,
+                ActivityFeedActionButtonCallback.OnActionButtonClick,
+                _onButtonClicked.GetPointer(),
+                Callbacks.ActionCallback,
+                _onOpen.GetPointer(),
+                Callbacks.ActionCallback,
+                _onClose.GetPointer());
 #else
             return false;
 #endif
@@ -57,10 +63,10 @@ namespace GetSocialSdk.Ui
                 new AndroidJavaObject("im.getsocial.sdk.ui.activities.ActivityFeedViewBuilder", _feed);
 
             SetTitleAJO(activityFeedBuilderAJO);
-
+            SetViewStateListener(activityFeedBuilderAJO);
             if (_onButtonClicked != null)
             {
-                activityFeedBuilderAJO.CallAJO("withButtonActionListener",
+                activityFeedBuilderAJO.CallAJO("setButtonActionListener",
                     new ActionButtonListenerProxy(_onButtonClicked));
             }
 
@@ -70,9 +76,10 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _showActivityFeedView(
-            string feed,
-            ActivityActionButtonClickedDelegate callback, IntPtr onButtonClickPtr);
+        static extern bool _showActivityFeedView(string feed,
+            Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
+            Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
+            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr);
 
 #endif
     }

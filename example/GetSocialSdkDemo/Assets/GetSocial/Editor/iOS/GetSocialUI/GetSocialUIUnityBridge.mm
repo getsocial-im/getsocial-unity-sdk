@@ -19,7 +19,9 @@ bool _showSmartInvitesView(
         const char *serializedInviteContent,
         const char *serializedCustomReferralData,
         StringCallbackDelegate stringCallback /* with providerId */, void *onInviteCompletePtr, void *onInviteCancelPtr,
-        FailureWithDataCallbackDelegate failureCallback, void *onFailurePtr) {
+        FailureWithDataCallbackDelegate failureCallback, void *onFailurePtr,
+        VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr) {
 
     GetSocialUIInvitesView *invitesView = [GetSocialUI createInvitesView];
 
@@ -51,6 +53,14 @@ bool _showSmartInvitesView(
             failureCallback(onFailurePtr, providerId.UTF8String, serializedErr);
         }];
     }
+    
+    if (onOpenActionPtr || onCloseActionPtr) {
+        [invitesView setHandlerForViewOpen:^{
+            onOpenAction(onOpenActionPtr);
+        } close:^{
+            onCloseAction(onCloseActionPtr);
+        }];
+    }
 
     [invitesView show];
     return true;
@@ -79,7 +89,9 @@ bool _restoreView() {
 
 bool _showActivityFeedView(
         const char *feed,
-        ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr) {
+        ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
+        VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr) {
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
@@ -88,6 +100,14 @@ bool _showActivityFeedView(
         [view setActionListener:^(NSString *action, GetSocialActivityPost *post) {
             NSString *serializedPost = [GetSocialJsonUtils serializeActivityPost: post];
             callback(onButtonClickPtr, action.UTF8String, serializedPost.UTF8String);
+        }];
+    }
+    
+    if (onOpenActionPtr || onCloseActionPtr) {
+        [view setHandlerForViewOpen:^{
+            onOpenAction(onOpenActionPtr);
+        } close:^{
+            onCloseAction(onCloseActionPtr);
         }];
     }
     

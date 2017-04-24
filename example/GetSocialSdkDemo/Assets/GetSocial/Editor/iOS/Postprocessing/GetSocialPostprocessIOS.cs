@@ -188,7 +188,7 @@ namespace GetSocialSdk.Editor
             assosiatedDomains.Add(domain0);
 
             // add assosiated domains for testing environement for demo app
-            if (PlayerSettings.iPhoneBundleIdentifier.Equals(GetSocialSettingsEditor.DemoAppPackage))
+            if (PlayerSettingsCompat.iPhoneBundleIdentifier.Equals(GetSocialSettingsEditor.DemoAppPackage))
             {
                 assosiatedDomains.Add(string.Format("applinks:{0}.testing.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking,
                     GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain));

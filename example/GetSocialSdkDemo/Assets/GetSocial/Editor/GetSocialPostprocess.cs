@@ -32,7 +32,7 @@ namespace GetSocialSdk.Editor
 
             if (BuildTarget.Android == target)
             {
-                if (PlayerSettings.bundleIdentifier == "com.Company.ProductName")
+                if (PlayerSettingsCompat.bundleIdentifier == "com.Company.ProductName")
                 {
                     Debug.LogError("Please change the default Unity Bundle Identifier (com.Company.ProductName) to your package.");
                 }

@@ -1,6 +1,26 @@
 # GetSocial Unity SDK
 
 ## Version History
+
+### v6.0.1
+
+**New:**
+
++ Added compatibility with Unity 5.6.0.
++ Added `ViewBuilder.SetViewStateCallbacks(Action onOpen, Action onClose)` method to get callbacks when GetSocial View is opened and closed.
+
+**Updates:**
+
++ Updated underlying native GetSocial Android SDK version to [6.0.2](https://github.com/getsocial-im/getsocial-android-sdk/releases/tag/v6.0.2).
++ Updated underlying native GetSocial iOS SDK version to [6.0.2](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v6.0.2).
+
+**Fixes:**
+
++ Fixed error in GetSocial Editor on Unity version before 5.5.0.
++ Cleaned up API compatibility warnings in the Unity Editor.
+
+---
+
 ### v6.0.0
 
 We have released version 6.0 of our SDK, codename Sangria.  This is a major update that brings a lot of improvements and new features. 

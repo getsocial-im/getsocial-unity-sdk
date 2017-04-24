@@ -123,16 +123,16 @@ namespace GetSocialSdk.Editor
                 return false;
             }
 
-            var filesFromPluginsFolder = Directory
+            List<string> filesFromPluginsFolder = Directory
                 .GetFiles(AndroidLibsDestinationPath, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(s => s.EndsWith(".jar") || s.EndsWith(".aar"))
-                .Select(Path.GetFileName)
+                .Select<string, string>(Path.GetFileName)
                 .ToList();
 
-            var requiredDependenciesNames = Directory
+            List<string> requiredDependenciesNames = Directory
                 .GetFiles(AndroidLibsSourcePath, "*.*", SearchOption.AllDirectories)
                 .Where(s => s.EndsWith(".jar") || s.EndsWith(".aar"))
-                .Select(Path.GetFileName)
+                .Select<string, string>(Path.GetFileName)
                 .ToList();
 
             return requiredDependenciesNames.All(filesFromPluginsFolder.Contains);
@@ -200,7 +200,7 @@ namespace GetSocialSdk.Editor
 
         static bool IsDemoAppPackage()
         {
-            return PlayerSettings.bundleIdentifier == DemoAppPackage;
+            return PlayerSettingsCompat.bundleIdentifier == DemoAppPackage;
         }
 
         static bool IsDemoAppId()
