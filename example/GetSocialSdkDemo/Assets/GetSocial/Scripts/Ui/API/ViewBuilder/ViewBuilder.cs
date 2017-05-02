@@ -34,6 +34,8 @@ namespace GetSocialSdk.Ui
 
         protected bool ShowBuilder(AndroidJavaObject builder)
         {
+            SetTitleAJO(builder);
+            SetViewStateListener(builder);
             // Make sure ui is instantiated at this point for ensuring OnResume was called before opening the view
             GetSocialUiFactory.InstantiateGetSocialUi();
 
@@ -46,7 +48,7 @@ namespace GetSocialSdk.Ui
             });
         }
 
-        protected void SetTitleAJO(AndroidJavaObject builderAJO)
+        private void SetTitleAJO(AndroidJavaObject builderAJO)
         {
             if (_customWindowTitle != null)
             {
@@ -54,7 +56,7 @@ namespace GetSocialSdk.Ui
             }
         }
 
-        protected void SetViewStateListener(AndroidJavaObject builderAJO)
+        private void SetViewStateListener(AndroidJavaObject builderAJO)
         {
             if (_onOpen != null || _onClose != null)
             {

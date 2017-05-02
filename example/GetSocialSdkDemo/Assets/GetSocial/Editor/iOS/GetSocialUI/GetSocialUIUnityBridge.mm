@@ -87,7 +87,7 @@ bool _restoreView() {
     return [GetSocialUI restoreView];
 }
 
-bool _showActivityFeedView(
+bool _showActivityFeedView(const char *windowTitle,
         const char *feed,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
@@ -95,6 +95,11 @@ bool _showActivityFeedView(
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
+    
+    if (windowTitle) {
+        NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
+        view.windowTitle = titleStr;
+    }
 
     if (onButtonClickPtr) {
         [view setActionListener:^(NSString *action, GetSocialActivityPost *post) {

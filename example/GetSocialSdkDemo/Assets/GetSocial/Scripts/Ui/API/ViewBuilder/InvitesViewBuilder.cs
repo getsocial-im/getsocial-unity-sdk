@@ -96,9 +96,6 @@ namespace GetSocialSdk.Ui
         {
             var invitesBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.ui.invites.InvitesViewBuilder");
 
-            SetTitleAJO(invitesBuilderAJO);
-            SetViewStateListener(invitesBuilderAJO);
-
             if (_customReferralData != null)
             {
                 invitesBuilderAJO.CallAJO("setCustomReferralData", _customReferralData.ToAJO());

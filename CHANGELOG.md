@@ -2,6 +2,20 @@
 
 ## Version History
 
+### v6.0.2
+
+**Updates:**
+
++ Updated underlying native GetSocial Android SDK version to [6.0.3](https://github.com/getsocial-im/getsocial-android-sdk/releases/tag/v6.0.3).
++ Updated underlying native GetSocial iOS SDK version to [6.0.3](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v6.0.3).
+
+ 
+**Fixes:**:
+
++ Now `SetWindowTitle()` works for all GetSocial windows.
+
+---
+
 ### v6.0.1
 
 **New:**
