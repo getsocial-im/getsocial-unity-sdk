@@ -1,0 +1,31 @@
+#if UNITY_IOS && USE_GETSOCIAL_UI
+using System;
+using System.Runtime.InteropServices;
+using AOT;
+using GetSocialSdk.Core;
+
+namespace GetSocialSdk.Ui
+{
+    delegate void UiActionListenerDelegate(IntPtr ptr, int actionType);
+
+    public static class UiActionListenerCallback
+    {
+        [MonoPInvokeCallback(typeof(UiActionListenerDelegate))]
+        public static void OnUiAction(IntPtr ptr, int actionTypeOrdinal)
+        {
+            if (ptr != IntPtr.Zero)
+            {
+                UiAction actionType = (UiAction) actionTypeOrdinal;
+                ptr.Cast<UiActionListener>()(actionType, () =>
+                {
+                    _doPendingAction();
+                });
+            }
+
+        }
+
+        [DllImport("__Internal")]
+        static extern void _doPendingAction();
+    }
+}
+#endif

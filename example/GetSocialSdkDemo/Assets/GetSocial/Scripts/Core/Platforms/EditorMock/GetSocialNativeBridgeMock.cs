@@ -157,6 +157,46 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), avatarUrl, onComplete, onFailure);
         }
 
+        public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), key, value, onSuccess, onFailure);
+        }
+
+        public void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), key, value, onSuccess, onFailure);
+        }
+
+        public void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), key, onSuccess, onFailure);
+        }
+
+        public void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), key, onSuccess, onFailure);
+        }
+
+        public string GetPublicProperty(string key)
+        {
+            return "";
+        }
+
+        public string GetPrivateProperty(string key)
+        {
+            return "";
+        }
+
+        public bool HasPublicProperty(string key)
+        {
+            return false;
+        }
+
+        public bool HasPrivateProperty(string key)
+        {
+            return false;
+        }
+
         public void AddAuthIdentity(AuthIdentity authIdentity, Action onComplete, Action<GetSocialError> onFailure, Action<ConflictUser> onConflict)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), authIdentity, onComplete,

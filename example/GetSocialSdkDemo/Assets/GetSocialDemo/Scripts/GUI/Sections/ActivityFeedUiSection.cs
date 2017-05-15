@@ -1,4 +1,6 @@
-﻿using Facebook.Unity;
+﻿using System;
+using System.Collections.Generic;
+using Facebook.Unity;
 using GetSocialSdk.Core;
 using UnityEngine;
 
@@ -38,7 +40,25 @@ public class ActivityFeedUiSection : DemoMenuSection
             .SetWindowTitle("Unity Global")
             .SetViewStateCallbacks(() => _console.LogD("Global feed opened"), () => _console.LogD("Global feed closed"))
             .SetButtonActionListener(OnActivityActionClicked)
+            .SetUiActionListener(OnUiAction)
             .Show();
+    }
+
+    private void OnUiAction(UiAction action, Action pendingAction)
+    {
+        List<UiAction> forbiddenForAnonymous = new List<UiAction>()
+        {
+            UiAction.LikeActivity, UiAction.LikeComment, UiAction.PostActivity, UiAction.PostComment
+        };
+        if (forbiddenForAnonymous.Contains(action) && GetSocial.User.IsAnonymous)
+        {
+            _console.LogD("Action " + action + " is not allowed for anonymous.");
+            GetSocialUi.CloseView();
+        }
+        else
+        {
+            pendingAction();
+        }
     }
 
     void OnActivityActionClicked(string actionId, ActivityPost post)

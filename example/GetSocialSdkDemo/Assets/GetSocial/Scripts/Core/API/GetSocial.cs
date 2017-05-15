@@ -503,6 +503,109 @@ namespace GetSocialSdk.Core
             }
 
             /// <summary>
+            /// Set the public property with specified key and value for the authenticated user.
+            /// If you pass empty string as value, it will remove the property. Null values are not allowed.
+            /// </summary>
+            ///
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <param name="value">The property value (Maximum length 1024 characters).</param>
+            /// <param name="onSuccess">Success action</param>
+            /// <param name="onFailure">Failure action</param>
+            public static void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+            {
+                GetSocialImpl.SetPublicProperty(key, value, onSuccess, onFailure);
+            }
+
+            /// <summary>
+            /// Set the private property with specified key and value for the authenticated user.
+            /// If you pass empty string as value, it will remove the property. Null values are not allowed.
+            /// </summary>
+            ///
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <param name="value">The property value (Maximum length 1024 characters).</param>
+            /// <param name="onSuccess">Success action</param>
+            /// <param name="onFailure">Failure action</param>
+            public static void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+            {
+                GetSocialImpl.SetPrivateProperty(key, value, onSuccess, onFailure);
+            }
+
+            /// <summary>
+            /// Remove one of the properties of the authenticated user.
+            /// </summary>
+            ///
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <param name="onSuccess">Success action</param>
+            /// <param name="onFailure">Failure action</param>
+            public static void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+            {
+                GetSocialImpl.RemovePublicProperty(key, onSuccess, onFailure);
+            }
+
+            /// <summary>
+            /// Remove one of the properties of the authenticated user.
+            /// </summary>
+            ///
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <param name="onSuccess">Success action</param>
+            /// <param name="onFailure">Failure action</param>
+            public static void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+            {
+                GetSocialImpl.RemovePrivateProperty(key, onSuccess, onFailure);
+            }
+
+
+            /// <summary>
+            /// Get Public user property.
+            /// </summary>
+            ///
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <returns>
+            /// The property value or null if not set or sdk not initialised.
+            /// If this returns null you must check if the sdk is initialised to
+            /// validate the result
+            /// </returns>
+            public static string GetPublicProperty(string key)
+            {
+                return GetSocialImpl.GetPublicProperty(key);
+            }
+
+            /// <summary>
+            /// Get Public user property.
+            /// </summary>
+            ///
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <returns>
+            /// The property value or null if not set or sdk not initialised.
+            /// If this returns null you must check if the sdk is initialised to
+            /// validate the result
+            /// </returns>
+            public static string GetPrivateProperty(string key)
+            {
+                return GetSocialImpl.GetPrivateProperty(key);
+            }
+
+            /// <summary>
+            /// Check if property exists for a specific key.
+            /// </summary>
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <returns>true if exists, false otherwise</returns>
+            public static bool HasPublicProperty(string key)
+            {
+                return GetSocialImpl.HasPublicProperty(key);
+            }
+
+            /// <summary>
+            /// Check if property exists for a specific key.
+            /// </summary>
+            /// <param name="key">The property key (Maximum length 64 characters).</param>
+            /// <returns>true if exists, false otherwise</returns>
+            public static bool HasPrivateProperty(string key)
+            {
+                return GetSocialImpl.HasPrivateProperty(key);
+            }
+
+            /// <summary>
             /// Adds AuthIdentity for the specified provider.
             /// </summary>
             ///

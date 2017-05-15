@@ -108,10 +108,6 @@ namespace GetSocialSdk.Editor
 
             // install tracking
             _isInstallReferrerReceiverPresent = androidManifest.ContainsReceiver(InstallReferrerReceiverName);
-
-            // library dependencies
-            _areDataApiDependencyLibsPresent = CheckIfDependencyLibsPresent("gson*");
-            _areUiDependencyLibsPresent = CheckIfDependencyLibsPresent("picasso*");
         }
 
 

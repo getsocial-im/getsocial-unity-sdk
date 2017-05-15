@@ -140,7 +140,7 @@ namespace GetSocialSdk.Core
             if (!isExceptionCausedByNullObjectReturnedFromJava)
             {
                 GetSocialDebugLogger.Ex(exception,
-                    string.Format("Failed to call {0} on {1}", methodName, ajo.GetClassName()));
+                    string.Format("Failed to call {0} on {1}", methodName, ajo));
             }
         }
     }

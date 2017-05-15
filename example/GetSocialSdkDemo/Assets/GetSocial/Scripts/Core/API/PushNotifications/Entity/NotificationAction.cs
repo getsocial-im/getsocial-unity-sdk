@@ -13,7 +13,7 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Action is type of OpenActivityAction, Activity with provided identifier should be opened.
             /// </summary>
-            OpenActivity
+            OpenActivity = 0
         }
 
         public virtual ActionType Type {
@@ -33,9 +33,10 @@ namespace GetSocialSdk.Core
         public NotificationAction ParseFromAJO(AndroidJavaObject ajo)
         {
             AndroidJavaObject type = ajo.CallAJO("getAction");
-            switch (type.Call<string>("name"))
+            ActionType actionType = (ActionType) type.CallInt("ordinal");
+            switch (actionType)
             {
-                case "OPEN_ACTIVITY":
+                case ActionType.OpenActivity:
                     return new OpenActivityAction(ajo.CallStr("getActivityId"));
 
                 default:

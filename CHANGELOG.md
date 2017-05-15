@@ -2,6 +2,35 @@
 
 ## Version History
 
+### v6.1.0
+
+**Added**:
+
++ Added `User Properties` functionality. Now you can store some custom properties for each user. More info in [documentation](http://docs.getsocial.im/guides/user-management/unity/get-set-user-properties/).
++ Added `UiActionListener`, you can set it with `SetUiActionListener()` method of any of `ViewBuilder` children. All possible actions you can find in `UiAction` enum. More info in [documentation](http://docs.getsocial.im/guides/ui-framework/unity/#ui-user-actions-handling).
+
+
+**Updates**:
+
++ Updated underlying native GetSocial Android SDK version to [6.1.0](https://github.com/getsocial-im/getsocial-android-sdk/releases/tag/v6.1.0).
++ Updated underlying native GetSocial iOS SDK version to [6.1.0](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v6.1.0).
+
+**Removed**:
+
++ Removed dependency on `Gson` library on Android. Now SDK adds ~900 methods less.
+
+**Fixes**:
+
++ Ukrainian and Russian localization for plural nouns.
++ Analytics crash on concurent list modification.
++ Action buttons background issue in landscape mode.
++ GetSocial Views stack is not cleared on iOS 8 devices.
++ GetSocial Views title was trimmed on Android in landscape mode.
++ Invite text missing in Facebook Messenger on Android.
++ No empty view in case there are no activities yet.
+
+---
+
 ### v6.0.2
 
 **Updates:**
@@ -10,7 +39,7 @@
 + Updated underlying native GetSocial iOS SDK version to [6.0.3](https://github.com/getsocial-im/getsocial-ios-sdk/releases/tag/v6.0.3).
 
  
-**Fixes:**:
+**Fixes:**
 
 + Now `SetWindowTitle()` works for all GetSocial windows.
 

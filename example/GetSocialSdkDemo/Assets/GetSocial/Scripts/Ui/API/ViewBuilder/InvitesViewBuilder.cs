@@ -83,7 +83,8 @@ namespace GetSocialSdk.Ui
                 Callbacks.StringCallback, _onInviteComplete.GetPointer(), _onInviteCancel.GetPointer(),
                 Callbacks.FailureWithDataCallback, _onInviteFailure.GetPointer(),
                 Callbacks.ActionCallback, _onOpen.GetPointer(),
-                Callbacks.ActionCallback, _onClose.GetPointer());
+                Callbacks.ActionCallback, _onClose.GetPointer(),
+                UiActionListenerCallback.OnUiAction, _uiActionListener.GetPointer());
 #else
             return false;
 #endif
@@ -125,7 +126,8 @@ namespace GetSocialSdk.Ui
             StringCallbackDelegate stringCallback, IntPtr onInviteCompletePtr, IntPtr onInviteCancelPtr,
             FailureWithDataCallbackDelegate failureCallback, IntPtr onFailurePtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
-            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr);
+            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
+            Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr);
 
 #endif
     }

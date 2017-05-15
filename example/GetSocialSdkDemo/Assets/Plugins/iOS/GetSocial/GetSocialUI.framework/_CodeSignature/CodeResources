@@ -102,7 +102,7 @@
 		</data>
 		<key>Headers/GetSocialUIActivityFeedView.h</key>
 		<data>
-		NIGCAK6Ybux7mrKrizfM9dtJNco=
+		4UWoBz0vd3XdeIe6GxssBCFiX1U=
 		</data>
 		<key>Headers/GetSocialUIInvitesView.h</key>
 		<data>
@@ -110,11 +110,11 @@
 		</data>
 		<key>Headers/GetSocialUIPublicConstants.h</key>
 		<data>
-		7ACTDencyDrbW7oEiETwRdkiOZw=
+		3mJX08QpXyRXETN5q5bnwBJHZcc=
 		</data>
 		<key>Headers/GetSocialUIView.h</key>
 		<data>
-		t/SyHh0pMfDcn2c+DEylSYATT54=
+		8EVkcNCA0lxdLCSLCjJc2yMxoX0=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -156,10 +156,6 @@
 		<data>
 		lJ6son9cp6t0VQ3D32vZcT9qzKw=
 		</data>
-		<key>chat-tooltip.bg-image.png</key>
-		<data>
-		C3RXw9EJnrj39AhHU6n40kdoDb4=
-		</data>
 		<key>close-button.bg-image-normal.png</key>
 		<data>
 		wuGkzXuT1mMw/rOB73rPmYK4/FI=
@@ -188,7 +184,7 @@
 		</dict>
 		<key>default.json</key>
 		<data>
-		DubI6wW2PKDsZGL0kMoKMLR5RJQ=
+		56JnhYqyZ9JYC8RTDa2ucY0INQs=
 		</data>
 		<key>en.lproj/Localizable.strings</key>
 		<dict>
@@ -285,14 +281,6 @@
 		<data>
 		/ZsTm+YJIGUcss+86jtuDYvYn8A=
 		</data>
-		<key>my-chat-message.bg-image-normal.png</key>
-		<data>
-		YfyEs0jnZQH1ta8EcresqLuth5c=
-		</data>
-		<key>my-chat-message.bg-image-pressed.png</key>
-		<data>
-		Xx/9EF3ZifyNCahXUbHPZ+nSb00=
-		</data>
 		<key>nb.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -314,10 +302,6 @@
 		<key>no-activity-placeholder.bg-image.png</key>
 		<data>
 		Sj9rh9ulThZSbKcDhrWs/Nej6ew=
-		</data>
-		<key>no-chat-messages-placeholder.bg-image.png</key>
-		<data>
-		JjbpZ6juf6OolZnvsYhy1YEE8rk=
 		</data>
 		<key>no-friends-placeholder.bg-image.png</key>
 		<data>
@@ -343,14 +327,6 @@
 		<data>
 		D+or89NAssc9QSVv5wTaQEEjKTI=
 		</data>
-		<key>presence-offline.bg-image.png</key>
-		<data>
-		VUbasWwrgsqC29AsNIu+TYD8MuQ=
-		</data>
-		<key>presence-online.bg-image.png</key>
-		<data>
-		i1vzU8Qx5iQ5dsA+YuJtYWnn7j4=
-		</data>
 		<key>pt.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -369,14 +345,6 @@
 			<key>optional</key>
 			<true/>
 		</dict>
-		<key>start-chat-button.bg-image-normal.png</key>
-		<data>
-		2Z85lN8aFFOf11byIWIID46F4WM=
-		</data>
-		<key>start-chat-button.bg-image-pressed.png</key>
-		<data>
-		rgpUbhNj0DWNwZUpwjrc13Gjv14=
-		</data>
 		<key>sv.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -386,14 +354,6 @@
 			<key>optional</key>
 			<true/>
 		</dict>
-		<key>their-chat-message.bg-image-normal.png</key>
-		<data>
-		GUY421OCiPCQZUx55X4sHpQ2rHE=
-		</data>
-		<key>their-chat-message.bg-image-pressed.png</key>
-		<data>
-		2cSK9VGANE4SsgSbdwQzr3p6xDw=
-		</data>
 		<key>tr.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -696,11 +656,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			NIGCAK6Ybux7mrKrizfM9dtJNco=
+			4UWoBz0vd3XdeIe6GxssBCFiX1U=
 			</data>
 			<key>hash2</key>
 			<data>
-			yX4BTDDghjO/y9JLk85GK7EcOFGK33GAj1oK79J8wH0=
+			I0qB4/hu9mTpeQ4wXFVnLV19gmLLeoOQwDyCLnR6+nM=
 			</data>
 		</dict>
 		<key>Headers/GetSocialUIInvitesView.h</key>
@@ -718,22 +678,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			7ACTDencyDrbW7oEiETwRdkiOZw=
+			3mJX08QpXyRXETN5q5bnwBJHZcc=
 			</data>
 			<key>hash2</key>
 			<data>
-			V/tjJ1Bqn6UzVPmlo+8lw/VcqPMB0vdPKcDEI7ssapQ=
+			EUTOC4YwU/js5RzEEcjnLBx3Ot1wM8yyIZnoUQL96ik=
 			</data>
 		</dict>
 		<key>Headers/GetSocialUIView.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			t/SyHh0pMfDcn2c+DEylSYATT54=
+			8EVkcNCA0lxdLCSLCjJc2yMxoX0=
 			</data>
 			<key>hash2</key>
 			<data>
-			91yg6Z2QMHYL7a68lDoCKBTME7c4O2/uN24YGnv1BI4=
+			4oQx2diP1ob/uPmT8EAdd2RJgwfVzp569gTLMKy8lpI=
 			</data>
 		</dict>
 		<key>Localizable.strings</key>
@@ -835,17 +795,6 @@
 			8wDDwid46CdV42DCTJ2EsoPswbMmIksHOQv7U8SRZEI=
 			</data>
 		</dict>
-		<key>chat-tooltip.bg-image.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			C3RXw9EJnrj39AhHU6n40kdoDb4=
-			</data>
-			<key>hash2</key>
-			<data>
-			KJ8g+SFtBCu08fZAeC/xRoidmLfqm93DFZLM0F903Yw=
-			</data>
-		</dict>
 		<key>close-button.bg-image-normal.png</key>
 		<dict>
 			<key>hash</key>
@@ -898,11 +847,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			DubI6wW2PKDsZGL0kMoKMLR5RJQ=
+			56JnhYqyZ9JYC8RTDa2ucY0INQs=
 			</data>
 			<key>hash2</key>
 			<data>
-			2fjVWtfEi6Isgai4670HfSsYEwmSg4qKBid0g50D5V8=
+			2uBbhVlsfsg1yhP/ngsnrKSOWRX7GT4iI5TFZSKjns4=
 			</data>
 		</dict>
 		<key>en.lproj/Localizable.strings</key>
@@ -1084,28 +1033,6 @@
 			MHrdB5SouRXD0UvNqWzSHI85gVTRZwFH8i7cJOnp2Y0=
 			</data>
 		</dict>
-		<key>my-chat-message.bg-image-normal.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			YfyEs0jnZQH1ta8EcresqLuth5c=
-			</data>
-			<key>hash2</key>
-			<data>
-			01Ug8eR5AwSwSJDbrWoiV/wrq5cbP0+QDPJmZH+rR70=
-			</data>
-		</dict>
-		<key>my-chat-message.bg-image-pressed.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Xx/9EF3ZifyNCahXUbHPZ+nSb00=
-			</data>
-			<key>hash2</key>
-			<data>
-			sKteKWVcy8RdFksZsqia/745YcDFrtgY5xbEs5olKMM=
-			</data>
-		</dict>
 		<key>nb.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -1141,17 +1068,6 @@
 			<key>hash2</key>
 			<data>
 			ghIbsUlcEugmE9TZ9vc/+Ir91b1NHTNutO33JU6u+BE=
-			</data>
-		</dict>
-		<key>no-chat-messages-placeholder.bg-image.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			JjbpZ6juf6OolZnvsYhy1YEE8rk=
-			</data>
-			<key>hash2</key>
-			<data>
-			r+1l4PTb2V8SRkYo96CAAG7rfDon/bPf0GF78Yii+b4=
 			</data>
 		</dict>
 		<key>no-friends-placeholder.bg-image.png</key>
@@ -1220,28 +1136,6 @@
 			JFDy8ZBs0yo4aeV4bfIZf5/rgrTuH3wh3ROhyHG8ok8=
 			</data>
 		</dict>
-		<key>presence-offline.bg-image.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			VUbasWwrgsqC29AsNIu+TYD8MuQ=
-			</data>
-			<key>hash2</key>
-			<data>
-			Ewq14cQI0IJyHbd80zz6jh7V2D2StieDTNZRzwr8FrM=
-			</data>
-		</dict>
-		<key>presence-online.bg-image.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			i1vzU8Qx5iQ5dsA+YuJtYWnn7j4=
-			</data>
-			<key>hash2</key>
-			<data>
-			ohYrnLOEcMWt1DHASs4i6ohv2v5AktPkBnL/IkCFtqA=
-			</data>
-		</dict>
 		<key>pt.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -1268,28 +1162,6 @@
 			<key>optional</key>
 			<true/>
 		</dict>
-		<key>start-chat-button.bg-image-normal.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			2Z85lN8aFFOf11byIWIID46F4WM=
-			</data>
-			<key>hash2</key>
-			<data>
-			DDMp2osebTXe7yaSx1O1f/XHm12NnFhaaArFXsHnBfk=
-			</data>
-		</dict>
-		<key>start-chat-button.bg-image-pressed.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			rgpUbhNj0DWNwZUpwjrc13Gjv14=
-			</data>
-			<key>hash2</key>
-			<data>
-			zaiheuqfAfPCIPE5ATUj0pmDdPky8fjNRGIwSu9JMNI=
-			</data>
-		</dict>
 		<key>sv.lproj/Localizable.strings</key>
 		<dict>
 			<key>hash</key>
@@ -1302,28 +1174,6 @@
 			</data>
 			<key>optional</key>
 			<true/>
-		</dict>
-		<key>their-chat-message.bg-image-normal.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			GUY421OCiPCQZUx55X4sHpQ2rHE=
-			</data>
-			<key>hash2</key>
-			<data>
-			tcf0PHUWBG02ehN83a6i6HjF2tJdZ0QyCFC3aVK3Hpk=
-			</data>
-		</dict>
-		<key>their-chat-message.bg-image-pressed.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			2cSK9VGANE4SsgSbdwQzr3p6xDw=
-			</data>
-			<key>hash2</key>
-			<data>
-			1en/QnAJ7MeFu1w32o37p+SwYIQe2lO8zTv6fgFRYZo=
-			</data>
 		</dict>
 		<key>tr.lproj/Localizable.strings</key>
 		<dict>

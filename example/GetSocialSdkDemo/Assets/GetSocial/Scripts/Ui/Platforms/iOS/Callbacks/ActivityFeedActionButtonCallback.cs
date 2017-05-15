@@ -13,10 +13,10 @@ namespace GetSocialSdk.Ui
         public static void OnActionButtonClick(IntPtr onButtonClickedPtr, string actionId, string serializedActivityPost)
         {
             GetSocialDebugLogger.D(string.Format("OnActionButtonClick for action [{0}], post: {1}", actionId, serializedActivityPost));
-            var post = new ActivityPost().ParseFromJson(serializedActivityPost);
 
             if (onButtonClickedPtr != IntPtr.Zero)
             {
+                var post = new ActivityPost().ParseFromJson(serializedActivityPost);
                 onButtonClickedPtr.Cast<Action<string, ActivityPost>>().Invoke(actionId, post);
             }
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GetSocialSdk.Core
 {
@@ -164,6 +165,50 @@ namespace GetSocialSdk.Core
         {
             _setUserAvatarUrl(avatarUrl, Callbacks.ActionCallback, onComplete.GetPointer(), Callbacks.FailureCallback,
                 onFailure.GetPointer());
+        }
+
+        public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _setPublicProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+                onFailure.GetPointer());
+        }
+
+        public void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _setPrivateProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+                onFailure.GetPointer());
+        }
+
+        public void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _removePublicProperty(key, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+                onFailure.GetPointer());
+        }
+
+        public void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _removePrivateProperty(key, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+                onFailure.GetPointer());
+        }
+
+        public string GetPublicProperty(string key)
+        {
+            return _getPublicProperty(key);
+        }
+
+        public string GetPrivateProperty(string key)
+        {
+            return _getPrivateProperty(key);
+        }
+
+        public bool HasPublicProperty(string key)
+        {
+            return _hasPublicProperty(key);
+        }
+
+        public bool HasPrivateProperty(string key)
+        {
+            return _hasPrivateProperty(key);
         }
 
         public void AddAuthIdentity(AuthIdentity authIdentity, Action onComplete, Action<GetSocialError> onFailure, Action<ConflictUser> onConflict)
@@ -418,6 +463,34 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern string _getUserAvatarUrl();
+
+        [DllImport("__Internal")]
+        static extern void _setPublicProperty(string key, string value, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _setPrivateProperty(string key, string value, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _removePublicProperty(string key, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _removePrivateProperty(string key, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern string _getPublicProperty(string key);
+
+        [DllImport("__Internal")]
+        static extern string _getPrivateProperty(string key);
+
+        [DllImport("__Internal")]
+        static extern bool _hasPublicProperty(string key);
+
+        [DllImport("__Internal")]
+        static extern bool _hasPrivateProperty(string key);
 
         [DllImport("__Internal")]
         static extern void _addAuthIdentity(string identity,

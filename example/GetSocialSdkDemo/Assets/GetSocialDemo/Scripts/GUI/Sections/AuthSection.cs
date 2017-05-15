@@ -44,6 +44,9 @@ public class AuthSection : DemoMenuSection
     string _customUserId = "UnityUser";
     string _customProviderToken = "custom_provider_token";
 
+    private string _key = "key", _val = "value";
+    private string _keyPrivate = "key", _valPrivate = "value";
+
     protected override void InitGuiElements()
     {
     }
@@ -70,6 +73,75 @@ public class AuthSection : DemoMenuSection
 
         // custom provider
         DrawAddRemoveCustomProvider();
+        DrawAddRemoveProperty();
+    }
+
+    private void DrawAddRemoveProperty()
+    {
+        DemoGuiUtils.Space();
+        GUILayout.BeginVertical("Box");
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Public property: ");
+        _key = GUILayout.TextField(_key, GSStyles.TextField);
+        _val = GUILayout.TextField(_val, GSStyles.TextField);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        DemoGuiUtils.DrawButton("Add", () =>
+        {
+            if (GetSocial.User.HasPublicProperty(_key))
+            {
+                _console.LogW("Property already exists " + _key + "=" + GetSocial.User.GetPublicProperty(_key) + ", remove old one if you're really want to override it.");
+            }
+            else
+            {
+                GetSocial.User.SetPublicProperty(_key, _val,
+                    () => _console.LogD("Property added for key: " + _key + "=" + GetSocial.User.GetPublicProperty(_key)),
+                    error => _console.LogE("Failed to add property for key: " + _key + ", error: " + error)
+                );
+            }
+        }, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Remove", () =>
+        {
+            GetSocial.User.RemovePublicProperty(_key,
+                () => _console.LogD("Property removed for key: " + _key),
+                error => _console.LogE("Failed to remove property for key: " + _key + ", error: " + error)
+            );
+        }, true, GSStyles.Button);
+        GUILayout.EndHorizontal();
+
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Private property: ");
+        _keyPrivate = GUILayout.TextField(_keyPrivate, GSStyles.TextField);
+        _valPrivate = GUILayout.TextField(_valPrivate, GSStyles.TextField);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        DemoGuiUtils.DrawButton("Add", () =>
+        {
+            if (GetSocial.User.HasPrivateProperty(_keyPrivate))
+            {
+                _console.LogW("Property already exists " + _keyPrivate + "=" + GetSocial.User.GetPrivateProperty(_keyPrivate) + ", remove old one if you're really want to override it.");
+            }
+            else
+            {
+                GetSocial.User.SetPrivateProperty(_keyPrivate, _valPrivate,
+                    () => _console.LogD("Property added for key: " + _keyPrivate + "=" + GetSocial.User.GetPrivateProperty(_keyPrivate)),
+                    error => _console.LogE("Failed to add property for key: " + _keyPrivate + ", error: " + error)
+                );
+            }
+        }, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Remove", () =>
+        {
+            GetSocial.User.RemovePrivateProperty(_keyPrivate,
+                () => _console.LogD("Property removed for key: " + _keyPrivate),
+                error => _console.LogE("Failed to remove property for key: " + _keyPrivate + ", error: " + error)
+            );
+        }, true, GSStyles.Button);
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
     }
 
     void DrawAddRemoveCustomProvider()
@@ -197,6 +269,7 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("Successfully switched to FB user");
                 demoController.FetchCurrentUserData();
+                SetFacebookDisplayName();
             },
             error => _console.LogE("Switching to FB user failed, reason: " + error));
     }
@@ -241,6 +314,7 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("Successfully added Facebook Identity");
                 demoController.FetchCurrentUserData();
+                SetFacebookDisplayName();
             },
             error => _console.LogE("Adding Facebook identity failed, reason: " + error),
             OnAddUserIdentityConflict);
@@ -316,6 +390,19 @@ public class AuthSection : DemoMenuSection
     }
 
     #endregion
+
+    private void SetFacebookDisplayName()
+    {
+        FB.API("me?fields=first_name,last_name", HttpMethod.GET, result =>
+        {
+            var dictionary = result.ResultDictionary;
+            var displayName = dictionary["first_name"] + " " + dictionary["last_name"];
+            GetSocial.User.SetDisplayName(displayName,
+                () => demoController.FetchCurrentUserData(),
+                error => _console.LogE("Failed to set Facebook user name")
+            );
+        });
+    }
 
     static string GetAvatarForUser()
     {

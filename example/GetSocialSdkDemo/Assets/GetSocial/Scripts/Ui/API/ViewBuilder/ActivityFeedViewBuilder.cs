@@ -49,7 +49,9 @@ namespace GetSocialSdk.Ui
                 Callbacks.ActionCallback,
                 _onOpen.GetPointer(),
                 Callbacks.ActionCallback,
-                _onClose.GetPointer());
+                _onClose.GetPointer(),
+                UiActionListenerCallback.OnUiAction,
+                _uiActionListener.GetPointer());
 #else
             return false;
 #endif
@@ -77,7 +79,8 @@ namespace GetSocialSdk.Ui
         static extern bool _showActivityFeedView(string customWindowTitle, string feed,
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
-            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr);
+            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
+            Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr);
 
 #endif
     }

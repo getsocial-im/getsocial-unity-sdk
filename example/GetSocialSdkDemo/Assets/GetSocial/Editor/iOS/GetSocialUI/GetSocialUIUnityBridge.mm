@@ -3,11 +3,16 @@
 //
 
 #include <GetSocialUI/GetSocialUI.h>
+#include <GetSocialUI/GetSocialUIPublicConstants.h>
 #include "GetSocialBridgeUtils.h"
 #include "GetSocialJsonUtils.h"
 #import "GetSocialFunctionDefs.h"
 
 typedef void(ActivityActionButtonClickedDelegate)(void *actionPtr, const char *buttonId, const char *serializedActivityPost);
+
+typedef void(UiActionListenerDelegate)(void *listenerPtr, int actionType);
+
+static GetSocialUIPendingAction sPendingAction = nil;
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
@@ -21,7 +26,8 @@ bool _showSmartInvitesView(
         StringCallbackDelegate stringCallback /* with providerId */, void *onInviteCompletePtr, void *onInviteCancelPtr,
         FailureWithDataCallbackDelegate failureCallback, void *onFailurePtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
-        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr) {
+        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr) {
 
     GetSocialUIInvitesView *invitesView = [GetSocialUI createInvitesView];
 
@@ -41,7 +47,14 @@ bool _showSmartInvitesView(
         NSDictionary *referralData = [GetSocialJsonUtils deserializeCustomReferralData:serializedCustomReferralDataStr];
         [invitesView setCustomReferralData:referralData];
     }
-
+    
+    if (uiActionListenerPtr) {
+        [invitesView setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+            sPendingAction = pendingAction;
+            uiActionListener(uiActionListenerPtr, (int) actionType);
+        }];
+    }
+    
     if (onInviteCompletePtr) {
         [invitesView setHandlerForInvitesSent:^(NSString *_Nonnull providerId) {
             stringCallback(onInviteCompletePtr, providerId.UTF8String);
@@ -86,12 +99,15 @@ bool _closeView(bool saveViewState) {
 bool _restoreView() {
     return [GetSocialUI restoreView];
 }
+    
+#pragma mark - Activity Feed
 
 bool _showActivityFeedView(const char *windowTitle,
         const char *feed,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
-        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr) {
+        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr) {
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
@@ -102,9 +118,16 @@ bool _showActivityFeedView(const char *windowTitle,
     }
 
     if (onButtonClickPtr) {
-        [view setActionListener:^(NSString *action, GetSocialActivityPost *post) {
+        [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
             NSString *serializedPost = [GetSocialJsonUtils serializeActivityPost: post];
             callback(onButtonClickPtr, action.UTF8String, serializedPost.UTF8String);
+        }];
+    }
+    
+    if (uiActionListenerPtr) {
+        [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+            sPendingAction = pendingAction;
+            uiActionListener(uiActionListenerPtr, (int) actionType);
         }];
     }
     
@@ -119,8 +142,13 @@ bool _showActivityFeedView(const char *windowTitle,
     [view show];
     return true;
 }
-
-#pragma mark - Activity Feed
+    
+void _doPendingAction() {
+    if (sPendingAction) {
+        sPendingAction();
+        sPendingAction = nil;
+    }
+}
 
 NS_ASSUME_NONNULL_END
 }

@@ -228,6 +228,73 @@ void _setUserDisplayName(const char *displayName, VoidCallbackDelegate completeC
                 failureCallback(onFailurePtr, err);
             }];
 }
+    
+void _setPublicProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    [GetSocialUser setPublicPropertyValue:[GetSocialBridgeUtils createNSStringFrom:value]
+                                   forKey:[GetSocialBridgeUtils createNSStringFrom:key]
+                                  success:^{
+                                      successCallback(onSuccessActionPtr);
+                                  } failure:^(NSError * _Nonnull error) {
+                                      char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
+                                      failureCallback(onFailureActionPtr, err);
+                                  }];
+}
+    
+
+void _setPrivateProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    [GetSocialUser setPrivatePropertyValue:[GetSocialBridgeUtils createNSStringFrom:value]
+                                    forKey:[GetSocialBridgeUtils createNSStringFrom:key]
+                                   success:^{
+                                      successCallback(onSuccessActionPtr);
+                                   } failure:^(NSError * _Nonnull error) {
+                                      char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
+                                      failureCallback(onFailureActionPtr, err);
+                                   }];
+}
+    
+void _removePublicProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    [GetSocialUser removePublicPropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]
+                                      success:^{
+                                          successCallback(onSuccessActionPtr);
+                                    } failure:^(NSError * _Nonnull error) {
+                                        char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
+                                        failureCallback(onFailureActionPtr, err);
+                                    }];
+}
+
+
+void _removePrivateProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    [GetSocialUser removePrivatePropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]
+                                       success:^{
+                                           successCallback(onSuccessActionPtr);
+                                       } failure:^(NSError * _Nonnull error) {
+                                           char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
+                                           failureCallback(onFailureActionPtr, err);
+                                       }];
+}
+
+char * _getPublicProperty(const char * key)
+{
+    return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser publicPropertyValueForKey:[GetSocialBridgeUtils createNSStringFrom:key]]];
+}
+char * _getPrivateProperty(const char * key)
+{
+    return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser privatePropertyValueForKey:[GetSocialBridgeUtils createNSStringFrom:key]]];
+}
+
+BOOL _hasPublicProperty(const char * key)
+{
+    return [GetSocialUser hasPublicPropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]];
+}
+
+BOOL _hasPrivateProperty(const char * key)
+{
+    return [GetSocialUser hasPrivatePropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]];
+}
 
 char *_getUserAvatarUrl()
 {

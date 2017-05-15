@@ -24,9 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  *  @abstract Sets an action listener, that will be called if button on Activity Feed is pressed.
  *
- *  @param listener block that will be called.
+ *  @param buttonActionHandler block that will be called.
  */
-- (void)setActionListener:(ActivityButtonActionListener)listener;
+- (void)setActionButtonHandler:(ActivityButtonActionHandler)buttonActionHandler;
 
 NS_ASSUME_NONNULL_END
 

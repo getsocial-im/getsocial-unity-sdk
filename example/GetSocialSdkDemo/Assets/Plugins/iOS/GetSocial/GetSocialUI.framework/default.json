@@ -106,9 +106,6 @@
         "comment-input-bar": {
             "bg-color": "0xFFCFD3D9"
         },
-        "chat-input-bar": {
-            "bg-color": "0xFFCFD3D9"
-        },
         "avatar": {
             "border-size": 0,
             "border-color": "0x00000000",
@@ -178,47 +175,6 @@
             "aspect-ratio": "16:9",
             "radius": 3,
             "default-image": "activity-image.default-image.png"
-        },
-        "my-chat-message": {
-            "text-style": "my-chat-content",
-            "text-insets": "8 26 8 8",
-            "bg-image-normal": "my-chat-message.bg-image-normal.png",
-            "bg-image-normal-insets": "44 116 54 44",
-            "bg-image-pressed": "my-chat-message.bg-image-pressed.png",
-            "bg-image-pressed-insets": "44 116 54 44"
-        },
-        "their-chat-message": {
-            "text-style": "their-chat-content",
-            "text-insets": "8 8 8 26",
-            "bg-image-normal": "their-chat-message.bg-image-normal.png",
-            "bg-image-normal-insets": "44 44 54 116",
-            "bg-image-pressed": "their-chat-message.bg-image-pressed.png",
-            "bg-image-pressed-insets": "44 44 54 116"
-        },
-        "start-chat-button": {
-            "text-style": "call-to-action",
-            "text-y-offset-normal": 0,
-            "text-y-offset-pressed": 0,
-            "bar-color": "0x19000000",
-            "bg-image-normal": "start-chat-button.bg-image-normal.png",
-            "bg-image-normal-insets": "12 12 12 12",
-            "bg-image-pressed": "start-chat-button.bg-image-pressed.png",
-            "bg-image-pressed-insets": "12 12 12 12"
-        },
-        "no-chat-messages-placeholder": {
-            "bg-image": "no-chat-messages-placeholder.bg-image.png"
-        },
-        "chat-tooltip": {
-            "text-style": "their-chat-content",
-            "bg-image": "chat-tooltip.bg-image.png"
-        },
-        "presence-online": {
-            "text-style": "presence-online",
-            "bg-image": "presence-online.bg-image.png"
-        },
-        "presence-offline": {
-            "text-style": "presence-offline",
-            "bg-image": "presence-offline.bg-image.png"
         }
     },
     "text-styles": {

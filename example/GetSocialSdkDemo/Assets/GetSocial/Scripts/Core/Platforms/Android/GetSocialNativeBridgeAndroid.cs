@@ -163,7 +163,47 @@ namespace GetSocialSdk.Core
 
         public void SetAvatarUrl(string avatarUrl, Action onComplete, Action<GetSocialError> onFailure)
         {
-            _user.CallStatic("setAvatarUrl", avatarUrl, new CompletionCallback(onComplete, onFailure));
+            _user.CallStaticSafe("setAvatarUrl", avatarUrl, new CompletionCallback(onComplete, onFailure));
+        }
+
+        public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStaticSafe("setPublicProperty", key, value, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStaticSafe("setPrivateProperty", key, value, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStaticSafe("removePublicProperty", key, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStaticSafe("removePrivateProperty", key, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public string GetPublicProperty(string key)
+        {
+            return _user.CallStaticStr("getPublicProperty", key);
+        }
+
+        public string GetPrivateProperty(string key)
+        {
+            return _user.CallStaticStr("getPrivateProperty", key);
+        }
+
+        public bool HasPublicProperty(string key)
+        {
+            return _user.CallStaticBool("hasPublicProperty", key);
+        }
+
+        public bool HasPrivateProperty(string key)
+        {
+            return _user.CallStaticBool("hasPrivateProperty", key);
         }
 
         public void AddAuthIdentity(AuthIdentity identity,

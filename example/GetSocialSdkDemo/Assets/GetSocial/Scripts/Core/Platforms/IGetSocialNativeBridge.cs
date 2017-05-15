@@ -76,6 +76,22 @@ namespace GetSocialSdk.Core
 
         void SetAvatarUrl(string avatarUrl, Action onComplete, Action<GetSocialError> onFailure);
 
+        void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure);
+
+        void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure);
+
+        void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure);
+
+        void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure);
+
+        string GetPublicProperty(string key);
+
+        string GetPrivateProperty(string key);
+
+        bool HasPublicProperty(string key);
+
+        bool HasPrivateProperty(string key);
+
         void AddAuthIdentity(AuthIdentity authIdentity,
             Action onComplete, Action<GetSocialError> onFailure, Action<ConflictUser> onConflict);
 
@@ -134,6 +150,5 @@ namespace GetSocialSdk.Core
         int GetCurrentHadesConfiguration();
 
         #endregion
-
     }
 }

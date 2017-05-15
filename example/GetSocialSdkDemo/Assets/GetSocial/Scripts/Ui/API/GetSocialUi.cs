@@ -1,7 +1,11 @@
+using System;
+
 #if USE_GETSOCIAL_UI
 
 namespace GetSocialSdk.Ui
 {
+
+    public delegate void UiActionListener(UiAction action, Action pendingAction);
     /// <summary>
     /// Class to present GetSocial user interface.
     /// </summary>
@@ -69,6 +73,15 @@ namespace GetSocialSdk.Ui
         public static bool LoadConfiguration(string path)
         {
             return GetSocialImpl.LoadConfiguration(path);
+        }
+
+        /// <summary>
+        /// Closes GetSocial view without save state.
+        /// </summary>
+        /// <returns><c>true</c> if view was closed, <c>false</c> otherwise</returns>
+        public static bool CloseView()
+        {
+            return CloseView(false);
         }
 
         /// <summary>
