@@ -2,6 +2,11 @@
 
 ## Version History
 
+### v6.1.1
+
+**Fixed**:
++ GetSocial Editor errors while copying native libraries.
+
 ### v6.1.0
 
 **Added**:

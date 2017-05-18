@@ -23,13 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
  * @constant GetSocialNotificationActionOpenActivity Open activity action.
  */
 typedef NS_ENUM(NSInteger, GetSocialNotificationActionType) {
-    /// open activity action
     GetSocialNotificationActionOpenActivity
 };
 
  /*!
  * @typedef void (^GetSocialNotificationActionHandler)(GetSocialNotificationAction *action)
  * @abstract The typedef defines the block that is called if application was started with clicking on a GetSocial notification.
+ * @return YES, if action is handled by user, NO if action should be handled by GetSocial.
  */
 typedef BOOL (^GetSocialNotificationActionHandler)(GetSocialNotificationAction *action);
 

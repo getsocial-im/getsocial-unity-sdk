@@ -40,7 +40,6 @@ namespace GetSocialSdk.Editor
         const string UiLibNamePrefix = "getsocial-ui";
 
         const string AndroidLibsSourcePath = "Assets/GetSocial/Editor/Android/Libraries/";
-        const string AarsSourceDependenciesPath = AndroidLibsSourcePath + "Dependencies";
 
         const string AndroidLibsDestinationPath = "Assets/Plugins/Android/";
         const string ShowAndroidSettingsEditorPref = "ShowAndroidSettings";
@@ -418,18 +417,6 @@ namespace GetSocialSdk.Editor
                 File.Copy(uiSourceLib, uiDestLib);
             }
 
-            CopyAndroidDependenciesToPlugins();
-
-            AssetDatabase.Refresh();
-        }
-
-        public static void CopyAndroidDependenciesToPlugins()
-        {
-            var dependencies = Directory.GetFiles(AarsSourceDependenciesPath, "*.*", SearchOption.TopDirectoryOnly)
-                .Where(x => x.EndsWith(".aar") || x.EndsWith(".jar"))
-                .ToList();
-            dependencies.ForEach(aar => File.Copy(aar, Path.Combine(AndroidLibsDestinationPath, Path.GetFileName(aar)),
-                true));
             AssetDatabase.Refresh();
         }
 

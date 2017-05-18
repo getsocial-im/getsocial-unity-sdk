@@ -142,9 +142,6 @@ namespace GetSocialSdk.Editor
 
         static void DrawManifestFixProposals()
         {
-            FixMessageGroupTitle("GetSocial Dependencies");
-            DrawDependencyLibsFixes();
-
             FixMessageGroupTitle("AndroidManifest.xml checks");
             DrawBasicFixes();
             DrawSmartInvitesFixes();
@@ -178,20 +175,6 @@ namespace GetSocialSdk.Editor
             Action drawFixReferrerReceiver =
                 () => DrawFixProjectConfigurationMessage(string.Format("{0} must be present to be able to Track Installs and retrieve Referral Data", InstallReferrerReceiverName), "Add InstallReferrerReceiver", AddInstallReferrerReceiver);
             DrawFixBox(_isInstallReferrerReceiverPresent, "InstallReferrerReceiver added", drawFixReferrerReceiver);
-        }
-
-        static void DrawDependencyLibsFixes()
-        {
-            Action drawFixDataApiDependencies =
-                () => DrawFixProjectConfigurationMessage("You don't have all GetSocial Data API dependencies libs in your Plugins/Android folder", "Add Libs", () => FixDependencies("gson*"));
-            DrawFixBox(_areDataApiDependencyLibsPresent, "All GetSocial Data API dependencies are present", drawFixDataApiDependencies);
-
-            if (GetSocialSettings.UseGetSocialUi)
-            {
-                Action drawFixUiDependencies =
-                    () => DrawFixProjectConfigurationMessage("You don't have all GetSocial UI dependencies libs in your Plugins/Android folder", "Add Libs", () => FixDependencies("picasso*"));
-                DrawFixBox(_areUiDependencyLibsPresent, "All GetSocial UI dependencies are present", drawFixUiDependencies);
-            }
         }
 
         #endregion
@@ -296,22 +279,6 @@ namespace GetSocialSdk.Editor
 
         #endregion
 
-
-        #region libs dependencies
-
-        static bool CheckIfDependencyLibsPresent(params string[] dependencies)
-        {
-            var libJars = GetSocialEditorUtils.GetFiles(PluginsAndroidPathInProject, string.Join(";", dependencies), SearchOption.AllDirectories);
-            return libJars.Length >= dependencies.Length;
-        }
-
-        static void FixDependencies(params string[] dependencies)
-        {
-            GetSocialSettingsEditor.CopyAndroidDependenciesToPlugins();
-            RefreshAllAndroidChecks();
-        }
-
-        #endregion
 
 
         #region draw ui helpers

@@ -22,6 +22,84 @@ NS_ASSUME_NONNULL_BEGIN
 /** @name Update User Details */
 
 /*!
+ * @abstract Set the public property with specified key and value for the authenticated user.
+ * If you pass empty string as value, it will remove the property. Nil values are not allowed.
+ * @param propertyValue The property value (Maximum length 1024 characters).
+ * @param propertyKey The property key (Maximum length 64 characters).
+ * @param success Success block.
+ * @param failure Failure block.
+ */
++ (void)setPublicPropertyValue:(NSString *)propertyValue
+                        forKey:(NSString *)propertyKey
+                       success:(GetSocialSuccessCallback)success
+                       failure:(GetSocialFailureCallback)failure;
+
+/*!
+ * @abstract Set the private property with specified key and value for the authenticated user.
+ * If you pass empty string as value, it will remove the property. Nil values are not allowed.
+ * @param propertyValue The property value (Maximum length 1024 characters).
+ * @param propertyKey The property key (Maximum length 64 characters).
+ * @param success Success block.
+ * @param failure Failure block.
+ */
++ (void)setPrivatePropertyValue:(NSString *)propertyValue
+                         forKey:(NSString *)propertyKey
+                        success:(GetSocialSuccessCallback)success
+                        failure:(GetSocialFailureCallback)failure;
+
+/*!
+ * @abstract Remove one of the public properties of the authenticated user.
+ * @param propertyKey The property key (Maximum length 64 characters).
+ * @param success Success block.
+ * @param failure Failure block.
+ */
++ (void)removePublicPropertyForKey:(NSString *)propertyKey
+                           success:(GetSocialSuccessCallback)success
+                           failure:(GetSocialFailureCallback)failure;
+
+/*!
+ * @abstract Remove one of the private properties of the authenticated user.
+ * @param propertyKey The property key (Maximum length 64 characters).
+ * @param success Success block.
+ * @param failure Failure block.
+ */
++ (void)removePrivatePropertyForKey:(NSString *)propertyKey
+                            success:(GetSocialSuccessCallback)success
+                            failure:(GetSocialFailureCallback)failure;
+
+/*!
+ * @abstract Checks if public property exists for the specified key.
+ * @param propertyKey Property Key.
+ * @return YES if exists, NO if not.
+ */
++ (BOOL)hasPublicPropertyForKey:(NSString *)propertyKey;
+
+/*!
+ * @abstract Checks if private property exists for the specified key.
+ * @param propertyKey Property Key.
+ * @return YES if exists, NO if not.
+ */
++ (BOOL)hasPrivatePropertyForKey:(NSString *)propertyKey;
+
+/*!
+ * @abstract Returns public property for a key.
+ * @param propertyKey The property key (Maximum length 64 characters).
+ * @return The property value or nil if not set or sdk not initialised.
+ * If this returns null you must check if the sdk is initialised to
+ * validate the result.
+ */
++ (nullable NSString *)publicPropertyValueForKey:(NSString *)propertyKey;
+
+/*!
+ * @abstract Returns private property for a key.
+ * @param propertyKey The property key (Maximum length 64 characters).
+ * @return The property value or nil if not set or sdk not initialised.
+ * If this returns null you must check if the sdk is initialised to
+ * validate the result.
+ */
++ (nullable NSString *)privatePropertyValueForKey:(NSString *)propertyKey;
+
+/*!
  * @abstract Set block to be called when user has been changed.
  * The action is executed on the main thread, so be careful with operations,
  * that you put inside block.
@@ -50,8 +128,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @param failure Block called if operation fails.
  */
 + (void)updateDetails:(GetSocialUserUpdate *)updateDetails
-             success:(GetSocialSuccessCallback)success
-             failure:(GetSocialFailureCallback)failure;
+              success:(GetSocialSuccessCallback)success
+              failure:(GetSocialFailureCallback)failure;
 
 /** @name Update User Display Name */
 
