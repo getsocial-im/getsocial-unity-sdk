@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GetSocialSdk.Core
 {
@@ -17,28 +16,28 @@ namespace GetSocialSdk.Core
 
         public bool IsInitialized
         {
-            get { return _isInitialized(); }
+            get { return _gs_isInitialized(); }
         }
 
         public void Init(Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _init(Callbacks.ActionCallback, onSuccess.GetPointer(),
+           _gs_init(Callbacks.ActionCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public string GetNativeSdkVersion()
         {
-            return _getNativeSdkVersion();
+            return _gs_getNativeSdkVersion();
         }
 
         public string GetLanguage()
         {
-            return _getLanguage();
+            return _gs_getLanguage();
         }
 
         public bool SetLanguage(string languageCode)
         {
-            return _setLanguage(languageCode);
+            return _gs_setLanguage(languageCode);
         }
 
         #region invites
@@ -47,7 +46,7 @@ namespace GetSocialSdk.Core
         {
             get
             {
-                var channelsJson = _getInviteChannels();
+                var channelsJson = _gs_getInviteChannels();
                 GetSocialDebugLogger.D("Invite channels: " + channelsJson);
                 return GSJsonUtils.ParseChannelsList(channelsJson);
             }
@@ -56,14 +55,14 @@ namespace GetSocialSdk.Core
         public void SendInvite(string channelId, Action onComplete, Action onCancel,
             Action<GetSocialError> onFailure)
         {
-            _sendInvite(channelId, Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
+           _gs_sendInvite(channelId, Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void SendInvite(string channelId, InviteContent customInviteContent,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-            _sendInviteCustom(channelId, customInviteContent.ToJson(),
+           _gs_sendInviteCustom(channelId, customInviteContent.ToJson(),
                 Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -72,14 +71,14 @@ namespace GetSocialSdk.Core
             CustomReferralData customReferralData,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-            _sendInviteCustomAndReferralData(channelId, customInviteContent.ToJson(), customReferralData.ToJson(),
+           _gs_sendInviteCustomAndReferralData(channelId, customInviteContent.ToJson(), customReferralData.ToJson(),
                 Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteProviderPlugin)
         {
-            return _registerInviteProviderPlugin(channelId, inviteProviderPlugin.GetPointer(),
+            return _gs_registerInviteProviderPlugin(channelId, inviteProviderPlugin.GetPointer(),
                 InviteChannelPluginCallbacks.IsAvailableForDevice,
                 InviteChannelPluginCallbacks.PresentChannelInterface);
         }
@@ -88,7 +87,7 @@ namespace GetSocialSdk.Core
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getReferralData(
+           _gs_getReferralData(
                 Callbacks.FetchReferralDataCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer()
             );
@@ -96,124 +95,124 @@ namespace GetSocialSdk.Core
 
         public void RegisterForPushNotifications()
         {
-            _registerForPushNotifications();
+           _gs_registerForPushNotifications();
         }
 
         public void SetNotificationActionListener(Func<NotificationAction, bool> listener)
         {
-            _setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationActionListener);
+           _gs_setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationActionListener);
         }
 
         public bool SetGlobalErrorListener(Action<GetSocialError> onError)
         {
-            return _setGlobalErrorListener(onError.GetPointer(), GlobalErrorCallback.OnGlobalError);
+            return _gs_setGlobalErrorListener(onError.GetPointer(), GlobalErrorCallback.OnGlobalError);
         }
 
         public bool RemoveGlobalErrorListener()
         {
-            return _removeGlobalErrorListener();
+            return _gs_removeGlobalErrorListener();
         }
 
         #region user_management
 
         public bool SetOnUserChangedListener(Action listener)
         {
-            return _setOnUserChangedListener(listener.GetPointer(), Callbacks.ActionCallback);
+            return _gs_setOnUserChangedListener(listener.GetPointer(), Callbacks.ActionCallback);
         }
 
         public bool RemoveOnUserChangedListener()
         {
-            return _removeOnUserChangedListener();
+            return _gs_removeOnUserChangedListener();
         }
 
         public string UserId
         {
-            get { return _getUserId(); }
+            get { return _gs_getUserId(); }
         }
 
         public bool IsUserAnonymous
         {
-            get { return _isUserAnonymous(); }
+            get { return _gs_isUserAnonymous(); }
         }
 
         public Dictionary<string, string> UserAuthIdentities
         {
             get
             {
-                var identitiesJson = _getAuthIdentities();
+                var identitiesJson = _gs_getAuthIdentities();
                 return GSJsonUtils.ParseDictionary(identitiesJson);
             }
         }
 
         public string DisplayName 
         {
-            get { return _getUserDisplayName(); }
+            get { return _gs_getUserDisplayName(); }
         }
 
         public void SetDisplayName(string displayName, Action onComplete, Action<GetSocialError> onFailure)
         {
-            _setUserDisplayName(displayName, Callbacks.ActionCallback, onComplete.GetPointer(),
+           _gs_setUserDisplayName(displayName, Callbacks.ActionCallback, onComplete.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public string AvatarUrl
         {
-            get { return _getUserAvatarUrl(); }
+            get { return _gs_getUserAvatarUrl(); }
         }
 
         public void SetAvatarUrl(string avatarUrl, Action onComplete, Action<GetSocialError> onFailure)
         {
-            _setUserAvatarUrl(avatarUrl, Callbacks.ActionCallback, onComplete.GetPointer(), Callbacks.FailureCallback,
+           _gs_setUserAvatarUrl(avatarUrl, Callbacks.ActionCallback, onComplete.GetPointer(), Callbacks.FailureCallback,
                 onFailure.GetPointer());
         }
 
         public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _setPublicProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+           _gs_setPublicProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
                 onFailure.GetPointer());
         }
 
         public void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _setPrivateProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+           _gs_setPrivateProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
                 onFailure.GetPointer());
         }
 
         public void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _removePublicProperty(key, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+           _gs_removePublicProperty(key, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
                 onFailure.GetPointer());
         }
 
         public void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _removePrivateProperty(key, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+           _gs_removePrivateProperty(key, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
                 onFailure.GetPointer());
         }
 
         public string GetPublicProperty(string key)
         {
-            return _getPublicProperty(key);
+            return _gs_getPublicProperty(key);
         }
 
         public string GetPrivateProperty(string key)
         {
-            return _getPrivateProperty(key);
+            return _gs_getPrivateProperty(key);
         }
 
         public bool HasPublicProperty(string key)
         {
-            return _hasPublicProperty(key);
+            return _gs_hasPublicProperty(key);
         }
 
         public bool HasPrivateProperty(string key)
         {
-            return _hasPrivateProperty(key);
+            return _gs_hasPrivateProperty(key);
         }
 
         public void AddAuthIdentity(AuthIdentity authIdentity, Action onComplete, Action<GetSocialError> onFailure, Action<ConflictUser> onConflict)
         {
-            _addAuthIdentity(authIdentity.ToJson(),
+           _gs_addAuthIdentity(authIdentity.ToJson(),
                 Callbacks.ActionCallback, onComplete.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer(),
                 UserConflictCallback.OnUserAuthConflict, onConflict.GetPointer());
@@ -221,14 +220,14 @@ namespace GetSocialSdk.Core
 
         public void RemoveAuthIdentity(string providerId, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _removeAuthIdentity(providerId,
+           _gs_removeAuthIdentity(providerId,
                 Callbacks.ActionCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void SwitchUser(AuthIdentity authIdentity, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _switchUser(authIdentity.ToJson(),
+           _gs_switchUser(authIdentity.ToJson(),
                 Callbacks.ActionCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -239,34 +238,34 @@ namespace GetSocialSdk.Core
 
         public void AddFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
-            _addFriend (userId,
+           _gs_addFriend (userId,
                 Callbacks.IntCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void RemoveFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
-            _removeFriend (userId,
+           _gs_removeFriend (userId,
                 Callbacks.IntCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void IsFriend (string userId, Action<bool> onSuccess, Action<GetSocialError> onFailure)
         {
-            _isFriend (userId,
+           _gs_isFriend (userId,
                 Callbacks.BoolCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void GetFriendsCount(Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getFriendsCount(Callbacks.IntCallback, onSuccess.GetPointer(),
+           _gs_getFriendsCount(Callbacks.IntCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void GetFriends (int offset, int limit, Action<List<PublicUser>> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getFriends (offset, limit,
+           _gs_getFriends (offset, limit,
                 ActivityFeedCallbacks.OnUsersListReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -278,7 +277,7 @@ namespace GetSocialSdk.Core
         public void GetAnnouncements(string feed, Action<List<ActivityPost>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getAnnouncements(feed,
+           _gs_getAnnouncements(feed,
                 ActivityFeedCallbacks.OnActivityPostListReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -286,14 +285,14 @@ namespace GetSocialSdk.Core
         public void GetActivities(ActivitiesQuery query, Action<List<ActivityPost>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getActivitiesWithQuery(query.ToJson(),
+           _gs_getActivitiesWithQuery(query.ToJson(),
                 ActivityFeedCallbacks.OnActivityPostListReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void GetActivity(string activityId, Action<ActivityPost> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getActivityById(activityId,
+           _gs_getActivityById(activityId,
                 ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -301,7 +300,7 @@ namespace GetSocialSdk.Core
         public void PostActivityToFeed(string feed, ActivityPostContent content, Action<ActivityPost> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _postActivityToFeed(feed, content.ToJson(),
+           _gs_postActivityToFeed(feed, content.ToJson(),
                 ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -309,7 +308,7 @@ namespace GetSocialSdk.Core
         public void PostCommentToActivity(string activityId, ActivityPostContent comment, Action<ActivityPost> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _postCommentToActivity(activityId, comment.ToJson(),
+           _gs_postCommentToActivity(activityId, comment.ToJson(),
                 ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -317,7 +316,7 @@ namespace GetSocialSdk.Core
         public void LikeActivity(string activityId, bool isLiked, Action<ActivityPost> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _likeActivity(activityId, isLiked,
+           _gs_likeActivity(activityId, isLiked,
                 ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -325,7 +324,7 @@ namespace GetSocialSdk.Core
         public void GetActivityLikers(string activityId, int offset, int limit, Action<List<PublicUser>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getActivityLikers(activityId, offset, limit,
+           _gs_getActivityLikers(activityId, offset, limit,
                 ActivityFeedCallbacks.OnUsersListReceived, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -337,17 +336,17 @@ namespace GetSocialSdk.Core
 
         public void Reset()
         {
-            _resetInternal();
+           _gs_resetInternal();
         }
 
         public void SetHadesConfiguration(int hadesConfigurationType)
         {
-            _setHadesConfigurationInternal(hadesConfigurationType);
+           _gs_setHadesConfigurationInternal(hadesConfigurationType);
         }
 
         public int GetCurrentHadesConfiguration()
         {
-            return _getCurrentHadesConfigurationInternal();
+            return _gs_getCurrentHadesConfigurationInternal();
         }
 
         #endregion
@@ -356,79 +355,79 @@ namespace GetSocialSdk.Core
         #region external_init
 
         [DllImport("__Internal")]
-        static extern void _init(VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_init(VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern bool _isInitialized();
+        static extern bool _gs_isInitialized();
 
         #endregion
 
         [DllImport("__Internal")]
-        static extern string _getNativeSdkVersion();
+        static extern string _gs_getNativeSdkVersion();
 
         [DllImport("__Internal")]
-        static extern bool _setLanguage(string languageCode);
+        static extern bool _gs_setLanguage(string languageCode);
 
         [DllImport("__Internal")]
-        static extern string _getLanguage();
+        static extern string _gs_getLanguage();
 
         [DllImport("__Internal")]
-        static extern bool _setGlobalErrorListener(IntPtr onErrorActionPtr, GlobalErrorCallbackDelegate errorCallback);
+        static extern bool _gs_setGlobalErrorListener(IntPtr onErrorActionPtr, GlobalErrorCallbackDelegate errorCallback);
 
         [DllImport("__Internal")]
-        static extern bool _removeGlobalErrorListener();
+        static extern bool _gs_removeGlobalErrorListener();
 
         #region external_invites
 
         [DllImport("__Internal")]
-        static extern string _getInviteChannels();
+        static extern string _gs_getInviteChannels();
 
         [DllImport("__Internal")]
-        static extern void _sendInvite(string channelId,
+        static extern void _gs_sendInvite(string channelId,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr, IntPtr onCancelActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _sendInviteCustom(string channelId, string customInviteContentJson,
+        static extern void _gs_sendInviteCustom(string channelId, string customInviteContentJson,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr, IntPtr onCancelActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _sendInviteCustomAndReferralData(string channelId, string customInviteContentJson,
+        static extern void _gs_sendInviteCustomAndReferralData(string channelId, string customInviteContentJson,
             string customReferralDataJson,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr, IntPtr onCancelActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern bool _registerInviteProviderPlugin(string channelId, IntPtr pluginPtr,
+        static extern bool _gs_registerInviteProviderPlugin(string channelId, IntPtr pluginPtr,
             InviteChannelPluginCallbacks.IsAvailableForDeviceDelegate isAvailableForDeviceDelegate,
             InviteChannelPluginCallbacks.PresentChannelInterfaceDelegate presentChannelInterfaceDelegate);
 
         [DllImport("__Internal")]
-        static extern void _getReferralData(
+        static extern void _gs_getReferralData(
             FetchReferralDataCallbackDelegate fetchReferralDataCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         // Invite Callbacks
         [DllImport("__Internal")]
-        public static extern void _executeInviteSuccessCallback(IntPtr inviteSuccessCallbackPtr);
+        public static extern void _gs_executeInviteSuccessCallback(IntPtr inviteSuccessCallbackPtr);
 
         [DllImport("__Internal")]
-        public static extern void _executeInviteCancelledCallback(IntPtr inviteCancelledCallbackPtr);
+        public static extern void _gs_executeInviteCancelledCallback(IntPtr inviteCancelledCallbackPtr);
 
         [DllImport("__Internal")]
-        public static extern void _executeInviteFailedCallback(IntPtr inviteFailedCallbackPtr);
+        public static extern void _gs_executeInviteFailedCallback(IntPtr inviteFailedCallbackPtr);
 
         #endregion
 
         #region push_notifications
 
         [DllImport("__Internal")]
-        static extern bool _registerForPushNotifications();
+        static extern bool _gs_registerForPushNotifications();
 
         [DllImport("__Internal")]
-        static extern bool _setNotificationActionListener(IntPtr listenerPointer,
+        static extern bool _gs_setNotificationActionListener(IntPtr listenerPointer,
             NotificationActionListenerDelegate listener);
 
         #endregion
@@ -436,75 +435,75 @@ namespace GetSocialSdk.Core
         #region external_user_management
 
         [DllImport("__Internal")]
-        static extern bool _setOnUserChangedListener(IntPtr listenerPointer, VoidCallbackDelegate onUserChanged);
+        static extern bool _gs_setOnUserChangedListener(IntPtr listenerPointer, VoidCallbackDelegate onUserChanged);
 
         [DllImport("__Internal")]
-        static extern bool _removeOnUserChangedListener();
+        static extern bool _gs_removeOnUserChangedListener();
 
         [DllImport("__Internal")]
-        static extern string _getUserId();
+        static extern string _gs_getUserId();
 
         [DllImport("__Internal")]
-        static extern bool _isUserAnonymous();
+        static extern bool _gs_isUserAnonymous();
 
         [DllImport("__Internal")]
-        static extern string _getAuthIdentities();
+        static extern string _gs_getAuthIdentities();
 
         [DllImport("__Internal")]
-        static extern void _setUserDisplayName(string displayName, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_setUserDisplayName(string displayName, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern string _getUserDisplayName();
+        static extern string _gs_getUserDisplayName();
 
         [DllImport("__Internal")]
-        static extern void _setUserAvatarUrl(string avatarUrl, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_setUserAvatarUrl(string avatarUrl, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern string _getUserAvatarUrl();
+        static extern string _gs_getUserAvatarUrl();
 
         [DllImport("__Internal")]
-        static extern void _setPublicProperty(string key, string value, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_setPublicProperty(string key, string value, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _setPrivateProperty(string key, string value, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_setPrivateProperty(string key, string value, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _removePublicProperty(string key, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_removePublicProperty(string key, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _removePrivateProperty(string key, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_removePrivateProperty(string key, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern string _getPublicProperty(string key);
+        static extern string _gs_getPublicProperty(string key);
 
         [DllImport("__Internal")]
-        static extern string _getPrivateProperty(string key);
+        static extern string _gs_getPrivateProperty(string key);
 
         [DllImport("__Internal")]
-        static extern bool _hasPublicProperty(string key);
+        static extern bool _gs_hasPublicProperty(string key);
 
         [DllImport("__Internal")]
-        static extern bool _hasPrivateProperty(string key);
+        static extern bool _gs_hasPrivateProperty(string key);
 
         [DllImport("__Internal")]
-        static extern void _addAuthIdentity(string identity,
+        static extern void _gs_addAuthIdentity(string identity,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr,
             OnUserConflictDelegate conflictCallBack, IntPtr onConflictActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _switchUser(string identity,
+        static extern void _gs_switchUser(string identity,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _removeAuthIdentity(string providerId,
+        static extern void _gs_removeAuthIdentity(string providerId,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
@@ -513,26 +512,26 @@ namespace GetSocialSdk.Core
         #region social_graph
 
         [DllImport("__Internal")]
-        static extern void _addFriend(string userId,
+        static extern void _gs_addFriend(string userId,
             IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _removeFriend(string userId,
+        static extern void _gs_removeFriend(string userId,
             IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _isFriend(string userId,
+        static extern void _gs_isFriend(string userId,
             BoolCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _getFriendsCount(IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+        static extern void _gs_getFriendsCount(IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _getFriends(int offset, int limit,
+        static extern void _gs_getFriends(int offset, int limit,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
@@ -541,37 +540,37 @@ namespace GetSocialSdk.Core
         #region activity_feed_internal
 
         [DllImport("__Internal")]
-        static extern void _getAnnouncements(string feed,
+        static extern void _gs_getAnnouncements(string feed,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _getActivitiesWithQuery(string query,
+        static extern void _gs_getActivitiesWithQuery(string query,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _getActivityById(string id,
+        static extern void _gs_getActivityById(string id,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _postActivityToFeed(string feed, string activity,
+        static extern void _gs_postActivityToFeed(string feed, string activity,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _postCommentToActivity(string id, string comment,
+        static extern void _gs_postCommentToActivity(string id, string comment,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _likeActivity(string id, bool isLiked,
+        static extern void _gs_likeActivity(string id, bool isLiked,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _getActivityLikers(string id, int offset, int limit,
+        static extern void _gs_getActivityLikers(string id, int offset, int limit,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
@@ -580,13 +579,13 @@ namespace GetSocialSdk.Core
         #region external_access_helpers
 
         [DllImport("__Internal")]
-        static extern void _resetInternal();
+        static extern void _gs_resetInternal();
 
         [DllImport("__Internal")]
-        static extern void _setHadesConfigurationInternal(int hadesConfigurationType);
+        static extern void _gs_setHadesConfigurationInternal(int hadesConfigurationType);
 
         [DllImport("__Internal")]
-        static extern int _getCurrentHadesConfigurationInternal();
+        static extern int _gs_getCurrentHadesConfigurationInternal();
 
         #endregion
     }

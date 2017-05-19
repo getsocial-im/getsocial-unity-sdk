@@ -79,7 +79,7 @@ namespace GetSocialSdk.Ui
             var serializedInviteContent = _inviteContent == null ? null : _inviteContent.ToJson();
             var serializedCustomReferralData = _customReferralData == null ? null : _customReferralData.ToJson();
 
-            return _showSmartInvitesView(_customWindowTitle, serializedInviteContent, serializedCustomReferralData,
+            return _gs_showSmartInvitesView(_customWindowTitle, serializedInviteContent, serializedCustomReferralData,
                 Callbacks.StringCallback, _onInviteComplete.GetPointer(), _onInviteCancel.GetPointer(),
                 Callbacks.FailureWithDataCallback, _onInviteFailure.GetPointer(),
                 Callbacks.ActionCallback, _onOpen.GetPointer(),
@@ -119,7 +119,7 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _showSmartInvitesView(
+        static extern bool _gs_showSmartInvitesView(
             string title,
             string serializedInviteContent,
             string serializedCustomReferralData,

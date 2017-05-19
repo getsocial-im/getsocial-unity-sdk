@@ -29,9 +29,9 @@ namespace GetSocialSdk.Core
 
             instancePtr.Cast<InviteChannelPlugin>()
                 .PresentChannelInterface(channel, package,
-                    () => { GetSocialNativeBridgeIOS._executeInviteSuccessCallback(onCompletePtr); },
-                    () => { GetSocialNativeBridgeIOS._executeInviteCancelledCallback(onCancelPtr); },
-                    exception => { GetSocialNativeBridgeIOS._executeInviteFailedCallback(onFailurePtr); });
+                    () => { GetSocialNativeBridgeIOS._gs_executeInviteSuccessCallback(onCompletePtr); },
+                    () => { GetSocialNativeBridgeIOS._gs_executeInviteSuccessCallback(onCancelPtr); },
+                    exception => { GetSocialNativeBridgeIOS._gs_executeInviteSuccessCallback(onFailurePtr); });
         }
     }
 }

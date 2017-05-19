@@ -2,10 +2,21 @@
 
 ## Version History
 
+### v6.1.2
+
+**Fixes**:
+
++ Fixed name collisions with other SDKs in iOS build.
+
+---
+
 ### v6.1.1
 
-**Fixed**:
-+ GetSocial Editor errors while copying native libraries.
+**Fixes**:
+
++ Fixed GetSocial Editor errors while copying native libraries.
+
+---
 
 ### v6.1.0
 

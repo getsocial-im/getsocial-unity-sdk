@@ -18,14 +18,14 @@ namespace GetSocialSdk.Ui
                 UiAction actionType = (UiAction) actionTypeOrdinal;
                 ptr.Cast<UiActionListener>()(actionType, () =>
                 {
-                    _doPendingAction();
+                    _gs_doPendingAction();
                 });
             }
 
         }
 
         [DllImport("__Internal")]
-        static extern void _doPendingAction();
+        static extern void _gs_doPendingAction();
     }
 }
 #endif

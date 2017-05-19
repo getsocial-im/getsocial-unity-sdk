@@ -20,39 +20,39 @@ namespace GetSocialSdk.Ui
 
         public bool LoadDefaultConfiguration()
         {
-            return _loadDefaultConfiguration();
+            return _gs_loadDefaultConfiguration();
         }
 
         public bool LoadConfiguration(string filePath)
         {
             var fullPath = Path.Combine(Application.streamingAssetsPath, filePath);
             GetSocialDebugLogger.D("Loading configuration at path: " + fullPath);
-            return _loadConfiguration(fullPath);
+            return _gs_loadConfiguration(fullPath);
         }
 
         public bool CloseView(bool saveViewState)
         {
-            return _closeView(saveViewState);
+            return _gs_closeView(saveViewState);
         }
 
         public bool RestoreView()
         {
-            return _restoreView();
+            return _gs_restoreView();
         }
 
         #endregion
 
         [DllImport("__Internal")]
-        static extern bool _loadDefaultConfiguration();
+        static extern bool _gs_loadDefaultConfiguration();
 
         [DllImport("__Internal")]
-        static extern bool _loadConfiguration(string filePath);
+        static extern bool _gs_loadConfiguration(string filePath);
 
         [DllImport("__Internal")]
-        static extern bool _closeView(bool saveViewState);
+        static extern bool _gs_closeView(bool saveViewState);
 
         [DllImport("__Internal")]
-        static extern bool _restoreView();
+        static extern bool _gs_restoreView();
     }
 }
 #endif

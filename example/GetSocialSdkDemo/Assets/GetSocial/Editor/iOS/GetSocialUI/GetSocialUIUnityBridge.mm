@@ -19,7 +19,7 @@ static GetSocialUIPendingAction sPendingAction = nil;
 extern "C" {
 NS_ASSUME_NONNULL_BEGIN
 
-bool _showSmartInvitesView(
+bool _gs_showSmartInvitesView(
         const char *title,
         const char *serializedInviteContent,
         const char *serializedCustomReferralData,
@@ -81,28 +81,28 @@ bool _showSmartInvitesView(
 
 #pragma mark UI Configuration
 
-bool _loadConfiguration(const char *filePath) {
+bool _gs_loadConfiguration(const char *filePath) {
     NSString *filePathStr = [GetSocialBridgeUtils createNSStringFrom:filePath];
     return [GetSocialUI loadConfiguration:filePathStr];
 }
 
-bool _loadDefaultConfiguration(const char *filePath) {
+bool _gs_loadDefaultConfiguration(const char *filePath) {
     return [GetSocialUI loadDefaultConfiguration];
 }
 
 #pragma mark Close-Open
 
-bool _closeView(bool saveViewState) {
+bool _gs_closeView(bool saveViewState) {
     return [GetSocialUI closeView:saveViewState];
 }
 
-bool _restoreView() {
+bool _gs_restoreView() {
     return [GetSocialUI restoreView];
 }
     
 #pragma mark - Activity Feed
 
-bool _showActivityFeedView(const char *windowTitle,
+bool _gs_showActivityFeedView(const char *windowTitle,
         const char *feed,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
@@ -143,7 +143,7 @@ bool _showActivityFeedView(const char *windowTitle,
     return true;
 }
     
-void _doPendingAction() {
+void _gs_doPendingAction() {
     if (sPendingAction) {
         sPendingAction();
         sPendingAction = nil;

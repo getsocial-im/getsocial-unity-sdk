@@ -11,7 +11,7 @@ extern "C" {
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initialization
-void _init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
+void _gs_init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
     [GetSocialAccessHelper initWithSuccess:^{
@@ -22,12 +22,12 @@ void _init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
     }];
 }
 
-bool _isInitialized()
+bool _gs_isInitialized()
 {
     return [GetSocial isInitialized];
 }
 
-void _getReferralData(FetchReferralDataCallbackDelegate fetchReferralDataCallback, void *onSuccessActionPtr,
+void _gs_getReferralData(FetchReferralDataCallbackDelegate fetchReferralDataCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
     [GetSocial referralDataWithSuccess:^(GetSocialReferralData *referralData) {
@@ -40,25 +40,25 @@ void _getReferralData(FetchReferralDataCallbackDelegate fetchReferralDataCallbac
                                }];
 }
 
-char *_getNativeSdkVersion()
+char *_gs_getNativeSdkVersion()
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocial sdkVersion]];
 }
 
 #pragma mark - Localization
-char *_getLanguage()
+char *_gs_getLanguage()
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocial language]];
 }
 
-bool _setLanguage(const char *languageCode)
+bool _gs_setLanguage(const char *languageCode)
 {
     NSString *languageCodeStr = [GetSocialBridgeUtils createNSStringFrom:languageCode];
     return [GetSocial setLanguage:languageCodeStr];
 }
 
 #pragma mark - Global error handler
-bool _setGlobalErrorListener(void *onErrorActionPtr, GlobalErrorCallbackDelegate errorCallback)
+bool _gs_setGlobalErrorListener(void *onErrorActionPtr, GlobalErrorCallbackDelegate errorCallback)
 {
     return [GetSocial setGlobalErrorHandler:^(NSError *error) {
         const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
@@ -66,13 +66,13 @@ bool _setGlobalErrorListener(void *onErrorActionPtr, GlobalErrorCallbackDelegate
     }];
 }
 
-bool _removeGlobalErrorListener()
+bool _gs_removeGlobalErrorListener()
 {
     return [GetSocial removeGlobalErrorHandler];
 }
 
 #pragma mark - Invites
-char *_getInviteChannels()
+char *_gs_getInviteChannels()
 {
     NSArray<GetSocialInviteChannel *> *channels = [GetSocial inviteChannels];
     NSString *channelsJson = [GetSocialJsonUtils serializeInviteChannelsList:channels];
@@ -80,7 +80,7 @@ char *_getInviteChannels()
     return [GetSocialBridgeUtils createCStringFrom:channelsJson];
 }
 
-void _sendInvite(const char *channelId,
+void _gs_sendInvite(const char *channelId,
         VoidCallbackDelegate completeCallback, void *onCompletePtr, void *onCancelPtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
@@ -96,7 +96,7 @@ void _sendInvite(const char *channelId,
     }];
 }
 
-void _sendInviteCustom(const char *channelId, const char *customInviteContentJson,
+void _gs_sendInviteCustom(const char *channelId, const char *customInviteContentJson,
                        VoidCallbackDelegate completeCallback, void *onCompletePtr, void *onCancelPtr,
                        FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
@@ -116,7 +116,7 @@ void _sendInviteCustom(const char *channelId, const char *customInviteContentJso
 }
 
     
-void _sendInviteCustomAndReferralData(const char *channelId, const char *customInviteContentJson, const char *customReferralDataJson,
+void _gs_sendInviteCustomAndReferralData(const char *channelId, const char *customInviteContentJson, const char *customReferralDataJson,
         VoidCallbackDelegate completeCallback, void *onCompletePtr, void *onCancelPtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
@@ -137,7 +137,7 @@ void _sendInviteCustomAndReferralData(const char *channelId, const char *customI
     }];
 }
 
-bool _registerInviteProviderPlugin(const char *channelId, void *pluginPtr,
+bool _gs_registerInviteProviderPlugin(const char *channelId, void *pluginPtr,
         IsAvailableForDeviceDelegate isAvailableForDevice, PresentChannelInterfaceDelegate presentProviderInterface)
 {
     NSString *channelIdStr = [GetSocialBridgeUtils createNSStringFrom:channelId];
@@ -149,7 +149,7 @@ bool _registerInviteProviderPlugin(const char *channelId, void *pluginPtr,
 
 #pragma mark - Invite Callbacks
 // Invite Callbacks
-void _executeInviteSuccessCallback(void *callback)
+void _gs_executeInviteSuccessCallback(void *callback)
 {
     // transfer pointer ownership to arc
     // more at: http://stackoverflow.com/questions/7036350/arc-and-bridged-cast
@@ -158,7 +158,7 @@ void _executeInviteSuccessCallback(void *callback)
     inviteCompletedCallback();
 }
 
-void _executeInviteCancelledCallback(void *callback)
+void _gs_executeInviteCancelledCallback(void *callback)
 {
     // transfer pointer ownership to arc
     // more at: http://stackoverflow.com/questions/7036350/arc-and-bridged-cast
@@ -167,7 +167,7 @@ void _executeInviteCancelledCallback(void *callback)
     inviteCancelledCallback();
 }
 
-void _executeInviteFailedCallback(void *callback)
+void _gs_executeInviteFailedCallback(void *callback)
 {
     // transfer pointer ownership to arc
     // more at: http://stackoverflow.com/questions/7036350/arc-and-bridged-cast
@@ -179,12 +179,12 @@ void _executeInviteFailedCallback(void *callback)
     
 #pragma mark - Push Notifications
     
-void _registerForPushNotifications()
+void _gs_registerForPushNotifications()
 {
     [GetSocial registerForPushNotifications];
 }
     
-void _setNotificationActionListener(void *listener, NotificationActionListener delegate)
+void _gs_setNotificationActionListener(void *listener, NotificationActionListener delegate)
 {
     [GetSocial setNotificationActionHandler:^BOOL(GetSocialNotificationAction * _Nonnull action) {
         NSString *serialized = [GetSocialJsonUtils serializeNotificationAction:action];
@@ -195,29 +195,29 @@ void _setNotificationActionListener(void *listener, NotificationActionListener d
 
 #pragma mark - User Management
 
-bool _setOnUserChangedListener(void *listener, VoidCallbackDelegate delegate)
+bool _gs_setOnUserChangedListener(void *listener, VoidCallbackDelegate delegate)
 {
     return [GetSocialUser setOnUserChangedHandler:^{
         delegate(listener);
     }];
 }
 
-bool _removeOnUserChangedListener()
+bool _gs_removeOnUserChangedListener()
 {
     return [GetSocialUser removeOnUserChangedHandler];
 }
 
-char *_getUserId()
+char *_gs_getUserId()
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser userId]];
 }
 
-char *_getUserDisplayName()
+char *_gs_getUserDisplayName()
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser displayName]];
 }
 
-void _setUserDisplayName(const char *displayName, VoidCallbackDelegate completeCallback, void *onCompletePtr,
+void _gs_setUserDisplayName(const char *displayName, VoidCallbackDelegate completeCallback, void *onCompletePtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
     [GetSocialUser setDisplayName:[GetSocialBridgeUtils createNSStringFrom:displayName]
@@ -229,7 +229,7 @@ void _setUserDisplayName(const char *displayName, VoidCallbackDelegate completeC
             }];
 }
     
-void _setPublicProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+void _gs_setPublicProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser setPublicPropertyValue:[GetSocialBridgeUtils createNSStringFrom:value]
                                    forKey:[GetSocialBridgeUtils createNSStringFrom:key]
@@ -242,7 +242,7 @@ void _setPublicProperty(const char * key, const char * value, VoidCallbackDelega
 }
     
 
-void _setPrivateProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+void _gs_setPrivateProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser setPrivatePropertyValue:[GetSocialBridgeUtils createNSStringFrom:value]
                                     forKey:[GetSocialBridgeUtils createNSStringFrom:key]
@@ -254,7 +254,7 @@ void _setPrivateProperty(const char * key, const char * value, VoidCallbackDeleg
                                    }];
 }
     
-void _removePublicProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+void _gs_removePublicProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser removePublicPropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]
                                       success:^{
@@ -266,7 +266,7 @@ void _removePublicProperty(const char * key, VoidCallbackDelegate successCallbac
 }
 
 
-void _removePrivateProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+void _gs_removePrivateProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser removePrivatePropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]
                                        success:^{
@@ -277,31 +277,31 @@ void _removePrivateProperty(const char * key, VoidCallbackDelegate successCallba
                                        }];
 }
 
-char * _getPublicProperty(const char * key)
+char * _gs_getPublicProperty(const char * key)
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser publicPropertyValueForKey:[GetSocialBridgeUtils createNSStringFrom:key]]];
 }
-char * _getPrivateProperty(const char * key)
+char * _gs_getPrivateProperty(const char * key)
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser privatePropertyValueForKey:[GetSocialBridgeUtils createNSStringFrom:key]]];
 }
 
-BOOL _hasPublicProperty(const char * key)
+BOOL _gs_hasPublicProperty(const char * key)
 {
     return [GetSocialUser hasPublicPropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]];
 }
 
-BOOL _hasPrivateProperty(const char * key)
+BOOL _gs_hasPrivateProperty(const char * key)
 {
     return [GetSocialUser hasPrivatePropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]];
 }
 
-char *_getUserAvatarUrl()
+char *_gs_getUserAvatarUrl()
 {
     return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser avatarUrl]];
 }
 
-void _setUserAvatarUrl(const char *avatarUrl, VoidCallbackDelegate completeCallback, void *onCompletePtr,
+void _gs_setUserAvatarUrl(const char *avatarUrl, VoidCallbackDelegate completeCallback, void *onCompletePtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
     [GetSocialUser setAvatarUrl:[GetSocialBridgeUtils createNSStringFrom:avatarUrl]
@@ -313,18 +313,18 @@ void _setUserAvatarUrl(const char *avatarUrl, VoidCallbackDelegate completeCallb
             }];
 }
 
-bool _isUserAnonymous()
+bool _gs_isUserAnonymous()
 {
     return [GetSocialUser isAnonymous];
 }
 
-char *_getAuthIdentities()
+char *_gs_getAuthIdentities()
 {
     NSDictionary<NSString *, NSString *> *identities = [GetSocialUser authIdentities];
     return [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeUserIdentities:identities]];
 }
 
-void _addAuthIdentity(const char *identity,
+void _gs_addAuthIdentity(const char *identity,
         VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr,
         OnUserConflictDelegate conflictCallBack, void *onConflictActionPtr)
@@ -343,7 +343,7 @@ void _addAuthIdentity(const char *identity,
     }];
 }
 
-void _switchUser(const char *identity,
+void _gs_switchUser(const char *identity,
         VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -357,7 +357,7 @@ void _switchUser(const char *identity,
     }];
 }
 
-void _removeAuthIdentity(const char *providerId,
+void _gs_removeAuthIdentity(const char *providerId,
         VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -371,14 +371,14 @@ void _removeAuthIdentity(const char *providerId,
     }];
 }
 
-void _resetInternal()
+void _gs_resetInternal()
 {
     [GetSocialAccessHelper reset];
 }
 
 #pragma mark - SocialGraph
 
-void _addFriend(const char *userId,
+void _gs_addFriend(const char *userId,
         IntCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -393,7 +393,7 @@ void _addFriend(const char *userId,
             }];
 }
 
-void _removeFriend(const char *userId,
+void _gs_removeFriend(const char *userId,
         IntCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -408,7 +408,7 @@ void _removeFriend(const char *userId,
             }];
 }
 
-void _isFriend(const char *userId,
+void _gs_isFriend(const char *userId,
         BoolCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -423,7 +423,7 @@ void _isFriend(const char *userId,
             }];
 }
 
-void _getFriendsCount(IntCallbackDelegate successCallback, void *onSuccessActionPtr,
+void _gs_getFriendsCount(IntCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
     [GetSocialUser friendsCountWithSuccess:^(int result) {
@@ -434,7 +434,7 @@ void _getFriendsCount(IntCallbackDelegate successCallback, void *onSuccessAction
     }];
 }
 
-void _getFriends(int offset, int limit,
+void _gs_getFriends(int offset, int limit,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -449,7 +449,7 @@ void _getFriends(int offset, int limit,
 
 #pragma mark - Activity Feed API
 
-void _getAnnouncements(const char *feed,
+void _gs_getAnnouncements(const char *feed,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -466,7 +466,7 @@ void _getAnnouncements(const char *feed,
                             }];
 }
 
-void _getActivitiesWithQuery(const char *query,
+void _gs_getActivitiesWithQuery(const char *query,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -484,7 +484,7 @@ void _getActivitiesWithQuery(const char *query,
                            }];
 }
 
-void _getActivityById(const char *activityId,
+void _gs_getActivityById(const char *activityId,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -500,7 +500,7 @@ void _getActivityById(const char *activityId,
                       }];
 }
 
-void _postActivityToFeed(const char *feedId, const char *activityContent,
+void _gs_postActivityToFeed(const char *feedId, const char *activityContent,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -520,7 +520,7 @@ void _postActivityToFeed(const char *feedId, const char *activityContent,
                     }];
 }
 
-void _postCommentToActivity(const char *activityId, const char *comment,
+void _gs_postCommentToActivity(const char *activityId, const char *comment,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -541,7 +541,7 @@ void _postCommentToActivity(const char *activityId, const char *comment,
                    }];
 }
 
-void _likeActivity(const char *activityId, bool isLiked,
+void _gs_likeActivity(const char *activityId, bool isLiked,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -558,7 +558,7 @@ void _likeActivity(const char *activityId, bool isLiked,
                           }];
 }
 
-void _getActivityLikers(const char *activityId, int offset, int limit,
+void _gs_getActivityLikers(const char *activityId, int offset, int limit,
         StringCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
@@ -577,12 +577,12 @@ void _getActivityLikers(const char *activityId, int offset, int limit,
 }
 
 #pragma mark - Hades Configuration
-void _setHadesConfigurationInternal(int hadesConfigurationType)
+void _gs_setHadesConfigurationInternal(int hadesConfigurationType)
 {
     [GetSocialAccessHelper setHadesConfigurationInt:hadesConfigurationType];
 }
 
-int _getCurrentHadesConfigurationInternal()
+int _gs_getCurrentHadesConfigurationInternal()
 {
     return [GetSocialAccessHelper currentHadesConfigurationInt];
 }

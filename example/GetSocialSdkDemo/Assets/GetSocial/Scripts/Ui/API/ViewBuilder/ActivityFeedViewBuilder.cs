@@ -43,7 +43,7 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _showActivityFeedView(_customWindowTitle, _feed,
+            return _gs_showActivityFeedView(_customWindowTitle, _feed,
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
                 _onButtonClicked.GetPointer(),
                 Callbacks.ActionCallback,
@@ -76,7 +76,7 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _showActivityFeedView(string customWindowTitle, string feed,
+        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed,
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
