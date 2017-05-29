@@ -2,6 +2,22 @@
 
 ## Version History
 
+### v6.2.0
+
+**Added**:
+
++ Added `ActivityDetailsView`, now you can open activity comments from code.
++ Added `WhenInitialized` method to be able to execute any action right after SDK is initialized.
++ Added `setAvatarClickListener` method to `ActivityFeedView` and `ActivityDetailsView`. You can use this method to get notified if a user clicked on a user's avatar.
++ Added `Image` property to `InviteContent.Builder` to set invite image using binaries.
++ Facebook and Kakao plugins share image as well in Smart Invites.
+
+**Fixes**:
+
++ Fixed issues with full screen activity.
+
+---
+
 ### v6.1.2
 
 **Fixes**:

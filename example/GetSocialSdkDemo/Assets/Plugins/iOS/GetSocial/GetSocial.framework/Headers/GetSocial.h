@@ -8,7 +8,6 @@
 #import <GetSocial/GetSocialInvitePackage.h>
 #import <GetSocial/GetSocialInviteChannelPlugin.h>
 #import <GetSocial/GetSocialMutableInviteContent.h>
-#import <GetSocial/AnalyticsTrackManager.h>
 #import <GetSocial/GetSocialConflictUser.h>
 #import <GetSocial/GetSocialUser.h>
 #import <GetSocial/GetSocialAuthIdentity.h>
@@ -24,6 +23,7 @@
 #import <GetSocial/GetSocialReferralData.h>
 #import <GetSocial/GetSocialNotificationAction.h>
 #import <GetSocial/GetSocialOpenActivityAction.h>
+#import <GetSocial/GetSocialOpenProfileAction.h>
 
 /*!
  * @abstract Main interface of GetSocial.framework
@@ -41,6 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initialization
 /** @name Initialization */
+
+/*!
+ * @abstract Set an action, which should be executed after SDK initialized.
+ * Executed immediately, if SDK is already initialized.
+ * @param action Action to execute.
+ */
++ (void)executeWhenInitialized:(void(^)())action;
 
 /*!
  * @abstract Provides the status of GetSocial Framework initialization.

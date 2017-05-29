@@ -6,6 +6,7 @@
 
 #import <Foundation/Foundation.h>
 #import <GetSocial/GetSocialActivityPost.h>
+#import <GetSocial/GetSocialPublicUser.h>
 
 /*!
  * @typedef GetSocialUIAction
@@ -31,6 +32,12 @@ typedef NS_ENUM(NSInteger, GetSocialUIActionType) {
  *
  */
 typedef void(^ActivityButtonActionHandler)(NSString *action, GetSocialActivityPost *post);
+
+/*!
+ *  @typedef void(^AvatarClickHandler)(GetSocialPublicUser *user)
+ *  @abstract The typedef defines block that is called when user clicked on any user avatar.
+ */
+typedef void(^AvatarClickHandler)(GetSocialPublicUser *user);
 
 /*!
  * @typedef void (^GetSocialUIPendingAction)()

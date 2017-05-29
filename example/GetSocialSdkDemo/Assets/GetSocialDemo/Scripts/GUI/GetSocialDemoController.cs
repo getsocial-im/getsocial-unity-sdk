@@ -133,6 +133,12 @@ public class GetSocialDemoController : MonoBehaviour
         GetSocial.SetNotificationActionListener(action =>
         {
             Debug.Log("Notification received: " + action.Type);
+            if (action.Type == NotificationAction.ActionType.OpenProfile)
+            {
+                OpenProfileAction openProfile = (OpenProfileAction) action;
+                _console.LogD("New friend if " + openProfile.UserId);
+                return true;
+            }
             return false;
         });
 
@@ -152,6 +158,14 @@ public class GetSocialDemoController : MonoBehaviour
         {
             _console.LogD(string.Format("GetSocial is initialized and user is retrieved"));
             FetchCurrentUserData();
+        });
+
+        GetSocial.WhenInitialized(() =>
+        {
+            GetSocial.GetReferralData(
+                data => _console.LogD("Referral data: " + data),
+                error => _console.LogE("Failed to get referral data: " + error.Message)
+            );
         });
     }
 

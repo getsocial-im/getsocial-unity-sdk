@@ -18,6 +18,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using GetSocialSdk.Core;
 
 namespace GetSocialSdk.Editor
@@ -54,6 +55,11 @@ namespace GetSocialSdk.Editor
         const string ImageContentProviderName = "im.getsocial.sdk.invites.ImageContentProvider";
         const string ImageContentProviderFormat = "{0}.smartinvite.images.provider";
 
+        const string CdmPermissionMessageName = "{0}.permission.C2D_MESSAGE";
+        const string CdmPermissionAndroidWakeLock = "android.permission.WAKE_LOCK";
+        const string CdmPermissionReceive = "com.google.android.c2dm.permission.RECEIVE";
+
+
         const string AppIdMetaTagName = "im.getsocial.sdk.AppId";
         const string SdkRuntimeMetaTagName = "im.getsocial.sdk.Runtime";
         const string SdkRuntimeVersionMetaTagName = "im.getsocial.sdk.RuntimeVersion";
@@ -71,6 +77,7 @@ namespace GetSocialSdk.Editor
         static bool _isGetSocialDeepLinkingActivityPresent;
         static bool _isImageContentProviderPresent;
         static bool _isInstallReferrerReceiverPresent;
+        static bool _areCdmPermissionsPresent;
         static bool _areDataApiDependencyLibsPresent;
         static bool _areUiDependencyLibsPresent;
 
@@ -91,7 +98,7 @@ namespace GetSocialSdk.Editor
             var androidManifest = new AndroidManifest(ManifestPathInProject);
 
             // basics
-            _areBasicPermissionsPresent = androidManifest.ContainsPermissions(AndroidManifest.InternetPermission, AndroidManifest.AccessNetoworkStatePermission);
+            _areBasicPermissionsPresent = androidManifest.ContainsUsesPermissions(AndroidManifest.InternetPermission, AndroidManifest.AccessNetoworkStatePermission);
 
             _areMetaTagsPresent = androidManifest.ContainsMetaTag(AppIdMetaTagName, GetSocialSettings.AppId);
             _areMetaTagsPresent &= androidManifest.ContainsMetaTag(SdkRuntimeMetaTagName, "UNITY");
@@ -108,6 +115,10 @@ namespace GetSocialSdk.Editor
 
             // install tracking
             _isInstallReferrerReceiverPresent = androidManifest.ContainsReceiver(InstallReferrerReceiverName);
+
+            // GCM permissions(optional)
+            _areCdmPermissionsPresent = androidManifest.ContainsUsesPermissions(CdmPermissionAndroidWakeLock, CdmPermissionReceive, string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier)) &&
+                                        androidManifest.CheckIfPermissionPresent(string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier));
         }
 
 
@@ -146,6 +157,7 @@ namespace GetSocialSdk.Editor
             DrawBasicFixes();
             DrawSmartInvitesFixes();
             DrawDeepLinkingFixes();
+            DrawCdmPermissionsFixes();
         }
 
         static void DrawBasicFixes()
@@ -177,6 +189,12 @@ namespace GetSocialSdk.Editor
             DrawFixBox(_isInstallReferrerReceiverPresent, "InstallReferrerReceiver added", drawFixReferrerReceiver);
         }
 
+        private static void DrawCdmPermissionsFixes()
+        {
+            Action drawFixCdmPermissions = () => DrawFixProjectConfigurationMessage("CDM permissions must be present to have Push Notifications working with Google Cloud Messaging(not needed for Firebase)", "Add CDM Permissions(GCM only)", AddCdmPermissions);
+            DrawFixBox(_areCdmPermissionsPresent, "CDM permissions added", drawFixCdmPermissions);
+        }
+
         #endregion
 
 
@@ -189,7 +207,7 @@ namespace GetSocialSdk.Editor
         static void AddRequiredPermissions()
         {
             UseAndroidManifest(androidManifest =>
-                androidManifest.AddPermissions(AndroidManifest.InternetPermission, AndroidManifest.AccessNetoworkStatePermission)
+                androidManifest.AddUsesPermissions(AndroidManifest.InternetPermission, AndroidManifest.AccessNetoworkStatePermission)
             );
         }
 
@@ -275,6 +293,34 @@ namespace GetSocialSdk.Editor
             UseAndroidManifest(androidManifest =>
                 androidManifest.AddInstallReferrerReceiver(InstallReferrerReceiverName)
             );
+        }
+
+       /*
+        *    <permission
+        *        android:name="${applicationId}.permission.C2D_MESSAGE"
+        *        android:protectionLevel="0x2" />
+        *    <uses-permission
+        *        android:name="android.permission.WAKE_LOCK" />
+        *    <uses-permission
+        *        android:name="com.google.android.c2dm.permission.RECEIVE" />
+        *    <uses-permission
+        *        android:name="${applicationId}.permission.C2D_MESSAGE" />
+        *
+        */
+        static void AddCdmPermissions()
+        {
+            UseAndroidManifest(androidManifest =>
+            {
+                androidManifest.AddPermission(string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier), new Dictionary<string, string>()
+                {
+                    {"protectionLevel", "0x2"}
+                });
+                androidManifest.AddUsesPermissions(
+                    CdmPermissionAndroidWakeLock,
+                    CdmPermissionReceive,
+                    string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier)
+                );
+            });
         }
 
         #endregion

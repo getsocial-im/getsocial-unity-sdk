@@ -11,6 +11,14 @@ extern "C" {
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initialization
+    
+void _gs_executeWhenInitialized(VoidCallbackDelegate action, void *actionPtr)
+{
+    [GetSocial executeWhenInitialized:^() {
+        action(actionPtr);
+    }];
+}
+    
 void _gs_init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {

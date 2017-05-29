@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
 {
@@ -179,14 +180,12 @@ namespace GetSocialSdk.Core
 
         public static Texture2D FromAndroidBitmap(this AndroidJavaObject bitmapAJO)
         {
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            byte[] byteArray = stream.toByteArray();
+            return new AndroidJavaClass("im.getsocial.sdk.unity.BitmapFactory").CallStaticStr("encodeBase64", bitmapAJO).FromBase64();
+        }
 
-            // TODO implement
-            var tex = new Texture2D(1, 1);
-            tex.LoadImage(null);
-            return tex;
+        public static AndroidJavaObject ToAjoBitmap(this Texture2D texture2D)
+        {
+            return new AndroidJavaClass("im.getsocial.sdk.unity.BitmapFactory").CallStaticAJO("decodeBase64", texture2D.TextureToBase64());
         }
     }
 }

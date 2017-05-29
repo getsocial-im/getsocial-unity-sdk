@@ -19,6 +19,11 @@
 @property(nonatomic, readonly) NSString *imageUrl;
 
 /*!
+ * @abstract Image to use.
+ */
+@property(nonatomic, readonly) UIImage *image;
+
+/*!
  * @abstract Subject to use.
  */
 @property(nonatomic, readonly) NSString *subject;

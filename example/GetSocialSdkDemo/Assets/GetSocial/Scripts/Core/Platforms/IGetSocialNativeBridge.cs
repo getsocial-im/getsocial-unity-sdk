@@ -8,6 +8,8 @@ namespace GetSocialSdk.Core
 
         #region initialization
 
+        void WhenInitialized(Action action);
+
         bool IsInitialized { get; }
 
         void Init(Action onSuccess, Action<GetSocialError> onFailure);
@@ -150,5 +152,6 @@ namespace GetSocialSdk.Core
         int GetCurrentHadesConfiguration();
 
         #endregion
+
     }
 }

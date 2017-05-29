@@ -22,11 +22,18 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)viewForFeed:(NSString *)feed;
 
 /*!
- *  @abstract Sets an action listener, that will be called if button on Activity Feed is pressed.
+ *  @abstract Sets an action handler, that will be called if button on Activity Feed is pressed.
  *
  *  @param buttonActionHandler block that will be called.
  */
 - (void)setActionButtonHandler:(ActivityButtonActionHandler)buttonActionHandler;
+
+/*!
+ *  @abstract Sets a handler, that will be called if user clicks on any user avatar.
+ *
+ *  @param avatarClickHandler block that will be called.
+ */
+- (void)setAvatarClickHandler:(AvatarClickHandler)avatarClickHandler;
 
 NS_ASSUME_NONNULL_END
 

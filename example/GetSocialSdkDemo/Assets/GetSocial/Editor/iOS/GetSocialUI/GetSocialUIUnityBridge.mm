@@ -12,6 +12,8 @@ typedef void(ActivityActionButtonClickedDelegate)(void *actionPtr, const char *b
 
 typedef void(UiActionListenerDelegate)(void *listenerPtr, int actionType);
 
+typedef void(AvatarClickListenerDelegate)(void *listenerPtr, const char *serializedPublicUser);
+
 static GetSocialUIPendingAction sPendingAction = nil;
 
 #pragma clang diagnostic push
@@ -75,8 +77,7 @@ bool _gs_showSmartInvitesView(
         }];
     }
 
-    [invitesView show];
-    return true;
+    return [invitesView show];
 }
 
 #pragma mark UI Configuration
@@ -107,7 +108,8 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
         VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
-        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr) {
+        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
+        AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr) {
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
@@ -131,6 +133,13 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         }];
     }
     
+    if (avatarClickListener) {
+        [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
+            NSString *serializedUser = [GetSocialJsonUtils serializePublicUser:user];
+            avatarClickListener(avatarClickListenerPtr, serializedUser.UTF8String);
+        }];
+    }
+    
     if (onOpenActionPtr || onCloseActionPtr) {
         [view setHandlerForViewOpen:^{
             onOpenAction(onOpenActionPtr);
@@ -139,8 +148,56 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         }];
     }
     
-    [view show];
-    return true;
+    return [view show];
+}
+    
+bool _gs_showActivityDetailsView(const char *windowTitle,
+                              const char *activityId,
+                              bool showFeedView,
+                              ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
+                              VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+                              VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+                              UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
+                              AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr) {
+    NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
+    
+    GetSocialUIActivityDetailsView *view = [GetSocialUI createActivityDetailsView:activityIdStr];
+    
+    if (windowTitle) {
+        NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
+        view.windowTitle = titleStr;
+    }
+    
+    if (onButtonClickPtr) {
+        [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
+            NSString *serializedPost = [GetSocialJsonUtils serializeActivityPost: post];
+            callback(onButtonClickPtr, action.UTF8String, serializedPost.UTF8String);
+        }];
+    }
+    
+    if (uiActionListenerPtr) {
+        [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+            sPendingAction = pendingAction;
+            uiActionListener(uiActionListenerPtr, (int) actionType);
+        }];
+    }
+    
+    if (onOpenActionPtr || onCloseActionPtr) {
+        [view setHandlerForViewOpen:^{
+            onOpenAction(onOpenActionPtr);
+        } close:^{
+            onCloseAction(onCloseActionPtr);
+        }];
+    }
+    if (avatarClickListener) {
+        [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
+            NSString *serializedUser = [GetSocialJsonUtils serializePublicUser:user];
+            avatarClickListener(avatarClickListenerPtr, serializedUser.UTF8String);
+        }];
+    }
+    
+    [view setShowActivityFeedView:showFeedView];
+    return [view show];
 }
     
 void _gs_doPendingAction() {

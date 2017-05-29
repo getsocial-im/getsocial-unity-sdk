@@ -14,6 +14,11 @@ namespace GetSocialSdk.Core
             get { return _instance ?? (_instance = new GetSocialNativeBridgeIOS()); }
         }
 
+        public void WhenInitialized(Action action)
+        {
+            _gs_executeWhenInitialized(Callbacks.ActionCallback, action.GetPointer());
+        }
+
         public bool IsInitialized
         {
             get { return _gs_isInitialized(); }
@@ -353,6 +358,9 @@ namespace GetSocialSdk.Core
 
 
         #region external_init
+
+        [DllImport("__Internal")]
+        static extern void _gs_executeWhenInitialized(VoidCallbackDelegate action, IntPtr actionPtr);
 
         [DllImport("__Internal")]
         static extern void _gs_init(VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,

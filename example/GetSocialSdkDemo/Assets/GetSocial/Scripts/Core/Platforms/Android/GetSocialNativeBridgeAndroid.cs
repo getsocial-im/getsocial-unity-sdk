@@ -31,6 +31,11 @@ namespace GetSocialSdk.Core
 
         #region initialization
 
+        public void WhenInitialized(Action action)
+        {
+            _getSocial.CallStatic("whenInitialized", new RunnableProxy(action));
+        }
+
         public bool IsInitialized
         {
             get { return _getSocial.CallStaticBool("isInitialized"); }

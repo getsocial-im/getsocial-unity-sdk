@@ -54,6 +54,8 @@
     [self setNullableValueForDictionary:inviteContentDic key:@"ImageUrl" value:inviteContent.imageUrl];
     [self setNullableValueForDictionary:inviteContentDic key:@"Subject" value:inviteContent.subject];
     [self setNullableValueForDictionary:inviteContentDic key:@"Text" value:inviteContent.text];
+    NSString *imageBase64 = [GetSocialBridgeUtils encodeToBase64String:inviteContent.image];
+    [self setNullableValueForDictionary:inviteContentDic key:@"Image" value:imageBase64];
     return inviteContentDic;
 }
 
@@ -67,8 +69,16 @@
             dictionary = @{
                            @"Type": @"OPEN_ACTIVITY",
                            @"ActivityId": openActivity.activityId
-                               };
+                           };
             break;
+        }
+        case GetSocialNotificationActionOpenProfile:
+        {
+            GetSocialOpenProfileAction *openProfile = (GetSocialOpenProfileAction *)action;
+            dictionary = @{
+                           @"Type": @"OPEN_PROFILE",
+                           @"UserId": openProfile.userId
+                           };
         }
             
         default:
@@ -178,6 +188,7 @@
 
     NSString *imageBase64 = [GetSocialBridgeUtils encodeToBase64String:[invitePackage image]];
     [self setNullableValueForDictionary:invitePackageDic key:@"Image" value:imageBase64];
+    [self setNullableValueForDictionary:invitePackageDic key:@"ImageUrl" value:invitePackage.imageUrl];
 
     return [self serializeDictionary:invitePackageDic];
 }
@@ -232,6 +243,7 @@
     content.subject = json[@"Subject"];
     content.imageUrl = json[@"ImageUrl"];
     content.text = json[@"Text"];
+    content.image = [GetSocialBridgeUtils decodeUIImageFrom:json[@"Image"]];
 
     return content;
 }

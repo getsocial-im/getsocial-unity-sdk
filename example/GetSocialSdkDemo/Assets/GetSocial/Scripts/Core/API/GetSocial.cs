@@ -77,6 +77,16 @@ namespace GetSocialSdk.Core
         #region initialization
 
         /// <summary>
+        /// Set an action, which should be executed after SDK initialized.
+        /// Executed immediately, if SDK is already initialized.
+        /// </summary>
+        /// <param name="action">Action to execute.</param>
+        public static void WhenInitialized(Action action)
+        {
+            GetSocialImpl.WhenInitialized(action);
+        }
+
+        /// <summary>
         /// Provides the status of the GetSocial initialisation.
         /// </summary>
         /// <returns><c>true</c> if <see cref="Init(System.Action,System.Action{string})"/>has completed successfully; otherwise, <c>false</c>.</returns>

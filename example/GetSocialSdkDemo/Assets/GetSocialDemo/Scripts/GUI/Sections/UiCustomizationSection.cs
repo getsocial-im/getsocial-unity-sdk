@@ -36,7 +36,8 @@ public class UiCustomizationSection : DemoMenuSection
         _buttons = new Dictionary<string, Action>
         {
             { "Load Default UI", SetDefaultConfig },
-            { "Load Ruzzle UI", LoadRuzzleUI }
+            { "Load Ruzzle UI", LoadRuzzleUI },
+            { "Load Fancy Dogs UI", LoadFancyDogsUI }
         };
     }
 
@@ -65,7 +66,21 @@ public class UiCustomizationSection : DemoMenuSection
         bool result = GetSocialUi.LoadConfiguration("ruzzle/ruzzle.json");
         if (result)
         {
-            _console.LogD("Successfully loaded default configuration");
+            _console.LogD("Successfully loaded Ruzzle UI configuration");
+        }
+        else
+        {
+            _console.LogE("Failed load default configuration");
+        }
+    }
+
+    void LoadFancyDogsUI()
+    {
+        Screen.orientation = ScreenOrientation.Portrait;
+        bool result = GetSocialUi.LoadConfiguration("fancydogs/default.json");
+        if (result)
+        {
+            _console.LogD("Successfully loaded Fancy Dogs UI configuration");
         }
         else
         {

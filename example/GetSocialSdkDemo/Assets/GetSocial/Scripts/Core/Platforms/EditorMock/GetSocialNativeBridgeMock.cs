@@ -21,6 +21,11 @@ namespace GetSocialSdk.Core
             get { return _instance ?? (_instance = new GetSocialNativeBridgeMock()); }
         }
 
+        public void WhenInitialized(Action action)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), action);
+        }
+
         public bool IsInitialized
         {
             get { return false; }

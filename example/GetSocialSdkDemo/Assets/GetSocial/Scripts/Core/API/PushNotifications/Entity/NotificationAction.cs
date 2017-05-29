@@ -11,9 +11,14 @@ namespace GetSocialSdk.Core
         public enum ActionType
         {
             /// <summary>
-            /// Action is type of OpenActivityAction, Activity with provided identifier should be opened.
+            /// Action is type of <see cref="OpenActivityAction"/>, Activity with provided identifier should be opened.
             /// </summary>
-            OpenActivity = 0
+            OpenActivity = 0,
+
+            /// <summary>
+            /// Action is type of <see cref="OpenProfileAction"/>, Profile with provided identifier should be opened.
+            /// </summary>
+            OpenProfile
         }
 
         public virtual ActionType Type {
@@ -39,6 +44,9 @@ namespace GetSocialSdk.Core
                 case ActionType.OpenActivity:
                     return new OpenActivityAction(ajo.CallStr("getActivityId"));
 
+                case ActionType.OpenProfile:
+                    return new OpenProfileAction(ajo.CallStr("getUserId"));
+
                 default:
                     return null;
             }
@@ -58,6 +66,9 @@ namespace GetSocialSdk.Core
             {
                 case "OPEN_ACTIVITY":
                     return new OpenActivityAction(dictionary["ActivityId"] as string);
+
+                case "OPEN_PROFILE":
+                    return new OpenProfileAction(dictionary["UserId"] as string);
 
                 default:
                     return null;

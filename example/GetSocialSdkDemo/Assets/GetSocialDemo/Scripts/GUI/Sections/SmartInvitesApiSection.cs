@@ -30,6 +30,13 @@ public class SmartInvitesApiSection : DemoMenuSection
     string _key1 = "key1", _key2 = "key2", _key3 = "key3";
     string _value1 = "value1", _value2 = "value2", _value3 = "value3";
 
+    Texture2D _image;
+
+    Texture2D Image
+    {
+        get { return _image ?? (_image = Resources.Load<Texture2D>("activityImage")); }
+    }
+
     InviteChannel[] _currentInviteChannels = { };
 
     public string CustomTitle
@@ -54,11 +61,10 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         get
         {
-            var randomImageUrl = string.Format("http://api.adorable.io/avatars/150/{0}", SystemInfo.deviceUniqueIdentifier);
             return InviteContent.CreateBuilder()
                 .WithSubject(_customWindowTitle)
                 .WithText(_customText)
-                .WithImageUrl(randomImageUrl)
+                .WithImage(Image)
                 .Build();
         }
     }

@@ -21,6 +21,12 @@ namespace GetSocialSdk.Core
         public string ImageUrl { get; private set; }
 
         /// <summary>
+        /// Gets the image.
+        /// </summary>
+        /// <value>Invite content image.</value>
+        public Texture2D Image { get; private set; }
+
+        /// <summary>
         /// Gets the subject of ivite.
         /// </summary>
         /// <value>The subject of invite.</value>
@@ -34,7 +40,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return string.Format("[InviteContent: ImageUrl={0}, Subject={1}, Text={2}]", ImageUrl, Subject, Text);
+            return string.Format("[InviteContent: ImageUrl={0}, Subject={1}, Text={2}, HasImage={3}]", ImageUrl, Subject, Text, Image != null);
         }
 
         /// <summary>
@@ -52,8 +58,8 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Sets the invite subject.
             /// </summary>
-            /// <returns>The builder instance.</returns>
             /// <param name="subject">Invite subject.</param>
+            /// <returns>The builder instance.</returns>
             public Builder WithSubject(string subject)
             {
                 _inviteContent.Subject = subject;
@@ -63,8 +69,8 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Sets the invite text.
             /// </summary>
-            /// <returns>The builder instance.</returns>
             /// <param name="text">Invite text.</param>
+            /// <returns>The builder instance.</returns>
             public Builder WithText(string text)
             {
                 _inviteContent.Text = text;
@@ -72,13 +78,26 @@ namespace GetSocialSdk.Core
             }
 
             /// <summary>
-            /// Sets the invite iamge url.
+            /// Sets the invite image url. Can not be used with <see cref="WithImage"/>.
             /// </summary>
-            /// <returns>The builder instance.</returns>
             /// <param name="imageUrl">Invite image url.</param>
+            /// <returns>The builder instance.</returns>
             public Builder WithImageUrl(string imageUrl)
             {
                 _inviteContent.ImageUrl = imageUrl;
+                _inviteContent.Image = null;
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the invite image. Can not be used with <see cref="WithImageUrl"/>.
+            /// </summary>
+            /// <param name="image">Invite image</param>
+            /// <returns>The builder instance.</returns>
+            public Builder WithImage(Texture2D image)
+            {
+                _inviteContent.Image = image;
+                _inviteContent.ImageUrl = null;
                 return this;
             }
 
@@ -90,11 +109,13 @@ namespace GetSocialSdk.Core
                 return new InviteContent
                 {
                     ImageUrl = _inviteContent.ImageUrl,
+                    Image = _inviteContent.Image,
                     Subject = _inviteContent.Subject,
                     Text = _inviteContent.Text
                 };
             }
         }
+
 
 #if UNITY_ANDROID
         public UnityEngine.AndroidJavaObject ToAJO()
@@ -109,6 +130,10 @@ namespace GetSocialSdk.Core
             {
                 inviteContentBuilderAJO.CallAJO("withImageUrl", ImageUrl);
             }
+            if (Image != null)
+            {
+                inviteContentBuilderAJO.CallAJO("withImage", Image.ToAjoBitmap());
+            }
             if (Text != null)
             {
                 inviteContentBuilderAJO.CallAJO("withText", Text);
@@ -116,7 +141,7 @@ namespace GetSocialSdk.Core
             return inviteContentBuilderAJO.CallAJO("build");
         }
 
-        public InviteContent ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public InviteContent ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
             {
@@ -127,6 +152,9 @@ namespace GetSocialSdk.Core
 
                 var textAjo = ajo.CallAJO("getText");
                 Text = textAjo.IsJavaNull() ? null : textAjo.FromLocalizableText();
+
+                var image = ajo.CallAJO("getImage");
+                Image = image.IsJavaNull() ? null : image.FromAndroidBitmap();
             }
             return this;
         }
@@ -137,7 +165,8 @@ namespace GetSocialSdk.Core
             {
                 {SubjectFieldName, Subject},
                 {TextFieldName, Text},
-                {ImageUrlFieldName, ImageUrl}
+                {ImageUrlFieldName, ImageUrl},
+                {ImageFieldName, Image.TextureToBase64()}
             };
             return GSJson.Serialize(jsonDic);
         }
@@ -152,6 +181,7 @@ namespace GetSocialSdk.Core
             Subject = jsonDic[SubjectFieldName] as string;
             Text = jsonDic[TextFieldName] as string;
             ImageUrl = jsonDic[ImageUrlFieldName] as string;
+            Image = (jsonDic[ImageFieldName] as string).FromBase64();
 
             return this;
         }
@@ -169,6 +199,11 @@ namespace GetSocialSdk.Core
         static string ImageUrlFieldName
         {
             get { return ReflectionUtils.GetMemberName((InviteContent c) => c.ImageUrl); }
+        }
+
+        static string ImageFieldName
+        {
+            get { return ReflectionUtils.GetMemberName((InviteContent c) => c.Image); }
         }
 #endif
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
 {
@@ -37,12 +38,17 @@ namespace GetSocialSdk.Core
         /// <value>The invite image.</value>
         public UnityEngine.Texture2D Image { get; private set; }
 
+        /// <summary>
+        /// Gets the url of the invite image.
+        /// </summary>
+        /// <value>The url of invite image.</value>
+        public string ImageUrl { get; private set; }
 
         public override string ToString()
         {
             return string.Format(
-                "[InvitePackage: Subject={0}, Text={1}, UserName={2}, Image={3}, ReferralDataUrl={4}]",
-                Subject, Text, UserName, Image, ReferralDataUrl);
+                "[InvitePackage: Subject={0}, Text={1}, UserName={2}, HasImage={3}, ImageUrl={4}, ReferralDataUrl={5}]",
+                Subject, Text, UserName, Image != null, ImageUrl, ReferralDataUrl);
         }
 
 #if UNITY_ANDROID
@@ -62,6 +68,7 @@ namespace GetSocialSdk.Core
                 UserName = ajo.CallStr("getUserName");
                 ReferralDataUrl = ajo.CallStr("getReferralUrl");
                 Image = ajo.CallAJO("getImage").FromAndroidBitmap();
+                ImageUrl = ajo.CallStr("getImageUrl");
             }
             return this;
         }
@@ -79,7 +86,8 @@ namespace GetSocialSdk.Core
             Text = dict[TextFieldName] as string;
             UserName = dict[UserNameFieldName] as string;
             ReferralDataUrl = dict[ReferralDataUrlFieldName] as string;
-            Image = IOSUtils.FromBase64(dict[ImageFieldName] as string);
+            Image = (dict[ImageFieldName] as string).FromBase64();
+            ImageUrl = dict[ImageUrlFieldName] as string;
             return this;
         }
 
@@ -106,6 +114,11 @@ namespace GetSocialSdk.Core
         static string ImageFieldName
         {
             get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.Image); }
+        }
+
+        static string ImageUrlFieldName
+        {
+            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.ImageUrl); }
         }
 
 #endif

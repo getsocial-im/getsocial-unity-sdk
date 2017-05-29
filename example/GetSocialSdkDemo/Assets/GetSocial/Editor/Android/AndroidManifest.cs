@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 
@@ -81,22 +82,27 @@ namespace GetSocialSdk.Editor
             _androidNamespace = _applicationNode.GetNamespaceOfPrefix("android");
         }
 
-        public bool ContainsPermissions(params string[] permissions)
+        public bool ContainsUsesPermissions(params string[] permissions)
         {
             var result = true;
             foreach (var permission in permissions)
             {
-                result &= CheckIfPermissionPresent(permission);
+                result &= CheckIfUsesPermissionPresent(permission);
             }
             return result;
         }
 
-        public void AddPermissions(params string[] permissions)
+        public void AddUsesPermissions(params string[] permissions)
         {
             foreach (var permission in permissions)
             {
-                AddPermissionIfMissing(permission);
+                AddUsesPermissionIfMissing(permission);
             }
+        }
+
+        public void AddPermission(string permission, Dictionary<string, string> extraParams = null)
+        {
+            AddPermissionIfMissing(permission, extraParams);
         }
 
         public bool ContainsMetaTag(string name, string value)
@@ -227,12 +233,13 @@ namespace GetSocialSdk.Editor
 
         #region private methods
 
-        bool CheckIfPermissionPresent(string permission)
+        bool CheckIfUsesPermissionPresent(string permission)
         {
             return CheckIfElementPresent(UsesPermissionElementName, "name", permission, _applicationNode.ParentNode);
         }
 
-        void AddPermissionIfMissing(string permission)
+
+        void AddUsesPermissionIfMissing(string permission)
         {
             XmlElement permissionNode = FindElementWithAttribute(UsesPermissionElementName, "name", permission, _androidNamespace, _manifestNode);
             if (permissionNode == null)
@@ -243,6 +250,28 @@ namespace GetSocialSdk.Editor
             }
         }
 
+        public bool CheckIfPermissionPresent(string permission)
+        {
+            return CheckIfElementPresent(PermissionElementName, "name", permission, _applicationNode.ParentNode);
+        }
+
+        void AddPermissionIfMissing(string permission, Dictionary<string, string> extraParams = null)
+        {
+            XmlElement permissionNode = FindElementWithAttribute(PermissionElementName, "name", permission, _androidNamespace, _manifestNode);
+            if (permissionNode == null)
+            {
+                LogNotFoundMessage(permission);
+                permissionNode = CreateElementWithName(_manifestNode.OwnerDocument, PermissionElementName, permission, _androidNamespace);
+                if (extraParams != null)
+                {
+                    foreach (KeyValuePair<string, string> attribute in extraParams)
+                    {
+                        permissionNode.SetAttribute(attribute.Key, attribute.Value);
+                    }
+                }
+                _manifestNode.AppendChild(permissionNode);
+            }
+        }
 
         bool CheckIfElementPresent(string name, string attributeName, string attributeValue, XmlNode parent)
         {

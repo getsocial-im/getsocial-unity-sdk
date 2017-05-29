@@ -80,9 +80,26 @@ namespace GetSocialSdk.MiniJSON
             return Serializer.Serialize(obj);
         }
 
-        public static string TextureToBase64(Texture2D obj)
+        public static string TextureToBase64(this Texture2D obj)
         {
+            if (obj == null)
+            {
+                return "";
+            }
             return Convert.ToBase64String(obj.EncodeToPNG());
+        }
+
+        public static Texture2D FromBase64(this string base64Image)
+        {
+            if (string.IsNullOrEmpty(base64Image))
+            {
+                return null;
+            }
+
+            var b64_bytes = Convert.FromBase64String(base64Image);
+            var tex = new Texture2D(1,1);
+            tex.LoadImage(b64_bytes);
+            return tex;
         }
 
         private sealed class Parser : IDisposable

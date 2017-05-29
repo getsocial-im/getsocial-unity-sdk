@@ -14,7 +14,8 @@ namespace GetSocialSdk.Ui
     {
         readonly string _feed;
 
-        Action<string, ActivityPost> _onButtonClicked;
+        Action<string, ActivityPost> _onButtonClickListener;
+        Action<PublicUser> _onAvatarClickListener;
 
         internal ActivityFeedViewBuilder()
         {
@@ -29,11 +30,23 @@ namespace GetSocialSdk.Ui
         /// <summary>
         /// Register callback to listen when activity action button was clicked.
         /// </summary>
-        /// <param name="onButtonClicked">Called when activity action button was clicked.</param>
+        /// <param name="onButtonClickListener">Called when activity action button was clicked.</param>
         /// <returns><see cref="ActivityFeedViewBuilder" instance./></returns>
-        public ActivityFeedViewBuilder SetButtonActionListener(Action<string, ActivityPost> onButtonClicked)
+        public ActivityFeedViewBuilder SetButtonActionListener(Action<string, ActivityPost> onButtonClickListener)
         {
-            _onButtonClicked = onButtonClicked;
+            _onButtonClickListener = onButtonClickListener;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set a listener that will be called when user taps on someones avatar.
+        /// </summary>
+        /// <param name="onAvatarClickListener"></param>
+        /// <returns></returns>
+        public ActivityFeedViewBuilder SetAvatarClickListener(Action<PublicUser> onAvatarClickListener)
+        {
+            _onAvatarClickListener = onAvatarClickListener;
 
             return this;
         }
@@ -45,13 +58,15 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
             return _gs_showActivityFeedView(_customWindowTitle, _feed,
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
-                _onButtonClicked.GetPointer(),
+                _onButtonClickListener.GetPointer(),
                 Callbacks.ActionCallback,
                 _onOpen.GetPointer(),
                 Callbacks.ActionCallback,
                 _onClose.GetPointer(),
                 UiActionListenerCallback.OnUiAction,
-                _uiActionListener.GetPointer());
+                _uiActionListener.GetPointer(),
+                AvatarClickListenerCallback.OnAvatarClicked,
+                _onAvatarClickListener.GetPointer());
 #else
             return false;
 #endif
@@ -64,10 +79,15 @@ namespace GetSocialSdk.Ui
             var activityFeedBuilderAJO =
                 new AndroidJavaObject("im.getsocial.sdk.ui.activities.ActivityFeedViewBuilder", _feed);
 
-            if (_onButtonClicked != null)
+            if (_onButtonClickListener != null)
             {
                 activityFeedBuilderAJO.CallAJO("setButtonActionListener",
-                    new ActionButtonListenerProxy(_onButtonClicked));
+                    new ActionButtonListenerProxy(_onButtonClickListener));
+            }
+            if (_onAvatarClickListener != null)
+            {
+                activityFeedBuilderAJO.CallAJO("setAvatarClickListener",
+                    new AvatarClickListenerProxy(_onAvatarClickListener));
             }
 
             return activityFeedBuilderAJO;
@@ -80,7 +100,8 @@ namespace GetSocialSdk.Ui
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
-            Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr);
+            Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
+            Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr);
 
 #endif
     }

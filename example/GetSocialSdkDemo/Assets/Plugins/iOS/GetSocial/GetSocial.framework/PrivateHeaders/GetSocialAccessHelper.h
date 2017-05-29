@@ -49,4 +49,11 @@
 
 + (void)setDefaultPushNotificationHandler:(GetSocialNotificationActionHandler)handler;
 
+#pragma mark Analytics
+
++(void)trackAnalyticsEvent:(NSString *_Nonnull)eventName
+           eventProperties:(NSDictionary *_Nullable)eventProperties;
+
++ (long)analyticsEventTimestamp;
+
 @end

@@ -4,7 +4,7 @@
 //  Copyright © 2017 GetSocial BV. All rights reserved.
 //
 
-#import <GetSocial/GetSocialInviteContent.h>
+#import "GetSocialInviteContent.h"
 #import <GetSocial/GetSocialMutableInviteContent.h>
 
 /*!
@@ -14,9 +14,14 @@
 /** @name Properties */
 
 /*!
- * @abstract Image url to use.
+ * @abstract Image url to use. You can not use it with image.
  */
 @property(nonatomic, readwrite) NSString *imageUrl;
+
+/*!
+ * @abstract Image to use. You can not use it with imageUrl.
+ */
+@property(nonatomic, readwrite) UIImage *image;
 
 /*!
  * @abstract Subject to use.

@@ -43,18 +43,24 @@ public class FacebookInvitePlugin : InviteChannelPlugin
         // because othewise it cannot deliever the result back to the app
         GetSocialUi.CloseView(true);
 #endif
-        SendInvite(invitePackage.ReferralDataUrl, onComplete, onCancel, onFailure);
+        Uri imageUri = null;
+        if (invitePackage.ImageUrl != null)
+        {
+            imageUri = new Uri(invitePackage.ImageUrl);
+        }
+        SendInvite(invitePackage.ReferralDataUrl, imageUri, onComplete, onCancel, onFailure);
     }
 
     #endregion
 
     static void SendInvite(string referralDataUrl,
+                            Uri imageUrl,
                            Action completeCallback,
                            Action cancelCallback,
                            Action<GetSocialError> errorCallback)
     {
         GetSocialDebugLogger.D("Sending Facebook invite with URL: " + referralDataUrl);
-        FB.Mobile.AppInvite(new Uri(referralDataUrl), null,
+        FB.Mobile.AppInvite(new Uri(referralDataUrl), imageUrl,
             result =>
             {
 #if UNITY_ANDROID && USE_GETSOCIAL_UI

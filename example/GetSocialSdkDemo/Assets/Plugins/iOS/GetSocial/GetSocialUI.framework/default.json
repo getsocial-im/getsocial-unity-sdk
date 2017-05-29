@@ -237,26 +237,6 @@
             "font": "HelveticaNeue-Bold",
             "font-size": 16,
             "font-color": "0xFFFFFFFF"
-        },
-        "my-chat-content": {
-            "font": "HelveticaNeue",
-            "font-size": 16,
-            "font-color": "0xFFFFFFFF"
-        },
-        "their-chat-content": {
-            "font": "HelveticaNeue",
-            "font-size": 16,
-            "font-color": "0xFF797E85"
-        },
-        "presence-online": {
-            "font": "HelveticaNeue",
-            "font-size": 12,
-            "font-color": "0xFF9EA6B2"
-        },
-        "presence-offline": {
-            "font": "HelveticaNeue",
-            "font-size": 12,
-            "font-color": "0xFF9EA6B2"
         }
     }
 }

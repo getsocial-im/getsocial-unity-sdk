@@ -18,6 +18,7 @@
 using UnityEngine;
 using GetSocialSdk.Core;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Facebook.Unity;
 
@@ -269,7 +270,7 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("Successfully switched to FB user");
                 demoController.FetchCurrentUserData();
-                SetFacebookDisplayName();
+                SetFacebookUserDetails();
             },
             error => _console.LogE("Switching to FB user failed, reason: " + error));
     }
@@ -314,7 +315,7 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("Successfully added Facebook Identity");
                 demoController.FetchCurrentUserData();
-                SetFacebookDisplayName();
+                SetFacebookUserDetails();
             },
             error => _console.LogE("Adding Facebook identity failed, reason: " + error),
             OnAddUserIdentityConflict);
@@ -391,15 +392,30 @@ public class AuthSection : DemoMenuSection
 
     #endregion
 
-    private void SetFacebookDisplayName()
+    private void SetFacebookUserDetails()
     {
-        FB.API("me?fields=first_name,last_name", HttpMethod.GET, result =>
+        FB.API("me?fields=first_name,last_name,picture", HttpMethod.GET, result =>
         {
             var dictionary = result.ResultDictionary;
             var displayName = dictionary["first_name"] + " " + dictionary["last_name"];
+            var pictureDictionary = (IDictionary<string, object>)dictionary["picture"];
+            var dataDictionary = (IDictionary<string, object>)pictureDictionary["data"];
+            var pictureUrl = dataDictionary["url"].ToString();
             GetSocial.User.SetDisplayName(displayName,
-                () => demoController.FetchCurrentUserData(),
+                () =>
+                {
+                    _console.LogD("Display name is set to:"+displayName);
+                    demoController.FetchCurrentUserData();
+                },
                 error => _console.LogE("Failed to set Facebook user name")
+            );
+            GetSocial.User.SetAvatarUrl(pictureUrl,
+                () =>
+                {
+                    _console.LogD("User avatar is set to:"+pictureUrl);
+                    demoController.FetchCurrentUserData();
+                },
+                error => _console.LogE("Failed to set Facebook user avatar")
             );
         });
     }

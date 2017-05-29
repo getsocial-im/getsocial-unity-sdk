@@ -7,6 +7,8 @@
 #import <UIKit/UIKit.h>
 #import <GetSocialUI/GetSocialUIInvitesView.h>
 #import <GetSocialUI/GetSocialUIActivityFeedView.h>
+#import <GetSocialUI/GetSocialUIActivityDetailsView.h>
+
 
 /*!
  * @abstract Main interface of GetSocialUI.framework.
@@ -83,10 +85,17 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  *  @abstract Create Activity Feed view with custom feed.
  *
- *  @param  feed id of activity feed.
+ *  @param  id of activity feed.
  *  @result instance of GetSocialUIActivityFeedView.
  */
 + (GetSocialUIActivityFeedView *)createActivityFeedView:(NSString *)feed;
+
+/*!
+ * @abstract Create Activity Details view.
+ * @param activityId Activity ID for which open a view.
+ * @return instance of GetSocialUIActivityDetailsView.
+ */
++ (GetSocialUIActivityDetailsView *)createActivityDetailsView:(NSString *)activityId;
 
 NS_ASSUME_NONNULL_END
 

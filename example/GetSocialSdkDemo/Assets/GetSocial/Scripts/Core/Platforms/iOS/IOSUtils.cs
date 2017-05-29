@@ -28,19 +28,6 @@ namespace GetSocialSdk.Core
                 actionPtr.Cast<Action<T>>().Invoke(result);
             }
         }
-
-        public static Texture2D FromBase64(string base64Image)
-        {
-            if (string.IsNullOrEmpty(base64Image))
-            {
-                return null;
-            }
-
-            var b64_bytes = Convert.FromBase64String(base64Image);
-            var tex = new Texture2D(1,1);
-            tex.LoadImage(b64_bytes);
-            return tex;
-        }
     }
 }
 

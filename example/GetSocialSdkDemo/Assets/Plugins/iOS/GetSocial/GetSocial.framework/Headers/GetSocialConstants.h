@@ -21,9 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
  * @typedef GetSocialNotificationActionType
  * @abstract Enumeration represents possible actions to be executed if application was started with clicking on GetSocial push notification.
  * @constant GetSocialNotificationActionOpenActivity Open activity action.
+ * @constant GetSocialNotificationActionOpenProfile Open user profile action.
  */
 typedef NS_ENUM(NSInteger, GetSocialNotificationActionType) {
-    GetSocialNotificationActionOpenActivity
+    GetSocialNotificationActionOpenActivity,
+    GetSocialNotificationActionOpenProfile
 };
 
  /*!

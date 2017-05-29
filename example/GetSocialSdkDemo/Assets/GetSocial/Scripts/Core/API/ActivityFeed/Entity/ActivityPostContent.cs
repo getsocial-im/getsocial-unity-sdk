@@ -68,7 +68,7 @@ namespace GetSocialSdk.Core
 #if UNITY_ANDROID
         public UnityEngine.AndroidJavaObject ToAJO()
         {
-            var activityPostContentBuilderAJO = new UnityEngine.AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
+            var activityPostContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
 
             if (_text != null)
             {
@@ -76,8 +76,7 @@ namespace GetSocialSdk.Core
             }
             if (_image != null)
             {
-                var bitmap = new UnityEngine.AndroidJavaClass("im.getsocial.sdk.unity.BitmapFactory").CallStaticAJO("decodeBase64", GSJson.TextureToBase64(_image));
-                activityPostContentBuilderAJO.CallAJO("withImage", bitmap);
+                activityPostContentBuilderAJO.CallAJO("withImage", _image.ToAjoBitmap());
             }
             if (_buttonAction != null && _buttonTitle != null)
             {
@@ -86,7 +85,7 @@ namespace GetSocialSdk.Core
             return activityPostContentBuilderAJO.CallAJO("build");
         }
 
-        public ActivityPostContent ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public ActivityPostContent ParseFromAJO(AndroidJavaObject ajo)
         {
             throw new NotImplementedException();
         }
@@ -99,7 +98,7 @@ namespace GetSocialSdk.Core
                 {"Text", _text},
                 {"ButtonTitle", _buttonTitle},
                 {"ButtonAction", _buttonAction},
-                {"Image", GSJson.TextureToBase64(_image)}
+                {"Image", _image.TextureToBase64()}
             };
             return GSJson.Serialize(jsonDic);
         }

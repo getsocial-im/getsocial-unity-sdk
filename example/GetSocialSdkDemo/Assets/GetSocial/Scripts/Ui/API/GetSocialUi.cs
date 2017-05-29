@@ -47,6 +47,16 @@ namespace GetSocialSdk.Ui
         }
 
         /// <summary>
+        /// Returns a builder to specify parameters you want on the Activity Details view.
+        /// </summary>
+        /// <param name="activityId">The id of the Activity you want to show.</param>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
+        public static ActivityDetailsViewBuilder СreateActivityDetailsView(string activityId)
+        {
+            return new ActivityDetailsViewBuilder(activityId);
+        }
+
+        /// <summary>
         /// Show GetSocial view
         /// </summary>
         /// <param name="viewBuilder">View to open</param>
