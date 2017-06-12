@@ -2,6 +2,20 @@
 
 ## Version History
 
+### v6.3.0
+
+**Added**:
++ Now you can disable image attachment to Smart Invites from Dashboard. Useful to avoid charges for sending MMS instead of SMS.
++ Method `GetUserById`, you can retrieve `PublicUser` entity having only user ID.
+
+**Fixed**:
++ Android: Fixed randomly reproducible crashes related to changing UI on non-main threads.
++ Android: Fixed possible `OutOfMemoryException` crashes.
++ Android: Fixed `NullPointerException` in install receiver if no token was passed.
++ Android: Fixed resource packaging when building Unity from Windows OS.
+
+---
+
 ### v6.2.0
 
 **Added**:

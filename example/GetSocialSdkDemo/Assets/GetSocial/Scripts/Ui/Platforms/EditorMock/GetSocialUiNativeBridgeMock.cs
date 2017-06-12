@@ -36,6 +36,12 @@ namespace GetSocialSdk.Ui
             return false;
         }
 
+        public bool ShowView<T>(ViewBuilder<T> viewBuilder) where T : ViewBuilder<T>
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), viewBuilder);
+            return false;
+        }
+
         public bool CloseView(bool saveViewState)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());

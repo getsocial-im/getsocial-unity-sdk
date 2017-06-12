@@ -7,6 +7,7 @@
 #include "GetSocialBridgeUtils.h"
 #include "GetSocialJsonUtils.h"
 #import "GetSocialFunctionDefs.h"
+#import "NSObject+Json.h"
 
 typedef void(ActivityActionButtonClickedDelegate)(void *actionPtr, const char *buttonId, const char *serializedActivityPost);
 
@@ -64,8 +65,7 @@ bool _gs_showSmartInvitesView(
         }                              cancel:^(NSString *_Nonnull providerId) {
             stringCallback(onInviteCancelPtr, providerId.UTF8String);
         }                             failure:^(NSString *_Nonnull providerId, NSError *_Nonnull error) {
-            const char *serializedErr = [GetSocialJsonUtils serializeError:error].UTF8String;
-            failureCallback(onFailurePtr, providerId.UTF8String, serializedErr);
+            failureCallback(onFailurePtr, providerId.UTF8String, [error toJsonCString]);
         }];
     }
     
@@ -121,8 +121,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
 
     if (onButtonClickPtr) {
         [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
-            NSString *serializedPost = [GetSocialJsonUtils serializeActivityPost: post];
-            callback(onButtonClickPtr, action.UTF8String, serializedPost.UTF8String);
+            callback(onButtonClickPtr, action.UTF8String, [post toJsonCString]);
         }];
     }
     
@@ -135,8 +134,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
     
     if (avatarClickListener) {
         [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
-            NSString *serializedUser = [GetSocialJsonUtils serializePublicUser:user];
-            avatarClickListener(avatarClickListenerPtr, serializedUser.UTF8String);
+            avatarClickListener(avatarClickListenerPtr, [user toJsonCString]);
         }];
     }
     
@@ -170,8 +168,7 @@ bool _gs_showActivityDetailsView(const char *windowTitle,
     
     if (onButtonClickPtr) {
         [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
-            NSString *serializedPost = [GetSocialJsonUtils serializeActivityPost: post];
-            callback(onButtonClickPtr, action.UTF8String, serializedPost.UTF8String);
+            callback(onButtonClickPtr, action.UTF8String, [post toJsonCString]);
         }];
     }
     
@@ -191,8 +188,7 @@ bool _gs_showActivityDetailsView(const char *windowTitle,
     }
     if (avatarClickListener) {
         [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
-            NSString *serializedUser = [GetSocialJsonUtils serializePublicUser:user];
-            avatarClickListener(avatarClickListenerPtr, serializedUser.UTF8String);
+            avatarClickListener(avatarClickListenerPtr, [user toJsonCString] );
         }];
     }
     

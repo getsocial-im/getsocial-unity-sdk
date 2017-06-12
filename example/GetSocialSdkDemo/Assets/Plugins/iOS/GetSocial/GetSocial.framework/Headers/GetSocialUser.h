@@ -1,7 +1,7 @@
 //
 //  GetSocial
 //
-//  Copyright © 2017 GetSocial BV. All rights reserved.
+//  Copyright � 2017 GetSocial BV. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -275,8 +275,8 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  * @abstract Get a list of friends for current user.
  *
- * @param offset     Limit of users.
- * @param limit    Offset position.
+ * @param offset    Limit of users.
+ * @param limit     Offset position.
  * @param success   Block called with list of users that are friends of current user.
  * @param failure   Block called if operation fails.
  */

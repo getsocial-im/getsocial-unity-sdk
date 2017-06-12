@@ -9,6 +9,7 @@
 #import "UnityInvitePlugin.h"
 #import "GetSocialJsonUtils.h"
 #import "GetSocialBridgeUtils.h"
+#import "NSObject+Json.h"
 
 @implementation UnityInvitePlugin
 
@@ -30,7 +31,7 @@ isAvailableForDeviceDelegate:(IsAvailableForDeviceDelegate *)isAvailableForDevic
 
 - (BOOL)isAvailableForDevice:(GetSocialInviteChannel *)inviteChannel
 {
-    NSString *serializedInviteProvider = [GetSocialJsonUtils serializeInviteProvider:inviteChannel];
+    NSString *serializedInviteProvider = [inviteChannel toJsonString];
 
     return inviteChannel.enabled && _isAvailableForDeviceDelegate(_pluginPtr, [GetSocialBridgeUtils createCStringFrom:serializedInviteProvider]);
 }
@@ -42,8 +43,8 @@ isAvailableForDeviceDelegate:(IsAvailableForDeviceDelegate *)isAvailableForDevic
                                 cancel:(GetSocialInviteCancelCallback)cancelCallback
                                failure:(GetSocialFailureCallback)failureCallback
 {
-    NSString *serializedInviteProvider = [GetSocialJsonUtils serializeInviteProvider:inviteChannel];
-    NSString *serializedInvitePackage = [GetSocialJsonUtils serializeInvitePackage:invitePackage];
+    NSString *serializedInviteProvider = [inviteChannel toJsonString];
+    NSString *serializedInvitePackage = [invitePackage toJsonString];
 
     // transfer pointer ownership to us
     // more at: http://stackoverflow.com/questions/7036350/arc-and-bridged-cast

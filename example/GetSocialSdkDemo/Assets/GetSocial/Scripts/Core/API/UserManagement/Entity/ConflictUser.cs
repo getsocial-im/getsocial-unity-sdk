@@ -27,7 +27,7 @@ namespace GetSocialSdk.Core
             throw new System.NotImplementedException("ConflictUser is never passed to iOS");
         }
 
-        public new ConflictUser ParseFromJson(string json)
+        public new ConflictUser ParseFromJson(Dictionary<string, object> json)
         {
             base.ParseFromJson(json);
             return this;

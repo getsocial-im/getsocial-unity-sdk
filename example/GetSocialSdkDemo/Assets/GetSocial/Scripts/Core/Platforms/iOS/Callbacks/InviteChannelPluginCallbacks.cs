@@ -15,7 +15,7 @@ namespace GetSocialSdk.Core
         [MonoPInvokeCallback(typeof(IsAvailableForDeviceDelegate))]
         public static bool IsAvailableForDevice(IntPtr instancePtr, string inviteChannelJson)
         {
-            var channel = new InviteChannel().ParseFromJson(inviteChannelJson);
+            var channel = new InviteChannel().ParseFromJson(inviteChannelJson.ToDict());
             return instancePtr.Cast<InviteChannelPlugin>().IsAvailableForDevice(channel);
         }
 
@@ -24,8 +24,8 @@ namespace GetSocialSdk.Core
             string invitePackageJson,
             IntPtr onCompletePtr, IntPtr onCancelPtr, IntPtr onFailurePtr)
         {
-            var channel = new InviteChannel().ParseFromJson(inviteChannelJson);
-            var package = new InvitePackage().ParseFromJson(invitePackageJson);
+            var channel = new InviteChannel().ParseFromJson(inviteChannelJson.ToDict());
+            var package = new InvitePackage().ParseFromJson(invitePackageJson.ToDict());
 
             instancePtr.Cast<InviteChannelPlugin>()
                 .PresentChannelInterface(channel, package,

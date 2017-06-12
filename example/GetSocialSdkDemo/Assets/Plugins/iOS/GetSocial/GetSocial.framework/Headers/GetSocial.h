@@ -285,6 +285,18 @@ NS_ASSUME_NONNULL_BEGIN
                success:(GetSocialUsersResultCallback)success
                failure:(GetSocialFailureCallback)failure;
 
+#pragma mark - User management
+
+
+/*!
+ * @abstract Fetch user by user od.
+ *
+ * @param userId        id of user.
+ * @param success       Called with public user or nil, if the user not found.
+ * @param failure       Called if operation can not be called due to an error.
+ */
++(void)userWithId:(GetSocialId)userId success:(GetSocialPublicUserSuccessCallback)success failure:(GetSocialFailureCallback)failure;
+
 NS_ASSUME_NONNULL_END
 
 @end

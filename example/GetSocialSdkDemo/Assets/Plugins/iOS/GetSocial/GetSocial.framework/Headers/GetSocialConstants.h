@@ -11,6 +11,7 @@
 @class GetSocialActivityPost;
 @class GetSocialReferralData;
 @class GetSocialNotificationAction;
+@class GetSocialSuggestedFriend;
 
 #ifndef GetSocialLibrary_GetSocialConstants_h
 #define GetSocialLibrary_GetSocialConstants_h
@@ -36,7 +37,7 @@ typedef NS_ENUM(NSInteger, GetSocialNotificationActionType) {
 typedef BOOL (^GetSocialNotificationActionHandler)(GetSocialNotificationAction *action);
 
 /*!
- * @typedef void (^GetSocialGlobalErrorHandler)(NSException *exception)
+ * @typedef void (^GetSocialGlobalErrorHandler)(NSError *error)
  * @abstract The typedef defines the signature of a block that is called when any
  exception happens in the framework.
  */
@@ -116,25 +117,32 @@ typedef void (^GetSocialPublicUserSuccessCallback)(GetSocialPublicUser *publicUs
 typedef void (^GetSocialAddIdentityConflictCallback)(GetSocialConflictUser *conflictUser);
 
 /*!
- * @typedef void (^GetSocialActivityResultCallback)(id result)
+ * @typedef void (^GetSocialActivityResultCallback)(GetSocialActivityPost *post)
  * @abstract The typedef defines the signature of a block that is called when an operation
  completes.
  */
 typedef void (^GetSocialActivityResultCallback)(GetSocialActivityPost *result);
 
 /*!
- * @typedef void (^GetSocialActivitiesResultCallback)(NSArray<id> *result)
+ * @typedef void (^GetSocialActivitiesResultCallback)(NSArray<GetSocialActivityPost *> *posts)
  * @abstract The typedef defines the signature of a block that is called when an operation
  completes.
  */
-typedef void (^GetSocialActivitiesResultCallback)(NSArray<GetSocialActivityPost *> *result);
+typedef void (^GetSocialActivitiesResultCallback)(NSArray<GetSocialActivityPost *> *posts);
 
 /*!
- * @typedef void(^GetSocialUsersResultCallback)(NSArray<id> *result)
+ * @typedef void(^GetSocialUsersResultCallback)(NSArray<GetSocialPublicUser *> *users)
  * @abstract The typedef defines the signature of a block that is called when an operation
  completes.
  */
-typedef void (^GetSocialUsersResultCallback)(NSArray<GetSocialPublicUser *> *result);
+typedef void (^GetSocialUsersResultCallback)(NSArray<GetSocialPublicUser *> *users);
+
+/*!
+ * @typedef void(^GetSocialSuggestedFriendsResultCallback)(NSArray<GetSocialSuggestedFriend *> *friends)
+ * @abstract The typedef defines the signature of a block that is called when an operation
+ completes.
+ */
+typedef void (^GetSocialSuggestedFriendsResultCallback)(NSArray<GetSocialSuggestedFriend *> *friends);
 
 /*!
  * @typedef NSString GetSocialId

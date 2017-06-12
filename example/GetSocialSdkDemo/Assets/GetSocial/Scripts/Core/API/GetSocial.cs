@@ -433,6 +433,23 @@ namespace GetSocialSdk.Core
         #region user_management
 
         /// <summary>
+        /// Get a user by id.
+        /// </summary>
+        ///
+        /// <param name="userId">Id of user.</param>
+        /// <param name="onSuccess">Called if user is found.</param>
+        /// <param name="onFailure">Called if operation failed or user not found.</param>
+        public static void GetUserById(string userId, Action<PublicUser> onSuccess,
+            Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+                
+            GetSocialImpl.GetUserById(userId, onSuccess, onFailure);
+        }
+
+        
+        /// <summary>
         /// This corresponds the current user connected to GetSocial.
         /// </summary>
         public static class User
@@ -751,6 +768,7 @@ namespace GetSocialSdk.Core
 
                 GetSocialImpl.GetFriends(offset, limit, onSuccess, onFailure);
             }
+            
 
             /// <summary>
             /// Register a listener to be notified when the user was changed.
@@ -778,7 +796,8 @@ namespace GetSocialSdk.Core
                 return GetSocialImpl.RemoveOnUserChangedListener();
             }
 
-            #endregion
         }
+
+        #endregion
     }
 }

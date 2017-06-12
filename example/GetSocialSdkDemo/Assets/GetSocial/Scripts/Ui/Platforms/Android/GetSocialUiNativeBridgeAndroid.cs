@@ -40,6 +40,11 @@ namespace GetSocialSdk.Ui
             });
         }
 
+        public bool ShowView<T>(ViewBuilder<T> viewBuilder) where T : ViewBuilder<T>
+        {
+            return viewBuilder.ShowInternal();
+        }
+
         public bool OnBackPressed()
         {
             return _getUiSocialJavaClass.CallStaticBool("onBackPressed");

@@ -240,6 +240,11 @@ namespace GetSocialSdk.Core
         {
             return _user.CallStaticBool("removeOnUserChangedListener");
         }
+        
+        public void GetUserById(string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("getUserById", userId, new CallbackProxy<PublicUser>(onSuccess, onFailure));
+        }
 
         #endregion
 
@@ -267,7 +272,12 @@ namespace GetSocialSdk.Core
 
         public void GetFriends (int offset, int limit, Action<List<PublicUser>> onSuccess, Action<GetSocialError> onFailure)
         {
-            _user.CallStatic ("getFriends", offset, limit, new CallbackProxy<List<PublicUser>> (onSuccess, onFailure, PublicUserListFromAJO));
+            _user.CallStatic ("getFriends", offset, limit, new ListCallbackProxy<PublicUser> (onSuccess, onFailure));
+        }
+
+        public void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStatic ("getSuggestedFriends", offset, limit, new ListCallbackProxy<SuggestedFriend> (onSuccess, onFailure));
         }
 
         #endregion
@@ -277,57 +287,42 @@ namespace GetSocialSdk.Core
         public void GetAnnouncements(string feed, Action<List<ActivityPost>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("getAnnouncements", feed, new CallbackProxy<List<ActivityPost>>(onSuccess, onFailure, ActivityPostListFromAJO));
+            _getSocial.CallStatic("getAnnouncements", feed, new ListCallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void GetActivities(ActivitiesQuery query, Action<List<ActivityPost>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("getActivities", query.ToAJO(), new CallbackProxy<List<ActivityPost>>(onSuccess, onFailure, ActivityPostListFromAJO));
+            _getSocial.CallStatic("getActivities", query.ToAJO(), new ListCallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void GetActivity(string activityId, Action<ActivityPost> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("getActivity", activityId, new CallbackProxy<ActivityPost>(onSuccess, onFailure, new ActivityPost().ParseFromAJO));
+            _getSocial.CallStatic("getActivity", activityId, new CallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void PostActivityToFeed(string feed, ActivityPostContent content, Action<ActivityPost> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("postActivityToFeed", feed, content.ToAJO(), new CallbackProxy<ActivityPost>(onSuccess, onFailure, new ActivityPost().ParseFromAJO));
+            _getSocial.CallStatic("postActivityToFeed", feed, content.ToAJO(), new CallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void PostCommentToActivity(string activityId, ActivityPostContent comment, Action<ActivityPost> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("postCommentToActivity", activityId, comment.ToAJO(), new CallbackProxy<ActivityPost>(onSuccess, onFailure, new ActivityPost().ParseFromAJO));
+            _getSocial.CallStatic("postCommentToActivity", activityId, comment.ToAJO(), new CallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void LikeActivity(string activityId, bool isLiked, Action<ActivityPost> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("likeActivity", activityId, isLiked, new CallbackProxy<ActivityPost>(onSuccess, onFailure, new ActivityPost().ParseFromAJO));
+            _getSocial.CallStatic("likeActivity", activityId, isLiked, new CallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void GetActivityLikers(string activityId, int offset, int limit, Action<List<PublicUser>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("getActivityLikers", activityId, offset, limit, new CallbackProxy<List<PublicUser>>(onSuccess, onFailure, PublicUserListFromAJO));
+            _getSocial.CallStatic("getActivityLikers", activityId, offset, limit, new ListCallbackProxy<PublicUser>(onSuccess, onFailure));
         }
-
-        static List<ActivityPost> ActivityPostListFromAJO(AndroidJavaObject ajo)
-        {
-            var list = ajo.FromJavaList<AndroidJavaObject>();
-
-            return list.ConvertAll(item => new ActivityPost().ParseFromAJO(item));
-        }
-
-        static List<PublicUser> PublicUserListFromAJO(AndroidJavaObject ajo)
-        {
-            var list = ajo.FromJavaList<AndroidJavaObject>();
-
-            return list.ConvertAll(item => new PublicUser().ParseFromAJO(item));
-        }
-
         #endregion
 
         #region access_helpers

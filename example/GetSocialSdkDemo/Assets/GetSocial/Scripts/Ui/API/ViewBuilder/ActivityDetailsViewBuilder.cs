@@ -62,8 +62,7 @@ namespace GetSocialSdk.Ui
             return this;
         }
 
-
-        public override bool Show()
+        internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());

@@ -51,12 +51,11 @@ namespace GetSocialSdk.Core
             return GSJson.Serialize(this);
         }
 
-        public CustomReferralData ParseFromJson(string json)
+        public CustomReferralData ParseFromJson(Dictionary<string, object> json)
         {
             Clear();
 
-            var dic = json.ToDict();
-            foreach (var kv in dic)
+            foreach (var kv in json)
             {
                 this[kv.Key] = kv.Value as string;
             }

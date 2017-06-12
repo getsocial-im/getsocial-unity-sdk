@@ -119,7 +119,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: im.getsocial.demo.unity
-  bundleVersion: 6.2.0
+  bundleVersion: 6.3.0
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -501,7 +501,7 @@ PlayerSettings:
   tizenMicrophonePermissions: 0
   tizenDeploymentTarget: 
   tizenDeploymentTargetType: 0
-  tizenMinOSVersion: 0
+  tizenMinOSVersion: 1
   n3dsUseExtSaveData: 0
   n3dsCompressStaticMem: 1
   n3dsExtSaveDataNumber: 0x12345

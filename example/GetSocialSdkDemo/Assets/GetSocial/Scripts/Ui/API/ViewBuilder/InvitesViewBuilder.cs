@@ -71,7 +71,7 @@ namespace GetSocialSdk.Ui
         /// <summary>
         /// Present smart ivites view.
         /// </summary>
-        public override bool Show()
+        internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());

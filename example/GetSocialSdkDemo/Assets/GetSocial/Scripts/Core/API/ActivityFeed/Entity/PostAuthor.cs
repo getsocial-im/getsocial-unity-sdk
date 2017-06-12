@@ -17,8 +17,9 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return string.Format("{0}, IsVerified: {1}", base.ToString(), IsVerified);
+            return string.Format("[PostAuthor: Id={0}, DisplayName={1}, Identities={2}, IsVerified={3}]", Id, DisplayName, Identities.ToDebugString(), IsVerified);
         }
+
 
 #if UNITY_ANDROID
         public new UnityEngine.AndroidJavaObject ToAJO()
@@ -41,12 +42,7 @@ namespace GetSocialSdk.Core
         {
             throw new System.NotImplementedException("PostAuthor is never passed to iOS");
         }
-
-        public new PostAuthor ParseFromJson(string json)
-        {
-            return ParseFromJson(json.ToDict());
-        }
-
+        
         public new PostAuthor ParseFromJson(Dictionary<string, object> jsonDic)
         {
             base.ParseFromJson(jsonDic);

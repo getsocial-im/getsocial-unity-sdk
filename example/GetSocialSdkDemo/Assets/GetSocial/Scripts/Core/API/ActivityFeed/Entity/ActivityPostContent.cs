@@ -103,7 +103,7 @@ namespace GetSocialSdk.Core
             return GSJson.Serialize(jsonDic);
         }
 
-        public ActivityPostContent ParseFromJson(string json)
+        public ActivityPostContent ParseFromJson(Dictionary<string, object> json)
         {
             return this;
         }

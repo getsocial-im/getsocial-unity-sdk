@@ -16,8 +16,8 @@ namespace GetSocialSdk.Ui
 
             if (onButtonClickedPtr != IntPtr.Zero)
             {
-                var post = new ActivityPost().ParseFromJson(serializedActivityPost);
-                onButtonClickedPtr.Cast<Action<string, ActivityPost>>().Invoke(actionId, post);
+                var post = new ActivityPost().ParseFromJson(serializedActivityPost.ToDict());
+                IOSUtils.TriggerCallback(onButtonClickedPtr, post);
             }
         }
     }

@@ -31,9 +31,12 @@ public class GetSocialDemoController : MonoBehaviour
     string _getSocialUnderlyingNativeSdkVersion;
 
     bool _isInMainMenu = true;
-
+    private bool _showNewFriendPopup = false;
+    
     Vector2 _scrollPos;
     DemoAppConsole _console;
+    NewFriendPopup _newFriendPopup;
+
     Dictionary<TopLevelMenuSection, DemoMenuSection> _menuSections;
 
     public string CurrentViewTitle { set; get; }
@@ -47,7 +50,9 @@ public class GetSocialDemoController : MonoBehaviour
     void Awake()
     {
         _console = gameObject.GetComponent<DemoAppConsole>().Init();
-
+        gameObject.AddComponent<NewFriendPopup>();
+        _newFriendPopup = gameObject.GetComponent<NewFriendPopup>();
+        
         SetupGetSocial();
         SetupMenuSections();
     }
@@ -101,6 +106,13 @@ public class GetSocialDemoController : MonoBehaviour
         DemoGuiUtils.DrawHeaderWrapper(DrawHeader);
         _scrollPos = DemoGuiUtils.DrawScrollBodyWrapper(_scrollPos, DrawBody);
         DemoGuiUtils.DrawFooter(DrawFooter);
+        if (_showNewFriendPopup)
+        {
+            _newFriendPopup.Open(() =>
+            {
+                _showNewFriendPopup = false;
+            });   
+        }
     }
 
     #endregion
@@ -136,7 +148,8 @@ public class GetSocialDemoController : MonoBehaviour
             if (action.Type == NotificationAction.ActionType.OpenProfile)
             {
                 OpenProfileAction openProfile = (OpenProfileAction) action;
-                _console.LogD("New friend if " + openProfile.UserId);
+                _console.LogD("New friend is " + openProfile.UserId);
+                newFriend(openProfile.UserId);
                 return true;
             }
             return false;
@@ -186,6 +199,18 @@ public class GetSocialDemoController : MonoBehaviour
         {
             _console.LogE("Failed to register Facebook invite plugin.");
         }
+    }
+
+    void newFriend(string userId)
+    {
+        GetSocial.GetUserById(userId, user =>
+        {
+            _newFriendPopup.SetFriend(user);
+            _showNewFriendPopup = true;
+        }, error =>
+        {
+            _console.LogE("Failed to get user: " + error.Message);
+        });
     }
 
     protected void DrawHeader()

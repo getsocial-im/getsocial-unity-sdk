@@ -114,7 +114,7 @@ namespace GetSocialSdk.Core
             return GSJson.Serialize(jsonDic);
         }
 
-        public ActivitiesQuery ParseFromJson(string json)
+        public ActivitiesQuery ParseFromJson(Dictionary<string, object> json)
         {
             throw new NotImplementedException("ActivitiesQuery is never received from iOS");
         }

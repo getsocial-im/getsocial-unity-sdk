@@ -7,11 +7,7 @@
 
 + (char *)createCStringFrom:(NSString *)string;
 
-+ (NSArray *)createNSArray:(int)count values:(const char **)values;
-
 + (char *)cStringCopy:(const char *)string;
-
-+ (NSString *)encodeToBase64String:(UIImage *)image;
 
 + (UIImage *)decodeUIImageFrom:(NSString *)base64String;
 

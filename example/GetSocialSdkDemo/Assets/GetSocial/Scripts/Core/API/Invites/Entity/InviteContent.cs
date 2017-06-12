@@ -170,12 +170,7 @@ namespace GetSocialSdk.Core
             };
             return GSJson.Serialize(jsonDic);
         }
-
-        public InviteContent ParseFromJson(string json)
-        {
-            return ParseFromJson(json.ToDict());
-        }
-
+        
         public InviteContent ParseFromJson(Dictionary<string, object> jsonDic)
         {
             Subject = jsonDic[SubjectFieldName] as string;

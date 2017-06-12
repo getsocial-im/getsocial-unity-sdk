@@ -102,6 +102,8 @@ namespace GetSocialSdk.Core
         void SwitchUser(AuthIdentity authIdentity,
             Action onSuccess, Action<GetSocialError> onFailure);
 
+        void GetUserById (string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure);
+
         #endregion
 
         #region social_graph
@@ -115,6 +117,8 @@ namespace GetSocialSdk.Core
         void GetFriendsCount(Action<int> onSuccess, Action<GetSocialError> onFailure);
 
         void GetFriends (int offset, int limit, Action<List<PublicUser>> onSuccess, Action<GetSocialError> onFailure);
+        
+        void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 
@@ -152,6 +156,5 @@ namespace GetSocialSdk.Core
         int GetCurrentHadesConfiguration();
 
         #endregion
-
     }
 }

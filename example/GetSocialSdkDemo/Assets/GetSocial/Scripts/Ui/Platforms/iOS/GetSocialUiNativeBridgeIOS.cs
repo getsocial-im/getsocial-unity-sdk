@@ -30,6 +30,11 @@ namespace GetSocialSdk.Ui
             return _gs_loadConfiguration(fullPath);
         }
 
+        public bool ShowView<T>(ViewBuilder<T> viewBuilder) where T : ViewBuilder<T>
+        {
+            return viewBuilder.ShowInternal();
+        }
+
         public bool CloseView(bool saveViewState)
         {
             return _gs_closeView(saveViewState);

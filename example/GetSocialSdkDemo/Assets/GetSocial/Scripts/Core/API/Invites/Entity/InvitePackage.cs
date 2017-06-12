@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
@@ -79,15 +80,14 @@ namespace GetSocialSdk.Core
             throw new NotImplementedException("This object is never passed to iOS");
         }
 
-        public InvitePackage ParseFromJson(string json)
+        public InvitePackage ParseFromJson(Dictionary<string, object> json)
         {
-            var dict = json.ToDict();
-            Subject = dict[SubjectFieldName] as string;
-            Text = dict[TextFieldName] as string;
-            UserName = dict[UserNameFieldName] as string;
-            ReferralDataUrl = dict[ReferralDataUrlFieldName] as string;
-            Image = (dict[ImageFieldName] as string).FromBase64();
-            ImageUrl = dict[ImageUrlFieldName] as string;
+            Subject = json[SubjectFieldName] as string;
+            Text = json[TextFieldName] as string;
+            UserName = json[UserNameFieldName] as string;
+            ReferralDataUrl = json[ReferralDataUrlFieldName] as string;
+            Image = (json[ImageFieldName] as string).FromBase64();
+            ImageUrl = json[ImageUrlFieldName] as string;
             return this;
         }
 

@@ -1,4 +1,6 @@
-﻿namespace GetSocialSdk.Core
+﻿using System.Collections.Generic;
+
+namespace GetSocialSdk.Core
 {
     public interface IGetSocialBridgeObject<out T>
     {
@@ -9,7 +11,7 @@
 #elif UNITY_IOS
         string ToJson();
 
-        T ParseFromJson(string json);
+        T ParseFromJson(Dictionary<string, object> json);
 #endif
     }
 }

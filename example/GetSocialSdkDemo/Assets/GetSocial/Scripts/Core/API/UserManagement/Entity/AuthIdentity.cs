@@ -69,7 +69,7 @@ namespace GetSocialSdk.Core
             return GSJson.Serialize(jsonDic);
         }
 
-        public AuthIdentity ParseFromJson(string json)
+        public AuthIdentity ParseFromJson(Dictionary<string, object> json)
         {
             throw new System.NotImplementedException();
         }

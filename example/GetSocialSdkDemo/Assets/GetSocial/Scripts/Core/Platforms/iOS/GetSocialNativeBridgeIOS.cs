@@ -53,7 +53,7 @@ namespace GetSocialSdk.Core
             {
                 var channelsJson = _gs_getInviteChannels();
                 GetSocialDebugLogger.D("Invite channels: " + channelsJson);
-                return GSJsonUtils.ParseChannelsList(channelsJson);
+                return GSJsonUtils.ParseList<InviteChannel>(channelsJson).ToArray();
             }
         }
 
@@ -237,6 +237,13 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
+        public void GetUserById(string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getUserById(userId, 
+                PublicUserCallback.OnPublicUser, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
         #endregion
 
         #region social_graph
@@ -271,7 +278,14 @@ namespace GetSocialSdk.Core
         public void GetFriends (int offset, int limit, Action<List<PublicUser>> onSuccess, Action<GetSocialError> onFailure)
         {
            _gs_getFriends (offset, limit,
-                ActivityFeedCallbacks.OnUsersListReceived, onSuccess.GetPointer(),
+                Callbacks.GetPublicUsers, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getSuggestedFriends (offset, limit,
+                Callbacks.GetSuggestedFriends, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -283,7 +297,7 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
            _gs_getAnnouncements(feed,
-                ActivityFeedCallbacks.OnActivityPostListReceived, onSuccess.GetPointer(),
+                Callbacks.GetActivityPosts, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -291,14 +305,14 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
            _gs_getActivitiesWithQuery(query.ToJson(),
-                ActivityFeedCallbacks.OnActivityPostListReceived, onSuccess.GetPointer(),
+                Callbacks.GetActivityPosts, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void GetActivity(string activityId, Action<ActivityPost> onSuccess, Action<GetSocialError> onFailure)
         {
            _gs_getActivityById(activityId,
-                ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
+                Callbacks.GetActivityPost, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -306,7 +320,7 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
            _gs_postActivityToFeed(feed, content.ToJson(),
-                ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
+                Callbacks.GetActivityPost, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -314,7 +328,7 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
            _gs_postCommentToActivity(activityId, comment.ToJson(),
-                ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
+                Callbacks.GetActivityPost, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -322,7 +336,7 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
            _gs_likeActivity(activityId, isLiked,
-                ActivityFeedCallbacks.OnActivityPostReceived, onSuccess.GetPointer(),
+                Callbacks.GetActivityPost, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -330,7 +344,7 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
            _gs_getActivityLikers(activityId, offset, limit,
-                ActivityFeedCallbacks.OnUsersListReceived, onSuccess.GetPointer(),
+                Callbacks.GetPublicUsers, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -515,6 +529,12 @@ namespace GetSocialSdk.Core
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
+        [DllImport("__Internal")]
+        static extern void _gs_getUserById(string userId,
+            OnPublicUserCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        
         #endregion
 
         #region social_graph
@@ -540,6 +560,11 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern void _gs_getFriends(int offset, int limit,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_getSuggestedFriends(int offset, int limit,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 

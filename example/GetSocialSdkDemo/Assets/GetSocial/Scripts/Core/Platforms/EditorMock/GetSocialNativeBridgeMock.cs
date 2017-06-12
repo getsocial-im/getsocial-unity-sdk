@@ -254,6 +254,12 @@ namespace GetSocialSdk.Core
                 onFailure);
         }
 
+        public void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), offset, limit, onSuccess,
+                onFailure);
+        }
+
         public void GetAnnouncements(string feed, Action<List<ActivityPost>> onSuccess,
             Action<GetSocialError> onFailure)
         {

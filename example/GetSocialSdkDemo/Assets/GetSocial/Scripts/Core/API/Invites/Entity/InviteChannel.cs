@@ -82,12 +82,7 @@ namespace GetSocialSdk.Core
         {
             throw new NotImplementedException("Invite Channel is only received from iOS");
         }
-
-        public InviteChannel ParseFromJson(string json)
-        {
-            return ParseFromJson(json.ToDict());
-        }
-
+        
         public InviteChannel ParseFromJson(Dictionary<string, object> jsonDic)
         {
             Id = jsonDic[IdFieldName] as string;

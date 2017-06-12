@@ -7,6 +7,8 @@ namespace GetSocialSdk.Ui
 
         bool LoadConfiguration(string filePath);
 
+        bool ShowView<T>(ViewBuilder<T> viewBuilder) where T : ViewBuilder<T>;
+        
         bool CloseView(bool saveViewState);
 
         bool RestoreView();
@@ -14,6 +16,7 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
         bool OnBackPressed();
 #endif
+        
     }
 }
 #endif

@@ -6,24 +6,21 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class CallbackProxy<T> : JavaInterfaceProxy
+    class CallbackProxy<T> : JavaInterfaceProxy where T : IGetSocialBridgeObject<T>, new()
     {
         readonly Action<T> _onSuccess;
         readonly Action<GetSocialError> _onFailure;
-        readonly Func<AndroidJavaObject, T> _createObjectFunc;
 
-        public CallbackProxy(Action<T> onSuccess, Action<GetSocialError> onFailure, 
-            Func<AndroidJavaObject, T> createObjectFunc)
+        public CallbackProxy(Action<T> onSuccess, Action<GetSocialError> onFailure)
             : base("im.getsocial.sdk.Callback")
         {
             _onSuccess = onSuccess;
             _onFailure = onFailure;
-            _createObjectFunc = createObjectFunc;
         }
 
         void onSuccess(AndroidJavaObject resultAJO)
         {
-            T res = _createObjectFunc(resultAJO);
+            T res = new T().ParseFromAJO(resultAJO);
 
             GetSocialDebugLogger.D("On success: " + res);
 

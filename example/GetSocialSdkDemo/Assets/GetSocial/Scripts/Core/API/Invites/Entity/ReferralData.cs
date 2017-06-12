@@ -76,19 +76,13 @@ namespace GetSocialSdk.Core
             throw new System.NotImplementedException("Referral Data is never passed to iOS, only received");
         }
 
-        public ReferralData ParseFromJson(string json)
+        public ReferralData ParseFromJson(Dictionary<string, object> json)
         {
-            if (string.IsNullOrEmpty(json))
-            {
-                return null;
-            }
-
-            var dic = json.ToDict();
-            Token = dic[TokenFieldName] as string;
-            ReferrerUserId = dic[ReferrerUserIdFieldName] as string;
-            ReferrerChannelId = dic[ReferrerChannelIdFieldName] as string;
-            IsFirstMatch = (bool) dic[IsFirstMatchFieldName];
-            CustomReferralData = new CustomReferralData(dic[CustomReferralDataFieldName] as Dictionary<string, object>);
+            Token = json[TokenFieldName] as string;
+            ReferrerUserId = json[ReferrerUserIdFieldName] as string;
+            ReferrerChannelId = json[ReferrerChannelIdFieldName] as string;
+            IsFirstMatch = (bool) json[IsFirstMatchFieldName];
+            CustomReferralData = new CustomReferralData(json[CustomReferralDataFieldName] as Dictionary<string, object>);
             return this;
         }
 

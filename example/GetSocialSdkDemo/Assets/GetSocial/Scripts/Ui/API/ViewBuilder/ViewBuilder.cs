@@ -58,7 +58,17 @@ namespace GetSocialSdk.Ui
         /// Show View.
         /// </summary>
         /// <returns>true if view was shown, false otherwise</returns>
-        public abstract bool Show();
+        internal abstract bool ShowInternal();
+
+        /// <summary>
+        /// Show View.
+        /// </summary>
+        /// <returns>true if view was shown, false otherwise</returns>
+        public bool Show()
+        {
+            return GetSocialUi.ShowView(this);
+        }
+        
 
 #if UNITY_ANDROID
 

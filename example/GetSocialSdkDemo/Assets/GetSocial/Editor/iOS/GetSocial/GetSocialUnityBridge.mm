@@ -2,6 +2,8 @@
 #include "UnityInvitePlugin.h"
 #include "GetSocialJsonUtils.h"
 #include "GetSocialFunctionDefs.h"
+#import "NSObject+Json.h"
+#import "NSDictionary+GetSocial.h"
 #include <GetSocial/GetSocial.h>
 #include <GetSocial/GetSocialAccessHelper.h>
 
@@ -12,22 +14,67 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initialization
     
+typedef void(^CompleteBlock)();
+    
+typedef void(^ErrorBlock)(NSError *error);
+    
+typedef void(^ObjectBlock)(id object);
+
+typedef void(^IntBlock)(int object);
+
+typedef void(^BoolBlock)(BOOL object);
+    
+CompleteBlock completeBlock(VoidCallbackDelegate delegate, void *ptr)
+{
+    CompleteBlock block = ^() {
+        delegate(ptr);
+    };
+    return block;
+}
+
+    
+ErrorBlock errorBlock(FailureCallbackDelegate delegate, void *ptr)
+{
+    ErrorBlock block = ^(NSError *error) {
+        delegate(ptr, [error toJsonCString]);
+    };
+    return block;
+}
+    
+ObjectBlock objectBlock(StringCallbackDelegate delegate, void *ptr)
+{
+    ObjectBlock block = ^(id object) {
+        delegate(ptr, [object toJsonCString]);
+    };
+    return block;
+}
+
+IntBlock intBlock(IntCallbackDelegate delegate, void *ptr)
+{
+    IntBlock block = ^(int object) {
+        delegate(ptr, object);
+    };
+    return block;
+}
+    
+BoolBlock boolBlock(BoolCallbackDelegate delegate, void *ptr)
+{
+    BoolBlock block = ^(BOOL object) {
+        delegate(ptr, object);
+    };
+    return block;
+}
+    
 void _gs_executeWhenInitialized(VoidCallbackDelegate action, void *actionPtr)
 {
-    [GetSocial executeWhenInitialized:^() {
-        action(actionPtr);
-    }];
+    [GetSocial executeWhenInitialized:completeBlock(action, actionPtr)];
 }
     
 void _gs_init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
-    [GetSocialAccessHelper initWithSuccess:^{
-        completeCallback(onCompletePtr);
-    }                              failure:^(NSError *error) {
-        char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailurePtr, err);
-    }];
+    [GetSocialAccessHelper initWithSuccess:completeBlock(completeCallback, onCompletePtr)
+                                   failure:errorBlock(failureCallback, onFailurePtr)];
 }
 
 bool _gs_isInitialized()
@@ -35,17 +82,11 @@ bool _gs_isInitialized()
     return [GetSocial isInitialized];
 }
 
-void _gs_getReferralData(FetchReferralDataCallbackDelegate fetchReferralDataCallback, void *onSuccessActionPtr,
+void _gs_getReferralData(StringCallbackDelegate fetchReferralDataCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
-    [GetSocial referralDataWithSuccess:^(GetSocialReferralData *referralData) {
-                NSString *referralDataJson = [GetSocialJsonUtils serializeReferralData:referralData];
-                fetchReferralDataCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:referralDataJson]);
-            }
-                               failure:^(NSError *error) {
-                                   char *serializedError = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                                   failureCallback(onFailureActionPtr, serializedError);
-                               }];
+    [GetSocial referralDataWithSuccess:objectBlock(fetchReferralDataCallback, onSuccessActionPtr)
+                               failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 char *_gs_getNativeSdkVersion()
@@ -66,12 +107,9 @@ bool _gs_setLanguage(const char *languageCode)
 }
 
 #pragma mark - Global error handler
-bool _gs_setGlobalErrorListener(void *onErrorActionPtr, GlobalErrorCallbackDelegate errorCallback)
+bool _gs_setGlobalErrorListener(void *onErrorActionPtr, FailureCallbackDelegate errorCallback)
 {
-    return [GetSocial setGlobalErrorHandler:^(NSError *error) {
-        const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        errorCallback(onErrorActionPtr, serializedErr);
-    }];
+    return [GetSocial setGlobalErrorHandler:errorBlock(errorCallback, onErrorActionPtr)];
 }
 
 bool _gs_removeGlobalErrorListener()
@@ -82,10 +120,7 @@ bool _gs_removeGlobalErrorListener()
 #pragma mark - Invites
 char *_gs_getInviteChannels()
 {
-    NSArray<GetSocialInviteChannel *> *channels = [GetSocial inviteChannels];
-    NSString *channelsJson = [GetSocialJsonUtils serializeInviteChannelsList:channels];
-
-    return [GetSocialBridgeUtils createCStringFrom:channelsJson];
+    return [[GetSocial inviteChannels] toJsonCString];
 }
 
 void _gs_sendInvite(const char *channelId,
@@ -94,14 +129,10 @@ void _gs_sendInvite(const char *channelId,
 {
     NSString *channelIdStr = [GetSocialBridgeUtils createNSStringFrom:channelId];
 
-    [GetSocial sendInviteWithChannelId:channelIdStr success:^{
-        completeCallback(onCompletePtr);
-    }                           cancel:^{
-        completeCallback(onCancelPtr);
-    }                          failure:^(NSError *error) {
-        char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailurePtr, err);
-    }];
+    [GetSocial sendInviteWithChannelId:channelIdStr
+                               success:completeBlock(completeCallback, onCompletePtr)
+                                cancel:completeBlock(completeCallback, onCancelPtr)
+                               failure:errorBlock(failureCallback, onFailurePtr)];
 }
 
 void _gs_sendInviteCustom(const char *channelId, const char *customInviteContentJson,
@@ -113,14 +144,11 @@ void _gs_sendInviteCustom(const char *channelId, const char *customInviteContent
     
     GetSocialMutableInviteContent *inviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:customInviteContentJsonStr];
     
-    [GetSocial sendInviteWithChannelId:channelIdStr inviteContent:inviteContent success:^{
-        completeCallback(onCompletePtr);
-    }                           cancel:^{
-        completeCallback(onCancelPtr);
-    }                          failure:^(NSError *error) {
-        char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailurePtr, err);
-    }];
+    [GetSocial sendInviteWithChannelId:channelIdStr
+                         inviteContent:inviteContent
+                               success:completeBlock(completeCallback, onCompletePtr)
+                                cancel:completeBlock(completeCallback, onCancelPtr)
+                               failure:errorBlock(failureCallback, onFailurePtr)];
 }
 
     
@@ -135,14 +163,12 @@ void _gs_sendInviteCustomAndReferralData(const char *channelId, const char *cust
     GetSocialMutableInviteContent *inviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:customInviteContentJsonStr];
     NSDictionary *customReferralData = [GetSocialJsonUtils deserializeCustomReferralData:customReferralDataJsonStr];
 
-    [GetSocial sendInviteWithChannelId:channelIdStr inviteContent:inviteContent customReferralData:customReferralData success:^{
-        completeCallback(onCompletePtr);
-    }                           cancel:^{
-        completeCallback(onCancelPtr);
-    }                          failure:^(NSError *error) {
-        char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailurePtr, err);
-    }];
+    [GetSocial sendInviteWithChannelId:channelIdStr
+                         inviteContent:inviteContent
+                    customReferralData:customReferralData
+                               success:completeBlock(completeCallback, onCompletePtr)
+                                cancel:completeBlock(completeCallback, onCancelPtr)
+                               failure:errorBlock(failureCallback, onFailurePtr)];
 }
 
 bool _gs_registerInviteProviderPlugin(const char *channelId, void *pluginPtr,
@@ -195,9 +221,7 @@ void _gs_registerForPushNotifications()
 void _gs_setNotificationActionListener(void *listener, NotificationActionListener delegate)
 {
     [GetSocial setNotificationActionHandler:^BOOL(GetSocialNotificationAction * _Nonnull action) {
-        NSString *serialized = [GetSocialJsonUtils serializeNotificationAction:action];
-        char * str = [GetSocialBridgeUtils createCStringFrom:serialized];
-        return delegate(listener, str);
+        return delegate(listener, [action toJsonCString]);
     }];
 }
 
@@ -205,9 +229,7 @@ void _gs_setNotificationActionListener(void *listener, NotificationActionListene
 
 bool _gs_setOnUserChangedListener(void *listener, VoidCallbackDelegate delegate)
 {
-    return [GetSocialUser setOnUserChangedHandler:^{
-        delegate(listener);
-    }];
+    return [GetSocialUser setOnUserChangedHandler:completeBlock(delegate, listener)];
 }
 
 bool _gs_removeOnUserChangedListener()
@@ -229,24 +251,16 @@ void _gs_setUserDisplayName(const char *displayName, VoidCallbackDelegate comple
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
     [GetSocialUser setDisplayName:[GetSocialBridgeUtils createNSStringFrom:displayName]
-                          success:^{
-                              completeCallback(onCompletePtr);
-                          } failure:^(NSError *error) {
-                char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                failureCallback(onFailurePtr, err);
-            }];
+                          success:completeBlock(completeCallback, onCompletePtr)
+                          failure:errorBlock(failureCallback, onFailurePtr)];
 }
     
 void _gs_setPublicProperty(const char * key, const char * value, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser setPublicPropertyValue:[GetSocialBridgeUtils createNSStringFrom:value]
                                    forKey:[GetSocialBridgeUtils createNSStringFrom:key]
-                                  success:^{
-                                      successCallback(onSuccessActionPtr);
-                                  } failure:^(NSError * _Nonnull error) {
-                                      char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                                      failureCallback(onFailureActionPtr, err);
-                                  }];
+                                  success:completeBlock(successCallback, onSuccessActionPtr)
+                                  failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
     
 
@@ -254,35 +268,23 @@ void _gs_setPrivateProperty(const char * key, const char * value, VoidCallbackDe
 {
     [GetSocialUser setPrivatePropertyValue:[GetSocialBridgeUtils createNSStringFrom:value]
                                     forKey:[GetSocialBridgeUtils createNSStringFrom:key]
-                                   success:^{
-                                      successCallback(onSuccessActionPtr);
-                                   } failure:^(NSError * _Nonnull error) {
-                                      char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                                      failureCallback(onFailureActionPtr, err);
-                                   }];
+                                   success:completeBlock(successCallback, onSuccessActionPtr)
+                                   failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
     
 void _gs_removePublicProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser removePublicPropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]
-                                      success:^{
-                                          successCallback(onSuccessActionPtr);
-                                    } failure:^(NSError * _Nonnull error) {
-                                        char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                                        failureCallback(onFailureActionPtr, err);
-                                    }];
+                                      success:completeBlock(successCallback, onSuccessActionPtr)
+                                      failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 
 void _gs_removePrivateProperty(const char * key, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
 {
     [GetSocialUser removePrivatePropertyForKey:[GetSocialBridgeUtils createNSStringFrom:key]
-                                       success:^{
-                                           successCallback(onSuccessActionPtr);
-                                       } failure:^(NSError * _Nonnull error) {
-                                           char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                                           failureCallback(onFailureActionPtr, err);
-                                       }];
+                                       success:completeBlock(successCallback, onSuccessActionPtr)
+                                       failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 char * _gs_getPublicProperty(const char * key)
@@ -313,12 +315,8 @@ void _gs_setUserAvatarUrl(const char *avatarUrl, VoidCallbackDelegate completeCa
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
     [GetSocialUser setAvatarUrl:[GetSocialBridgeUtils createNSStringFrom:avatarUrl]
-                        success:^{
-                            completeCallback(onCompletePtr);
-                        } failure:^(NSError *error) {
-                char *err = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                failureCallback(onFailurePtr, err);
-            }];
+                        success:completeBlock(completeCallback, onCompletePtr)
+                        failure:errorBlock(failureCallback, onFailurePtr)];
 }
 
 bool _gs_isUserAnonymous()
@@ -328,27 +326,20 @@ bool _gs_isUserAnonymous()
 
 char *_gs_getAuthIdentities()
 {
-    NSDictionary<NSString *, NSString *> *identities = [GetSocialUser authIdentities];
-    return [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeUserIdentities:identities]];
+    return [[GetSocialUser authIdentities] toJsonCString];
 }
 
 void _gs_addAuthIdentity(const char *identity,
         VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr,
-        OnUserConflictDelegate conflictCallBack, void *onConflictActionPtr)
+        StringCallbackDelegate conflictCallBack, void *onConflictActionPtr)
 {
     NSString *identityStr = [GetSocialBridgeUtils createNSStringFrom:identity];
     GetSocialAuthIdentity *gsIdentity = [GetSocialJsonUtils deserializeIdentity:identityStr];
-    [GetSocialUser addAuthIdentity:gsIdentity success:^{
-        successCallback(onSuccessActionPtr);
-
-    }                     conflict:^(GetSocialConflictUser *conflictUser) {
-        NSString *serializedConflictUser = [GetSocialJsonUtils serializeConflictUser:conflictUser];
-        conflictCallBack(onConflictActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedConflictUser]);
-    }                      failure:^(NSError *error) {
-        const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailureActionPtr, serializedErr);
-    }];
+    [GetSocialUser addAuthIdentity:gsIdentity
+                           success:completeBlock(successCallback, onSuccessActionPtr)
+                          conflict:objectBlock(conflictCallBack, onConflictActionPtr)
+                           failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_switchUser(const char *identity,
@@ -357,12 +348,9 @@ void _gs_switchUser(const char *identity,
 {
     NSString *identityStr = [GetSocialBridgeUtils createNSStringFrom:identity];
     GetSocialAuthIdentity *gsIdentity = [GetSocialJsonUtils deserializeIdentity:identityStr];
-    [GetSocialUser switchUserToIdentity:gsIdentity success:^{
-        successCallback(onSuccessActionPtr);
-    }                           failure:^(NSError *error) {
-        const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailureActionPtr, serializedErr);
-    }];
+    [GetSocialUser switchUserToIdentity:gsIdentity
+                                success:completeBlock(successCallback, onSuccessActionPtr)
+                                failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_removeAuthIdentity(const char *providerId,
@@ -371,12 +359,9 @@ void _gs_removeAuthIdentity(const char *providerId,
 {
     NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
 
-    [GetSocialUser removeAuthIdentityWithProviderId:providerIdStr success:^{
-        successCallback(onSuccessActionPtr);
-    }                                       failure:^(NSError *error) {
-        const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailureActionPtr, serializedErr);
-    }];
+    [GetSocialUser removeAuthIdentityWithProviderId:providerIdStr
+                                            success:completeBlock(successCallback, onSuccessActionPtr)
+                                            failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_resetInternal()
@@ -384,6 +369,17 @@ void _gs_resetInternal()
     [GetSocialAccessHelper reset];
 }
 
+void _gs_getUserById(const char * userId,
+                    StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                     FailureCallbackDelegate failureCallback, void *onFailureActionPtr) {
+
+    NSString *userIdStr = [GetSocialBridgeUtils createNSStringFrom:userId];
+
+    [GetSocial userWithId:userIdStr
+                  success:objectBlock(successCallback, onSuccessActionPtr)
+                  failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
 #pragma mark - SocialGraph
 
 void _gs_addFriend(const char *userId,
@@ -395,10 +391,7 @@ void _gs_addFriend(const char *userId,
     [GetSocialUser addFriend:userIdStr
                      success:^(int result) {
                          successCallback(onSuccessActionPtr, result);
-                     } failure:^(NSError *error) {
-                const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                failureCallback(onFailureActionPtr, serializedErr);
-            }];
+                     } failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_removeFriend(const char *userId,
@@ -408,12 +401,8 @@ void _gs_removeFriend(const char *userId,
     NSString *userIdStr = [GetSocialBridgeUtils createNSStringFrom:userId];
 
     [GetSocialUser removeFriend:userIdStr
-                        success:^(int result) {
-                            successCallback(onSuccessActionPtr, result);
-                        } failure:^(NSError *error) {
-                const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                failureCallback(onFailureActionPtr, serializedErr);
-            }];
+                        success:intBlock(successCallback, onSuccessActionPtr)
+                        failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_isFriend(const char *userId,
@@ -423,36 +412,37 @@ void _gs_isFriend(const char *userId,
     NSString *userIdStr = [GetSocialBridgeUtils createNSStringFrom:userId];
 
     [GetSocialUser isFriend:userIdStr
-                    success:^(BOOL isFriend) {
-                        successCallback(onSuccessActionPtr, isFriend);
-                    } failure:^(NSError *error) {
-                const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                failureCallback(onFailureActionPtr, serializedErr);
-            }];
+                    success:boolBlock(successCallback, onSuccessActionPtr)
+                    failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_getFriendsCount(IntCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
-    [GetSocialUser friendsCountWithSuccess:^(int result) {
-        successCallback(onSuccessActionPtr, result);
-    }                              failure:^(NSError *error) {
-        const char *serializedErr = [GetSocialJsonUtils serializeError:error].UTF8String;
-        failureCallback(onFailureActionPtr, serializedErr);
-    }];
+    [GetSocialUser friendsCountWithSuccess:intBlock(successCallback, onSuccessActionPtr)
+                                   failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
+void _gs_getFriends(int offset, int limit,
+                    StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                    FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    [GetSocialUser friendsWithOffset:offset
+                               limit:limit
+                             success:objectBlock(successCallback, onSuccessActionPtr)
+                             failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
-void _gs_getFriends(int offset, int limit,
-        StringCallbackDelegate successCallback, void *onSuccessActionPtr,
-        FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+
+void _gs_getSuggestedFriends(int offset, int limit,
+                    StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                    FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
-    [GetSocialUser friendsWithOffset:offset limit:limit success:^(NSArray<GetSocialPublicUser *> *users) {
-        NSString *serializedUsers = [GetSocialJsonUtils serializePublicUserArray:users];
-        successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedUsers]);
-    }                        failure:^(NSError *error) {
-        const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-        failureCallback(onFailureActionPtr, serializedErr);
-    }];
+    // [GetSocialUser suggestedFriendsWithOffset:offset limit:limit success:^(NSArray<GetSocialSuggestedFriend *> *friends) {
+    //     successCallback(onSuccessActionPtr, [friends toJsonCString]);
+    // }                        failure:^(NSError *error) {
+    //     failureCallback(onFailureActionPtr, [error toJsonCString]);
+    // }];
 }
 
 #pragma mark - Activity Feed API
@@ -464,14 +454,8 @@ void _gs_getAnnouncements(const char *feed,
     NSString *feedId = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     [GetSocial announcementsForFeed:feedId
-                            success:^(NSArray<GetSocialActivityPost *> *posts) {
-                                NSString *serializedPosts = [GetSocialJsonUtils serializeActivityPostList:posts];
-                                successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedPosts]);
-                            }
-                            failure:^(NSError *error) {
-                                const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                                failureCallback(onFailureActionPtr, serializedErr);
-                            }];
+                            success:objectBlock(successCallback, onSuccessActionPtr)
+                            failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_getActivitiesWithQuery(const char *query,
@@ -482,14 +466,8 @@ void _gs_getActivitiesWithQuery(const char *query,
     GetSocialActivitiesQuery *activitiesQuery = [GetSocialJsonUtils deserializeActivitiesQuery:queryStr];
 
     [GetSocial activitiesWithQuery:activitiesQuery
-                           success:^(NSArray<GetSocialActivityPost *> *posts) {
-                               NSString *serializedPosts = [GetSocialJsonUtils serializeActivityPostList:posts];
-                               successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedPosts]);
-                           }
-                           failure:^(NSError *error) {
-                               const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                               failureCallback(onFailureActionPtr, serializedErr);
-                           }];
+                           success:objectBlock(successCallback, onSuccessActionPtr)
+                           failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_getActivityById(const char *activityId,
@@ -498,14 +476,8 @@ void _gs_getActivityById(const char *activityId,
 {
     NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
     [GetSocial activityWithId:activityIdStr
-                      success:^(GetSocialActivityPost *post) {
-                          NSString *serializedPosts = [GetSocialJsonUtils serializeActivityPost:post];
-                          successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedPosts]);
-                      }
-                      failure:^(NSError *error) {
-                          const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                          failureCallback(onFailureActionPtr, serializedErr);
-                      }];
+                      success:objectBlock(successCallback, onSuccessActionPtr)
+                      failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_postActivityToFeed(const char *feedId, const char *activityContent,
@@ -518,14 +490,8 @@ void _gs_postActivityToFeed(const char *feedId, const char *activityContent,
 
     [GetSocial postActivity:content
                      toFeed:feedIdStr
-                    success:^(GetSocialActivityPost *post) {
-                        NSString *serializedPosts = [GetSocialJsonUtils serializeActivityPost:post];
-                        successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedPosts]);
-                    }
-                    failure:^(NSError *error) {
-                        const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                        failureCallback(onFailureActionPtr, serializedErr);
-                    }];
+                    success:objectBlock(successCallback, onSuccessActionPtr)
+                    failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_postCommentToActivity(const char *activityId, const char *comment,
@@ -539,14 +505,8 @@ void _gs_postCommentToActivity(const char *activityId, const char *comment,
 
     [GetSocial postComment:commentContent
           toActivityWithId:activityIdStr
-                   success:^(GetSocialActivityPost *post) {
-                       NSString *serializedPosts = [GetSocialJsonUtils serializeActivityPost:post];
-                       successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedPosts]);
-                   }
-                   failure:^(NSError *error) {
-                       const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                       failureCallback(onFailureActionPtr, serializedErr);
-                   }];
+                   success:objectBlock(successCallback, onSuccessActionPtr)
+                   failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_likeActivity(const char *activityId, bool isLiked,
@@ -556,14 +516,8 @@ void _gs_likeActivity(const char *activityId, bool isLiked,
     NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
     [GetSocial likeActivityWithId:activityIdStr
                           isLiked:isLiked
-                          success:^(GetSocialActivityPost *post) {
-                              NSString *serializedPosts = [GetSocialJsonUtils serializeActivityPost:post];
-                              successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedPosts]);
-                          }
-                          failure:^(NSError *error) {
-                              const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                              failureCallback(onFailureActionPtr, serializedErr);
-                          }];
+                          success:objectBlock(successCallback, onSuccessActionPtr)
+                          failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_getActivityLikers(const char *activityId, int offset, int limit,
@@ -574,14 +528,8 @@ void _gs_getActivityLikers(const char *activityId, int offset, int limit,
     [GetSocial activityLikers:activityIdStr
                        offset:offset
                         limit:limit
-                      success:^(NSArray<GetSocialPublicUser *> *likers) {
-                          NSString *serializedAuthors = [GetSocialJsonUtils serializePublicUserArray:likers];
-                          successCallback(onSuccessActionPtr, [GetSocialBridgeUtils createCStringFrom:serializedAuthors]);
-                      }
-                      failure:^(NSError *error) {
-                          const char *serializedErr = [GetSocialBridgeUtils createCStringFrom:[GetSocialJsonUtils serializeError:error]];
-                          failureCallback(onFailureActionPtr, serializedErr);
-                      }];
+                      success:objectBlock(successCallback, onSuccessActionPtr)
+                      failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 #pragma mark - Hades Configuration

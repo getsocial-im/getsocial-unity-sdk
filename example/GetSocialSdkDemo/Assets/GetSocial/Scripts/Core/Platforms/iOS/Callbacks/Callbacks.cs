@@ -1,6 +1,8 @@
 #if UNITY_IOS
 using System;
+using System.Collections.Generic;
 using AOT;
+using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
@@ -76,7 +78,11 @@ namespace GetSocialSdk.Core
         public static void FetchReferralDataCallback(IntPtr actionPtr, string referralData)
         {
             GetSocialDebugLogger.D("OnReferralDataReceived: " + referralData);
-            var data = new ReferralData().ParseFromJson(referralData);
+            ReferralData data = null;
+            if (!string.IsNullOrEmpty(referralData))
+            {
+                data = new ReferralData().ParseFromJson(referralData.ToDict());
+            }
             IOSUtils.TriggerCallback(actionPtr, data);
         }
 
@@ -84,14 +90,58 @@ namespace GetSocialSdk.Core
         public static bool NotificationActionListener(IntPtr funcPtr, string notificationActionJson)
         {
             GetSocialDebugLogger.D("NotificationActionReceived: " + notificationActionJson);
-            var notificationAction = new NotificationAction().ParseFromJson(notificationActionJson);
+            var notificationAction = new NotificationAction().ParseFromJson(notificationActionJson.ToDict());
             if (funcPtr != IntPtr.Zero)
             {
                 return funcPtr.Cast<Func<NotificationAction, bool>>().Invoke(notificationAction);
             }
             return false;
         }
+        
+        static void GetObjectCallback<T>(IntPtr actionPtr, string json) where T : IGetSocialBridgeObject<T>, new()
+        {  
+            if (actionPtr != IntPtr.Zero)
+            {
+                var result = GSJsonUtils.Parse<T>(json);
+                IOSUtils.TriggerCallback(actionPtr, result);
+            }
+        }
+        
+        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetActivityPost(IntPtr actionPtr, string json)
+        {
+            GetObjectCallback<ActivityPost>(actionPtr, json);
+        }
+        
+        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetPublicUser(IntPtr actionPtr, string json)
+        {
+            GetObjectCallback<PublicUser>(actionPtr, json);
+        }
+        
+        static void GetObjectsListCallback<T>(IntPtr actionPtr, string json) where T : IGetSocialBridgeObject<T>, new()
+        {
+            var result = GSJsonUtils.ParseList<T>(json);
+            IOSUtils.TriggerCallback(actionPtr, result);
+        }
 
+        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetActivityPosts(IntPtr actionPtr, string json)
+        {
+            GetObjectsListCallback<ActivityPost>(actionPtr, json);
+        }
+
+        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetPublicUsers(IntPtr actionPtr, string json)
+        {
+            GetObjectsListCallback<PublicUser>(actionPtr, json);
+        }
+
+        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetSuggestedFriends(IntPtr actionPtr, string json)
+        {
+            GetObjectsListCallback<SuggestedFriend>(actionPtr, json);
+        }
 
     }
 }

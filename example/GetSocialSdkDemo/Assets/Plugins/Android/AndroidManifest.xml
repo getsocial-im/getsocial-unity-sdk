@@ -13,8 +13,8 @@
     </activity>
     <meta-data android:name="im.getsocial.sdk.AppId" android:value="LuDPp7W0J4" />
     <meta-data android:name="im.getsocial.sdk.Runtime" android:value="UNITY" />
-    <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="5.6.0f3" />
-    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.1.2" />
+    <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="5.6.1f1" />
+    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.2.0" />
     <provider android:name="im.getsocial.sdk.AutoInitSdkContentProvider" android:authorities="im.getsocial.demo.unity.AutoInitSdkContentProvider" android:exported="false" android:enabled="true" />
     <activity android:name="im.getsocial.sdk.unity.GetSocialDeepLinkingActivity" exported="true">
       <intent-filter>

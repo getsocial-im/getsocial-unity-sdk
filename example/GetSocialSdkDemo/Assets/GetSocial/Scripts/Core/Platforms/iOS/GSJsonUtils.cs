@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GetSocialSdk.MiniJSON;
+using UnityEngine;
 
 #if UNITY_IOS
 
@@ -8,70 +9,38 @@ namespace GetSocialSdk.Core
 {
     public static class GSJsonUtils
     {
-        public static InviteChannel[] ParseChannelsList(string json)
+        public static T Parse<T>(string json) where T : IGetSocialBridgeObject<T>, new()
         {
-            var result = new List<InviteChannel>();
-
+            T result = new T();
             if (string.IsNullOrEmpty(json))
             {
                 // return immediately in case of unexpected empty/null json
-                GetSocialDebugLogger.E("ParseChannelsList is parsing null or empty json string");
-                return result.ToArray();
-            }
-
-            var channels = GSJson.Deserialize(json) as List<object>;
-
-            foreach (var channel in channels)
-            {
-                var currentChannel = new InviteChannel().ParseFromJson(channel as Dictionary<string, object>);
-                result.Add(currentChannel);
-            }
-
-            return result.ToArray();
-        }
-
-        public static List<ActivityPost> ParseActivityPostsList(string json)
-        {
-            var result = new List<ActivityPost>();
-
-            if (string.IsNullOrEmpty(json))
-            {
-                // return immediately in case of unexpected empty/null json
-                GetSocialDebugLogger.E("ParseActivityPostsList is parsing null or empty json string");
+                GetSocialDebugLogger.E("ParseList is parsing null or empty json string");
                 return result;
             }
 
-            var posts = GSJson.Deserialize(json) as List<object>;
-
-            foreach (var post in posts)
-            {
-                var currentPost = new ActivityPost().ParseFromJson(post as Dictionary<string, object>);
-                result.Add(currentPost);
-            }
-
-            return result;
+            return result.ParseFromJson(json.ToDict());
         }
 
-        public static List<PublicUser> ParseUsersList(string json)
+        public static List<T> ParseList<T>(string json) where T : IGetSocialBridgeObject<T>, new()
         {
-            var result = new List<PublicUser>();
-
+            var result = new List<T>();
             if (string.IsNullOrEmpty(json))
             {
                 // return immediately in case of unexpected empty/null json
-                GetSocialDebugLogger.E("ParseUsersList is parsing null or empty json string");
+                GetSocialDebugLogger.E("ParseList is parsing null or empty json string");
                 return result;
             }
-
-            var users = GSJson.Deserialize(json) as List<object>;
-
-            foreach (var user in users)
+            
+            var entities = GSJson.Deserialize(json) as List<object>;
+            
+            if (entities == null)
             {
-                var parsedUser = new PublicUser().ParseFromJson(user as Dictionary<string, object>);
-                result.Add(parsedUser);
+                return result;
             }
-
-            return result;
+            return entities
+                .ConvertAll(item => item as Dictionary<string, object>)
+                .ConvertAll(entity => new T().ParseFromJson(entity));
         }
 
         public static Dictionary<string, string> ParseDictionary(string json)

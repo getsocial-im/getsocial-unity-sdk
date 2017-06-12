@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** @name Properties */
 
 /*!
- * @abstract Called if invite sending was successfull.
+ * @abstract Called if invite sending was successful.
  */
 @property(nonatomic) GetSocialInviteSuccessCallback successCallback;
 

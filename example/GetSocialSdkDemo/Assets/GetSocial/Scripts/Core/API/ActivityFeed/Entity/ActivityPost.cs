@@ -178,13 +178,7 @@ namespace GetSocialSdk.Core
             throw new NotImplementedException();
         }
 
-
-        public ActivityPost ParseFromJson(string json)
-        {
-            return ParseFromJson(json.ToDict());
-        }
-
-        internal ActivityPost ParseFromJson(Dictionary<string, object> jsonDic)
+        public ActivityPost ParseFromJson(Dictionary<string, object> jsonDic)
         {
             Id = (string) jsonDic[IdFieldName];
             Text = jsonDic[TextFieldName] as string;

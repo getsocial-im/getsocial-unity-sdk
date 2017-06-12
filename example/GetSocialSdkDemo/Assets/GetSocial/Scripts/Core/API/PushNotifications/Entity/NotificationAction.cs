@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
@@ -59,9 +60,8 @@ namespace GetSocialSdk.Core
             throw new NotImplementedException("NotificationAction is never sent to iOS");
         }
 
-        public NotificationAction ParseFromJson(string json)
+        public NotificationAction ParseFromJson(Dictionary<string, object> dictionary)
         {
-            var dictionary = json.ToDict();
             switch (dictionary["Type"] as string)
             {
                 case "OPEN_ACTIVITY":

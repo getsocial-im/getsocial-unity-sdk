@@ -63,7 +63,7 @@ namespace GetSocialSdk.Ui
         /// <c>true</c>, if view was opened, <c>false</c> otherwise.
         public static bool ShowView<T>(ViewBuilder<T> viewBuilder) where T : ViewBuilder<T>
         {
-            return viewBuilder.Show();
+            return GetSocialImpl.ShowView(viewBuilder);
         }
 
         /// <summary>

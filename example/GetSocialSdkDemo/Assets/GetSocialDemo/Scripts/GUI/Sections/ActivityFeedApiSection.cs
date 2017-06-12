@@ -186,6 +186,11 @@ public class ActivityFeedApiSection : DemoMenuSection
 
     void PostToGlobalFeed()
     {
+        if (GetSocial.User.IsAnonymous)
+        {
+            _console.LogD("Posting to Global Feed is not allowed for anonymous users.");
+            return;
+        }
         GetSocial.PostActivityToGlobalFeed(GetPost(),
             activity => { _console.LogD(string.Format("Posted to [{0}] content: {1}", _feed, activity.ToString())); },
             OnError);
