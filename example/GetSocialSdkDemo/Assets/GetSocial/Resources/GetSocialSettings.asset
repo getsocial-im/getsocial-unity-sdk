@@ -18,3 +18,4 @@ MonoBehaviour:
   _useCustomDomainForDeeplinking: 0
   _customDomainForDeeplinking: my.pans
   _getSocialDomainPrefixForDeeplinking: unitydemosdk6
+  _getSocialDefaultConfigurationFilePath:

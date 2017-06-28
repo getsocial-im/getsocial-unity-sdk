@@ -3,17 +3,20 @@
 //
 
 #import "GetSocialPublicUser+Json.h"
-
+#import "NSMutableDictionary+GetSocial.h"
+#import <GetSocial/GetSocialPublicUserAccessHelper.h>
 
 @implementation GetSocialPublicUser (Json)
 
 - (NSMutableDictionary *)toJsonDictionary
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-    [dictionary setValue:self.userId forKey:@"Id"];
-    [dictionary setValue:self.displayName forKey:@"DisplayName"];
-    [dictionary setValue:self.avatarUrl forKey:@"AvatarUrl"];
-    [dictionary setValue:[self.authIdentities mutableCopy] forKey:@"Identities"];
+    [dictionary gs_setValueOrNSNull:self.userId forKey:@"Id"];
+    [dictionary gs_setValueOrNSNull:self.displayName forKey:@"DisplayName"];
+    [dictionary gs_setValueOrNSNull:self.avatarUrl forKey:@"AvatarUrl"];
+    [dictionary gs_setValueOrNSNull:[self.authIdentities mutableCopy] forKey:@"Identities"];
+    [dictionary gs_setValueOrNSNull:[self.allPublicProperties mutableCopy] forKey:@"PublicProperties"];
+    [dictionary gs_setValueOrNSNull:[[GetSocialPublicUserAccessHelper allInternalPublicProperties:self] mutableCopy] forKey:@"InternalPublicProperties"];
     return dictionary;
 }
 

@@ -1,4 +1,5 @@
-﻿using GetSocialSdk.Core;
+﻿using Assets.GetSocialDemo.Scripts.Utils;
+using GetSocialSdk.Core;
 using UnityEngine;
 
 public class ActivityFeedApiSection : DemoMenuSection
@@ -96,7 +97,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetGlobalFeedAnnouncements(announcements =>
         {
             _console.LogD("Global feed announcements count: " + announcements.Count);
-            announcements.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(announcements.ToPrettyString());
         }, OnError);
     }
 
@@ -105,7 +106,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetAnnouncements(_feed, announcements =>
         {
             _console.LogD(string.Format("[{0}] Feed announcements count: {1}", _feed, announcements.Count));
-            announcements.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(announcements.ToPrettyString());
         }, OnError);
     }
 
@@ -119,7 +120,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetActivities(query, posts =>
         {
             _console.LogD("Global feed posts count: " + posts.Count);
-            posts.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(posts.ToPrettyString());
         }, OnError);
     }
 
@@ -129,7 +130,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetActivities(query, posts =>
         {
             _console.LogD(string.Format("[{0}] Feed posts count: {1}", _feed, posts.Count));
-            posts.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(posts.ToPrettyString());
         }, OnError);
     }
 
@@ -141,7 +142,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetActivities(query, posts =>
         {
             _console.LogD(string.Format("[{0}] Feed posts newer count: {1}", _feed, posts.Count));
-            posts.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(posts.ToPrettyString());
         }, OnError);
     }
 
@@ -153,7 +154,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetActivities(query, posts =>
         {
             _console.LogD(string.Format("[{0}] Feed posts older count: {1}", _feed, posts.Count));
-            posts.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(posts.ToPrettyString());
         }, OnError);
     }
 
@@ -163,7 +164,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetActivities(query, comments =>
         {
             _console.LogD(string.Format("[{0}] Feed comments count: {1}", _feed, comments.Count));
-            comments.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(comments.ToPrettyString());
         }, OnError);
     }
 
@@ -228,7 +229,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GetSocial.GetActivityLikers(_activityId, 0, 5, likers =>
         {
             _console.LogD(string.Format("[{0}] Activity likers count: {1}", _activityId, likers.Count));
-            likers.ForEach(x => _console.LogD(x.ToString()));
+            _console.LogD(likers.ToPrettyString());
         }, OnError);
     }
 

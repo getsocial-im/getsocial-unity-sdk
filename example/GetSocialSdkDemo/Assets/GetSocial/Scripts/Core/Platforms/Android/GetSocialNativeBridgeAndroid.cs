@@ -151,6 +151,16 @@ namespace GetSocialSdk.Core
             get { return _user.CallStaticAJO("getAuthIdentities").FromJavaHashMap(); }
         }
 
+        public Dictionary<string, string> AllPublicProperties 
+        {
+            get { return _user.CallStaticAJO("getAllPublicProperties").FromJavaHashMap(); }
+        }
+
+        public Dictionary<string, string> AllPrivateProperties
+        {
+            get { return _user.CallStaticAJO("getAllPrivateProperties").FromJavaHashMap(); }
+        }
+
         public string DisplayName
         {
             get { return _user.CallStaticStr("getDisplayName"); }

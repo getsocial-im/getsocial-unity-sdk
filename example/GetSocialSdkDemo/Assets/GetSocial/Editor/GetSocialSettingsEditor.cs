@@ -31,17 +31,7 @@ namespace GetSocialSdk.Editor
         public const string GetSocialSmartInvitesLinkDomain = "gsc.im";
         public const string DemoAppPackage = "im.getsocial.demo.unity";
 
-        const string UnityDemoAppAppId = "LuDPp7W0J4";
-
         // Android
-        const string GetSocialLibSearchPattern = "getsocial*.aar";
-
-        const string CoreLibNamePrefix = "getsocial-library";
-        const string UiLibNamePrefix = "getsocial-ui";
-
-        const string AndroidLibsSourcePath = "Assets/GetSocial/Editor/Android/Libraries/";
-
-        const string AndroidLibsDestinationPath = "Assets/Plugins/Android/";
         const string ShowAndroidSettingsEditorPref = "ShowAndroidSettings";
 
         // iOS
@@ -63,15 +53,11 @@ namespace GetSocialSdk.Editor
         void OnEnable()
         {
             GetSocialAndroidManifestHelper.Refresh();
+            UpdateDefineSymbols();
         }
 
         public override void OnInspectorGUI()
         {
-            if (!IsProjectConfigurationValid())
-            {
-                DrawFixProjectConfigurationMessage();
-            }
-
             GUILayout.Space(15);
             DrawGeneralSettings();
 
@@ -105,63 +91,6 @@ namespace GetSocialSdk.Editor
 
         #region  methods
 
-        static bool IsProjectConfigurationValid()
-        {
-            return IsDefineSymbolsConfigurationValid() && IsAndroidLibrariesConfigurationValid() && IsIosFrameworksConfigurationValid();
-        }
-
-        static bool IsDefineSymbolsConfigurationValid()
-        {
-            return GetSocialSettings.UseGetSocialUi == DefinesToggler.IsUseGetSocialUiDefinePresent();
-        }
-
-        static bool IsAndroidLibrariesConfigurationValid()
-        {
-            if (!Directory.Exists(AndroidLibsDestinationPath))
-            {
-                return false;
-            }
-
-            List<string> filesFromPluginsFolder = Directory
-                .GetFiles(AndroidLibsDestinationPath, "*.*", SearchOption.TopDirectoryOnly)
-                .Where(s => s.EndsWith(".jar") || s.EndsWith(".aar"))
-                .Select<string, string>(Path.GetFileName)
-                .ToList();
-
-            List<string> requiredDependenciesNames = Directory
-                .GetFiles(AndroidLibsSourcePath, "*.*", SearchOption.AllDirectories)
-                .Where(s => s.EndsWith(".jar") || s.EndsWith(".aar"))
-                .Select<string, string>(Path.GetFileName)
-                .ToList();
-
-            return requiredDependenciesNames.All(filesFromPluginsFolder.Contains);
-
-        }
-
-        private static bool IsIosFrameworksConfigurationValid()
-        {
-            return Directory.Exists(IosLibsDestinationPath);
-        }
-
-        static void DrawFixProjectConfigurationMessage()
-        {
-            EditorGUILayout.BeginHorizontal("box");
-            EditorGUILayout.HelpBox(
-                "Looks like some GetSocial dependencies are missing from Plugins folder and/or project settings are missing. \nClick on \"Setup GetSocial\" to fix it.",
-                MessageType.Warning);
-
-            var backupColor = GUI.color;
-            GUI.color = Color.green;
-            if (GUILayout.Button("Setup GetSocial", GUILayout.ExpandHeight(false)))
-            {
-                UpdateDefineSymbols();
-                UpdateAndroidLibraries();
-                UpdateIosLibraries();
-            }
-            GUI.color = backupColor;
-            EditorGUILayout.EndHorizontal();
-        }
-
         void DrawGeneralSettings()
         {
             GetSocialEditorUtils.BeginSetSmallIconSize();
@@ -177,8 +106,25 @@ namespace GetSocialSdk.Editor
 
             GUILayout.Space(15);
             DrawPushNotificationSettings();
+            
+            GUILayout.Space(15);
+            DrawDefaultThemeSettings();
 
             EditorGUILayout.EndVertical();
+        }
+
+        void DrawDefaultThemeSettings()
+        {
+            if (!GetSocialSettings.UseGetSocialUi)
+            {
+                return;
+            }
+            var getSocialUiThemeLabel = new GUIContent("UI configuration file path [?]",
+                "Add a path to your default UI configuration json file (e.g. getsocial/default.json). Leave empty to use default configuration.");
+            EditorGUILayout.LabelField(getSocialUiThemeLabel, EditorStyles.boldLabel);
+            var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationDefaultFilePath);
+            
+            SetUiConfigDefaultFilePath(filePath);
         }
 
         void DrawAppIdSettings()
@@ -204,7 +150,7 @@ namespace GetSocialSdk.Editor
 
         static bool IsDemoAppId()
         {
-            return GetSocialSettings.AppId == UnityDemoAppAppId;
+            return GetSocialSettings.AppId == GetSocialSettings.UnityDemoAppAppId;
         }
 
         void DrawModuleSettings()
@@ -279,14 +225,6 @@ namespace GetSocialSdk.Editor
             GUILayout.Space(15);
         }
 
-        private void SetIosApsProduction(bool value)
-        {
-            if (GetSocialSettings.IosProductionAps != value)
-            {
-                GetSocialSettings.IosProductionAps = value;
-            }
-        }
-
         private static void DrawIosDeeplinkingSettings()
         {
             EditorGUILayout.LabelField("Smart Invites link format", EditorStyles.boldLabel);
@@ -359,6 +297,17 @@ namespace GetSocialSdk.Editor
             if (!string.IsNullOrEmpty(value) && !value.Equals(GetSocialSettings.AppId))
             {
                 GetSocialSettings.AppId = value;
+                GetSocialAndroidManifestHelper.Refresh();
+            }
+        }
+
+
+        void SetUiConfigDefaultFilePath(string value)
+        {
+            if (!value.Equals(GetSocialSettings.UiConfigurationDefaultFilePath))
+            {
+                GetSocialSettings.UiConfigurationDefaultFilePath = value;
+                GetSocialAndroidManifestHelper.UpdateDefaultUiConfigurationFilePath();
             }
         }
 
@@ -382,8 +331,6 @@ namespace GetSocialSdk.Editor
             {
                 GetSocialSettings.UseGetSocialUi = value;
                 UpdateDefineSymbols();
-                UpdateAndroidLibraries();
-                UpdateIosLibraries();
             }
         }
 
@@ -392,78 +339,6 @@ namespace GetSocialSdk.Editor
             DefinesToggler.ToggleUseGetSocialUiDefine(GetSocialSettings.UseGetSocialUi);
         }
 
-        static void UpdateAndroidLibraries()
-        {
-            // delete current jars and corresponding meta files in Plugins/Android folder
-            FindGetSocialDestinationAars()
-                .ForEach(file => { FileUtil.DeleteFileOrDirectory(file); });
-
-            var getSocialAndroidLibs = FindMainAndroidLibs();
-            if (getSocialAndroidLibs.Count == 0)
-            {
-                Debug.LogError("No GetSocial Android libraries found in " + AndroidLibsSourcePath);
-                return;
-            }
-            var coreSourceLib = getSocialAndroidLibs.Single(x => x.Contains(CoreLibNamePrefix));
-            var uiSourceLib = getSocialAndroidLibs.Single(x => x.Contains(UiLibNamePrefix));
-
-            Directory.CreateDirectory(AndroidLibsDestinationPath);
-
-            var coreDestJar = Path.Combine(AndroidLibsDestinationPath, Path.GetFileName(coreSourceLib));
-            File.Copy(coreSourceLib, coreDestJar);
-            if (GetSocialSettings.UseGetSocialUi)
-            {
-                var uiDestLib = Path.Combine(AndroidLibsDestinationPath, Path.GetFileName(uiSourceLib));
-                File.Copy(uiSourceLib, uiDestLib);
-            }
-
-            AssetDatabase.Refresh();
-        }
-
         #endregion
-
-        #region update_ios_libs
-
-        const string IosLibsEditorPath = "Assets/GetSocial/Editor/iOS/Frameworks";
-        const string IosLibsDestinationPath = "Assets/Plugins/iOS/GetSocial";
-
-        static readonly string CoreIosLibZippedFrameworkPath = Path.Combine(IosLibsEditorPath, "GetSocial-Release.zip");
-        static readonly string UiIosLibZippedFrameworkPath = Path.Combine(IosLibsEditorPath, "GetSocialUI-Release.zip");
-
-        static void UpdateIosLibraries()
-        {
-            // Delete iOS libs
-            FileUtil.DeleteFileOrDirectory(IosLibsDestinationPath);
-
-            // Unzip
-            Debug.Log("Unzipping Core Framework...");
-            ZipUtils.ExtractZipFile(CoreIosLibZippedFrameworkPath, IosLibsDestinationPath);
-            if (GetSocialSettings.UseGetSocialUi)
-            {
-                Debug.Log("Unzipping UI Framework...");
-                ZipUtils.ExtractZipFile(UiIosLibZippedFrameworkPath, IosLibsDestinationPath);
-            }
-
-            AssetDatabase.Refresh();
-        }
-
-        #endregion
-
-        static List<string> FindMainAndroidLibs()
-        {
-            return FindGetSocialAars(AndroidLibsSourcePath);
-        }
-
-        static List<string> FindGetSocialDestinationAars()
-        {
-            return Directory.Exists(AndroidLibsDestinationPath)
-                ? FindGetSocialAars(AndroidLibsDestinationPath)
-                : new List<string>();
-        }
-
-        static List<string> FindGetSocialAars(string path)
-        {
-            return Directory.GetFiles(path, GetSocialLibSearchPattern, SearchOption.TopDirectoryOnly).ToList();
-        }
     }
 }

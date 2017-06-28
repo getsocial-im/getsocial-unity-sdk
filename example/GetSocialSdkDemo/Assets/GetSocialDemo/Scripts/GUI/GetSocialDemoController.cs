@@ -334,7 +334,9 @@ public class GetSocialDemoController : MonoBehaviour
             DisplayName = GetSocial.User.DisplayName,
             AvatarUrl = GetSocial.User.AvatarUrl,
             IsAnonymous = GetSocial.User.IsAnonymous,
-            Identities = GetSocial.User.AuthIdentities
+            Identities = GetSocial.User.AuthIdentities,
+            PublicProperties = GetSocial.User.AllPublicProperties,
+            PrivateProperties = GetSocial.User.AllPrivateProperties
         };
         if (!string.IsNullOrEmpty(_currentUserInfo.AvatarUrl))
         {
@@ -387,10 +389,12 @@ public class GetSocialDemoController : MonoBehaviour
         public string Guid;
         public bool IsAnonymous;
         public Dictionary<string, string> Identities = new Dictionary<string, string>();
-
+        public Dictionary<string, string> PublicProperties = new Dictionary<string, string>();
+        public Dictionary<string, string> PrivateProperties = new Dictionary<string, string>();
+        
         public override string ToString()
         {
-            return string.Format("[User: Guid={0}, Identities={1}, DisplayName={2}, AvatarUrl={3}]", Guid, Identities.ToDebugString(), DisplayName, AvatarUrl);
+            return string.Format("[User: Guid={0}, Identities={1}, DisplayName={2}, AvatarUrl={3}, PublicProperties={4}, PrivateProperties={5}]", Guid, Identities.ToDebugString(), DisplayName, AvatarUrl, PublicProperties.ToDebugString(), PrivateProperties.ToDebugString());
         }
     }
 

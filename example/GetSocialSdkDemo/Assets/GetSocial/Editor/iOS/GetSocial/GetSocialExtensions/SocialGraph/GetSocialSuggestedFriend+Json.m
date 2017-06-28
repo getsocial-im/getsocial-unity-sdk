@@ -1,18 +1,18 @@
-// //
-// // Created by Orest Savchak on 6/2/17.
-// //
+ //
+ // Created by Orest Savchak on 6/2/17.
+ //
 
-// #import "GetSocialSuggestedFriend+Json.h"
-// #import "GetSocialPublicUser+Json.h"
+ #import "GetSocialSuggestedFriend+Json.h"
+ #import "GetSocialPublicUser+Json.h"
 
 
-// @implementation GetSocialSuggestedFriend (Json)
+ @implementation GetSocialSuggestedFriend (Json)
 
-// - (NSMutableDictionary *)toJsonDictionary
-// {
-//     NSMutableDictionary *dictionary = [super toJsonDictionary];
-//     dictionary[@"MutualFriendsCount"] = @(self.mutualFriendsCount);
-//     return dictionary;
-// }
+ - (NSMutableDictionary *)toJsonDictionary
+ {
+     NSMutableDictionary *dictionary = [super toJsonDictionary];
+     dictionary[@"MutualFriendsCount"] = @(self.mutualFriendsCount);
+     return dictionary;
+ }
 
-// @end
+ @end

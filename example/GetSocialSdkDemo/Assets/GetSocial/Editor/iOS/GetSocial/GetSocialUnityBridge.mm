@@ -329,6 +329,16 @@ char *_gs_getAuthIdentities()
     return [[GetSocialUser authIdentities] toJsonCString];
 }
 
+char *_gs_getAllPublicProperties()
+{
+    return [[GetSocialUser allPublicProperties] toJsonCString];
+}
+
+char *_gs_getAllPrivateProperties()
+{
+    return [[GetSocialUser allPrivateProperties] toJsonCString];
+}
+
 void _gs_addAuthIdentity(const char *identity,
         VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr,
@@ -438,11 +448,11 @@ void _gs_getSuggestedFriends(int offset, int limit,
                     StringCallbackDelegate successCallback, void *onSuccessActionPtr,
                     FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
-    // [GetSocialUser suggestedFriendsWithOffset:offset limit:limit success:^(NSArray<GetSocialSuggestedFriend *> *friends) {
-    //     successCallback(onSuccessActionPtr, [friends toJsonCString]);
-    // }                        failure:^(NSError *error) {
-    //     failureCallback(onFailureActionPtr, [error toJsonCString]);
-    // }];
+     [GetSocialUser suggestedFriendsWithOffset:offset limit:limit success:^(NSArray<GetSocialSuggestedFriend *> *friends) {
+         successCallback(onSuccessActionPtr, [friends toJsonCString]);
+     }                        failure:^(NSError *error) {
+         failureCallback(onFailureActionPtr, [error toJsonCString]);
+     }];
 }
 
 #pragma mark - Activity Feed API

@@ -9,6 +9,8 @@ namespace GetSocialSdk.Core
 {
     public class GetSocialSettings : ScriptableObject
     {
+        public const string UnityDemoAppAppId = "LuDPp7W0J4";
+        
         const string SettingsAssetName = "GetSocialSettings";
         const string SettingsAssetPath = "Assets/GetSocial/Resources/";
 
@@ -34,6 +36,9 @@ namespace GetSocialSdk.Core
 
         [SerializeField]
         string _getSocialDomainPrefixForDeeplinking = string.Empty;
+        
+        [SerializeField]
+        string _getSocialDefaultConfigurationFilePath = string.Empty;
 
 
         #region initialization
@@ -48,6 +53,7 @@ namespace GetSocialSdk.Core
                     if (_instance == null)
                     {
                         _instance = CreateInstance<GetSocialSettings>();
+                        AppId = UnityDemoAppAppId;
                         SaveAsset(SettingsAssetPath, SettingsAssetName);
                     }
                 }
@@ -136,6 +142,16 @@ namespace GetSocialSdk.Core
                     Instance._getSocialDomainPrefixForDeeplinking = value;
                     MarkAssetDirty();
                 }
+            }
+        }
+        
+        public static string UiConfigurationDefaultFilePath
+        {
+            get { return Instance._getSocialDefaultConfigurationFilePath; }
+            set
+            {
+                Instance._getSocialDefaultConfigurationFilePath = value;
+                MarkAssetDirty();
             }
         }
 

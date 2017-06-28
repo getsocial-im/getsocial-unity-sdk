@@ -65,6 +65,7 @@ namespace GetSocialSdk.Editor
         const string SdkRuntimeVersionMetaTagName = "im.getsocial.sdk.RuntimeVersion";
         const string SdkWrapperVesrionMetaTagName = "im.getsocial.sdk.WrapperVersion";
         const string AutoRegisterForPushMetaTagName = "im.getsocial.sdk.AutoRegisterForPush";
+        const string DefaultUiConfigurationFilePathMetaTagName = "im.getsocial.sdk.UiConfigurationFile";
 
         #endregion
 
@@ -73,7 +74,7 @@ namespace GetSocialSdk.Editor
 
         static bool _areBasicPermissionsPresent;
         static bool _areMetaTagsPresent;
-        static bool _isAutoInitcontentProviderPresent;
+        static bool _isAutoInitContentProviderPresent;
         static bool _isGetSocialDeepLinkingActivityPresent;
         static bool _isImageContentProviderPresent;
         static bool _isInstallReferrerReceiverPresent;
@@ -100,18 +101,18 @@ namespace GetSocialSdk.Editor
             // basics
             _areBasicPermissionsPresent = androidManifest.ContainsUsesPermissions(AndroidManifest.InternetPermission, AndroidManifest.AccessNetoworkStatePermission);
 
-            _areMetaTagsPresent = androidManifest.ContainsMetaTag(AppIdMetaTagName, GetSocialSettings.AppId);
-            _areMetaTagsPresent &= androidManifest.ContainsMetaTag(SdkRuntimeMetaTagName, "UNITY");
-            _areMetaTagsPresent &= androidManifest.ContainsMetaTag(SdkRuntimeVersionMetaTagName, Application.unityVersion);
-            _areMetaTagsPresent &= androidManifest.ContainsMetaTag(SdkWrapperVesrionMetaTagName, BuildConfig.UnitySdkVersion);
+            _areMetaTagsPresent = androidManifest.UpdateMetaTagIfExists(AppIdMetaTagName, GetSocialSettings.AppId);
+            _areMetaTagsPresent &= androidManifest.UpdateMetaTagIfExists(SdkRuntimeMetaTagName, "UNITY");
+            _areMetaTagsPresent &= androidManifest.UpdateMetaTagIfExists(SdkRuntimeVersionMetaTagName, Application.unityVersion);
+            _areMetaTagsPresent &= androidManifest.UpdateMetaTagIfExists(SdkWrapperVesrionMetaTagName, BuildConfig.UnitySdkVersion);
 
-            _isAutoInitcontentProviderPresent = androidManifest.ContainsContentProvider(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettingsCompat.bundleIdentifier));
+            _isAutoInitContentProviderPresent = androidManifest.UpdateContentProviderIfExists(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettingsCompat.bundleIdentifier));
 
             // deeplinking and referral data
-            _isGetSocialDeepLinkingActivityPresent = androidManifest.ContainsDeepLinkingActivity(GetSocialDeepLinkingActivityName, GetSocialDeepLinkingActivityScheme, GetSocialSettings.AppId);
+            _isGetSocialDeepLinkingActivityPresent = androidManifest.UpdateDeepLinkingActivityIfExists(GetSocialDeepLinkingActivityName, GetSocialDeepLinkingActivityScheme, GetSocialSettings.AppId);
 
             // smart invites image sharing
-            _isImageContentProviderPresent = androidManifest.ContainsContentProvider(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettingsCompat.bundleIdentifier));
+            _isImageContentProviderPresent = androidManifest.UpdateContentProviderIfExists(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettingsCompat.bundleIdentifier), true);
 
             // install tracking
             _isInstallReferrerReceiverPresent = androidManifest.ContainsReceiver(InstallReferrerReceiverName);
@@ -119,8 +120,52 @@ namespace GetSocialSdk.Editor
             // GCM permissions(optional)
             _areCdmPermissionsPresent = androidManifest.ContainsUsesPermissions(CdmPermissionAndroidWakeLock, CdmPermissionReceive, string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier)) &&
                                         androidManifest.CheckIfPermissionPresent(string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier));
+            
+            androidManifest.Save();
+            AssetDatabase.Refresh();
         }
 
+        private static bool UpdateMetaTagIfExists(this AndroidManifest androidManifest, string name, string value)
+        {
+            if (androidManifest.ContainsMetaTag(name))
+            {
+                if (!androidManifest.ContainsMetaTagWithValue(name, value))
+                {
+                    androidManifest.AddMetaTag(name, value);
+                }
+                return true;
+            }
+            
+            return false;
+        }
+
+        private static bool UpdateDeepLinkingActivityIfExists(this AndroidManifest androidManifest, string name,
+            string scheme, string intentFilter)
+        {
+            if (androidManifest.ContainsDeepLinkingActivity(name))
+            {
+                if (!androidManifest.ContainsDeepLinkingActivityWithValues(name, scheme, intentFilter))
+                {
+                    androidManifest.AddDeepLinkingActivity(name, scheme, intentFilter);
+                }
+                return true;
+            }
+            return false;
+        }
+        
+        private static bool UpdateContentProviderIfExists(this AndroidManifest androidManifest, string name,
+            string authorities, bool exported = false)
+        {
+            if (androidManifest.ContainsContentProvider(name))
+            {
+                if (!androidManifest.ContainsContentProviderWithValues(name, authorities, exported))
+                {
+                    androidManifest.AddContentProvider(name, authorities, exported);
+                }
+                return true;
+            }
+            return false;
+        }
 
         #region gui
 
@@ -169,7 +214,7 @@ namespace GetSocialSdk.Editor
             DrawFixBox(_areMetaTagsPresent, "GetSocial meta tags added", drawFixMissingMetaTagsAction);
 
             Action drawFixAutoInitContentProviderAction = () => DrawFixProjectConfigurationMessage(string.Format("{0} must be present to enable GetSocial SDK auto-initialization", AutoInitContentProviderName), "Ensure correct content provider", AddAutoInitContentProvider);
-            DrawFixBox(_isAutoInitcontentProviderPresent, "AutoInitSdkContentProvider added", drawFixAutoInitContentProviderAction);
+            DrawFixBox(_isAutoInitContentProviderPresent, "AutoInitSdkContentProvider added", drawFixAutoInitContentProviderAction);
         }
 
         static void DrawDeepLinkingFixes()
@@ -399,14 +444,16 @@ namespace GetSocialSdk.Editor
 
         static void UseAndroidManifest(Action<AndroidManifest> action)
         {
+            if (!DoesManifestExist())
+            {
+                return;
+            }
             var androidManifest = new AndroidManifest(ManifestPathInProject);
 
             action(androidManifest);
-
+            
             androidManifest.Save();
-
             RefreshAllAndroidChecks();
-            AssetDatabase.Refresh();
         }
 
         static void GenerateManifestIfNotPresent()
@@ -416,9 +463,14 @@ namespace GetSocialSdk.Editor
             {
                 Debug.Log("AndroidManifest.xml does not exist in Plugins folder, creating one for you...");
                 var inputFile = Path.Combine(Application.dataPath, DefaultBackupManifestPath);
+                var dir = Path.GetDirectoryName(ManifestPathInProject);
+                if (dir != null)
+                {
+                    Directory.CreateDirectory(dir);
+                }
                 File.Copy(inputFile, ManifestPathInProject);
             }
-            AssetDatabase.Refresh();
+            
             RefreshAllAndroidChecks();
         }
 
@@ -440,5 +492,19 @@ namespace GetSocialSdk.Editor
         }
 
         #endregion
+
+
+        #region getsocial_ui
+
+        public static void UpdateDefaultUiConfigurationFilePath()
+        {
+            UseAndroidManifest(androidManifest =>
+            {
+                androidManifest.AddMetaTag(DefaultUiConfigurationFilePathMetaTagName, GetSocialSettings.UiConfigurationDefaultFilePath);
+            });
+        }
+
+        #endregion
+        
     }
 }

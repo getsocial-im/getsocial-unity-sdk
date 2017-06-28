@@ -631,11 +631,32 @@ namespace GetSocialSdk.Core
             {
                 return GetSocialImpl.HasPrivateProperty(key);
             }
+            
+            /// <summary>
+            /// Gets all public properties for current user.
+            /// Returns a copy of origin user properties. 
+            /// To modify properties, use <see cref="SetPublicProperty"/> and <see cref="RemovePublicProperty"/>.
+            /// </summary>
+            /// <value>User public properties</value>
+            public static Dictionary<string, string> AllPublicProperties
+            {
+                get { return GetSocialImpl.AllPublicProperties; }
+            }
+            
+            /// <summary>
+            /// Gets all private properties for current user.
+            /// Returns a copy of origin user properties. 
+            /// To modify properties, use <see cref="SetPrivateProperty"/> and <see cref="RemovePrivateProperty"/>.
+            /// </summary>
+            /// <value>User private properties</value>
+            public static Dictionary<string, string> AllPrivateProperties
+            {
+                get { return GetSocialImpl.AllPrivateProperties; }
+            }
 
             /// <summary>
             /// Adds AuthIdentity for the specified provider.
             /// </summary>
-            ///
             /// <param name="authIdentity">Identity to be added.</param>
             /// <param name="onComplete">Called if adding user identity was successful.</param>
             /// <param name="onFailure">Called if adding user identity failed.</param>
@@ -676,7 +697,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Switches the current user with the PublicUser corresponding to the details provided.
             /// </summary>
-            ///
             /// <param name="authIdentity">Identity to be switched to.</param>
             /// <param name="onSuccess">Called if switching user was successful.</param>
             /// <param name="onFailure">Called if switching user failed.</param>
@@ -693,7 +713,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Add a friend for current user, if operation succeed - they both became friends.
             /// </summary>
-            ///
             /// <param name="userId">Unique user identifier you want to become friend with.</param>
             /// <param name="onSuccess">Called if adding friend was successful. Parameter contains number of friends.</param>
             /// <param name="onFailure">Called if adding friend failed.</param>
@@ -710,7 +729,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Remove a user from friends list.
             /// </summary>
-            ///
             /// <param name="userId">Unique user identifier you want to remove from friends list.</param>
             /// <param name="onSuccess">Called if removing friend was successful. Parameter contains number of friends.</param>
             /// <param name="onFailure">Called if removing friend failed.</param>
@@ -726,7 +744,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Check if user is your friend.
             /// </summary>
-            ///
             /// <param name="userId">Unique user identifier.</param>
             /// <param name="onSuccess">Called with true, if user is your friend, false otherwise.</param>
             /// <param name="onFailure">Called if operation failed.</param>
@@ -742,7 +759,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Get a count of friends for current user.
             /// </summary>
-            ///
             /// <param name="onSuccess">Called if with number of your friends.</param>
             /// <param name="onFailure">Called if operation failed.</param>
             public static void GetFriendsCount(Action<int> onSuccess, Action<GetSocialError> onFailure)
@@ -756,7 +772,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Get a list of friends for current user.
             /// </summary>
-            ///
             /// <param name="offset">Position from which start.</param>
             /// <param name="limit">Limit of users.</param>
             /// <param name="onSuccess">Called if with list of your friends.</param>
@@ -767,6 +782,22 @@ namespace GetSocialSdk.Core
                 Check.Argument.IsNotNull(onFailure, "onFailure");
 
                 GetSocialImpl.GetFriends(offset, limit, onSuccess, onFailure);
+            }
+            
+            /// <summary>
+            /// Get a list of suggested friends for current user.
+            /// Read more in <a href="http://docs.getsocial.im/guides/social-graph/unity/querying-social-graph/#suggested-friends">documentation</a>.
+            /// </summary>
+            /// <param name="offset">Position from which start.</param>
+            /// <param name="limit">Limit of users.</param>
+            /// <param name="onSuccess">Called if with list of your suggested friends.</param>
+            /// <param name="onFailure">Called if operation failed.</param>
+            public static void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
+            {
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onFailure, "onFailure");
+
+                GetSocialImpl.GetSuggestedFriends(offset, limit, onSuccess, onFailure);
             }
             
 

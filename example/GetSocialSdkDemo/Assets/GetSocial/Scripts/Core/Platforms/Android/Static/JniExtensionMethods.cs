@@ -100,6 +100,19 @@ namespace GetSocialSdk.Core
             }
         }
 
+        public static T GetSafe<T>(this AndroidJavaObject ajo, string fieldName)
+        {
+            try
+            {
+                return ajo.Get<T>(fieldName);
+            }
+            catch (Exception exception)
+            {
+                HandleAndroidJavaObjectCallException<T>(ajo, fieldName, exception);
+                return default(T);
+            }
+        }
+
         static T CallStaticSafe<T>(this AndroidJavaObject ajo, string methodName,
             params object[] args)
         {

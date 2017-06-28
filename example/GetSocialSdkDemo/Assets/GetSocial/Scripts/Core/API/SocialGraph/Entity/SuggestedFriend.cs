@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
@@ -38,17 +40,16 @@ namespace GetSocialSdk.Core
             throw new System.NotImplementedException("SuggestedFriend is never passed to iOS");
         }
 
-        public new SuggestedFriend ParseFromJson(string json)
-        {
-            return ParseFromJson(json.ToDict());
-        }
-        
-
         public new SuggestedFriend ParseFromJson(Dictionary<string, object> jsonDic)
         {
             base.ParseFromJson(jsonDic);
 
-            MutualFriendsCount = (int) jsonDic["MutualFriendsCount"];
+            var friendsCount = jsonDic["MutualFriendsCount"];
+            
+            if (friendsCount != null)
+            {
+                MutualFriendsCount = (int)(long) friendsCount;
+            }
 
             return this;
         }

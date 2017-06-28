@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
         [MonoPInvokeCallback(typeof(OnPublicUserCallbackDelegate))]
         public static void OnPublicUser(IntPtr onPublicUserCallbackPtr, string publicUserJson)
         {
-            var publicUser = new PublicUser().ParseFromJson(publicUserJson);
+            var publicUser = new PublicUser().ParseFromJson(publicUserJson.ToDict());
             IOSUtils.TriggerCallback(onPublicUserCallbackPtr, publicUser);
         }
     }

@@ -35,8 +35,7 @@ namespace GetSocialSdk.Editor
         }
 
         // Check for updates
-        const string LatestReleaseApiURL = "https://api.github.com/repos/getsocial-im/getsocial-unity-sdk/releases/latest";
-        const string LatestReleaseURL = "https://github.com/getsocial-im/getsocial-unity-sdk/releases/latest";
+        const string LatestReleaseApiURL = "https://s3.amazonaws.com/downloads.getsocial.im/unity/releases/latest.json";
         const string NewVersionAvailableFormat = "GetSocial plugin v{0} is now available!";
 
         static UpdatesChecker()
@@ -50,7 +49,7 @@ namespace GetSocialSdk.Editor
             CheckForUpdatesOnReleaseRepo(NewVersionCheckSource.OnUserCheckedForUpdate);
         }
 
-        static string GetLastReleaseVersion()
+        static Dictionary<string, object> GetLastReleaseInfo()
         {
             var request = WebRequest.Create(LatestReleaseApiURL) as HttpWebRequest;
 
@@ -58,7 +57,7 @@ namespace GetSocialSdk.Editor
             request.UserAgent = "Unity Editor";
             request.Proxy = null;
             request.KeepAlive = false;
-            request.Accept = "application/vnd.github.v3+json";
+            request.ContentType = "application/json";
 
             try
             {
@@ -68,29 +67,33 @@ namespace GetSocialSdk.Editor
                     using (var reader = new StreamReader(response.GetResponseStream()))
                     {
                         string jsonResponse = reader.ReadToEnd();
-                        var parsedResponse = GSJson.Deserialize(jsonResponse) as Dictionary<string, object>;
-                        var lastReleaseTag = (string) parsedResponse["tag_name"];
-                        return lastReleaseTag.Replace("v", string.Empty);
+                        return GSJson.Deserialize(jsonResponse) as Dictionary<string, object>;
                     }
                 }
             }
             catch (Exception)
             {
-                // Return the current vesion if failed
-                return BuildConfig.UnitySdkVersion;
+                return new Dictionary<string, object>();
             }
         }
 
         static void CheckForUpdatesOnReleaseRepo(NewVersionCheckSource source)
         {
-            var latestReleaseTag = GetLastReleaseVersion();
-            if (source == NewVersionCheckSource.OnLoad)
+            var latestReleaseInfo = GetLastReleaseInfo();
+
+            if (latestReleaseInfo.Count != 0)
             {
-                LogNewVersionAvailable(latestReleaseTag);
-            }
-            else
-            {
-                ShowUpdateDialog(latestReleaseTag);
+                var version = (string) latestReleaseInfo["version"];
+                var downloadUrl = (string) latestReleaseInfo["url"];
+
+                if (source == NewVersionCheckSource.OnLoad)
+                {
+                    LogNewVersionAvailable(version);
+                }
+                else
+                {
+                    ShowUpdateDialog(version, downloadUrl);
+                }
             }
         }
 
@@ -102,7 +105,7 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        static void ShowUpdateDialog(string latestReleaseVersion)
+        static void ShowUpdateDialog(string latestReleaseVersion, string downloadUrl)
         {
             var dialogTitle = "Update GetSocial SDK";
             if (IsNewSdkVersionAvailable(latestReleaseVersion))
@@ -111,7 +114,7 @@ namespace GetSocialSdk.Editor
                     string.Format(NewVersionAvailableFormat, latestReleaseVersion), "Download Update", "Cancel");
                 if (downloadUpdate)
                 {
-                    Application.OpenURL(LatestReleaseURL);
+                    Application.OpenURL(downloadUrl);
                 }
             }
             else

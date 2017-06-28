@@ -104,8 +104,14 @@ namespace GetSocialSdk.Editor
         {
             AddPermissionIfMissing(permission, extraParams);
         }
+        
+        
+        public bool ContainsMetaTag(string name)
+        {
+            return FindElementWithAttribute(MetaDataElementName, "name", name, _androidNamespace, _applicationNode) != null;
+        }
 
-        public bool ContainsMetaTag(string name, string value)
+        public bool ContainsMetaTagWithValue(string name, string value)
         {
             XmlElement metaTag = FindElementWithAttribute(MetaDataElementName, "name", name, _androidNamespace, _applicationNode);
             if (metaTag != null)
@@ -128,13 +134,19 @@ namespace GetSocialSdk.Editor
             metaTag.SetAttribute("value", _androidNamespace, value);
         }
 
-        public bool ContainsContentProvider(string name, string authority)
+        public bool ContainsContentProvider(string name)
+        {
+            return FindElementWithAttribute(ProviderElementName, "name", name, _androidNamespace, _applicationNode) != null;
+        }
+
+        public bool ContainsContentProviderWithValues(string name, string authority, bool exported)
         {
             XmlElement contentProviderNode = FindElementWithAttribute(ProviderElementName, "name", name, _androidNamespace, _applicationNode);
             if (contentProviderNode != null)
             {
-                var attribute = contentProviderNode.GetAttribute("authorities", _androidNamespace);
-                return authority.Equals(attribute);
+                var authorityTag = contentProviderNode.GetAttribute("authorities", _androidNamespace);
+                var exportedTag = contentProviderNode.GetAttribute("exported", _androidNamespace);
+                return authority.Equals(authorityTag) && exported.ToString().ToLower().Equals(exportedTag);
             }
             return false;
         }
@@ -154,7 +166,7 @@ namespace GetSocialSdk.Editor
             contentProviderNode.SetAttribute("enabled", _androidNamespace, "true");
         }
 
-        public bool ContainsDeepLinkingActivity(string name, string intentFilterScheme, string intentFilterHost)
+        public bool ContainsDeepLinkingActivityWithValues(string name, string intentFilterScheme, string intentFilterHost)
         {
             var deepLinkingActivity = FindActivityNode(name);
             if (deepLinkingActivity != null)
@@ -163,7 +175,7 @@ namespace GetSocialSdk.Editor
                 if (intentFilterNode != null)
                 {
                     var dataNode = FindChildNode(intentFilterNode, "data");
-                    if (dataNode != null)
+                    if (dataNode != null && dataNode.Attributes != null)
                     {
                         var isSchemeValid = intentFilterScheme.Equals(dataNode.Attributes["scheme", _androidNamespace].Value);
                         var isHostValid = intentFilterHost.Equals(dataNode.Attributes["host", _androidNamespace].Value);
@@ -174,6 +186,11 @@ namespace GetSocialSdk.Editor
             }
 
             return false;
+        }
+
+        public bool ContainsDeepLinkingActivity(string name)
+        {
+            return FindActivityNode(name) != null;
         }
 
         public void AddDeepLinkingActivity(string name, string intentFilterScheme, string intentFilterHost)

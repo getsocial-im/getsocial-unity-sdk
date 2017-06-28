@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using Assets.GetSocialDemo.Scripts.Utils;
 using UnityEngine;
 
 using GetSocialSdk.Core;
@@ -28,6 +30,15 @@ public class SocialGraphSection : DemoMenuSection
             GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Friends Count", GetFriendsCount, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Friends", GetFriends, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Get Suggested Friends", GetSuggestedFriends, true, GSStyles.Button);
+    }
+
+    void GetSuggestedFriends()
+    {
+        GetSocial.User.GetSuggestedFriends(0, 10, suggestedFriends =>
+        {   
+            _console.LogD(string.Format ("Suggested friends are: {0}", suggestedFriends.ToPrettyString()));
+        }, OnError);
     }
 
     void AddFriend()
@@ -58,8 +69,7 @@ public class SocialGraphSection : DemoMenuSection
     {
         GetSocial.User.GetFriends (0, 1000, (friends) =>
         {
-            string friendsStr = string.Join("\n", friends.ConvertAll((friend) => friend.ToString()).ToArray());
-            _console.LogD (string.Format ("You friends are: [\n{0}\n]", friendsStr));
+            _console.LogD (string.Format ("You friends are: [\n{0}\n]", friends.ToPrettyString()));
         }, OnError);
     }
 

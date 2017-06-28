@@ -142,6 +142,14 @@ namespace GetSocialSdk.Core
             get { return EmptyIdentities; }
         }
 
+        public Dictionary<string, string> AllPublicProperties {
+            get { return new Dictionary<string, string>(); }
+        }
+
+        public Dictionary<string, string> AllPrivateProperties {
+            get { return new Dictionary<string, string>(); }
+        }
+
         public string DisplayName
         {
             get { return ""; }

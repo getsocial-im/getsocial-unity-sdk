@@ -149,6 +149,22 @@ namespace GetSocialSdk.Core
             }
         }
 
+        public Dictionary<string, string> AllPublicProperties {
+            get
+            {
+                var json = _gs_getAllPublicProperties();
+                return GSJsonUtils.ParseDictionary(json);
+            }
+        }
+        
+        public Dictionary<string, string> AllPrivateProperties {
+            get
+            {
+                var json = _gs_getAllPrivateProperties();
+                return GSJsonUtils.ParseDictionary(json);
+            }
+        }
+
         public string DisplayName 
         {
             get { return _gs_getUserDisplayName(); }
@@ -512,6 +528,12 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern bool _gs_hasPrivateProperty(string key);
+        
+        [DllImport("__Internal")]
+        static extern string _gs_getAllPublicProperties();
+        
+        [DllImport("__Internal")]
+        static extern string _gs_getAllPrivateProperties();
 
         [DllImport("__Internal")]
         static extern void _gs_addAuthIdentity(string identity,

@@ -15,7 +15,10 @@ namespace GetSocialSdk.Core
         public static T Cast<T>(this IntPtr instancePtr)
         {
             var instanceHandle = GCHandle.FromIntPtr(instancePtr);
-            if (!(instanceHandle.Target is T)) throw new InvalidCastException("Failed to cast IntPtr");
+            if (!(instanceHandle.Target is T))
+            {
+                throw new InvalidCastException("Failed to cast IntPtr for type " + typeof(T));
+            }
 
             var castedTarget = (T) instanceHandle.Target;
             return castedTarget;

@@ -48,6 +48,7 @@ namespace GetSocialSdk.Editor
                 AddAnalyticsSuperPropertiesMetaData(plistDocument);
                 WhitelistApps(plistDocument);
                 SetAutoRegisterForPushTag(plistDocument);
+                SetDefaultUiConfigurationFilePathTag(plistDocument);
             });
         }
 
@@ -88,7 +89,7 @@ namespace GetSocialSdk.Editor
 
         static void EmbedFrameworks(PBXProject project, string target)
         {
-            const string defaultLocationInProj = "Frameworks/Plugins/iOS/GetSocial";
+            const string defaultLocationInProj = "Frameworks/GetSocial/Plugins/iOS";
             const string coreFrameworkName = "GetSocial.framework";
             const string uiFrameworkName = "GetSocialUI.framework";
             var relativeCoreFrameworkPath = Path.Combine(defaultLocationInProj, coreFrameworkName);
@@ -251,6 +252,16 @@ namespace GetSocialSdk.Editor
         private static void SetAutoRegisterForPushTag(PlistDocument plistDocument)
         {
             plistDocument.root.SetBoolean("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled);
+        }
+        
+        private static void SetDefaultUiConfigurationFilePathTag(PlistDocument plistDocument)
+        {
+            var fullPath = string.Empty;
+            if (!string.IsNullOrEmpty(GetSocialSettings.UiConfigurationDefaultFilePath))
+            {
+                fullPath = Path.Combine("Data/Raw/", GetSocialSettings.UiConfigurationDefaultFilePath);
+            }
+            plistDocument.root.SetString("im.getsocial.sdk.UiConfigurationFile", fullPath);
         }
     }
 }

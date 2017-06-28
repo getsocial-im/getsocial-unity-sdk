@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
         [MonoPInvokeCallback(typeof(OnUserConflictDelegate))]
         public static void OnUserAuthConflict(IntPtr onConflictActionPtr, string conflictUserJson)
         {
-            var conflictUser = new ConflictUser().ParseFromJson(conflictUserJson);
+            var conflictUser = new ConflictUser().ParseFromJson(conflictUserJson.ToDict());
             IOSUtils.TriggerCallback(onConflictActionPtr, conflictUser);
         }
     }

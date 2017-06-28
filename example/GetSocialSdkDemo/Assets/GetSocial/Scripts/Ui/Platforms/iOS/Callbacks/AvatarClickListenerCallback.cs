@@ -16,7 +16,7 @@ namespace GetSocialSdk.Ui
 
             if (onAvatarClickedPtr != IntPtr.Zero)
             {
-                var publicUser = new PublicUser().ParseFromJson(serializedPublicUser);
+                var publicUser = new PublicUser().ParseFromJson(serializedPublicUser.ToDict());
                 onAvatarClickedPtr.Cast<Action<PublicUser>>().Invoke(publicUser);
             }
         }

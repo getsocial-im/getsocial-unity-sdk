@@ -69,6 +69,10 @@ namespace GetSocialSdk.Core
         bool IsUserAnonymous { get; }
 
         Dictionary<string, string> UserAuthIdentities { get; }
+        
+        Dictionary<string, string> AllPublicProperties { get; }
+        
+        Dictionary<string, string> AllPrivateProperties { get; }
 
         string DisplayName { get; }
 
