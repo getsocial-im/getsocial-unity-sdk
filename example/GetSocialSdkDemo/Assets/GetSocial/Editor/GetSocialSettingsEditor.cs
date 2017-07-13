@@ -17,9 +17,6 @@
 using UnityEngine;
 using UnityEditor;
 using GetSocialSdk.Core;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace GetSocialSdk.Editor
@@ -36,7 +33,7 @@ namespace GetSocialSdk.Editor
 
         // iOS
         const string ShowIosSettingsEditorPref = "ShowIosSettings";
-
+        
         static bool ShowAndroidSettings
         {
             set { EditorPrefs.SetBool(ShowAndroidSettingsEditorPref, value); }
@@ -94,44 +91,33 @@ namespace GetSocialSdk.Editor
         void DrawGeneralSettings()
         {
             GetSocialEditorUtils.BeginSetSmallIconSize();
-            EditorGUILayout.LabelField(new GUIContent(" General Settings", GetSocialEditorUtils.GetSocialIcon),
-                EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(new GUIContent(" General Settings", GetSocialEditorUtils.GetSocialIcon), EditorStyles.boldLabel);
             GetSocialEditorUtils.EndSetSmallIconSize();
+            
             EditorGUILayout.BeginVertical(GUI.skin.box);
-
-            DrawAppIdSettings();
-
-            GUILayout.Space(15);
-            DrawModuleSettings();
-
-            GUILayout.Space(15);
-            DrawPushNotificationSettings();
-            
-            GUILayout.Space(15);
-            DrawDefaultThemeSettings();
-
-            EditorGUILayout.EndVertical();
-        }
-
-        void DrawDefaultThemeSettings()
-        {
-            if (!GetSocialSettings.UseGetSocialUi)
             {
-                return;
+                DrawAppIdSettings();
+
+                GUILayout.Space(15);
+                DrawModuleSettings();
+
+                GUILayout.Space(15);
+                DrawPushNotificationSettings();
+
+                GUILayout.Space(15);
+                DrawDeeplinkingSettings();
+
+                GUILayout.Space(15);
+                DrawUiSettings();
             }
-            var getSocialUiThemeLabel = new GUIContent("UI configuration file path [?]",
-                "Add a path to your default UI configuration json file (e.g. getsocial/default.json). Leave empty to use default configuration.");
-            EditorGUILayout.LabelField(getSocialUiThemeLabel, EditorStyles.boldLabel);
-            var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationDefaultFilePath);
-            
-            SetUiConfigDefaultFilePath(filePath);
+            EditorGUILayout.EndVertical();
         }
 
         void DrawAppIdSettings()
         {
-            var getSocialAppKeyLabel = new GUIContent("GetSocial App Id [?]",
-                "Get unique App Id on GetSocial Dashboard");
+            var getSocialAppKeyLabel = new GUIContent("GetSocial App Id [?]", "Get unique App Id on GetSocial Dashboard");
             EditorGUILayout.LabelField(getSocialAppKeyLabel, EditorStyles.boldLabel);
+            
             var newAppKeyValue = EditorGUILayout.TextField(GetSocialSettings.AppId);
             if (!IsDemoAppPackage() && IsDemoAppId())
             {
@@ -171,12 +157,10 @@ namespace GetSocialSdk.Editor
 
         private void DrawPushNotificationSettings()
         {
-            var enablePushNotificationAutoRegistering = new GUIContent("Push Notifications [?]",
-                "If this setting is checked, GetSocial push notifications will be registered automatically, if not, you need to call GetSocial.RegisterForPushNotification() method.");
-            EditorGUILayout.LabelField(enablePushNotificationAutoRegistering, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Push Notifications", EditorStyles.boldLabel);
 
-            var isAutoRegisrationForPushesEnabled =
-                EditorGUILayout.ToggleLeft("Register Automatically", GetSocialSettings.IsAutoRegisrationForPushesEnabled);
+            var enablePushNotificationAutoRegistering = new GUIContent("Register Automatically [?]", "If this setting is checked, GetSocial push notifications will be registered automatically, if not, you need to call GetSocial.RegisterForPushNotification() method.");
+            var isAutoRegisrationForPushesEnabled = EditorGUILayout.ToggleLeft(enablePushNotificationAutoRegistering, GetSocialSettings.IsAutoRegisrationForPushesEnabled);
             SetAutoRegisterPushEnabled(isAutoRegisrationForPushesEnabled);
         }
 
@@ -195,66 +179,99 @@ namespace GetSocialSdk.Editor
 
         void DrawIosSettings()
         {
-            var iosSettingsText = EditorGuiUtils.GetBoldLabel(" iOS Settings [?]", "These settings will modify your app.entitlements", GetSocialEditorUtils.IOSIcon);
+            var iosSettingsText = EditorGuiUtils.GetBoldLabel(" iOS Settings [?]", "These settings will modify your app.entitlements and generated Xcode project", GetSocialEditorUtils.IOSIcon);
             GetSocialEditorUtils.BeginSetSmallIconSize();
             ShowIosSettings = EditorGUILayout.Foldout(ShowIosSettings, iosSettingsText);
             GetSocialEditorUtils.EndSetSmallIconSize();
+            
             if (ShowIosSettings)
             {
                 EditorGUILayout.BeginVertical(GUI.skin.box);
-
-                EditorGUILayout.HelpBox("Please note. Settings below should match settings on the GetSocial Dashboard to make push notifications and deeplinking work", MessageType.Info);
-                GUILayout.Space(15);
-                DrawIosPushNotificationSettings();
-                DrawIosDeeplinkingSettings();
-
+                {
+                    DrawIosPushNotificationSettings();
+                }
                 EditorGUILayout.EndVertical();
             }
         }
 
         private void DrawIosPushNotificationSettings()
         {
-            var isProdAps = new GUIContent("Apple Push Services environment [?]", "Configuration for GetSocial Push Notifications");
-            EditorGUILayout.LabelField(isProdAps, EditorStyles.boldLabel);
-
+            EditorGUILayout.HelpBox("Settings below should match settings on the GetSocial Dashboard to make Push Notifications work", MessageType.Warning);
+            EditorGUILayout.LabelField(new GUIContent("Apple Push Services Environment [?]", "Configuration for GetSocial Push Notifications"), EditorStyles.boldLabel);
+            
             EditorGUILayout.BeginHorizontal();
-            GetSocialSettings.IosProductionAps = !EditorGUILayout.ToggleLeft("Sandbox", !GetSocialSettings.IosProductionAps);
-            GetSocialSettings.IosProductionAps = EditorGUILayout.ToggleLeft("Production", GetSocialSettings.IosProductionAps);
+            {
+                GetSocialSettings.IosProductionAps = !EditorGUILayout.ToggleLeft("Sandbox", !GetSocialSettings.IosProductionAps);
+                GetSocialSettings.IosProductionAps = EditorGUILayout.ToggleLeft("Production", GetSocialSettings.IosProductionAps);
+            }
             EditorGUILayout.EndHorizontal();
-
-            GUILayout.Space(15);
         }
 
-        private static void DrawIosDeeplinkingSettings()
+        private static void DrawDeeplinkingSettings()
         {
-            EditorGUILayout.LabelField("Smart Invites link format", EditorStyles.boldLabel);
-
+            var rightColumnWidth = GUILayout.Width(EditorGUIUtility.currentViewWidth/3*2);
+            
+            EditorGUILayout.LabelField("Deep Linking", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("️Settings below should match settings on the GetSocial Dashboard to make Deep Linking work", MessageType.Warning);
+            
             EditorGUILayout.BeginHorizontal();
-            GetSocialSettings.UseCustomDomainForDeeplinking = !EditorGUILayout.ToggleLeft("GetSocial domain (default)", !GetSocialSettings.UseCustomDomainForDeeplinking);
-            GetSocialSettings.UseCustomDomainForDeeplinking = EditorGUILayout.ToggleLeft("Custom domain", GetSocialSettings.UseCustomDomainForDeeplinking);
+            {
+                EditorGUILayout.LabelField("Smart Link Format");
+
+                int selectedItem = GetSocialSettings.UseCustomDomainForDeeplinking ? 1 : 0;
+                selectedItem = EditorGUILayout.Popup(selectedItem, new[] {"GetSocial Domain (default)", "Custom Domain"}, rightColumnWidth);
+                GetSocialSettings.UseCustomDomainForDeeplinking = selectedItem == 1;
+            }
             EditorGUILayout.EndHorizontal();
-
-            GUILayout.Space(15);
-
+            
+            
             if (GetSocialSettings.UseCustomDomainForDeeplinking)
             {
-                EditorGUILayout.LabelField("Custom domain", EditorStyles.boldLabel);
+                EditorGUILayout.BeginHorizontal();
+                {
+                    EditorGUILayout.LabelField("Custom Domain");
 
-                EditorGUILayout.BeginHorizontal(GUI.skin.box);
-                GetSocialSettings.CustomDomainForDeeplinking = EditorGUILayout.TextField(GetSocialSettings.CustomDomainForDeeplinking);
-                EditorGUILayout.LabelField("/XXXXXX");
+                    EditorGUILayout.BeginHorizontal(rightColumnWidth);
+                    {
+                        GetSocialSettings.CustomDomainForDeeplinking = EditorGUILayout.TextField(GetSocialSettings.CustomDomainForDeeplinking);
+                        EditorGUILayout.LabelField("/XXXXXX");
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
                 EditorGUILayout.EndHorizontal();
             }
 
-            var getSocialDomainPrefixLabel = GetSocialSettings.UseCustomDomainForDeeplinking
-                ? new GUIContent("Fallback url (GetSocial domain prefix) [?]", "If you use custom domain users will never see this url, but internally we use it in some cases for redirects")
-                : new GUIContent("GetSocial domain prefix");
-            EditorGUILayout.LabelField(getSocialDomainPrefixLabel, EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal();
+            {
+                var getSocialDomainPrefixLabel = GetSocialSettings.UseCustomDomainForDeeplinking
+                    ? new GUIContent("Fallback Url [?]", "If you use custom domain users will never see this url, but internally we use it in some cases for redirects")
+                    : new GUIContent("GetSocial Domain Prefix");
+                EditorGUILayout.LabelField(getSocialDomainPrefixLabel);
 
-            EditorGUILayout.BeginHorizontal(GUI.skin.box);
-            GetSocialSettings.GetSocialDomainPrefixForDeeplinking = EditorGUILayout.TextField(GetSocialSettings.GetSocialDomainPrefixForDeeplinking);
-            EditorGUILayout.LabelField(string.Format(".{0}/XXXXXX", GetSocialSmartInvitesLinkDomain));
+                EditorGUILayout.BeginHorizontal(rightColumnWidth);
+                {
+                    GetSocialSettings.GetSocialDomainPrefixForDeeplinking = EditorGUILayout.TextField(GetSocialSettings.GetSocialDomainPrefixForDeeplinking);
+                    EditorGUILayout.LabelField(string.Format(".{0}/XXXXXX", GetSocialSmartInvitesLinkDomain));
+                }
+                EditorGUILayout.EndHorizontal();
+            }
             EditorGUILayout.EndHorizontal();
+        }
+        
+        void DrawUiSettings()
+        {
+            if (!GetSocialSettings.UseGetSocialUi)
+            {
+                return;
+            }
+            
+            EditorGUILayout.LabelField("GetSocial UI", EditorStyles.boldLabel);
+
+            var filePath = EditorGUILayout.TextField(
+                new GUIContent("UI Configuration File Path [?]", "Path to the UI configuration json relative to StreamingAssets/ folder. \nLeave empty to use default UI configuration."), 
+                GetSocialSettings.UiConfigurationDefaultFilePath);
+            
+            SetUiConfigDefaultFilePath(filePath);
         }
 
         static void DrawAdditionalInfo()

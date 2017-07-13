@@ -323,5 +323,10 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
             return 0;
         }
+
+        public void HandleOnStartUnityEvent()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -5,48 +5,16 @@ using System.Collections.Generic;
 
 namespace GetSocialSdk.Core
 {
-    class MainThreadExecutor : MonoBehaviour
+    class MainThreadExecutor : Singleton<MainThreadExecutor>
     {
-        static MainThreadExecutor _instance;
-        static System.Object _initLock = new System.Object();
-
         readonly System.Object _queueLock = new System.Object();
         readonly List<Action> _queuedActions = new List<Action>();
         readonly List<Action> _executingActions = new List<Action>();
 
-        internal static void Init()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void Init()
         {
-            lock (_initLock)
-            {
-                if (_instance == null)
-                {
-                    var instances = FindObjectsOfType<MainThreadExecutor>();
-
-                    if (instances.Length > 1)
-                    {
-                        Debug.LogError("[MainThreadExecutor] Something went really wrong " +
-                                       " - there should never be more than 1 MainThreadExecutor!" +
-                                       " Reopening the scene might fix it.");
-                    }
-                    else if (instances.Length == 0)
-                    {
-                        GameObject singleton = new GameObject();
-                        _instance = singleton.AddComponent<MainThreadExecutor>();
-                        singleton.name = "[singleton] " + typeof(MainThreadExecutor);
-
-                        DontDestroyOnLoad(singleton);
-
-                        Debug.Log("[Singleton] An instance of " + typeof(MainThreadExecutor) +
-                                  " is needed in the scene, so '" + singleton +
-                                  "' was created with DontDestroyOnLoad.");
-                    }
-                    else
-                    {
-                        _instance = instances[0];
-                        Debug.Log("[Singleton] Using instance already created: " + _instance.gameObject.name);
-                    }
-                }
-            }
+            LoadInstance();
         }
 
         MainThreadExecutor()
@@ -61,9 +29,9 @@ namespace GetSocialSdk.Core
                 return;
             }
 
-            lock (_instance._queueLock)
+            lock (Instance._queueLock)
             {
-                _instance._queuedActions.Add(action);
+                Instance._queuedActions.Add(action);
             }
         }
 

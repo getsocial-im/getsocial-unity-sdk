@@ -9,6 +9,11 @@ namespace GetSocialSdk.Core
     {
         static IGetSocialNativeBridge _instance;
 
+        GetSocialNativeBridgeIOS()
+        {
+            
+        }
+        
         public static IGetSocialNativeBridge Instance
         {
             get { return _instance ?? (_instance = new GetSocialNativeBridgeIOS()); }
@@ -384,6 +389,11 @@ namespace GetSocialSdk.Core
             return _gs_getCurrentHadesConfigurationInternal();
         }
 
+        public void HandleOnStartUnityEvent()
+        {
+            _gs_handleOnStartUnityEvent();
+        }
+
         #endregion
 
 
@@ -633,6 +643,9 @@ namespace GetSocialSdk.Core
 
         #region external_access_helpers
 
+        [DllImport("__Internal")]
+        static extern void _gs_handleOnStartUnityEvent();
+        
         [DllImport("__Internal")]
         static extern void _gs_resetInternal();
 

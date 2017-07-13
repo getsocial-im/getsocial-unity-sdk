@@ -160,5 +160,7 @@ namespace GetSocialSdk.Core
         int GetCurrentHadesConfiguration();
 
         #endregion
+
+        void HandleOnStartUnityEvent();
     }
 }

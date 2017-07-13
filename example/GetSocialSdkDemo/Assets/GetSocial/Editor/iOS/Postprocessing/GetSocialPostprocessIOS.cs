@@ -104,7 +104,7 @@ namespace GetSocialSdk.Editor
         static void SetupDeepLinking(PBXProject project, string projectPath, string target)
         {
             Debug.LogWarning(
-                "Setting up deep linking...\n\tFor universal links setup please refer to http://docs.getsocial.im/?platform=unity#using-universal-links");
+                "Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-invites/unity/deep-linking/");
 
             // URL Schemes (iOS <= 8)
             AddGetSocialUrlScheme(projectPath);

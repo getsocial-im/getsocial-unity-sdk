@@ -45,7 +45,29 @@ namespace GetSocialSdk.Editor
         const char Bullet = '\u2022';
 
         const string GetSocialDeepLinkingActivityName = "im.getsocial.sdk.unity.GetSocialDeepLinkingActivity";
-        const string GetSocialDeepLinkingActivityScheme = "getsocial";
+        static string HostForDeepLinkViaScheme
+        {
+            get
+            {
+                return GetSocialSettings.AppId;
+            }  
+        } 
+        private static string HostForDeepLinkViaAppLinks
+        {
+            get
+            {
+                return string.Format("{0}.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking, GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain);
+            }
+        }
+        static string AltHostForDeepLinkViaAppLinks
+        {
+            get
+            {
+                return GetSocialSettings.UseCustomDomainForDeeplinking 
+                    ? GetSocialSettings.CustomDomainForDeeplinking 
+                    : string.Format("{0}-gsalt.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking, GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain);
+            }
+        }
 
         const string AutoInitContentProviderName = "im.getsocial.sdk.AutoInitSdkContentProvider";
         const string AutoInitContentProviderAuthorityFormat = "{0}.AutoInitSdkContentProvider";
@@ -79,11 +101,9 @@ namespace GetSocialSdk.Editor
         static bool _isImageContentProviderPresent;
         static bool _isInstallReferrerReceiverPresent;
         static bool _areCdmPermissionsPresent;
-        static bool _areDataApiDependencyLibsPresent;
-        static bool _areUiDependencyLibsPresent;
 
         #endregion
-
+        
         public static void Refresh()
         {
             if (DoesManifestExist())
@@ -94,7 +114,7 @@ namespace GetSocialSdk.Editor
 
         static void RefreshAllAndroidChecks()
         {
-            Debug.Log(string.Format("Rechecking your manifest at \n\t<color=green>{0}</color>", MainManifestPath));
+            Debug.Log(string.Format("[GetSocial] Checking the manifest at `{0}`", MainManifestPath));
 
             var androidManifest = new AndroidManifest(ManifestPathInProject);
 
@@ -109,7 +129,7 @@ namespace GetSocialSdk.Editor
             _isAutoInitContentProviderPresent = androidManifest.UpdateContentProviderIfExists(AutoInitContentProviderName, string.Format(AutoInitContentProviderAuthorityFormat, PlayerSettingsCompat.bundleIdentifier));
 
             // deeplinking and referral data
-            _isGetSocialDeepLinkingActivityPresent = androidManifest.UpdateDeepLinkingActivityIfExists(GetSocialDeepLinkingActivityName, GetSocialDeepLinkingActivityScheme, GetSocialSettings.AppId);
+            _isGetSocialDeepLinkingActivityPresent = androidManifest.UpdateDeepLinkingActivityIfExists(GetSocialDeepLinkingActivityName, HostForDeepLinkViaScheme, HostForDeepLinkViaAppLinks, AltHostForDeepLinkViaAppLinks);
 
             // smart invites image sharing
             _isImageContentProviderPresent = androidManifest.UpdateContentProviderIfExists(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettingsCompat.bundleIdentifier), true);
@@ -140,14 +160,11 @@ namespace GetSocialSdk.Editor
         }
 
         private static bool UpdateDeepLinkingActivityIfExists(this AndroidManifest androidManifest, string name,
-            string scheme, string intentFilter)
+            string hostForDeepLinkViaScheme, string hostForDeepLinkViaAppLinks, string altHostForDeepLinkViaAppLinks)
         {
             if (androidManifest.ContainsDeepLinkingActivity(name))
             {
-                if (!androidManifest.ContainsDeepLinkingActivityWithValues(name, scheme, intentFilter))
-                {
-                    androidManifest.AddDeepLinkingActivity(name, scheme, intentFilter);
-                }
+                androidManifest.AddDeepLinkingActivity(name, hostForDeepLinkViaScheme, hostForDeepLinkViaAppLinks, altHostForDeepLinkViaAppLinks);
                 return true;
             }
             return false;
@@ -302,13 +319,15 @@ namespace GetSocialSdk.Editor
          *         <category android:name="android.intent.category.DEFAULT" />
          *         <category android:name="android.intent.category.BROWSABLE" />
          *         <data android:scheme="getsocial" android:host="ti70h8r9x8Q74" />
+         *         <data android:scheme="https" android:host="unitydemosdk6.gsc.im" />
+         *         <data android:scheme="https" android:host="unitydemosdk6-gsalt.gsc.im" />
          *     </intent-filter>
          * </activity>
          */
         static void AddGetSocialDeepLinkingActivity()
         {
             UseAndroidManifest(androidManifest =>
-                androidManifest.AddDeepLinkingActivity(GetSocialDeepLinkingActivityName, GetSocialDeepLinkingActivityScheme, GetSocialSettings.AppId)
+                androidManifest.AddDeepLinkingActivity(GetSocialDeepLinkingActivityName, HostForDeepLinkViaScheme, HostForDeepLinkViaAppLinks, AltHostForDeepLinkViaAppLinks)
             );
         }
 
@@ -461,7 +480,7 @@ namespace GetSocialSdk.Editor
             // only copy over a fresh copy of the AndroidManifest if one does not exist
             if (!DoesManifestExist())
             {
-                Debug.Log("AndroidManifest.xml does not exist in Plugins folder, creating one for you...");
+                Debug.Log("[GetSocial] AndroidManifest.xml does not exist in Plugins folder, creating one for you...");
                 var inputFile = Path.Combine(Application.dataPath, DefaultBackupManifestPath);
                 var dir = Path.GetDirectoryName(ManifestPathInProject);
                 if (dir != null)

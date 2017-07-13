@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using GetSocialSdk.Core;
+using UnityEditor;
 using UnityEngine;
 
 namespace GetSocialSdk.Editor
@@ -166,45 +168,25 @@ namespace GetSocialSdk.Editor
             contentProviderNode.SetAttribute("enabled", _androidNamespace, "true");
         }
 
-        public bool ContainsDeepLinkingActivityWithValues(string name, string intentFilterScheme, string intentFilterHost)
-        {
-            var deepLinkingActivity = FindActivityNode(name);
-            if (deepLinkingActivity != null)
-            {
-                var intentFilterNode = FindChildNode(deepLinkingActivity, IntentFilterElementName);
-                if (intentFilterNode != null)
-                {
-                    var dataNode = FindChildNode(intentFilterNode, "data");
-                    if (dataNode != null && dataNode.Attributes != null)
-                    {
-                        var isSchemeValid = intentFilterScheme.Equals(dataNode.Attributes["scheme", _androidNamespace].Value);
-                        var isHostValid = intentFilterHost.Equals(dataNode.Attributes["host", _androidNamespace].Value);
-
-                        return isSchemeValid && isHostValid;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public bool ContainsDeepLinkingActivity(string name)
         {
             return FindActivityNode(name) != null;
         }
 
-        public void AddDeepLinkingActivity(string name, string intentFilterScheme, string intentFilterHost)
+        public void AddDeepLinkingActivity(string name, string hostForDeepLinkViaScheme, string hostForDeepLinkViaAppLinks, string altHostForDeepLinkViaAppLinks)
         {
             var deepLinkingActivity = FindActivityNode(name);
-            var newActivityNode = CreateNewActivity(name, intentFilterScheme, intentFilterHost);
+            var newActivityNode = CreateNewDeepLinkingActivity(name, hostForDeepLinkViaScheme, hostForDeepLinkViaAppLinks, altHostForDeepLinkViaAppLinks);
 
             if (deepLinkingActivity == null)
             {
                 _applicationNode.AppendChild(newActivityNode);
+                Debug.Log("[GetSocial] Adding `" + name + "` to the AndroidManifest.xml");
             }
             else
             {
                 _applicationNode.ReplaceChild(newActivityNode, deepLinkingActivity);
+                Debug.Log("[GetSocial] Updating `" + name + "` in the AndroidManifest.xml");
             }
         }
 
@@ -309,10 +291,8 @@ namespace GetSocialSdk.Editor
             return null;
         }
 
-        private XmlElement CreateNewActivity(string name, string intentFilterScheme, string intentFilterHost)
+        private XmlElement CreateNewDeepLinkingActivity(string name, string hostForDeepLinkViaScheme, string hostForDeepLinkViaAppLinks, string altHostForDeepLinkViaAppLinks)
         {
-            Debug.Log("Adding <color=green>" + name + " </color>to your AndroidManifest.xml");
-
             XmlElement activity = _xmlDocument.CreateElement(ActivityElementName);
             activity.SetAttribute("name", _androidNamespace, name);
             activity.SetAttribute("exported", "true");
@@ -323,19 +303,38 @@ namespace GetSocialSdk.Editor
             var categoryDefault = CreateElementWithName(_xmlDocument, CategoryElementName, ActivityCategoryDefault, _androidNamespace);
             var categoryBrowsable = CreateElementWithName(_xmlDocument, CategoryElementName, ActivityCategoryBrowsable, _androidNamespace);
 
-            var getSocialData = CreateElement(_xmlDocument, "data", "scheme", intentFilterScheme, _androidNamespace);
-            getSocialData.SetAttribute("host", _androidNamespace, intentFilterHost);
-
             deepLinkingFilter.AppendChild(actionViewElem);
             deepLinkingFilter.AppendChild(categoryDefault);
             deepLinkingFilter.AppendChild(categoryBrowsable);
-            deepLinkingFilter.AppendChild(getSocialData);
+            deepLinkingFilter.AppendChild(CreateDataTagWithSchemeAndHost("getsocial", hostForDeepLinkViaScheme));
+            deepLinkingFilter.AppendChild(CreateDataTagWithSchemeAndHost("https", hostForDeepLinkViaAppLinks));
+            deepLinkingFilter.AppendChild(CreateDataTagWithSchemeAndHost("https", altHostForDeepLinkViaAppLinks));
+            
+            // TODO: refactor
+            // add assosiated domains for testing environement for demo app
+            if (PlayerSettingsCompat.bundleIdentifier.Equals(GetSocialSettingsEditor.DemoAppPackage))
+            {
+                var testingHost = string.Format("{0}.testing.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking, GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain);
+                deepLinkingFilter.AppendChild(CreateDataTagWithSchemeAndHost("https", testingHost));
+                
+                var altTestingHost = GetSocialSettings.UseCustomDomainForDeeplinking 
+                    ? GetSocialSettings.CustomDomainForDeeplinking 
+                    : string.Format("{0}-gsalt.testing.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking, GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain);
+                deepLinkingFilter.AppendChild(CreateDataTagWithSchemeAndHost("https", altTestingHost));
+            }
 
             activity.AppendChild(deepLinkingFilter);
 
             return activity;
         }
 
+        XmlElement CreateDataTagWithSchemeAndHost(string scheme, string host)
+        {
+            var tagElement = CreateElement(_xmlDocument, "data", "scheme", scheme, _androidNamespace);
+            tagElement.SetAttribute("host", _androidNamespace, host);
+
+            return tagElement;
+        }
         #endregion
 
 
@@ -382,9 +381,9 @@ namespace GetSocialSdk.Editor
         }
 
 
-        static void LogNotFoundMessage(string what, string color = "yellow")
+        static void LogNotFoundMessage(string what)
         {
-            Debug.Log(string.Format("<color={0}>{1}</color> not found in your manifest. \n\t Adding <color={0}>{1}</color>.", color, what));
+            Debug.Log(string.Format("[GetSocial] `{0}` not found in your manifest. \n\t Adding `{0}` to AndroidManifest.xml.", what));
         }
 
         #endregion

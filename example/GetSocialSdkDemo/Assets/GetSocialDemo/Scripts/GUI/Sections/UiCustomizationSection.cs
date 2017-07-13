@@ -24,6 +24,11 @@ public class UiCustomizationSection : DemoMenuSection
 {
     protected Dictionary<string, Action> _buttons;
 
+    public UiCustomizationSection()
+    {
+        _buttons = new Dictionary<string, Action>();
+    }
+
     #region implemented abstract members of DemoMenuSection
 
     protected override string GetTitle()
@@ -33,12 +38,8 @@ public class UiCustomizationSection : DemoMenuSection
 
     protected override void InitGuiElements()
     {
-        _buttons = new Dictionary<string, Action>
-        {
-            { "Load Default UI", SetDefaultConfig },
-            { "Load Ruzzle UI", LoadRuzzleUI },
-            { "Load Fancy Dogs UI", LoadFancyDogsUI }
-        };
+        _buttons["Load Default UI"] = SetDefaultConfig;
+        _buttons["Load Default UI Landscape"] = LoadDefaultUiLandscape;
     }
 
     protected override void DrawSectionBody()
@@ -59,34 +60,19 @@ public class UiCustomizationSection : DemoMenuSection
             _console.LogE("Failed load default configuration");
         }
     }
-
-    void LoadRuzzleUI()
+    
+    private void LoadDefaultUiLandscape()
     {
-        Screen.orientation = ScreenOrientation.Portrait;
-        bool result = GetSocialUi.LoadConfiguration("ruzzle/ruzzle.json");
-        if (result)
+        if (GetSocialUi.LoadConfiguration("getsocial/ui-landscape.json"))
         {
-            _console.LogD("Successfully loaded Ruzzle UI configuration");
+            _console.LogD("Successfully loaded default landscape configuration");
         }
         else
         {
-            _console.LogE("Failed load default configuration");
+            _console.LogE("Failed load configuration");
         }
     }
 
-    void LoadFancyDogsUI()
-    {
-        Screen.orientation = ScreenOrientation.Portrait;
-        bool result = GetSocialUi.LoadConfiguration("fancydogs/default.json");
-        if (result)
-        {
-            _console.LogD("Successfully loaded Fancy Dogs UI configuration");
-        }
-        else
-        {
-            _console.LogE("Failed load default configuration");
-        }
-    }
 
     #endregion
 }

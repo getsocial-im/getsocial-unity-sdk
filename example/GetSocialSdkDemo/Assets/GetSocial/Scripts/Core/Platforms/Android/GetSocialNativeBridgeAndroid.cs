@@ -19,7 +19,6 @@ namespace GetSocialSdk.Core
 
         GetSocialNativeBridgeAndroid()
         {
-            MainThreadExecutor.Init();
             _getSocial = new AndroidJavaClass(GetSocialClassSignature);
             _user = new AndroidJavaClass(GetSocialUserClassSignature);
         }
@@ -370,6 +369,11 @@ namespace GetSocialSdk.Core
                 var currentHadesConfigurationAjo = accessHelperJavaClass.CallStaticAJO("getCurrentHadesConfiguration", JniUtils.Activity);
                 return currentHadesConfigurationAjo.CallInt("getValue");
             }
+        }
+
+        public void HandleOnStartUnityEvent()
+        {
+            _getSocial.CallStatic("handleOnStartUnityEvent");
         }
 
         #endregion

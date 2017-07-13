@@ -379,6 +379,11 @@ void _gs_resetInternal()
     [GetSocialAccessHelper reset];
 }
 
+    
+void _gs_handleOnStartUnityEvent()
+{
+    [GetSocialAccessHelper handleOnStartUnityEvent];
+}
 void _gs_getUserById(const char * userId,
                     StringCallbackDelegate successCallback, void *onSuccessActionPtr,
                      FailureCallbackDelegate failureCallback, void *onFailureActionPtr) {

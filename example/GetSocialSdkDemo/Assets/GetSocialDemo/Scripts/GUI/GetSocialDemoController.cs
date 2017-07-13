@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using GetSocialSdk.Core;
 using UnityEngine;
 using System;
@@ -144,7 +143,7 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GetSocial.SetNotificationActionListener(action =>
         {
-            Debug.Log("Notification received: " + action.Type);
+            _console.LogD("Notification received: " + action.Type);
             if (action.Type == NotificationAction.ActionType.OpenProfile)
             {
                 OpenProfileAction openProfile = (OpenProfileAction) action;
