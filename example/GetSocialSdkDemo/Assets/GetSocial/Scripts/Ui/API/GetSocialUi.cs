@@ -31,7 +31,7 @@ namespace GetSocialSdk.Ui
         /// Returns a builder to specify parameters you want on the Global Feed view.
         /// </summary>
         /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
-        public static ActivityFeedViewBuilder СreateGlobalActivityFeedView()
+        public static ActivityFeedViewBuilder CreateGlobalActivityFeedView()
         {
             return new ActivityFeedViewBuilder();
         }
@@ -41,7 +41,7 @@ namespace GetSocialSdk.Ui
         /// </summary>
         /// <param name="feed">The id of the Activity Feed you want to show.</param>
         /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
-        public static ActivityFeedViewBuilder СreateActivityFeedView(string feed)
+        public static ActivityFeedViewBuilder CreateActivityFeedView(string feed)
         {
             return new ActivityFeedViewBuilder(feed);
         }
@@ -51,7 +51,7 @@ namespace GetSocialSdk.Ui
         /// </summary>
         /// <param name="activityId">The id of the Activity you want to show.</param>
         /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
-        public static ActivityDetailsViewBuilder СreateActivityDetailsView(string activityId)
+        public static ActivityDetailsViewBuilder CreateActivityDetailsView(string activityId)
         {
             return new ActivityDetailsViewBuilder(activityId);
         }

@@ -8,7 +8,7 @@ namespace GetSocialSdk.Core
     
     public static class PublicUserCallback
     {
-        [MonoPInvokeCallback(typeof(OnPublicUserCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(OnPublicUserCallbackDelegate))]
         public static void OnPublicUser(IntPtr onPublicUserCallbackPtr, string publicUserJson)
         {
             var publicUser = new PublicUser().ParseFromJson(publicUserJson.ToDict());

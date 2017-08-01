@@ -20,7 +20,7 @@ namespace GetSocialSdk.Core
 
         void onSuccess(bool value)
         {
-            _onSuccess (value);
+            ExecuteOnMainThread(() => _onSuccess (value));
         }
 
         void onFailure(AndroidJavaObject throwable)

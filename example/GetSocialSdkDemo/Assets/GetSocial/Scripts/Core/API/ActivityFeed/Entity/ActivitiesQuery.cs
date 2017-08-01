@@ -40,6 +40,7 @@ namespace GetSocialSdk.Core
         int _limit = DefaultLimit;
         Filter _filter = Filter.NoFilter;
         string _filteringActivityId;
+        string _filterUserId;
 
         ActivitiesQuery(ActivityPost.Type type, string feed, string parentActivityId)
         {
@@ -76,6 +77,12 @@ namespace GetSocialSdk.Core
             return this;
         }
 
+        public ActivitiesQuery FilterByUser(String userId)
+        {
+            _filterUserId = userId;
+            return this;
+        }
+
 #if UNITY_ANDROID
         public UnityEngine.AndroidJavaObject ToAJO()
         {
@@ -85,6 +92,7 @@ namespace GetSocialSdk.Core
                 : activitiesQueryClass.CallStaticAJO("commentsToPost", _parentActivityId);
 
             activitiesQuery.CallAJO("withLimit", _limit);
+            activitiesQuery.CallAJO("filterByUser", _filterUserId);
             if (_filter != Filter.NoFilter)
             {
                 var filterClass = new UnityEngine.AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery$Filter");
@@ -109,7 +117,8 @@ namespace GetSocialSdk.Core
                 {"ParentActivityId", _parentActivityId},
                 {"Limit", _limit},
                 {"Filter", (int) _filter},
-                {"FilteringActivityId", _filteringActivityId}
+                {"FilteringActivityId", _filteringActivityId},
+                {"FilterUserId", _filterUserId}
             };
             return GSJson.Serialize(jsonDic);
         }

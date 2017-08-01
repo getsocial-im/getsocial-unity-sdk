@@ -12,14 +12,14 @@ namespace GetSocialSdk.Core
             IntPtr instancePtr, string inviteChannelJson, string invitePackageJson,
             IntPtr onCompletePtr, IntPtr onCancelPtr, IntPtr onFailurePtr);
 
-        [MonoPInvokeCallback(typeof(IsAvailableForDeviceDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(IsAvailableForDeviceDelegate))]
         public static bool IsAvailableForDevice(IntPtr instancePtr, string inviteChannelJson)
         {
             var channel = new InviteChannel().ParseFromJson(inviteChannelJson.ToDict());
             return instancePtr.Cast<InviteChannelPlugin>().IsAvailableForDevice(channel);
         }
 
-        [MonoPInvokeCallback(typeof(PresentChannelInterfaceDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(PresentChannelInterfaceDelegate))]
         public static void PresentChannelInterface(IntPtr instancePtr, string inviteChannelJson,
             string invitePackageJson,
             IntPtr onCompletePtr, IntPtr onCancelPtr, IntPtr onFailurePtr)

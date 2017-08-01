@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using GetSocialSdk.MiniJSON;
+using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
@@ -192,6 +194,12 @@ namespace GetSocialSdk.Core
                 onFailure.GetPointer());
         }
 
+        public void SetAvatar(Texture2D avatar, Action onComplete, Action<GetSocialError> onFailure)
+        {
+            _gs_setUserAvatar(avatar.TextureToBase64(), Callbacks.ActionCallback, onComplete.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
         public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
         {
            _gs_setPublicProperty(key, value, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
@@ -369,6 +377,20 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
+        public void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_reportActivity(activityId, Convert.ToInt32(reportingReason), 
+                Callbacks.ActionCallback, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_deleteActivity(activityId, 
+                Callbacks.ActionCallback, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
         #endregion
 
 
@@ -507,6 +529,10 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_setUserAvatarUrl(string avatarUrl, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_setUserAvatar(string avatarBase64, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
         static extern string _gs_getUserAvatarUrl();
@@ -637,6 +663,16 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_getActivityLikers(string id, int offset, int limit,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_reportActivity(string id, int reportingReason, 
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_deleteActivity(string id, 
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         #endregion

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
@@ -170,6 +171,11 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), avatarUrl, onComplete, onFailure);
         }
 
+        public void SetAvatar(Texture2D avatar, Action onComplete, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), avatar, onComplete, onFailure);
+        }
+
         public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), key, value, onSuccess, onFailure);
@@ -306,6 +312,16 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), offset, limit, onSuccess, onFailure);
+        }
+
+        public void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), activityId, reportingReason, onSuccess, onFailure);
+        }
+
+        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), activityId, onSuccess, onFailure);
         }
 
         public void Reset()

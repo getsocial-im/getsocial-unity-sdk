@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Facebook.Unity;
 using GetSocialSdk.Core;
+using TheNextFlow.UnityPlugins;
 using UnityEngine;
 
 #if USE_GETSOCIAL_UI
@@ -21,6 +22,12 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         DemoGuiUtils.DrawButton("Global Feed", OpenGlobalFeed, true, GSStyles.Button);
         DemoGuiUtils.Space();
+        
+        DemoGuiUtils.DrawButton("My Global Feed", OpenMyGlobalFeed, true, GSStyles.Button);
+        DemoGuiUtils.Space();
+        
+        DemoGuiUtils.DrawButton("My Custom Feed", OpenMyCustomFeed, true, GSStyles.Button);
+        DemoGuiUtils.Space();
 
         DemoGuiUtils.DrawButton("Open Activity Details", OpenActivityDetailsFunc(true), true, GSStyles.Button);
         DemoGuiUtils.Space();
@@ -33,17 +40,46 @@ public class ActivityFeedUiSection : DemoMenuSection
         DemoGuiUtils.DrawButton("Feed By Id", OpenFeedWithId, true, GSStyles.Button);
     }
 
-    void OpenFeedWithId()
+    private void OpenMyCustomFeed()
     {
-        GetSocialUi.СreateActivityFeedView(_feed)
-            .SetWindowTitle(_feed + " Title")
+        GetSocialUi.CreateActivityFeedView(_feed)
+                    .SetWindowTitle("My Custom Feed")
+                    .SetButtonActionListener(OnActivityActionClicked)
+                    .SetFilterByUser(GetSocial.User.Id)
+                    .Show();
+    }
+
+    private void OpenMyGlobalFeed()
+    {
+        OpenFiteredGlobalFeedAction("My Global Feed", GetSocial.User.Id);
+    }
+
+    private void OpenUserGlobalFeed(PublicUser user)
+    {
+        OpenFiteredGlobalFeedAction(user.DisplayName + " Global Feed", user.Id);
+    }
+    
+    private void OpenFiteredGlobalFeedAction(string title, string userId)
+    {
+        GetSocialUi.CreateGlobalActivityFeedView()
+            .SetWindowTitle(title)
+            .SetButtonActionListener(OnActivityActionClicked)
+            .SetFilterByUser(userId)
+            .SetReadOnly(true)
+            .Show();
+    }
+
+    private void OpenFeedWithId()
+    {
+        GetSocialUi.CreateActivityFeedView(_feed)
+            .SetWindowTitle(_feed + " Feed")
             .SetButtonActionListener(OnActivityActionClicked)
             .Show();
     }
 
-    void OpenGlobalFeed()
+    private void OpenGlobalFeed()
     {
-        GetSocialUi.СreateGlobalActivityFeedView()
+        GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("Unity Global")
             .SetViewStateCallbacks(() => _console.LogD("Global feed opened"), () => _console.LogD("Global feed closed"))
             .SetButtonActionListener(OnActivityActionClicked)
@@ -52,11 +88,12 @@ public class ActivityFeedUiSection : DemoMenuSection
             .Show();
     }
 
-    void OnUserAvatarClicked(PublicUser publicUser)
+    private void OnUserAvatarClicked(PublicUser publicUser)
     {
         if (GetSocial.User.Id.Equals(publicUser.Id))
         {
-            _console.LogD("Tapped on yourself", false);
+            MobileNativePopups.OpenAlertDialog("Action", "Choose Action", "Show My Feed", "Cancel", OpenMyGlobalFeed,
+                () => { });
         }
         else
         {
@@ -64,31 +101,53 @@ public class ActivityFeedUiSection : DemoMenuSection
             {
                 if (isFriend)
                 {
-                    removeFriend(publicUser);
+                    MobileNativePopups.OpenAlertDialog("Action", "Choose Action", 
+                        "Show " + publicUser.DisplayName + " Feed",
+                        "Remove from Friends",
+                        "Cancel",
+                        () => OpenUserGlobalFeed(publicUser),
+                        () => RemoveFriend(publicUser),
+                        () => { });
                 }
                 else
                 {
-                    addFriend(publicUser);
+                    MobileNativePopups.OpenAlertDialog("Action", "Choose Action", 
+                        "Show " + publicUser.DisplayName + " Feed",
+                        "Add to Friends",
+                        "Cancel",
+                        () => OpenUserGlobalFeed(publicUser),
+                        () => AddFriend(publicUser),
+                        () => { });
                 }
-            }, error => _console.LogE("Failed to check if friends with "+ publicUser.DisplayName + ", error:" + error.Message));
+            }, error => _console.LogE("Failed to check if friends with " + publicUser.DisplayName + ", error:" + error.Message));
         }
     }
 
-    void addFriend(PublicUser user)
+    private void AddFriend(PublicUser user)
     {
         GetSocial.User.AddFriend(user.Id,
-            friendsCount => _console.LogD(user.DisplayName + " is now your friend."),
+            friendsCount =>
+            {
+                string message = user.DisplayName + " is now your friend."; 
+                _console.LogD(message);
+                MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { });
+            },
             error => _console.LogE("Failed to add a friend " + user.DisplayName + ", error:" + error.Message));
     }
 
-    void removeFriend(PublicUser user)
+    private void RemoveFriend(PublicUser user)
     {
         GetSocial.User.RemoveFriend(user.Id,
-            friendsCount => _console.LogD(user.DisplayName + " is not your friend anymore."),
+            friendsCount =>
+            {
+                string message = user.DisplayName + " is not your friend anymore."; 
+                _console.LogD(message);
+                MobileNativePopups.OpenAlertDialog("Info", message, "OK",  () => { });
+            },
             error => _console.LogE("Failed to remove a friend " + user.DisplayName + ", error:" + error.Message));
     }
 
-    Action OpenActivityDetailsFunc(bool showFeed)
+    private Action OpenActivityDetailsFunc(bool showFeed)
     {
         return () =>
         {
@@ -99,7 +158,7 @@ public class ActivityFeedUiSection : DemoMenuSection
                     _console.LogW("No activities, post something to global feed!");
                     return;
                 }
-                GetSocialUi.СreateActivityDetailsView(posts.First().Id)
+                GetSocialUi.CreateActivityDetailsView(posts.First().Id)
                     .SetWindowTitle("Unity Global")
                     .SetViewStateCallbacks(() => _console.LogD("Activity details opened"),
                         () => _console.LogD("Activity details closed"))
@@ -123,8 +182,13 @@ public class ActivityFeedUiSection : DemoMenuSection
         };
         if (forbiddenForAnonymous.Contains(action) && GetSocial.User.IsAnonymous)
         {
-            _console.LogD("Action " + action + " is not allowed for anonymous.");
-            GetSocialUi.CloseView();
+            string message = "Action " + action + " is not allowed for anonymous.";
+#if UNITY_ANDROID
+            MainThreadExecutor.Queue(() => MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { }));
+#else
+            MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { });
+#endif
+            _console.LogD(message);
         }
         else
         {
@@ -134,7 +198,9 @@ public class ActivityFeedUiSection : DemoMenuSection
 
     void OnActivityActionClicked(string actionId, ActivityPost post)
     {
-        _console.LogD(string.Format("[{0}] button clicked on post: {1}", actionId, post));
+        string message = string.Format("Activity feed button clicked, action type: {0}", actionId); 
+        MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { });
+        _console.LogD(message);
     }
 }
 

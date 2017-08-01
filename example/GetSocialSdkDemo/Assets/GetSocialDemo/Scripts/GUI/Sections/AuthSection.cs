@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Facebook.Unity;
+using Random = UnityEngine.Random;
 
 public class AuthSection : DemoMenuSection
 {
@@ -179,13 +180,24 @@ public class AuthSection : DemoMenuSection
         //user avatar
         GUILayout.BeginHorizontal();
         GUILayout.Label("User Avatar: ", GSStyles.NormalLabelText, GUILayout.Width(100f));
-        DemoGuiUtils.DrawButton("Change Avatar", () => GetSocial.User.SetAvatarUrl(GetAvatarForUser(), () =>
+        DemoGuiUtils.DrawButton("Change Avatar URL", () => GetSocial.User.SetAvatarUrl(GetAvatarUrlForUser(), () =>
         {
             _console.LogD("User avatar url has been changed");
             demoController.FetchCurrentUserData();
         }, error =>
         {
             _console.LogE("Failed to change user AvatarURL: " + error);
+        }), true, GSStyles.Button);
+        GUILayout.EndHorizontal();
+        
+        GUILayout.BeginHorizontal();
+        DemoGuiUtils.DrawButton("Change Avatar", () => GetSocial.User.SetAvatar(GetAvatarForUser(), () =>
+        {
+            _console.LogD("User avatar has been changed");
+            demoController.FetchCurrentUserData();
+        }, error =>
+        {
+            _console.LogE("Failed to change user Avatar: " + error);
         }), true, GSStyles.Button);
         GUILayout.EndHorizontal();
 
@@ -420,11 +432,30 @@ public class AuthSection : DemoMenuSection
         });
     }
 
-    static string GetAvatarForUser()
+    static string GetAvatarUrlForUser()
     {
         var randomStr = RandomString(5);
         int index = randomStr.GetHashCode() % 10;
         return string.Format("http://api.adorable.io/avatars/150/{0}", index);
+    }
+
+    static Texture2D GetAvatarForUser()
+    {
+        Texture2D t2 = new Texture2D(100, 100);
+ 
+        for (int x = 0; x < t2.width; x++)
+        {
+            for (int y = 0; y < t2.height; y++)
+            {
+                var r = Random.Range(0f, 1f);
+                var g = Random.Range(0f, 1f);
+                var b = Random.Range(0f, 1f);
+                t2.SetPixel(x, y, new Color(r, g, b) );
+            }
+        }
+        t2.Apply();
+
+        return t2;
     }
 
     static string GetDisplayNameForUser()

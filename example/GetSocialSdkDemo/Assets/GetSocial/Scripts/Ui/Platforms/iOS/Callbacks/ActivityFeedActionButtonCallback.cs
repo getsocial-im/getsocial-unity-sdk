@@ -9,7 +9,7 @@ namespace GetSocialSdk.Ui
 
     public static class ActivityFeedActionButtonCallback
     {
-        [MonoPInvokeCallback(typeof(ActivityActionButtonClickedDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(ActivityActionButtonClickedDelegate))]
         public static void OnActionButtonClick(IntPtr onButtonClickedPtr, string actionId, string serializedActivityPost)
         {
             GetSocialDebugLogger.D(string.Format("OnActionButtonClick for action [{0}], post: {1}", actionId, serializedActivityPost));
@@ -17,7 +17,7 @@ namespace GetSocialSdk.Ui
             if (onButtonClickedPtr != IntPtr.Zero)
             {
                 var post = new ActivityPost().ParseFromJson(serializedActivityPost.ToDict());
-                IOSUtils.TriggerCallback(onButtonClickedPtr, post);
+                onButtonClickedPtr.Cast<Action<string, ActivityPost>>().Invoke(actionId, post);
             }
         }
     }

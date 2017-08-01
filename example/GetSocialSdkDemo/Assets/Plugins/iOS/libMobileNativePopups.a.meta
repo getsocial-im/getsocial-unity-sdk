@@ -1,8 +1,7 @@
 fileFormatVersion: 2
-guid: 4fd90eeaff31947f89b2181c145e0de4
-folderAsset: yes
-timeCreated: 1501592704
-licenseType: Pro
+guid: ddbd19fc5b1ab43c3bd12742d49dd7c2
+timeCreated: 1487867716
+licenseType: Store
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
@@ -11,12 +10,15 @@ PluginImporter:
   isOverridable: 0
   platformData:
     Any:
-      enabled: 1
+      enabled: 0
       settings: {}
     Editor:
       enabled: 0
       settings:
         DefaultValueInitialized: true
+    iOS:
+      enabled: 1
+      settings: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

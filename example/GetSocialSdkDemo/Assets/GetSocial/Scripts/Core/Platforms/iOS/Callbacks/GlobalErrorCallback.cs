@@ -8,7 +8,7 @@ namespace GetSocialSdk.Core
 
     public static class GlobalErrorCallback
     {
-        [MonoPInvokeCallback(typeof(GlobalErrorCallback))]
+        [AOT.MonoPInvokeCallback(typeof(GlobalErrorCallback))]
         public static void OnGlobalError(IntPtr onGlobalErrorActionPtr, string serializedError)
         {
             GetSocialDebugLogger.D("OnGlobalError : " + serializedError);

@@ -70,7 +70,7 @@ namespace GetSocialSdk.Core
             get
             {
                 var channelsJavaList = _getSocial.CallStaticAJO("getInviteChannels");
-                var channelsAJOs = channelsJavaList.FromJavaList<AndroidJavaObject>();
+                var channelsAJOs = channelsJavaList.FromJavaList();
                 var channels = channelsAJOs.ConvertAll(ajo => new InviteChannel().ParseFromAJO(ajo));
                 channelsAJOs.ForEach(ajo => ajo.Dispose());
 
@@ -178,6 +178,11 @@ namespace GetSocialSdk.Core
         public void SetAvatarUrl(string avatarUrl, Action onComplete, Action<GetSocialError> onFailure)
         {
             _user.CallStaticSafe("setAvatarUrl", avatarUrl, new CompletionCallback(onComplete, onFailure));
+        }
+
+        public void SetAvatar(Texture2D avatar, Action onComplete, Action<GetSocialError> onFailure)
+        {
+            _user.CallStatic("setAvatar", avatar.ToAjoBitmap(), new CompletionCallback(onComplete, onFailure));
         }
 
         public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
@@ -332,6 +337,20 @@ namespace GetSocialSdk.Core
         {
             _getSocial.CallStatic("getActivityLikers", activityId, offset, limit, new ListCallbackProxy<PublicUser>(onSuccess, onFailure));
         }
+
+        public void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            var reasonClass = new AndroidJavaClass("im.getsocial.sdk.activities.ReportingReason");
+            var reason = reasonClass.CallStaticAJO("valueOf", reportingReason.ToString().ToUpper());
+            
+            _getSocial.CallStatic("reportActivity", activityId, reason, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("deleteActivity", activityId, new CompletionCallback(onSuccess, onFailure));
+        }
+
         #endregion
 
         #region access_helpers
@@ -342,7 +361,7 @@ namespace GetSocialSdk.Core
             {
                 using (var ajc = new AndroidJavaClass(AndroidAccessHelperClass))
                 {
-                    ajc.CallStatic("reset");
+                    ajc.CallStatic("reset", JniUtils.Activity);
                 }
             }
             catch (Exception e)
@@ -358,7 +377,7 @@ namespace GetSocialSdk.Core
             using (var hadesConfigurationTypeJavaClass = new AndroidJavaClass(HadesConfigurationTypeClass))
             {
                 var hadesConfigurationTypeAjo = hadesConfigurationTypeJavaClass.CallStaticAJO("findByValue", hadesConfigurationType);
-                accessHelperJavaClass.CallStatic("setHadesConfiguration", JniUtils.Activity, hadesConfigurationTypeAjo);
+                accessHelperJavaClass.CallStatic("setHadesConfiguration", hadesConfigurationTypeAjo);
             }
         }
 
@@ -366,7 +385,7 @@ namespace GetSocialSdk.Core
         {
             using (var accessHelperJavaClass = new AndroidJavaClass(AndroidAccessHelperClass))
             {
-                var currentHadesConfigurationAjo = accessHelperJavaClass.CallStaticAJO("getCurrentHadesConfiguration", JniUtils.Activity);
+                var currentHadesConfigurationAjo = accessHelperJavaClass.CallStaticAJO("getCurrentHadesConfiguration");
                 return currentHadesConfigurationAjo.CallInt("getValue");
             }
         }

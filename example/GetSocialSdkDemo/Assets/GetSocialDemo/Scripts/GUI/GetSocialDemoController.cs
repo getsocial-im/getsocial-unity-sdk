@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Facebook.Unity;
+using TheNextFlow.UnityPlugins;
 
 public class GetSocialDemoController : MonoBehaviour
 {
@@ -30,11 +31,9 @@ public class GetSocialDemoController : MonoBehaviour
     string _getSocialUnderlyingNativeSdkVersion;
 
     bool _isInMainMenu = true;
-    private bool _showNewFriendPopup = false;
     
     Vector2 _scrollPos;
     DemoAppConsole _console;
-    NewFriendPopup _newFriendPopup;
 
     Dictionary<TopLevelMenuSection, DemoMenuSection> _menuSections;
 
@@ -49,8 +48,6 @@ public class GetSocialDemoController : MonoBehaviour
     void Awake()
     {
         _console = gameObject.GetComponent<DemoAppConsole>().Init();
-        gameObject.AddComponent<NewFriendPopup>();
-        _newFriendPopup = gameObject.GetComponent<NewFriendPopup>();
         
         SetupGetSocial();
         SetupMenuSections();
@@ -105,13 +102,6 @@ public class GetSocialDemoController : MonoBehaviour
         DemoGuiUtils.DrawHeaderWrapper(DrawHeader);
         _scrollPos = DemoGuiUtils.DrawScrollBodyWrapper(_scrollPos, DrawBody);
         DemoGuiUtils.DrawFooter(DrawFooter);
-        if (_showNewFriendPopup)
-        {
-            _newFriendPopup.Open(() =>
-            {
-                _showNewFriendPopup = false;
-            });   
-        }
     }
 
     #endregion
@@ -175,7 +165,17 @@ public class GetSocialDemoController : MonoBehaviour
         GetSocial.WhenInitialized(() =>
         {
             GetSocial.GetReferralData(
-                data => _console.LogD("Referral data: " + data),
+                data =>
+                {
+                    string message = "Referral data: " + data;
+                    if (data == null)
+                    {
+                        message = "No referral data";
+                    }
+                    MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => {
+                    });
+                    _console.LogD(message);
+                },
                 error => _console.LogE("Failed to get referral data: " + error.Message)
             );
         });
@@ -204,8 +204,7 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GetSocial.GetUserById(userId, user =>
         {
-            _newFriendPopup.SetFriend(user);
-            _showNewFriendPopup = true;
+            MobileNativePopups.OpenAlertDialog("You have a new friend!", user.DisplayName +" is now your friend.", "OK", () => { });
         }, error =>
         {
             _console.LogE("Failed to get user: " + error.Message);
@@ -224,6 +223,7 @@ public class GetSocialDemoController : MonoBehaviour
         if (GUI.Button(new Rect(0, 0, 120, 120), string.Empty, GUIStyle.none))
         {
             FetchCurrentUserData();
+            MobileNativePopups.OpenAlertDialog("Info", _currentUserInfo.ToString(), "OK", () => { });
             _console.LogD(_currentUserInfo.ToString());
         }
         GUILayout.EndVertical();

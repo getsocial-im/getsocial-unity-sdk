@@ -428,6 +428,39 @@ namespace GetSocialSdk.Core
             GetSocialImpl.GetActivityLikers(activityId, offset, limit, onSuccess, onFailure);
         }
 
+        /// <summary>
+        /// Report activity because of its content.
+        /// </summary>
+        /// <param name="activityId">Id of activity to report</param>
+        /// <param name="reportingReason">reportingReason Reason of reporting</param>
+        /// <param name="onSuccess">Called when activity was successfully reported</param>
+        /// <param name="onFailure">Called when reporting activity failed</param>
+        ///
+        public static void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess,
+            Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.ReportActivity(activityId, reportingReason, onSuccess, onFailure);
+        }
+
+        /// <summary>
+        /// Delete your activity. Attempt to delete other user activity will result in failure.
+        /// </summary>
+        /// <param name="activityId">Id of activity to report</param>
+        /// <param name="onSuccess">Called when activity was successfully deleted</param>
+        /// <param name="onFailure">Called when deleting activity failed</param>
+        ///
+        public static void DeleteActivity(string activityId, Action onSuccess,
+            Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.DeleteActivity(activityId, onSuccess, onFailure);
+        }
+
         #endregion
 
         #region user_management
@@ -508,7 +541,6 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Set a new user avatar display name.
             /// </summary>
-            ///
             /// <param name="displayName">New avatar display name.</param>
             /// <param name="onComplete">Called if changing user display name was successful.</param>
             /// <param name="onFailure">Called if changing user display name failed.</param>
@@ -520,13 +552,23 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Set a new user avatar URL.
             /// </summary>
-            ///
             /// <param name="avatarUrl">New avatar URL.</param>
             /// <param name="onComplete">Called if changing user avatar was successful.</param>
             /// <param name="onFailure">Called if changing user avatar failed.</param>
             public static void SetAvatarUrl(string avatarUrl, Action onComplete, Action<GetSocialError> onFailure)
             {
                 GetSocialImpl.SetAvatarUrl(avatarUrl, onComplete, onFailure);
+            }
+
+            /// <summary>
+            /// Set a new user avatar.
+            /// </summary>
+            /// <param name="avatar">New avatar.</param>
+            /// <param name="onComplete">Called if changing user avatar was successful.</param>
+            /// <param name="onFailure">Called if changing user avatar failed.</param>
+            public static void SetAvatar(Texture2D avatar, Action onComplete, Action<GetSocialError> onFailure)
+            {
+                GetSocialImpl.SetAvatar(avatar, onComplete, onFailure);
             }
 
             /// <summary>

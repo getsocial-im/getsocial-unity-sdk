@@ -318,7 +318,16 @@ void _gs_setUserAvatarUrl(const char *avatarUrl, VoidCallbackDelegate completeCa
                         success:completeBlock(completeCallback, onCompletePtr)
                         failure:errorBlock(failureCallback, onFailurePtr)];
 }
-
+    
+void _gs_setUserAvatar(const char *avatarBase64, VoidCallbackDelegate completeCallback, void *onCompletePtr,
+                          FailureCallbackDelegate failureCallback, void *onFailurePtr)
+{
+    NSString *b64String = [GetSocialBridgeUtils createNSStringFrom:avatarBase64];
+    [GetSocialUser setAvatar:[GetSocialBridgeUtils decodeUIImageFrom:b64String]
+                     success:completeBlock(completeCallback, onCompletePtr)
+                     failure:errorBlock(failureCallback, onFailurePtr)];
+}
+   
 bool _gs_isUserAnonymous()
 {
     return [GetSocialUser isAnonymous];
@@ -404,9 +413,8 @@ void _gs_addFriend(const char *userId,
     NSString *userIdStr = [GetSocialBridgeUtils createNSStringFrom:userId];
 
     [GetSocialUser addFriend:userIdStr
-                     success:^(int result) {
-                         successCallback(onSuccessActionPtr, result);
-                     } failure:errorBlock(failureCallback, onFailureActionPtr)];
+                     success:intBlock(successCallback, onSuccessActionPtr)
+                     failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_removeFriend(const char *userId,
@@ -453,11 +461,10 @@ void _gs_getSuggestedFriends(int offset, int limit,
                     StringCallbackDelegate successCallback, void *onSuccessActionPtr,
                     FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
-     [GetSocialUser suggestedFriendsWithOffset:offset limit:limit success:^(NSArray<GetSocialSuggestedFriend *> *friends) {
-         successCallback(onSuccessActionPtr, [friends toJsonCString]);
-     }                        failure:^(NSError *error) {
-         failureCallback(onFailureActionPtr, [error toJsonCString]);
-     }];
+     [GetSocialUser suggestedFriendsWithOffset:offset
+                                         limit:limit
+                                       success:objectBlock(successCallback, onSuccessActionPtr)
+                                       failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 #pragma mark - Activity Feed API
@@ -546,6 +553,27 @@ void _gs_getActivityLikers(const char *activityId, int offset, int limit,
                       success:objectBlock(successCallback, onSuccessActionPtr)
                       failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
+    
+void _gs_reportActivity(const char *activityId, int reportingReason,
+    VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
+                        FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
+    [GetSocial reportActivity:activityIdStr
+                       reason:(GetSocialReportingReason)reportingReason
+                      success:completeBlock(successCallback, onSuccessActionPtr)
+                      failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
+void _gs_deleteActivity(const char *activityId,
+            VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
+    [GetSocial deleteActivity:activityIdStr
+                      success:completeBlock(successCallback, onSuccessActionPtr)
+                      failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
 
 #pragma mark - Hades Configuration
 void _gs_setHadesConfigurationInternal(int hadesConfigurationType)

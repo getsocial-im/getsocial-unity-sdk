@@ -56,6 +56,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         GUILayout.EndVertical();
 
         DemoGuiUtils.DrawButton("Get Global Feed Activities (No filter)", GetGlobalActivities, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Get Global Feed Activities (Only my posts)", GetMyGlobalActivities, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Feed Activities (No filter)", GetFeedActivitiesNoFilter, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Feed Activities (Filter - Later)", GetFeedActivitiesFilterAfter, true,
             GSStyles.Button);
@@ -117,6 +118,16 @@ public class ActivityFeedApiSection : DemoMenuSection
     void GetGlobalActivities()
     {
         var query = ActivitiesQuery.PostsForGlobalFeed().WithLimit(5);
+        GetSocial.GetActivities(query, posts =>
+        {
+            _console.LogD("Global feed posts count: " + posts.Count);
+            _console.LogD(posts.ToPrettyString());
+        }, OnError);
+    }
+    
+    void GetMyGlobalActivities()
+    {
+        var query = ActivitiesQuery.PostsForGlobalFeed().WithLimit(5).FilterByUser(GetSocial.User.Id);
         GetSocial.GetActivities(query, posts =>
         {
             _console.LogD("Global feed posts count: " + posts.Count);

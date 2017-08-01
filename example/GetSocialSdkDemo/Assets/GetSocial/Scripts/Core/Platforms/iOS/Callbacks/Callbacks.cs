@@ -25,7 +25,7 @@ namespace GetSocialSdk.Core
     public static class Callbacks
     {
 
-        [MonoPInvokeCallback(typeof(VoidCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(VoidCallbackDelegate))]
         public static void ActionCallback(IntPtr actionPtr)
         {
             GetSocialDebugLogger.D("CompleteCallback");
@@ -35,28 +35,28 @@ namespace GetSocialSdk.Core
             }
         }
 
-        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void StringCallback(IntPtr actionPtr, string result)
         {
             GetSocialDebugLogger.D("StringResultCallaback: " + result);
             IOSUtils.TriggerCallback(actionPtr, result);
         }
 
-        [MonoPInvokeCallback(typeof(BoolCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(BoolCallbackDelegate))]
         public static void BoolCallback(IntPtr actionPtr, bool result)
         {
             GetSocialDebugLogger.D("BoolCallback: " + result);
             IOSUtils.TriggerCallback(actionPtr, result);
         }
 
-        [MonoPInvokeCallback(typeof(IntCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(IntCallbackDelegate))]
         public static void IntCallback(IntPtr actionPtr, int result)
         {
             GetSocialDebugLogger.D("IntCallback: " + result);
             IOSUtils.TriggerCallback(actionPtr, result);
         }
 
-        [MonoPInvokeCallback(typeof(FailureCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(FailureCallbackDelegate))]
         public static void FailureCallback(IntPtr actionPtr, string serializedError)
         {
             GetSocialDebugLogger.D("FailureCallback: " + serializedError + ", ptr: " + actionPtr.ToInt32());
@@ -64,7 +64,7 @@ namespace GetSocialSdk.Core
             IOSUtils.TriggerCallback(actionPtr, error);
         }
 
-        [MonoPInvokeCallback(typeof(FailureWithDataCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(FailureWithDataCallbackDelegate))]
         public static void FailureWithDataCallback(IntPtr actionPtr, string data, string errorMessage)
         {
             GetSocialDebugLogger.D("FailureWithDataCallback: " + errorMessage + ", data: " + data);
@@ -74,7 +74,7 @@ namespace GetSocialSdk.Core
             }
         }
 
-        [MonoPInvokeCallback(typeof(FetchReferralDataCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(FetchReferralDataCallbackDelegate))]
         public static void FetchReferralDataCallback(IntPtr actionPtr, string referralData)
         {
             GetSocialDebugLogger.D("OnReferralDataReceived: " + referralData);
@@ -86,7 +86,7 @@ namespace GetSocialSdk.Core
             IOSUtils.TriggerCallback(actionPtr, data);
         }
 
-        [MonoPInvokeCallback(typeof(NotificationActionListenerDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(NotificationActionListenerDelegate))]
         public static bool NotificationActionListener(IntPtr funcPtr, string notificationActionJson)
         {
             GetSocialDebugLogger.D("NotificationActionReceived: " + notificationActionJson);
@@ -107,13 +107,13 @@ namespace GetSocialSdk.Core
             }
         }
         
-        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetActivityPost(IntPtr actionPtr, string json)
         {
             GetObjectCallback<ActivityPost>(actionPtr, json);
         }
         
-        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetPublicUser(IntPtr actionPtr, string json)
         {
             GetObjectCallback<PublicUser>(actionPtr, json);
@@ -125,19 +125,19 @@ namespace GetSocialSdk.Core
             IOSUtils.TriggerCallback(actionPtr, result);
         }
 
-        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetActivityPosts(IntPtr actionPtr, string json)
         {
             GetObjectsListCallback<ActivityPost>(actionPtr, json);
         }
 
-        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetPublicUsers(IntPtr actionPtr, string json)
         {
             GetObjectsListCallback<PublicUser>(actionPtr, json);
         }
 
-        [MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetSuggestedFriends(IntPtr actionPtr, string json)
         {
             GetObjectsListCallback<SuggestedFriend>(actionPtr, json);

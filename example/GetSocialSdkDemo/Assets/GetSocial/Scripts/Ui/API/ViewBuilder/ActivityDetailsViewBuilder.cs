@@ -15,6 +15,7 @@ namespace GetSocialSdk.Ui
         readonly string _activityId;
 
         private bool _showActivityFeedView;
+        private bool _readOnly;
 
         Action<string, ActivityPost> _onButtonClicked;
         Action<PublicUser> _onAvatarClickListener;
@@ -61,13 +62,24 @@ namespace GetSocialSdk.Ui
 
             return this;
         }
+        
+        /// <summary>
+        /// Make the feed read-only. UI elements, that allows to post, comment or like are hidden.
+        /// </summary>
+        /// <param name="readOnly">should feed be read-only</param>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
+        public ActivityDetailsViewBuilder SetReadOnly(bool readOnly) {
+            _readOnly = readOnly;
+            
+            return this;
+        }
 
         internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _gs_showActivityDetailsView(_customWindowTitle, _activityId, _showActivityFeedView,
+            return _gs_showActivityDetailsView(_customWindowTitle, _activityId, _showActivityFeedView, _readOnly,
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
                 _onButtonClicked.GetPointer(),
                 Callbacks.ActionCallback,
@@ -102,14 +114,14 @@ namespace GetSocialSdk.Ui
                 activityDetailsBuilderAJO.CallAJO("setAvatarClickListener",
                     new AvatarClickListenerProxy(_onAvatarClickListener));
             }
-
+            activityDetailsBuilderAJO.CallAJO("setReadOnly", _readOnly);
             return activityDetailsBuilderAJO;
         }
 
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _gs_showActivityDetailsView(string customWindowTitle, string activityId, bool showFeedView,
+        static extern bool _gs_showActivityDetailsView(string customWindowTitle, string activityId, bool showFeedView, bool readOnly,
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,

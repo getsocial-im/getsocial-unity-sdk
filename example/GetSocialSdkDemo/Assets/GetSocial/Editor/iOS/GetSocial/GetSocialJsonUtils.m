@@ -48,7 +48,7 @@ const int FILTER_AFTER = 2;
     GetSocialActivitiesQuery *query;
 
     NSString *feed = json[@"Feed"];
-    if ([feed class] == [NSNull class])
+    if (feed == nil)
     {
         // comments
         query = [GetSocialActivitiesQuery commentsToPost:json[@"ParentActivityId"]];
@@ -61,6 +61,7 @@ const int FILTER_AFTER = 2;
     // Limit
     int limit = [json[@"Limit"] intValue];
     [query setLimit:limit];
+    [query setFilterByUser:json[@"FilterUserId"]];
 
     // Filtering
     int filter = [json[@"Filter"] intValue];

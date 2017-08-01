@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
@@ -81,7 +82,9 @@ namespace GetSocialSdk.Core
         string AvatarUrl { get; }
 
         void SetAvatarUrl(string avatarUrl, Action onComplete, Action<GetSocialError> onFailure);
-
+        
+        void SetAvatar(Texture2D avatar, Action onComplete, Action<GetSocialError> onFailure);
+        
         void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure);
 
         void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure);
@@ -147,6 +150,11 @@ namespace GetSocialSdk.Core
 
         void GetActivityLikers(string activityId, int offset, int limit, Action<List<PublicUser>> onSuccess,
             Action<GetSocialError> onFailure);
+
+        void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess,
+            Action<GetSocialError> onFailure);
+
+        void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 

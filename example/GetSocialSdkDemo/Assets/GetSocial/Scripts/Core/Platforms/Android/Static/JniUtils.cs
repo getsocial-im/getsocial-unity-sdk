@@ -133,16 +133,21 @@ namespace GetSocialSdk.Core
             return dictionary;
         }
 
-        public static List<T> FromJavaList<T>(this AndroidJavaObject javaList)
+        public static List<AndroidJavaObject> FromJavaList(this AndroidJavaObject javaList)
         {
-            int size = javaList.CallInt("size");
-            var list = new List<T>();
-            for (int i = 0; i < size; i++)
+            var list = new List<AndroidJavaObject>();
+            using (javaList)
             {
-                var item = javaList.Call<T>("get", i);
-                list.Add(item);
+                using (var iterator = javaList.CallAJO("iterator"))
+                {
+                    while (iterator.CallBool("hasNext"))
+                    {
+                        var item = iterator.CallAJO("next");
+                        list.Add(item);
+                    }    
+                }
+                
             }
-
             return list;
         }
 

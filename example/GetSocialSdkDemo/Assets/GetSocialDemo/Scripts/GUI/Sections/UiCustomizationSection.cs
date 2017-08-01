@@ -38,8 +38,12 @@ public class UiCustomizationSection : DemoMenuSection
 
     protected override void InitGuiElements()
     {
-        _buttons["Load Default UI"] = SetDefaultConfig;
-        _buttons["Load Default UI Landscape"] = LoadDefaultUiLandscape;
+        _buttons.Add("Load Default UI", SetDefaultConfig);
+        _buttons.Add("Load Default UI Landscape", () => LoadUiConfiguration("getsocial/ui-landscape.json", ScreenOrientation.Landscape));
+        _buttons.Add("Load White UI Portrait", () => LoadUiConfiguration("getsocial_white/getsocial_white.json", ScreenOrientation.Portrait));
+        _buttons.Add("Load White UI Landscape", () => LoadUiConfiguration("getsocial_white_landscape/getsocial_white.json", ScreenOrientation.Landscape));
+        _buttons.Add("Load Dark UI Portrait", () => LoadUiConfiguration("getsocial_dark/getsocial_dark.json", ScreenOrientation.Portrait));
+        _buttons.Add("Load Dark UI Landscape", () => LoadUiConfiguration("getsocial_dark_landscape/getsocial_dark.json", ScreenOrientation.Landscape));
     }
 
     protected override void DrawSectionBody()
@@ -61,10 +65,11 @@ public class UiCustomizationSection : DemoMenuSection
         }
     }
     
-    private void LoadDefaultUiLandscape()
+    private void LoadUiConfiguration(string configurationPath, ScreenOrientation orientation)
     {
-        if (GetSocialUi.LoadConfiguration("getsocial/ui-landscape.json"))
+        if (GetSocialUi.LoadConfiguration(configurationPath))
         {
+            Screen.orientation = orientation;
             _console.LogD("Successfully loaded default landscape configuration");
         }
         else

@@ -104,7 +104,7 @@ bool _gs_restoreView() {
 #pragma mark - Activity Feed
 
 bool _gs_showActivityFeedView(const char *windowTitle,
-        const char *feed,
+        const char *feed, const char *filterUserId, BOOL readOnly,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
         VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
@@ -145,13 +145,17 @@ bool _gs_showActivityFeedView(const char *windowTitle,
             onCloseAction(onCloseActionPtr);
         }];
     }
+    if (filterUserId) {
+        [view setFilterByUser:[GetSocialBridgeUtils createNSStringFrom:filterUserId]];
+    }
+    [view setReadOnly:readOnly];
     
     return [view show];
 }
     
-bool _gs_showActivityDetailsView(const char *windowTitle,
+BOOL _gs_showActivityDetailsView(const char *windowTitle,
                               const char *activityId,
-                              bool showFeedView,
+                              BOOL showFeedView, BOOL readOnly,
                               ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
                               VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
                               VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
@@ -191,6 +195,7 @@ bool _gs_showActivityDetailsView(const char *windowTitle,
             avatarClickListener(avatarClickListenerPtr, [user toJsonCString] );
         }];
     }
+    [view setReadOnly:readOnly];
     
     [view setShowActivityFeedView:showFeedView];
     return [view show];

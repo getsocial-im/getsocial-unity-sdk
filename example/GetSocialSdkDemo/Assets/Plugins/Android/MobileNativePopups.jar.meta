@@ -1,8 +1,5 @@
 fileFormatVersion: 2
-guid: 4fd90eeaff31947f89b2181c145e0de4
-folderAsset: yes
-timeCreated: 1501592704
-licenseType: Pro
+guid: ba40eb5920e204712be87e99408b45a7
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
@@ -10,8 +7,11 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 0
   platformData:
-    Any:
+    Android:
       enabled: 1
+      settings: {}
+    Any:
+      enabled: 0
       settings: {}
     Editor:
       enabled: 0

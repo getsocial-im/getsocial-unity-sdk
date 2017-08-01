@@ -16,6 +16,9 @@ namespace GetSocialSdk.Ui
 
         Action<string, ActivityPost> _onButtonClickListener;
         Action<PublicUser> _onAvatarClickListener;
+        
+        string _filterUserId;
+        bool _readOnly;
 
         internal ActivityFeedViewBuilder()
         {
@@ -31,7 +34,7 @@ namespace GetSocialSdk.Ui
         /// Register callback to listen when activity action button was clicked.
         /// </summary>
         /// <param name="onButtonClickListener">Called when activity action button was clicked.</param>
-        /// <returns><see cref="ActivityFeedViewBuilder" instance./></returns>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
         public ActivityFeedViewBuilder SetButtonActionListener(Action<string, ActivityPost> onButtonClickListener)
         {
             _onButtonClickListener = onButtonClickListener;
@@ -43,11 +46,35 @@ namespace GetSocialSdk.Ui
         /// Set a listener that will be called when user taps on someones avatar.
         /// </summary>
         /// <param name="onAvatarClickListener"></param>
-        /// <returns></returns>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
         public ActivityFeedViewBuilder SetAvatarClickListener(Action<PublicUser> onAvatarClickListener)
         {
             _onAvatarClickListener = onAvatarClickListener;
 
+            return this;
+        }
+        
+        
+        /// <summary>
+        /// Set this to valid user id if you want to display feed of only one user.
+        ///  If is not set, normal feed will be shown.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
+        public ActivityFeedViewBuilder SetFilterByUser(String userId) {
+            _filterUserId = userId;
+            
+            return this;
+        }
+        
+        /// <summary>
+        /// Make the feed read-only. UI elements, that allows to post, comment or like are hidden.
+        /// </summary>
+        /// <param name="readOnly">should feed be read-only</param>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
+        public ActivityFeedViewBuilder SetReadOnly(bool readOnly) {
+            _readOnly = readOnly;
+            
             return this;
         }
 
@@ -56,7 +83,7 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _gs_showActivityFeedView(_customWindowTitle, _feed,
+            return _gs_showActivityFeedView(_customWindowTitle, _feed, _filterUserId, _readOnly,
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
                 _onButtonClickListener.GetPointer(),
                 Callbacks.ActionCallback,
@@ -79,6 +106,10 @@ namespace GetSocialSdk.Ui
             var activityFeedBuilderAJO =
                 new AndroidJavaObject("im.getsocial.sdk.ui.activities.ActivityFeedViewBuilder", _feed);
 
+            if (_filterUserId != null) {
+                activityFeedBuilderAJO.CallAJO("setFilterByUser", _filterUserId);
+            }
+            activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
             if (_onButtonClickListener != null)
             {
                 activityFeedBuilderAJO.CallAJO("setButtonActionListener",
@@ -96,7 +127,7 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed,
+        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed, string filterUserId, bool readOnly,
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,

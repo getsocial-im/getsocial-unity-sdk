@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace GetSocialSdk.Core
 {
@@ -21,20 +22,30 @@ namespace GetSocialSdk.Core
 
         void onSuccess(AndroidJavaObject resultAJO)
         {
-            List<T> res = resultAJO.FromJavaList<AndroidJavaObject>().ConvertAll(item => new T().ParseFromAJO(item));
-
-            GetSocialDebugLogger.D("On success: " + res);
-
-            ExecuteOnMainThread(() => _onSuccess(res));
+            ExecuteOnMainThread(() =>
+            {
+                var res = resultAJO.FromJavaList().ConvertAll(ajo =>
+                {
+                    using (ajo)
+                    {
+                        return new T().ParseFromAJO(ajo);
+                    }
+                }).ToList();
+                _onSuccess(res);
+            });
         }
 
         void onFailure(AndroidJavaObject throwable)
         {
-            var e = throwable.ToGetSocialError();
-
-            GetSocialDebugLogger.D("On onFailure: " + e.Message);
-
-            ExecuteOnMainThread(() => _onFailure(e));
+            ExecuteOnMainThread(() =>
+            {
+                using (throwable)
+                {
+                    var e = throwable.ToGetSocialError();
+                    GetSocialDebugLogger.D("On onFailure: " + e.Message);
+                    _onFailure(e);
+                }
+            });
         }
     }
 }
