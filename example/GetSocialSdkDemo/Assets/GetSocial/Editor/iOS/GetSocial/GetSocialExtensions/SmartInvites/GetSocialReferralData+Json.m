@@ -15,6 +15,7 @@
     [dictionary gs_setValueOrNSNull:self.referrerUserId forKey:@"ReferrerUserId"];
     [dictionary gs_setValueOrNSNull:self.referrerChannelId forKey:@"ReferrerChannelId"];
     [dictionary gs_setValueOrNSNull:@(self.isFirstMatch) forKey:@"IsFirstMatch"];
+    [dictionary gs_setValueOrNSNull:@(self.isGuaranteedMatch) forKey:@"IsGuaranteedMatch"];
     [dictionary gs_setValueOrNSNull:self.customData forKey:@"CustomReferralData"];
     return dictionary;
 }

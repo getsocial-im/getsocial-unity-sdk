@@ -119,7 +119,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: im.getsocial.demo.unity
-  bundleVersion: 6.6.0
+  bundleVersion: 6.6.1
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -212,7 +212,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 43a49a6fea4a146be9868f0611b0bb42, type: 3}
+      m_Icon: {fileID: 2800000, guid: 042241619297f4198af2a9ae38b81dcc, type: 3}
       m_Width: 128
       m_Height: 128
   m_BuildTargetBatching: []

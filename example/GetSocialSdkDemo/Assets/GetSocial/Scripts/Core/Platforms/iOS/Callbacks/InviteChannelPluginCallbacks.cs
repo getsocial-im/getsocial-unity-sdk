@@ -26,12 +26,23 @@ namespace GetSocialSdk.Core
         {
             var channel = new InviteChannel().ParseFromJson(inviteChannelJson.ToDict());
             var package = new InvitePackage().ParseFromJson(invitePackageJson.ToDict());
-
-            instancePtr.Cast<InviteChannelPlugin>()
-                .PresentChannelInterface(channel, package,
+            var onFailure = new Action<GetSocialError>(exception =>
+            {
+                GetSocialNativeBridgeIOS._gs_executeInviteFailedCallback(onFailurePtr, exception.ErrorCode,
+                    exception.Message);
+            });
+            var plugin = instancePtr.Cast<InviteChannelPlugin>();
+            try
+            {
+                plugin.PresentChannelInterface(channel, package,
                     () => { GetSocialNativeBridgeIOS._gs_executeInviteSuccessCallback(onCompletePtr); },
-                    () => { GetSocialNativeBridgeIOS._gs_executeInviteSuccessCallback(onCancelPtr); },
-                    exception => { GetSocialNativeBridgeIOS._gs_executeInviteSuccessCallback(onFailurePtr); });
+                    () => { GetSocialNativeBridgeIOS._gs_executeInviteCancelledCallback(onCancelPtr); },
+                    onFailure);
+            }
+            catch (Exception e)
+            {
+                onFailure(new GetSocialError(e.Message));
+            }
         }
     }
 }

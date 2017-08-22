@@ -169,6 +169,7 @@ public class SmartInvitesApiSection : DemoMenuSection
                     logMessage += string.Format("Referrer user id: {0}\n", referralData.ReferrerUserId);
                     logMessage += string.Format("Referrer channel: {0}\n", referralData.ReferrerChannelId);
                     logMessage += string.Format("Is first match: {0}\n", referralData.IsFirstMatch);
+                    logMessage += string.Format("Is guarateed match: {0}\n", referralData.IsGuaranteedMatch);
                     logMessage += "Custom referral data:\n" + referralData.CustomReferralData.ToDebugString();
                 }
                 else

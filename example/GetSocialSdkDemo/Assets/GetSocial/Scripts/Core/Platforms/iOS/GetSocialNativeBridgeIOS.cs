@@ -416,6 +416,14 @@ namespace GetSocialSdk.Core
             _gs_handleOnStartUnityEvent();
         }
 
+        public void StartUnityTests(string scenario, Action readyAction)
+        {
+            Reset();
+            _gs_setUpComponents();
+            WhenInitialized(readyAction);
+            _gs_initWithScenario(scenario);
+        }
+
         #endregion
 
 
@@ -487,7 +495,7 @@ namespace GetSocialSdk.Core
         public static extern void _gs_executeInviteCancelledCallback(IntPtr inviteCancelledCallbackPtr);
 
         [DllImport("__Internal")]
-        public static extern void _gs_executeInviteFailedCallback(IntPtr inviteFailedCallbackPtr);
+        public static extern void _gs_executeInviteFailedCallback(IntPtr inviteFailedCallbackPtr, int errorCode, string errorMessage);
 
         #endregion
 
@@ -690,6 +698,12 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern int _gs_getCurrentHadesConfigurationInternal();
+        
+        [DllImport("__Internal")]
+        static extern void _gs_setUpComponents();
+        
+        [DllImport("__Internal")]
+        static extern void _gs_initWithScenario(string scenario);
 
         #endregion
     }

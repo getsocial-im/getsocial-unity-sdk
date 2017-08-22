@@ -13,26 +13,29 @@ namespace GetSocialSdk.Core
         /// The unique Smart Invite link token. There is unique association between
         /// token and attached referral data.
         /// </summary>
-        /// <value>The referral user identifier.</value>
         public string Token { get; private set; }
 
         /// <summary>
         /// The referrer user identifier.
         /// </summary>
-        /// <value>The referral user identifier.</value>
         public string ReferrerUserId { get; private set; }
 
         /// <summary>
-        /// The id of the channel that was used for the invite.
+        /// The id of the channel where Smart Link was shared.
         /// </summary>
-        /// <value>The referral user identifier.</value>
         public string ReferrerChannelId { get; private set; }
 
         /// <summary>
         /// Returns true if the referral data is retrieved on this device for a first time. False otherwise.
         /// </summary>
-        /// <value>The referral user identifier.</value>
         public bool IsFirstMatch { get; private set; }
+        
+        /// <summary>
+        ///  If GetSocial is able to retrieve extra meta information (e.g. from Google Play, Facebook or depplink) we provide 100% guarantee
+        ///  that received data corresponds to the user. In other cases we use fingerprinting to find a best match.
+        /// </summary>
+        /// <value>true if GetSocial can give 100% guarantee that received referral data corresponds to the user, false in case of the best match.</value>
+        public bool IsGuaranteedMatch { get; private set; }
 
         /// <summary>
         /// Gets the custom referral data.
@@ -42,8 +45,8 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, CustomReferralData={4}]",
-                Token, ReferrerUserId, ReferrerChannelId, IsFirstMatch, CustomReferralData.ToDebugString());
+            return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, IsGuaranteedMatch={4}, CustomReferralData={5}]",
+                Token, ReferrerUserId, ReferrerChannelId, IsFirstMatch, IsGuaranteedMatch, CustomReferralData.ToDebugString());
         }
 
 #if UNITY_ANDROID
@@ -65,6 +68,7 @@ namespace GetSocialSdk.Core
                 ReferrerUserId = ajo.CallStr("getReferrerUserId");
                 ReferrerChannelId = ajo.CallStr("getReferrerChannelId");
                 IsFirstMatch = ajo.CallBool("isFirstMatch");
+                IsGuaranteedMatch = ajo.CallBool("isGuaranteedMatch");
                 var customReferralDataDict = ajo.CallAJO("getCustomReferralData").FromJavaHashMap();
                 CustomReferralData = new CustomReferralData(customReferralDataDict);
             }
@@ -82,6 +86,7 @@ namespace GetSocialSdk.Core
             ReferrerUserId = json[ReferrerUserIdFieldName] as string;
             ReferrerChannelId = json[ReferrerChannelIdFieldName] as string;
             IsFirstMatch = (bool) json[IsFirstMatchFieldName];
+            IsGuaranteedMatch = (bool) json[IsGuaranteedMatchName];
             CustomReferralData = new CustomReferralData(json[CustomReferralDataFieldName] as Dictionary<string, object>);
             return this;
         }
@@ -104,6 +109,11 @@ namespace GetSocialSdk.Core
         static string IsFirstMatchFieldName
         {
             get { return ReflectionUtils.GetMemberName((ReferralData c) => c.IsFirstMatch); }
+        }
+        
+        static string IsGuaranteedMatchName
+        {
+            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.IsGuaranteedMatch); }
         }
 
         static string CustomReferralDataFieldName

@@ -1,8 +1,5 @@
 #if UNITY_IOS
 using System;
-using System.Collections.Generic;
-using AOT;
-using UnityEngine;
 
 namespace GetSocialSdk.Core
 {

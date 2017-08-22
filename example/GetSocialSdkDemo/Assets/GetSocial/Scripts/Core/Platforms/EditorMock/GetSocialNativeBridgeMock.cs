@@ -344,5 +344,10 @@ namespace GetSocialSdk.Core
         {
             throw new NotImplementedException();
         }
+
+        public void StartUnityTests(string scenario, Action readyAction)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

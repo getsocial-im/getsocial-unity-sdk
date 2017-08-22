@@ -40,7 +40,15 @@ namespace GetSocialSdk.Core
                     callbackAJO.Call("onError", JniUtils.NewJavaThrowable(err.Message));
                 };
 
-                _invitePlugin.PresentChannelInterface(inviteChannel, invitePackage, onComplete, onCancel, onFailure);
+                try
+                {
+                    _invitePlugin.PresentChannelInterface(inviteChannel, invitePackage, onComplete, onCancel,
+                        onFailure);
+                }
+                catch (Exception e)
+                {
+                    onFailure(new GetSocialError(e.Message));
+                }
             });
         }
     }

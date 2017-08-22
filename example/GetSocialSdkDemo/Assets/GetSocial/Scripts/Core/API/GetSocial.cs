@@ -225,7 +225,7 @@ namespace GetSocialSdk.Core
         /// Register a new instance of a plugin for a specified channel.
         /// </summary>
         /// <returns><c>true</c>, if the operation was successful, <c>false</c> otherwise.</returns>
-        /// <param name="channelId">Id of the channel for the plugin implementation, will be lowercased..</param>
+        /// <param name="channelId">Id of the channel for the plugin implementation, one of <see cref="InviteChannelIds"/> constant.</param>
         /// <param name="inviteChannelPlugin">an instance of a plugin implementation.</param>
         public static bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin)
         {

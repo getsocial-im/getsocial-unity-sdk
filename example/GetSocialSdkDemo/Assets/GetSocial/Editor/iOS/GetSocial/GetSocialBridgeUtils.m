@@ -5,7 +5,11 @@
 // Converts C style string to NSString
 + (NSString *)createNSStringFrom:(const char *)cstring
 {
-    return [NSString stringWithUTF8String:(cstring ?: "")];
+    if (cstring == NULL) 
+    {
+        return nil;
+    }
+    return [NSString stringWithUTF8String:cstring];
 }
 
 + (char *)cStringCopy:(const char *)string
@@ -19,7 +23,7 @@
 {
     if (!string)
     {
-        string = @"";
+        return NULL;
     }
     return [self cStringCopy:[string UTF8String]];
 }

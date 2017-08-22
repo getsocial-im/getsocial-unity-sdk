@@ -169,6 +169,10 @@ namespace GetSocialSdk.Core
 
         #endregion
 
+        // For testing only
         void HandleOnStartUnityEvent();
+        
+        // For testing only
+        void StartUnityTests(string scenario, Action readyAction);
     }
 }

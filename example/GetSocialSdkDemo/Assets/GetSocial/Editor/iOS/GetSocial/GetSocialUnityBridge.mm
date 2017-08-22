@@ -4,8 +4,10 @@
 #include "GetSocialFunctionDefs.h"
 #import "NSObject+Json.h"
 #import "NSDictionary+GetSocial.h"
+#import "NSMutableDictionary+GetSocial.h"
 #include <GetSocial/GetSocial.h>
 #include <GetSocial/GetSocialAccessHelper.h>
+#include <GetSocial/GetSocialTestPrepare.h>
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
@@ -176,7 +178,10 @@ bool _gs_registerInviteProviderPlugin(const char *channelId, void *pluginPtr,
 {
     NSString *channelIdStr = [GetSocialBridgeUtils createNSStringFrom:channelId];
 
-    UnityInvitePlugin *invitePlugin = [[UnityInvitePlugin alloc] initWithPluginPtr:pluginPtr inviteFriendsDelegate:presentProviderInterface isAvailableForDeviceDelegate:isAvailableForDevice];
+    UnityInvitePlugin *invitePlugin = nil;
+    if (pluginPtr != 0) {
+        invitePlugin = [[UnityInvitePlugin alloc] initWithPluginPtr:pluginPtr inviteFriendsDelegate:presentProviderInterface isAvailableForDeviceDelegate:isAvailableForDevice];
+    }
 
     return [GetSocial registerInviteChannelPlugin:invitePlugin forChannelId:channelIdStr];
 }
@@ -201,13 +206,15 @@ void _gs_executeInviteCancelledCallback(void *callback)
     inviteCancelledCallback();
 }
 
-void _gs_executeInviteFailedCallback(void *callback)
+void _gs_executeInviteFailedCallback(void *callback, int errorCode, const char *errorMessage)
 {
     // transfer pointer ownership to arc
     // more at: http://stackoverflow.com/questions/7036350/arc-and-bridged-cast
     GetSocialFailureCallback inviteFailedCallback = (__bridge GetSocialFailureCallback) callback;
 
-    NSError *error = [[NSError alloc] init];
+    NSError *error = [NSError errorWithDomain:@"GetSocial" code:errorCode userInfo:@{
+                                                                            NSLocalizedDescriptionKey: [GetSocialBridgeUtils createNSStringFrom:errorMessage]
+                                                                     }];
     inviteFailedCallback(error);
 }
     
@@ -393,6 +400,18 @@ void _gs_handleOnStartUnityEvent()
 {
     [GetSocialAccessHelper handleOnStartUnityEvent];
 }
+    
+void _gs_setUpComponents()
+{
+    [GetSocialTestPrepare setUpComponentResolver];
+}
+    
+void _gs_initWithScenario(const char * scenario)
+{
+    NSString *scenarionStr = [GetSocialBridgeUtils createNSStringFrom:scenario];
+    [GetSocialTestPrepare initWithScenario:scenarionStr];
+}
+    
 void _gs_getUserById(const char * userId,
                     StringCallbackDelegate successCallback, void *onSuccessActionPtr,
                      FailureCallbackDelegate failureCallback, void *onFailureActionPtr) {

@@ -1,6 +1,5 @@
 ﻿#if UNITY_IOS && USE_GETSOCIAL_UI
 using System;
-using AOT;
 using GetSocialSdk.Core;
 
 namespace GetSocialSdk.Ui

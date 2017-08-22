@@ -10,7 +10,7 @@ namespace GetSocialSdk.Core
         const string GetSocialClassSignature = "im.getsocial.sdk.GetSocial";
         const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
         const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
-        const string HadesConfigurationTypeClass = "im.getsocial.sdk.core.component.componentprovider.HadesConfigurationProvider$Type";
+        const string HadesConfigurationTypeClass = "im.getsocial.sdk.core.thrifty.HadesConfigurationProvider$Type";
 
         static IGetSocialNativeBridge _instance;
 
@@ -100,9 +100,8 @@ namespace GetSocialSdk.Core
 
         public bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin)
         {
-            var proxy = new InviteChannelPluginProxy(inviteChannelPlugin);
-            return _getSocial.CallStaticBool("registerInviteChannelPlugin", channelId,
-                new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", JniUtils.Activity, proxy));
+            return _getSocial.CallStaticBool("registerInviteChannelPlugin", channelId, createAdapter(inviteChannelPlugin));
+                ;
         }
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
@@ -395,7 +394,26 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("handleOnStartUnityEvent");
         }
 
+        public void StartUnityTests(string scenario, Action readyAction)
+        {
+            var testPrepare = new AndroidJavaClass("im.getsocial.sdk.tests.TestPrepare");
+            testPrepare.CallStatic("setIsUnity", true);
+            testPrepare.CallStatic("setUp", JniUtils.Activity);
+            WhenInitialized(readyAction);
+            testPrepare.CallStatic("init", scenario);
+        }
+
         #endregion
+
+        private AndroidJavaObject createAdapter(InviteChannelPlugin plugin)
+        {
+            if (plugin == null)
+            {
+                return null;
+            }
+            return new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", 
+                JniUtils.Activity, new InviteChannelPluginProxy(plugin));
+        }
     }
 }
 
