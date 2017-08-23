@@ -7,7 +7,6 @@
 #import "NSMutableDictionary+GetSocial.h"
 #include <GetSocial/GetSocial.h>
 #include <GetSocial/GetSocialAccessHelper.h>
-#include <GetSocial/GetSocialTestPrepare.h>
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
@@ -403,13 +402,19 @@ void _gs_handleOnStartUnityEvent()
     
 void _gs_setUpComponents()
 {
-    [GetSocialTestPrepare setUpComponentResolver];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [NSClassFromString(@"GetSocialTestPrepare") performSelector:NSSelectorFromString(@"setUpComponentResolver")];
+#pragma clang diagnostic pop
 }
     
 void _gs_initWithScenario(const char * scenario)
 {
     NSString *scenarionStr = [GetSocialBridgeUtils createNSStringFrom:scenario];
-    [GetSocialTestPrepare initWithScenario:scenarionStr];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [NSClassFromString(@"GetSocialTestPrepare") performSelector:NSSelectorFromString(@"initWithScenario") withObject:scenarionStr];
+#pragma clang diagnostic pop
 }
     
 void _gs_getUserById(const char * userId,
