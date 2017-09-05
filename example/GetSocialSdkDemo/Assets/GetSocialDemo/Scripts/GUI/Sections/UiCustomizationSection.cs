@@ -70,6 +70,7 @@ public class UiCustomizationSection : DemoMenuSection
         if (GetSocialUi.LoadConfiguration(configurationPath))
         {
             Screen.orientation = orientation;
+            Screen.orientation = ScreenOrientation.AutoRotation;
             _console.LogD("Successfully loaded default landscape configuration");
         }
         else

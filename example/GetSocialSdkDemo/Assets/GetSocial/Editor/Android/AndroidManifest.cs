@@ -190,26 +190,37 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        public bool ContainsReceiver(string name)
+        public bool ContainsReceiver(string name, int atIndex = 0)
         {
-            return CheckIfElementPresent(ReceiverElementName, "name", name, _applicationNode);
+            var receiverElement = FindElementWithAttribute(ReceiverElementName, "name", name, _androidNamespace, _applicationNode);
+            if (receiverElement != null)
+            {
+                return _applicationNode.ChildNodes[atIndex] == receiverElement;
+            }
+
+            return false;
         }
 
-        public void AddInstallReferrerReceiver(string name)
+        public void RemoveInstallReferrerReceiver(string name)
         {
             XmlElement installReferrerReceiverElement = FindElementWithAttribute(ReceiverElementName, "name", name, _androidNamespace, _applicationNode);
-            if (installReferrerReceiverElement == null)
+            if (installReferrerReceiverElement != null)
             {
-                LogNotFoundMessage(name);
-                installReferrerReceiverElement = CreateElementWithName(_xmlDocument, ReceiverElementName, name, _androidNamespace);
-                _applicationNode.AppendChild(installReferrerReceiverElement);
-
-                XmlElement intentFilter = _xmlDocument.CreateElement(IntentFilterElementName);
-                installReferrerReceiverElement.AppendChild(intentFilter);
-
-                var installReferrerAction = CreateElementWithName(_xmlDocument, ActionElementName, "com.android.vending.INSTALL_REFERRER", _androidNamespace);
-                intentFilter.AppendChild(installReferrerAction);
+                Debug.Log(string.Format("[GetSocial] Removed deprecated {0}", name));
+                _applicationNode.RemoveChild(installReferrerReceiverElement);
             }
+        }
+        
+        public void AddInstallReferrerReceiver(string name)
+        {
+            var installReferrerReceiverElement = CreateElementWithName(_xmlDocument, ReceiverElementName, name, _androidNamespace);
+            _applicationNode.InsertAt(installReferrerReceiverElement, 0);
+
+            XmlElement intentFilter = _xmlDocument.CreateElement(IntentFilterElementName);
+            installReferrerReceiverElement.AppendChild(intentFilter);
+
+            var installReferrerAction = CreateElementWithName(_xmlDocument, ActionElementName, "com.android.vending.INSTALL_REFERRER", _androidNamespace);
+            intentFilter.AppendChild(installReferrerAction);
         }
 
         public void Save()
@@ -290,7 +301,7 @@ namespace GetSocialSdk.Editor
             }
             return null;
         }
-
+        
         private XmlElement CreateNewDeepLinkingActivity(string name, string hostForDeepLinkViaScheme, string hostForDeepLinkViaAppLinks, string altHostForDeepLinkViaAppLinks)
         {
             XmlElement activity = _xmlDocument.CreateElement(ActivityElementName);

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 using GetSocialSdk.Core;
+using GetSocialSdk.MiniJSON;
 using UnityEngine;
 using System;
 using System.Collections;
@@ -337,6 +338,8 @@ public class GetSocialDemoController : MonoBehaviour
             PublicProperties = GetSocial.User.AllPublicProperties,
             PrivateProperties = GetSocial.User.AllPrivateProperties
         };
+
+        _avatar = Resources.Load<Texture2D>("GUI/default_demo_avatar");
         if (!string.IsNullOrEmpty(_currentUserInfo.AvatarUrl))
         {
             StartCoroutine(DownloadAvatar(_currentUserInfo.AvatarUrl));
@@ -358,7 +361,6 @@ public class GetSocialDemoController : MonoBehaviour
             Debug.LogError("Failed to download avatar, reason: " + www.error);
         }
         _avatar = www.texture;
-        FindObjectOfType<RotatingCube>().gameObject.GetComponent<MeshRenderer>().material.mainTexture = _avatar;
     }
 
     static void Button(string text, Action onClickCallback, bool isEnabled = true)
@@ -393,7 +395,17 @@ public class GetSocialDemoController : MonoBehaviour
         
         public override string ToString()
         {
-            return string.Format("[User: Guid={0}, Identities={1}, DisplayName={2}, AvatarUrl={3}, PublicProperties={4}, PrivateProperties={5}]", Guid, Identities.ToDebugString(), DisplayName, AvatarUrl, PublicProperties.ToDebugString(), PrivateProperties.ToDebugString());
+            var dict = new Dictionary<string, object>
+            {
+                {"DisplayName", DisplayName},
+                {"AvatarUrl", AvatarUrl},
+                {"Guid", Guid},
+                {"IsAnonymous", IsAnonymous},
+                {"Identities", Identities},
+                {"PublicProperties", PublicProperties},
+                {"PrivateProperties", PrivateProperties}
+            };
+			return GSJson.Serialize (dict);
         }
     }
 

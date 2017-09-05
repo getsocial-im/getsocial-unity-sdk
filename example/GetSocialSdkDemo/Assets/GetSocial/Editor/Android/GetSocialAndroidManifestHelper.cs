@@ -73,6 +73,7 @@ namespace GetSocialSdk.Editor
         const string AutoInitContentProviderAuthorityFormat = "{0}.AutoInitSdkContentProvider";
 
         const string InstallReferrerReceiverName = "im.getsocial.sdk.invites.InstallReferrerReceiver";
+        const string MultipleInstallReferrerReceiverName = "im.getsocial.sdk.invites.MultipleInstallReferrerReceiver";
 
         const string ImageContentProviderName = "im.getsocial.sdk.invites.ImageContentProvider";
         const string ImageContentProviderFormat = "{0}.smartinvite.images.provider";
@@ -135,7 +136,7 @@ namespace GetSocialSdk.Editor
             _isImageContentProviderPresent = androidManifest.UpdateContentProviderIfExists(ImageContentProviderName, string.Format(ImageContentProviderFormat, PlayerSettingsCompat.bundleIdentifier), true);
 
             // install tracking
-            _isInstallReferrerReceiverPresent = androidManifest.ContainsReceiver(InstallReferrerReceiverName);
+            _isInstallReferrerReceiverPresent = androidManifest.ContainsReceiver(MultipleInstallReferrerReceiverName, 0);
 
             // GCM permissions(optional)
             _areCdmPermissionsPresent = androidManifest.ContainsUsesPermissions(CdmPermissionAndroidWakeLock, CdmPermissionReceive, string.Format(CdmPermissionMessageName, PlayerSettingsCompat.bundleIdentifier)) &&
@@ -247,8 +248,8 @@ namespace GetSocialSdk.Editor
             DrawFixBox(_isImageContentProviderPresent, "ImageContentProvider added", drawFixImageContentProvider);
 
             Action drawFixReferrerReceiver =
-                () => DrawFixProjectConfigurationMessage(string.Format("{0} must be present to be able to Track Installs and retrieve Referral Data", InstallReferrerReceiverName), "Add InstallReferrerReceiver", AddInstallReferrerReceiver);
-            DrawFixBox(_isInstallReferrerReceiverPresent, "InstallReferrerReceiver added", drawFixReferrerReceiver);
+                () => DrawFixProjectConfigurationMessage(string.Format("{0} must be present to be able to Track Installs and retrieve Referral Data", MultipleInstallReferrerReceiverName), "Add MultipleInstallReferrerReceiver", AddMultipleInstallReferrerReceiver);
+            DrawFixBox(_isInstallReferrerReceiverPresent, "MultipleInstallReferrerReceiver added", drawFixReferrerReceiver);
         }
 
         private static void DrawCdmPermissionsFixes()
@@ -346,16 +347,19 @@ namespace GetSocialSdk.Editor
 
         /*
          *   <receiver
-         *       android:name="im.getsocial.sdk.invites.InstallReferrerReceiver">
+         *       android:name="im.getsocial.sdk.invites.MultipleInstallReferrerReceiver">
          *       <intent-filter>
          *           <action android:name="com.android.vending.INSTALL_REFERRER" />
          *       </intent-filter>
          *   </receiver>
          */
-        static void AddInstallReferrerReceiver()
+        static void AddMultipleInstallReferrerReceiver()
         {
-            UseAndroidManifest(androidManifest =>
-                androidManifest.AddInstallReferrerReceiver(InstallReferrerReceiverName)
+            UseAndroidManifest(androidManifest => {
+                    androidManifest.RemoveInstallReferrerReceiver(InstallReferrerReceiverName);
+                    androidManifest.RemoveInstallReferrerReceiver(MultipleInstallReferrerReceiverName);
+                    androidManifest.AddInstallReferrerReceiver(MultipleInstallReferrerReceiverName);
+                }
             );
         }
 
