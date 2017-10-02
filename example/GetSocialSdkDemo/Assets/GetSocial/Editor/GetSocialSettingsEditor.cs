@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 using GetSocialSdk.Core;
-using JetBrains.Annotations;
 
 namespace GetSocialSdk.Editor
 {
@@ -25,7 +28,6 @@ namespace GetSocialSdk.Editor
     [CustomEditor(typeof(GetSocialSettings))]
     public class GetSocialSettingsEditor : UnityEditor.Editor
     {
-        public const string GetSocialSmartInvitesLinkDomain = "gsc.im";
         public const string DemoAppPackage = "im.getsocial.demo.unity";
 
         // Android
@@ -46,18 +48,27 @@ namespace GetSocialSdk.Editor
             get { return EditorPrefs.GetBool(ShowIosSettingsEditorPref); }
         }
 
-        [UsedImplicitly]
+        private static RemoteConfigRequest _remoteConfigRequest;
+        private static string _remoteRequestStatusLabel;
+        private static bool _isAndroidManifestConfigurationCorrect = false;
+        private static bool _isUiConfigurationFileCorrect = true;
+        private static string _androidManifestConfigurationSummary = string.Empty;
+
+        #region lifecycle
+
         void OnEnable()
         {
-            GetSocialAndroidManifestHelper.Refresh();
             UpdateDefineSymbols();
+            UpdateRemoteConfig();
+            UpdateAndroidManifestCheck();
+            UpdateUiConfigFileCheck();
         }
 
         public override void OnInspectorGUI()
         {
             GUILayout.Space(15);
             DrawGeneralSettings();
-
+            
             GUILayout.Space(15);
             DrawAndroidSettings();
 
@@ -67,7 +78,10 @@ namespace GetSocialSdk.Editor
             GUILayout.Space(15);
             DrawAdditionalInfo();
         }
+        #endregion
 
+        
+        #region menus definition
         [MenuItem("GetSocial/Edit Settings")]
         public static void Edit()
         {
@@ -75,7 +89,7 @@ namespace GetSocialSdk.Editor
         }
 
         [MenuItem("GetSocial/GetSocial Dashboard")]
-        public static void OpenGetSocialMemberCenter()
+        public static void OpenGetSocialDashboard()
         {
             Application.OpenURL("http://dashboard.getsocial.im/");
         }
@@ -85,9 +99,10 @@ namespace GetSocialSdk.Editor
         {
             Application.OpenURL("http://docs.getsocial.im");
         }
+        #endregion
 
-        #region  methods
-
+        
+        #region methods
         void DrawGeneralSettings()
         {
             GetSocialEditorUtils.BeginSetSmallIconSize();
@@ -99,13 +114,7 @@ namespace GetSocialSdk.Editor
                 DrawAppIdSettings();
 
                 GUILayout.Space(15);
-                DrawModuleSettings();
-
-                GUILayout.Space(15);
                 DrawPushNotificationSettings();
-
-                GUILayout.Space(15);
-                DrawDeeplinkingSettings();
 
                 GUILayout.Space(15);
                 DrawUiSettings();
@@ -118,14 +127,14 @@ namespace GetSocialSdk.Editor
             var getSocialAppKeyLabel = new GUIContent("GetSocial App Id [?]", "Get unique App Id on GetSocial Dashboard");
             EditorGUILayout.LabelField(getSocialAppKeyLabel, EditorStyles.boldLabel);
             
+            DrawAppIdValidation(GetSocialSettings.AppId);
             var newAppKeyValue = EditorGUILayout.TextField(GetSocialSettings.AppId);
-            if (!IsDemoAppPackage() && IsDemoAppId())
+
+            if (GUILayout.Button(new GUIContent(_remoteRequestStatusLabel, "Click label to check again"), EditorStyles.miniLabel))
             {
-                EditorGUILayout.HelpBox(
-                    "You are using GetSocial test app key with your bundle identifier. Are you sure this is what you want?",
-                    MessageType.Warning);
+                UpdateRemoteConfig();
             }
-            DrawAppIdValidation(newAppKeyValue);
+            
             SetAppId(newAppKeyValue);
         }
 
@@ -134,25 +143,9 @@ namespace GetSocialSdk.Editor
             return PlayerSettingsCompat.bundleIdentifier == DemoAppPackage;
         }
 
-        static bool IsDemoAppId()
+        static bool IsDemoAppId(string appId)
         {
-            return GetSocialSettings.AppId == GetSocialSettings.UnityDemoAppAppId;
-        }
-
-        void DrawModuleSettings()
-        {
-            var enabledModulesLabel = new GUIContent("Enabled Modules [?]",
-                "If you are not using GetSocial UI, feel free to disable UI module to reduce app size.");
-            EditorGUILayout.LabelField(enabledModulesLabel, EditorStyles.boldLabel);
-
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.ToggleLeft(" GetSocial Core", true);
-            EditorGUI.EndDisabledGroup();
-
-            var newIsGetSocialUiEnabledValue =
-                EditorGUILayout.ToggleLeft(" GetSocial UI", GetSocialSettings.UseGetSocialUi);
-            SetGetSocialUiEnabled(newIsGetSocialUiEnabledValue);
-
+            return appId == GetSocialSettings.UnityDemoAppAppId;
         }
 
         private void DrawPushNotificationSettings()
@@ -161,117 +154,146 @@ namespace GetSocialSdk.Editor
 
             var enablePushNotificationAutoRegistering = new GUIContent("Register Automatically [?]", "If this setting is checked, GetSocial push notifications will be registered automatically, if not, you need to call GetSocial.RegisterForPushNotification() method.");
             var isAutoRegisrationForPushesEnabled = EditorGUILayout.ToggleLeft(enablePushNotificationAutoRegistering, GetSocialSettings.IsAutoRegisrationForPushesEnabled);
+            
             SetAutoRegisterPushEnabled(isAutoRegisrationForPushesEnabled);
         }
 
-        static void DrawAndroidSettings()
+        void DrawAndroidSettings()
         {
-            var androidSettingsText = EditorGuiUtils.GetBoldLabel(" Android Settings [?]",
-                "These settings will modify your AndroidManifest.xml", GetSocialEditorUtils.AndroidIcon);
-            GetSocialEditorUtils.BeginSetSmallIconSize();
-            ShowAndroidSettings = EditorGUILayout.Foldout(ShowAndroidSettings, androidSettingsText);
-            GetSocialEditorUtils.EndSetSmallIconSize();
-            if (ShowAndroidSettings)
+            var androidSettingsText = " Android Settings";
+            if (!ShowAndroidSettings && !GetSocialSettings.IsAdroidEnabled)
             {
-                GetSocialAndroidManifestHelper.DrawManifestCheckerGUI();
+                androidSettingsText += " (platform disabled)";
+            } 
+            else if (!ShowAndroidSettings && !_isAndroidManifestConfigurationCorrect)
+            {
+                androidSettingsText += " (need to regenerate AndroidManifest.xml)";
             }
-        }
-
-        void DrawIosSettings()
-        {
-            var iosSettingsText = EditorGuiUtils.GetBoldLabel(" iOS Settings [?]", "These settings will modify your app.entitlements and generated Xcode project", GetSocialEditorUtils.IOSIcon);
-            GetSocialEditorUtils.BeginSetSmallIconSize();
-            ShowIosSettings = EditorGUILayout.Foldout(ShowIosSettings, iosSettingsText);
-            GetSocialEditorUtils.EndSetSmallIconSize();
             
-            if (ShowIosSettings)
+            var androidSettingsLabel = EditorGuiUtils.GetBoldLabel(androidSettingsText, "", GetSocialEditorUtils.AndroidIcon);
+            
+            GetSocialEditorUtils.BeginSetSmallIconSize();
+            ShowAndroidSettings = EditorGUILayout.Foldout(ShowAndroidSettings, androidSettingsLabel);
+            GetSocialEditorUtils.EndSetSmallIconSize();
+
+            if (ShowAndroidSettings)
             {
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 {
-                    DrawIosPushNotificationSettings();
+                    DrawDashboardSettingToogle("Platform status", 
+                        GetSocialSettings.IsAdroidEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
+                    
+                    DrawDashboardSettingToogle("Push notifications status", 
+                        GetSocialSettings.IsAndroidPushEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
+
+                    GUILayout.Space(15f);
+                    DrawAndroidManifestSettings();
                 }
                 EditorGUILayout.EndVertical();
             }
         }
 
-        private void DrawIosPushNotificationSettings()
+        private void DrawAndroidManifestSettings()
         {
-            EditorGUILayout.HelpBox("Settings below should match settings on the GetSocial Dashboard to make Push Notifications work", MessageType.Warning);
-            EditorGUILayout.LabelField(new GUIContent("Apple Push Services Environment [?]", "Configuration for GetSocial Push Notifications"), EditorStyles.boldLabel);
-            
-            EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginDisabledGroup(!GetSocialSettings.IsAdroidEnabled || !GetSocialSettings.IsAppIdValidated);
             {
-                GetSocialSettings.IosProductionAps = !EditorGUILayout.ToggleLeft("Sandbox", !GetSocialSettings.IosProductionAps);
-                GetSocialSettings.IosProductionAps = EditorGUILayout.ToggleLeft("Production", GetSocialSettings.IosProductionAps);
-            }
-            EditorGUILayout.EndHorizontal();
-        }
+                EditorGUILayout.LabelField("Android Manifest", EditorStyles.boldLabel);
 
-        private static void DrawDeeplinkingSettings()
-        {
-            var rightColumnWidth = GUILayout.Width(EditorGUIUtility.currentViewWidth/3*2);
-            
-            EditorGUILayout.LabelField("Deep Linking", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("️Settings below should match settings on the GetSocial Dashboard to make Deep Linking work", MessageType.Warning);
-            
-            EditorGUILayout.BeginHorizontal();
-            {
-                EditorGUILayout.LabelField("Smart Link Format");
-
-                int selectedItem = GetSocialSettings.UseCustomDomainForDeeplinking ? 1 : 0;
-                selectedItem = EditorGUILayout.Popup(selectedItem, new[] {"GetSocial Domain (default)", "Custom Domain"}, rightColumnWidth);
-                GetSocialSettings.UseCustomDomainForDeeplinking = selectedItem == 1;
-            }
-            EditorGUILayout.EndHorizontal();
-            
-            
-            if (GetSocialSettings.UseCustomDomainForDeeplinking)
-            {
-                EditorGUILayout.BeginHorizontal();
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Custom Domain");
-
-                    EditorGUILayout.BeginHorizontal(rightColumnWidth);
-                    {
-                        GetSocialSettings.CustomDomainForDeeplinking = EditorGUILayout.TextField(GetSocialSettings.CustomDomainForDeeplinking);
-                        EditorGUILayout.LabelField("/XXXXXX");
-                    }
-                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.LabelField("Configuration status");
+                    
+                    var lableContent = new GUIContent(
+                        _isAndroidManifestConfigurationCorrect ? "✔ Correct [?]" : "✘ Not complete [?]",  
+                        _androidManifestConfigurationSummary
+                    );
+                    GUILayout.Button(lableContent, EditorStyles.label, EditorGuiUtils.OneThirdWidth);
                 }
-                EditorGUILayout.EndHorizontal();
-            }
-
-            EditorGUILayout.BeginHorizontal();
-            {
-                var getSocialDomainPrefixLabel = GetSocialSettings.UseCustomDomainForDeeplinking
-                    ? new GUIContent("Fallback Url [?]", "If you use custom domain users will never see this url, but internally we use it in some cases for redirects")
-                    : new GUIContent("GetSocial Domain Prefix");
-                EditorGUILayout.LabelField(getSocialDomainPrefixLabel);
-
-                EditorGUILayout.BeginHorizontal(rightColumnWidth);
+                
+                EditorGuiUtils.ColoredBackground(
+                    _isAndroidManifestConfigurationCorrect ? GUI.backgroundColor : Color.green,
+                    () => {
+                        if (GUILayout.Button("Regenerate Manifest"))
+                        {
+                            new AndroidManifestHelper().Regenerate();
+                            UpdateAndroidManifestCheck();
+                        }
+                });
+                
+                if (!_isAndroidManifestConfigurationCorrect)
                 {
-                    GetSocialSettings.GetSocialDomainPrefixForDeeplinking = EditorGUILayout.TextField(GetSocialSettings.GetSocialDomainPrefixForDeeplinking);
-                    EditorGUILayout.LabelField(string.Format(".{0}/XXXXXX", GetSocialSmartInvitesLinkDomain));
+                    EditorGUILayout.HelpBox("AndroidManifest.xml configuration is not complete. Regenerate manifest to avoid issues with running GetSocial SDK.", MessageType.Warning);                            
                 }
-                EditorGUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndHorizontal();
+            EditorGUI.EndDisabledGroup();
         }
         
+        private static void DrawDashboardSettingToogle(string settingText, string status)
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(settingText);
+                
+                var buttonLabel = new GUIContent(status, "Click on the label to update the setting on the GetSocial Dashboard. GetSocial Editor will fetch the latest setting automatically.");
+                if (GUILayout.Button(buttonLabel, EditorStyles.label, EditorGuiUtils.OneThirdWidth))
+                {
+                    OpenGetSocialDashboard();
+                }
+            }
+        }
+
+        void DrawIosSettings()
+        {
+            var iosSettingsText = !ShowIosSettings && !GetSocialSettings.IsIosEnabled ? " iOS Settings (platform disabled)" : " iOS Settings";
+            var iosSettingsLabel = EditorGuiUtils.GetBoldLabel(iosSettingsText, "", GetSocialEditorUtils.IOSIcon);
+            
+            GetSocialEditorUtils.BeginSetSmallIconSize();
+            ShowIosSettings = EditorGUILayout.Foldout(ShowIosSettings, iosSettingsLabel);
+            GetSocialEditorUtils.EndSetSmallIconSize();
+
+            if (ShowIosSettings)
+            {
+                EditorGUILayout.BeginVertical(GUI.skin.box);
+                {
+                    DrawDashboardSettingToogle("Platform status", 
+                        GetSocialSettings.IsIosEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
+                    
+                    DrawDashboardSettingToogle("Push notifications status", 
+                        GetSocialSettings.IsIosPushEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
+
+                    if (GetSocialSettings.IsIosPushEnabled)
+                    {
+                        DrawDashboardSettingToogle("Push notifications environment",
+                            "    " + GetSocialSettings.IosPushEnvironment.Capitalize());
+                    }
+                }
+                EditorGUILayout.EndVertical();
+            }
+        }
+
         void DrawUiSettings()
         {
-            if (!GetSocialSettings.UseGetSocialUi)
-            {
-                return;
-            }
-            
             EditorGUILayout.LabelField("GetSocial UI", EditorStyles.boldLabel);
-
-            var filePath = EditorGUILayout.TextField(
-                new GUIContent("UI Configuration File Path [?]", "Path to the UI configuration json relative to StreamingAssets/ folder. \nLeave empty to use default UI configuration."), 
-                GetSocialSettings.UiConfigurationDefaultFilePath);
             
-            SetUiConfigDefaultFilePath(filePath);
+            var newIsGetSocialUiEnabledValue =
+                EditorGUILayout.ToggleLeft(" Use GetSocial UI", GetSocialSettings.UseGetSocialUi);
+            SetGetSocialUiEnabled(newIsGetSocialUiEnabledValue);
+            
+            EditorGUI.BeginDisabledGroup(!GetSocialSettings.UseGetSocialUi);
+            {
+                var uiConfigurationLabel = new GUIContent("UI Configuration File Path [?]", "Path to the UI configuration json relative to StreamingAssets/ folder. \nLeave empty to use default UI configuration.");
+                using (new FixedWidthLabel(uiConfigurationLabel))
+                {
+                    var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationDefaultFilePath);
+                    SetUiConfigDefaultFilePath(filePath);
+                }
+                
+                if (!_isUiConfigurationFileCorrect)
+                {
+                    EditorGUILayout.HelpBox("UI configuration file not found in the StreamingAssets folder. Note that file name should contain .json extension.", MessageType.Error);
+                }
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         static void DrawAdditionalInfo()
@@ -281,26 +303,38 @@ namespace GetSocialSdk.Editor
                 EditorStyles.boldLabel);
             GetSocialEditorUtils.EndSetSmallIconSize();
 
-            EditorGUILayout.BeginHorizontal(GUI.skin.box);
-            EditorGUILayout.BeginVertical();
-            EditorGuiUtils.SelectableLabelField(new GUIContent("SDK Version [?]", "GetSocial SDK Version"),
-                BuildConfig.UnitySdkVersion);
-            EditorGUILayout.EndVertical();
-            EditorGUILayout.EndHorizontal();
+            using (new EditorGUILayout.HorizontalScope(GUI.skin.box))
+            {
+                EditorGuiUtils.SelectableLabelField(
+                    new GUIContent("SDK Version [?]", "GetSocial SDK Version"),
+                    BuildConfig.UnitySdkVersion);    
+            }
         }
 
-        void DrawAppIdValidation(string newAppIdValue)
+        void DrawAppIdValidation(string appIdValue)
         {
-            var isEmpty = string.IsNullOrEmpty(newAppIdValue);
+            if (!IsDemoAppPackage() && IsDemoAppId(appIdValue))
+            {
+                EditorGUILayout.HelpBox(
+                    "You are using GetSocial test app key with your bundle identifier. Are you sure this is what you want?",
+                    MessageType.Warning);
+            }
+            
+            var isEmpty = string.IsNullOrEmpty(appIdValue);
             if (isEmpty)
             {
                 EditorGUILayout.HelpBox("Missing app id? Don't worry, get one at the GetSocial Dashboard",
                     MessageType.Info);
             }
+            else if (!GetSocialSettings.IsAppIdValidated)
+            {
+                EditorGUILayout.HelpBox("App Id is not valid. Please visit GetSocial Dashboard to get the correct one.",
+                    MessageType.Error);
+            }
             else
             {
                 const int validAppKeyLength = 40;
-                var hasAppKeyLength = newAppIdValue.Length == validAppKeyLength;
+                var hasAppKeyLength = appIdValue.Length == validAppKeyLength;
                 if (hasAppKeyLength)
                 {
                     EditorGUILayout.HelpBox("You are using deprecated format of the app id. Please visit GetSocial Dashboard to get the updated app id.",
@@ -314,7 +348,8 @@ namespace GetSocialSdk.Editor
             if (!string.IsNullOrEmpty(value) && !value.Equals(GetSocialSettings.AppId))
             {
                 GetSocialSettings.AppId = value;
-                GetSocialAndroidManifestHelper.Refresh();
+                UpdateRemoteConfig();
+                UpdateAndroidManifestCheck();
             }
         }
 
@@ -324,7 +359,8 @@ namespace GetSocialSdk.Editor
             if (!value.Equals(GetSocialSettings.UiConfigurationDefaultFilePath))
             {
                 GetSocialSettings.UiConfigurationDefaultFilePath = value;
-                GetSocialAndroidManifestHelper.UpdateDefaultUiConfigurationFilePath();
+                UpdateAndroidManifestCheck();
+                UpdateUiConfigFileCheck();
             }
         }
 
@@ -333,13 +369,8 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoRegisrationForPushesEnabled != value)
             {
                 GetSocialSettings.IsAutoRegisrationForPushesEnabled = value;
-                UpdateAndroidAutoRegisterPushEnabled();
+                UpdateAndroidManifestCheck();
             }
-        }
-
-        private void UpdateAndroidAutoRegisterPushEnabled()
-        {
-            GetSocialAndroidManifestHelper.UpdateAutoRegisterForPush();
         }
 
         void SetGetSocialUiEnabled(bool value)
@@ -350,12 +381,96 @@ namespace GetSocialSdk.Editor
                 UpdateDefineSymbols();
             }
         }
-
+        
         static void UpdateDefineSymbols()
         {
             DefinesToggler.ToggleUseGetSocialUiDefine(GetSocialSettings.UseGetSocialUi);
         }
 
+        void UpdateRemoteConfig()
+        {
+            _remoteRequestStatusLabel = "Validating App Id...";
+            
+            if (_remoteConfigRequest != null && _remoteConfigRequest.IsInProgress)
+            {
+                _remoteConfigRequest.Cancel();
+            }
+            
+            _remoteConfigRequest = RemoteConfigRequest.ForAppId(GetSocialSettings.AppId);
+            _remoteConfigRequest.Start(
+                onSuccess: remoteConfig =>
+                {
+                    if (remoteConfig.IsSuccessful)
+                    {
+                        GetSocialSettings.IsAdroidEnabled = remoteConfig.Android.IsEnabled;
+                        GetSocialSettings.IsAndroidPushEnabled = remoteConfig.Android.IsPushNotificationEnabled;
+                        GetSocialSettings.IsIosEnabled = remoteConfig.Ios.IsEnabled;
+                        GetSocialSettings.IsIosPushEnabled = remoteConfig.Ios.IsPushNotificationEnabled;
+                        GetSocialSettings.IosPushEnvironment = remoteConfig.Ios.PushEnvironment;
+                        GetSocialSettings.DeeplinkingDomains = ExtractDeeplinksFromRemoteConfig(remoteConfig);
+                        GetSocialSettings.IsAppIdValidated = true;
+
+                        _remoteRequestStatusLabel =
+                            string.Format("App Id is valid. Settings updated today at {0:H:mm:ss} [?]", DateTime.Now);
+                    }
+                    else
+                    {
+                        var errorMessage = string.Format("Failed to validate App Id. Error: {0}", remoteConfig.ErrorMessage);
+                        
+                        Debug.LogError(errorMessage);
+
+                        GetSocialSettings.IsAppIdValidated = false;
+                        _remoteRequestStatusLabel = string.Format("{0} [?]", errorMessage);
+                    }
+                },
+                onFailure: error =>
+                {
+                    var errorMessage = string.Format("Failed to validate App Id. Error: {0}", error);
+                        
+                    Debug.LogError(errorMessage);
+                    GetSocialSettings.IsAppIdValidated = false;
+                    _remoteRequestStatusLabel = string.Format("{0} [?]", errorMessage);
+                }
+            );
+        }
+
+        private List<string> ExtractDeeplinksFromRemoteConfig(RemoteConfig remoteConfig)
+        {
+            var productionDeepLinkDomains = remoteConfig.Android.DeepLinkDomains;
+            var deeplinks = new List<string>(productionDeepLinkDomains);
+
+            // add testing environment domains for the test app
+            if (GetSocialSettings.AppId == GetSocialSettings.UnityDemoAppAppId)
+            {
+                productionDeepLinkDomains.ForEach(productionDomain =>
+                {
+                    var parts = productionDomain.Split('.').ToList();
+                    parts.Insert(1, "testing");
+                    string testingDomain = string.Join(".", parts.ToArray());
+                    
+                    deeplinks.Add(testingDomain);
+                });
+            }
+            
+            return deeplinks;
+        }
+
+        private static void UpdateAndroidManifestCheck()
+        {
+            var androidManifestHelper = new AndroidManifestHelper();
+            
+            _isAndroidManifestConfigurationCorrect = androidManifestHelper.IsConfigurationCorrect();
+            _androidManifestConfigurationSummary = androidManifestHelper.ConfigurationSummary();
+        }
+        
+        private void UpdateUiConfigFileCheck()
+        {
+            _isUiConfigurationFileCorrect = string.IsNullOrEmpty(GetSocialSettings.UiConfigurationDefaultFilePath)
+                                            || File.Exists(Path.Combine(Application.streamingAssetsPath,
+                                                GetSocialSettings.UiConfigurationDefaultFilePath));
+        }
+
+        
         #endregion
     }
 }

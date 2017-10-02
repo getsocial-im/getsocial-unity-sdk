@@ -69,6 +69,8 @@ const int FILTER_AFTER = 2;
     {
         [query setFilter:[self parseFilter:filter] activityId:json[@"FilteringActivityId"]];
     }
+    BOOL isFriendsFeed = [json[@"FriendsFeed"] boolValue];
+    [query setIsFriendsFeed:isFriendsFeed];
 
     return query;
 }

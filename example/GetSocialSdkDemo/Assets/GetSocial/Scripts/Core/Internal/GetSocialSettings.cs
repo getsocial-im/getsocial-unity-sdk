@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
@@ -20,25 +21,34 @@ namespace GetSocialSdk.Core
         string _appId = string.Empty;
 
         [SerializeField]
-        bool _useGetSocialUi = true;
-
-        [SerializeField]
         bool _isAutoRegisrationForPushesEnabled = true;
 
         [SerializeField]
-        bool _IosProductionAps = false;
+        bool _useGetSocialUi = true;
 
-        [SerializeField]
-        bool _useCustomDomainForDeeplinking = false;
-
-        [SerializeField]
-        string _customDomainForDeeplinking = string.Empty;
-
-        [SerializeField]
-        string _getSocialDomainPrefixForDeeplinking = string.Empty;
-        
         [SerializeField]
         string _getSocialDefaultConfigurationFilePath = string.Empty;
+
+        [SerializeField] 
+        string _iosPushEnvironment = string.Empty;
+
+        [SerializeField] 
+        List<string> _deeplinkingDomains = new List<string>();
+
+        [SerializeField] 
+        bool _isAndroidEnabled = false;
+        
+        [SerializeField] 
+        bool _isIosEnabled = false;
+
+        [SerializeField] 
+        bool _isIosPushEnabled = false;
+        
+        [SerializeField] 
+        bool _isAndroidPushEnabled = false;
+        
+        [SerializeField] 
+        bool _isAppIdValid = true;
 
 
         #region initialization
@@ -95,53 +105,43 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public static bool IosProductionAps
+        public static string IosPushEnvironment
         {
-            get { return Instance._IosProductionAps; }
+            get { return Instance._iosPushEnvironment; }
             set
             {
-                Instance._IosProductionAps = value;
+                Instance._iosPushEnvironment= value;
+                MarkAssetDirty();
+            }
+        }
+        
+        public static List<string> DeeplinkingDomains
+        {
+            get { return Instance._deeplinkingDomains; }
+            set
+            {
+                Instance._deeplinkingDomains = value;
                 MarkAssetDirty();
             }
         }
 
-        public static bool UseCustomDomainForDeeplinking
+        public static bool IsAdroidEnabled
         {
-            get { return Instance._useCustomDomainForDeeplinking; }
+            get { return Instance._isAndroidEnabled; }
             set
             {
-                if (value != Instance._useCustomDomainForDeeplinking)
-                {
-                    Instance._useCustomDomainForDeeplinking = value;
-                    MarkAssetDirty();
-                }
-
+                Instance._isAndroidEnabled = value;
+                MarkAssetDirty();
             }
         }
-
-        public static string CustomDomainForDeeplinking
+        
+        public static bool IsIosEnabled
         {
-            get { return Instance._customDomainForDeeplinking; }
+            get { return Instance._isIosEnabled; }
             set
             {
-                if (value != Instance._customDomainForDeeplinking)
-                {
-                    Instance._customDomainForDeeplinking = value;
-                    MarkAssetDirty();
-                }
-            }
-        }
-
-        public static string GetSocialDomainPrefixForDeeplinking
-        {
-            get { return Instance._getSocialDomainPrefixForDeeplinking; }
-            set
-            {
-                if (value != Instance._getSocialDomainPrefixForDeeplinking)
-                {
-                    Instance._getSocialDomainPrefixForDeeplinking = value;
-                    MarkAssetDirty();
-                }
+                Instance._isIosEnabled = value;
+                MarkAssetDirty();
             }
         }
         
@@ -151,6 +151,36 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._getSocialDefaultConfigurationFilePath = value;
+                MarkAssetDirty();
+            }
+        }
+        
+        public static bool IsIosPushEnabled
+        {
+            get { return Instance._isIosPushEnabled; }
+            set
+            {
+                Instance._isIosPushEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+        
+        public static bool IsAndroidPushEnabled
+        {
+            get { return Instance._isAndroidPushEnabled; }
+            set
+            {
+                Instance._isAndroidPushEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+        
+        public static bool IsAppIdValidated
+        {
+            get { return Instance._isAppIdValid; }
+            set
+            {
+                Instance._isAppIdValid = value;
                 MarkAssetDirty();
             }
         }

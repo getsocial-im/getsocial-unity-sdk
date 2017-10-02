@@ -73,7 +73,7 @@ namespace GetSocialSdk.Ui
             
             return this;
         }
-
+        
         internal override bool ShowInternal()
         {
 #if UNITY_ANDROID

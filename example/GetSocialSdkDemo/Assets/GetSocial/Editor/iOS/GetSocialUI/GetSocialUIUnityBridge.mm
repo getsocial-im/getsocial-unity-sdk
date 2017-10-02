@@ -104,7 +104,7 @@ bool _gs_restoreView() {
 #pragma mark - Activity Feed
 
 bool _gs_showActivityFeedView(const char *windowTitle,
-        const char *feed, const char *filterUserId, BOOL readOnly,
+        const char *feed, const char *filterUserId, BOOL readOnly, BOOL friendsFeed,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
         VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
@@ -149,7 +149,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         [view setFilterByUser:[GetSocialBridgeUtils createNSStringFrom:filterUserId]];
     }
     [view setReadOnly:readOnly];
-    
+    [view setShowFriendsFeed:friendsFeed];
     return [view show];
 }
     

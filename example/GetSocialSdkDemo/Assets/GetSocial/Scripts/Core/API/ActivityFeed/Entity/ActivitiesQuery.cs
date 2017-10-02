@@ -41,6 +41,7 @@ namespace GetSocialSdk.Core
         Filter _filter = Filter.NoFilter;
         string _filteringActivityId;
         string _filterUserId;
+        bool _isFriendsFeed;
 
         ActivitiesQuery(ActivityPost.Type type, string feed, string parentActivityId)
         {
@@ -83,6 +84,12 @@ namespace GetSocialSdk.Core
             return this;
         }
 
+        public ActivitiesQuery FriendsFeed(bool isFriendsFeed)
+        {
+            _isFriendsFeed = isFriendsFeed;
+            return this;
+        }
+
 #if UNITY_ANDROID
         public UnityEngine.AndroidJavaObject ToAJO()
         {
@@ -93,6 +100,7 @@ namespace GetSocialSdk.Core
 
             activitiesQuery.CallAJO("withLimit", _limit);
             activitiesQuery.CallAJO("filterByUser", _filterUserId);
+            activitiesQuery.CallAJO("friendsFeed", _isFriendsFeed);
             if (_filter != Filter.NoFilter)
             {
                 var filterClass = new UnityEngine.AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery$Filter");
@@ -118,7 +126,8 @@ namespace GetSocialSdk.Core
                 {"Limit", _limit},
                 {"Filter", (int) _filter},
                 {"FilteringActivityId", _filteringActivityId},
-                {"FilterUserId", _filterUserId}
+                {"FilterUserId", _filterUserId},
+                {"FriendsFeed", _isFriendsFeed}
             };
             return GSJson.Serialize(jsonDic);
         }

@@ -12,10 +12,17 @@ MonoBehaviour:
   m_Name: GetSocialSettings
   m_EditorClassIdentifier: 
   _appId: LuDPp7W0J4
-  _useGetSocialUi: 1
   _isAutoRegisrationForPushesEnabled: 1
-  _IosProductionAps: 1
-  _useCustomDomainForDeeplinking: 0
-  _customDomainForDeeplinking: my.pans
-  _getSocialDomainPrefixForDeeplinking: unitydemosdk6
+  _useGetSocialUi: 1
   _getSocialDefaultConfigurationFilePath: 
+  _iosPushEnvironment: development
+  _deeplinkingDomains:
+  - unitydemosdk6.gsc.im
+  - unitydemosdk6-gsalt.gsc.im
+  - unitydemosdk6.testing.gsc.im
+  - unitydemosdk6-gsalt.testing.gsc.im
+  _isAndroidEnabled: 1
+  _isIosEnabled: 1
+  _isIosPushEnabled: 1
+  _isAndroidPushEnabled: 1
+  _isAppIdValid: 1

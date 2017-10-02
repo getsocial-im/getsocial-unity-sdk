@@ -19,7 +19,8 @@ namespace GetSocialSdk.Ui
         
         string _filterUserId;
         bool _readOnly;
-
+        bool _friendsFeed;
+        
         internal ActivityFeedViewBuilder()
         {
             _feed = ActivitiesQuery.GlobalFeed;
@@ -77,13 +78,25 @@ namespace GetSocialSdk.Ui
             
             return this;
         }
+        
+        /// <summary>
+        /// Display feed with posts of your friends and your own.
+        /// </summary>
+        /// <param name="showFriendsFeed">display friends feed or not</param>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
+        public ActivityFeedViewBuilder SetShowFriendsFeed(bool showFriendsFeed)
+        {
+            _friendsFeed = showFriendsFeed;
+
+            return this;
+        }
 
         internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _gs_showActivityFeedView(_customWindowTitle, _feed, _filterUserId, _readOnly,
+            return _gs_showActivityFeedView(_customWindowTitle, _feed, _filterUserId, _readOnly, _friendsFeed, 
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
                 _onButtonClickListener.GetPointer(),
                 Callbacks.ActionCallback,
@@ -109,7 +122,6 @@ namespace GetSocialSdk.Ui
             if (_filterUserId != null) {
                 activityFeedBuilderAJO.CallAJO("setFilterByUser", _filterUserId);
             }
-            activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
             if (_onButtonClickListener != null)
             {
                 activityFeedBuilderAJO.CallAJO("setButtonActionListener",
@@ -120,6 +132,9 @@ namespace GetSocialSdk.Ui
                 activityFeedBuilderAJO.CallAJO("setAvatarClickListener",
                     new AvatarClickListenerProxy(_onAvatarClickListener));
             }
+    
+            activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
+            activityFeedBuilderAJO.CallAJO("setShowFriendsFeed", _friendsFeed);
 
             return activityFeedBuilderAJO;
         }
@@ -127,7 +142,7 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed, string filterUserId, bool readOnly,
+        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed, string filterUserId, bool readOnly, bool friendsFeed, 
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,

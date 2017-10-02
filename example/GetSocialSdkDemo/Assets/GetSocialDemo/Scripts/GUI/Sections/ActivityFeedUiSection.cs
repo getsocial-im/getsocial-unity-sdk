@@ -28,6 +28,9 @@ public class ActivityFeedUiSection : DemoMenuSection
         
         DemoGuiUtils.DrawButton("My Custom Feed", OpenMyCustomFeed, true, GSStyles.Button);
         DemoGuiUtils.Space();
+        
+        DemoGuiUtils.DrawButton("My Friends Global Feed", OpenMyFriendsGlobalFeed, true, GSStyles.Button);
+        DemoGuiUtils.Space();
 
         DemoGuiUtils.DrawButton("Open Activity Details", OpenActivityDetailsFunc(true), true, GSStyles.Button);
         DemoGuiUtils.Space();
@@ -47,6 +50,15 @@ public class ActivityFeedUiSection : DemoMenuSection
                     .SetButtonActionListener(OnActivityActionClicked)
                     .SetFilterByUser(GetSocial.User.Id)
                     .Show();
+    }
+
+    private void OpenMyFriendsGlobalFeed()
+    {
+        GetSocialUi.CreateGlobalActivityFeedView()
+            .SetWindowTitle("My Friends Feed")
+            .SetButtonActionListener(OnActivityActionClicked)
+            .SetShowFriendsFeed(true)
+            .Show();
     }
 
     private void OpenMyGlobalFeed()

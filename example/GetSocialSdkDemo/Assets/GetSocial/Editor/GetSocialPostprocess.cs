@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using GetSocialSdk.Core;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -25,6 +26,11 @@ namespace GetSocialSdk.Editor
         [PostProcessBuild(256)]
         public static void OnPostProcessBuild(BuildTarget target, string path)
         {
+            if (!GetSocialSettings.IsAppIdValidated)
+            {
+                Debug.LogError(string.Format("GetSocial: provided App Id {0} was not validated. Please check if App Id is correct and you're connected to the internet.", GetSocialSettings.AppId));
+            }
+            
             if (BuildTarget.iOS == target)
             {
                 GetSocialPostprocessIOS.UpdateXcodeProject(path);
@@ -32,9 +38,15 @@ namespace GetSocialSdk.Editor
 
             if (BuildTarget.Android == target)
             {
+                var androidManifestHelper = new AndroidManifestHelper();
+                if (!androidManifestHelper.IsConfigurationCorrect())
+                {
+                    Debug.LogWarning("GetSocial: AndroidManifest.xml configuration is not complete. Summary: \n\n" + androidManifestHelper.ConfigurationSummary());
+                }
+                
                 if (PlayerSettingsCompat.bundleIdentifier == "com.Company.ProductName")
                 {
-                    Debug.LogError("Please change the default Unity Bundle Identifier (com.Company.ProductName) to your package.");
+                    Debug.LogError("GetSocial: Please change the default Unity Bundle Identifier (com.Company.ProductName) to your package.");
                 }
             }
         }

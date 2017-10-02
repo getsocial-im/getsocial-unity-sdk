@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+using System;
 using UnityEngine;
 using System.IO;
 using UnityEditor.iOS.Xcode.GetSocial;
 using GetSocialSdk.Core;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
@@ -28,10 +28,13 @@ namespace GetSocialSdk.Editor
     {
         // modify this constant if GetSocial is not subdirectory of the Assets/
         public const string RootGetSocialPath = "";
-
+        private const int MinimumIosVersionRequirnment = 8;
+        
         public static void UpdateXcodeProject(string projectPath)
         {
-            Debug.Log(string.Format("GetSocial Xcode postprocessing started for project '{0}'", projectPath));
+            CheckIosVersion();
+            
+            Debug.Log(string.Format("GetSocial: Xcode postprocessing started for project '{0}'", projectPath));
 
             PBXProjectUtils.ModifyPbxProject(projectPath, (project, target) =>
             {
@@ -48,6 +51,7 @@ namespace GetSocialSdk.Editor
                 AddAnalyticsSuperPropertiesMetaData(plistDocument);
                 WhitelistApps(plistDocument);
                 SetAutoRegisterForPushTag(plistDocument);
+                SetUiBackgroundModes(plistDocument);
                 SetDefaultUiConfigurationFilePathTag(plistDocument);
             });
         }
@@ -59,13 +63,13 @@ namespace GetSocialSdk.Editor
                 return;
             }
 
-            Debug.Log("Removing GetSocial UI files from build as Native UI is disabled");
+            Debug.Log("GetSocial: Removing GetSocial UI files from build as Native UI is disabled");
             var uiBridgeGuid =
                 project.FindFileGuidByProjectPath(
                     "Libraries/GetSocial/Editor/iOS/GetSocialUI/GetSocialUIUnityBridge.mm");
             if (uiBridgeGuid == null)
             {
-                Debug.Log("GetSocialUIUnityBridge.mm not found in the project.");
+                Debug.Log("GetSocial: GetSocialUIUnityBridge.mm not found in the project.");
                 return;
             }
 
@@ -96,7 +100,7 @@ namespace GetSocialSdk.Editor
             var relativeUiFrameworkPath = Path.Combine(defaultLocationInProj, uiFrameworkName);
             project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
             project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
-            Debug.Log("GetSocial Dynamic Frameworks added to Embedded binaries.");
+            Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
         }
 
         #region deep_linking
@@ -104,7 +108,7 @@ namespace GetSocialSdk.Editor
         static void SetupDeepLinking(PBXProject project, string projectPath, string target)
         {
             Debug.LogWarning(
-                "Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-invites/unity/deep-linking/");
+                "GetSocial: Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-invites/unity/deep-linking/");
 
             // URL Schemes (iOS <= 8)
             AddGetSocialUrlScheme(projectPath);
@@ -115,7 +119,7 @@ namespace GetSocialSdk.Editor
 
         static void AddGetSocialUrlScheme(string projectPath)
         {
-            Debug.Log(string.Format("Setting up GetSocial deep linking for iOS <= 8 for '{0}'", projectPath));
+            Debug.Log(string.Format("GetSocial: Setting up GetSocial deep linking for iOS <= 8 for '{0}'", projectPath));
             PBXProjectUtils.ModifyPlist(projectPath, AddGetSocialUrlSchemeToPlist,
                 "Failed to set up GetSocial deep linking for iOS <= 8.");
         }
@@ -166,42 +170,22 @@ namespace GetSocialSdk.Editor
         public static void GenerateAppEntitlements(string path)
         {
             var entitlements = new PlistDocument();
+            
+            // Universal Links
             var assosiatedDomainsNode = entitlements.root.CreateArray("com.apple.developer.associated-domains");
+            GetSocialSettings.DeeplinkingDomains.ForEach(domain =>
+                assosiatedDomainsNode.AddString(string.Format("applinks:{0}", domain))
+            );
 
-            var aps = GetSocialSettings.IosProductionAps ? "production" : "development";
-            entitlements.root.SetString("aps-environment", aps);
-
-            GetRequiredAssosiatedDomains().ForEach(domain => assosiatedDomainsNode.AddString(domain));
+            // Push Environment
+            entitlements.root.SetString("aps-environment", GetSocialSettings.IosPushEnvironment);
 
             entitlements.WriteToFile(path);
         }
 
-        private static List<string> GetRequiredAssosiatedDomains()
-        {
-            var assosiatedDomains = new List<string>();
-
-            assosiatedDomains.Add(string.Format("applinks:{0}.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking,
-                GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain));
-
-            var domain0 = GetSocialSettings.UseCustomDomainForDeeplinking
-                ? string.Format("applinks:{0}", GetSocialSettings.CustomDomainForDeeplinking)
-                : string.Format("applinks:{0}-gsalt.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking, GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain);
-            assosiatedDomains.Add(domain0);
-
-            // add assosiated domains for testing environement for demo app
-            if (PlayerSettingsCompat.iPhoneBundleIdentifier.Equals(GetSocialSettingsEditor.DemoAppPackage))
-            {
-                assosiatedDomains.Add(string.Format("applinks:{0}.testing.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking,
-                    GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain));
-                assosiatedDomains.Add(string.Format("applinks:{0}-gsalt.testing.{1}", GetSocialSettings.GetSocialDomainPrefixForDeeplinking,
-                    GetSocialSettingsEditor.GetSocialSmartInvitesLinkDomain));
-            }
-
-            return assosiatedDomains;
-        }
-
         #endregion
 
+        
         private static void AddGetSocialAppId(PlistDocument plistDocument)
         {
             plistDocument.root.SetString("im.getsocial.sdk.AppId", GetSocialSettings.AppId);
@@ -253,7 +237,13 @@ namespace GetSocialSdk.Editor
         {
             plistDocument.root.SetBoolean("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled);
         }
-        
+
+        private static void SetUiBackgroundModes(PlistDocument plistDocument)
+        {
+            var backgroundModesArray = plistDocument.root.CreateArray("UIBackgroundModes");
+            backgroundModesArray.AddString("remote-notification");
+        }
+
         private static void SetDefaultUiConfigurationFilePathTag(PlistDocument plistDocument)
         {
             var fullPath = string.Empty;
@@ -262,6 +252,27 @@ namespace GetSocialSdk.Editor
                 fullPath = Path.Combine("Data/Raw/", GetSocialSettings.UiConfigurationDefaultFilePath);
             }
             plistDocument.root.SetString("im.getsocial.sdk.UiConfigurationFile", fullPath);
+        }
+        
+        private static void CheckIosVersion()
+        {
+            var targetIosVersion = PlayerSettingsCompat.targetOSVersion;
+
+            try
+            {
+                var iosMajorVersionString = targetIosVersion.Split('.')[0];
+                if (int.Parse(iosMajorVersionString) < MinimumIosVersionRequirnment)
+                {
+                    Debug.LogWarning(string.Format(
+                        "GetSocial: target iOS version {0} is not supported. GetSocial SDK requires iOS {1}+",
+                        targetIosVersion, MinimumIosVersionRequirnment));
+                }
+            }
+            catch (Exception)
+            {
+                Debug.LogWarning(string.Format(
+                    "GetSocial: failed to parse target iOS version.. GetSocial SDK requires iOS {0}+", MinimumIosVersionRequirnment));
+            }
         }
     }
 }

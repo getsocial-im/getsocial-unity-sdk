@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -35,6 +36,74 @@ namespace GetSocialSdk.Editor
             var style = EditorStyles.foldout;
             style.fontStyle = FontStyle.Bold;
             return label;
+        }
+
+        public static GUILayoutOption OneThirdWidth
+        {
+            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 50) / 3); }
+        }
+        
+        public static GUILayoutOption TwoThirdsWidth
+        {
+            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 50) / 3 * 2); }
+        }
+        
+        public static GUILayoutOption HalfWidth
+        {
+            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 50) / 2); }
+        }
+
+        public static void ColoredBackground(Color backgroundColor, Action drawAction)
+        {
+            var backupColor = GUI.backgroundColor;
+            GUI.backgroundColor = backgroundColor;
+
+            drawAction();
+
+            GUI.backgroundColor = backupColor;
+        }
+    }
+    
+    //FixedWidthLabel class. Extends IDisposable, so that it can be used with the "using" keyword.
+    public class FixedWidthLabel : IDisposable
+    {
+        private const int Indent = 9;
+        private readonly ZeroIndent _indentReset;
+
+        public FixedWidthLabel(GUIContent label)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label, 
+                GUILayout.Width(GUI.skin.label.CalcSize(label).x 
+                                + Indent * EditorGUI.indentLevel));
+
+            _indentReset = new ZeroIndent();
+        }
+
+        public FixedWidthLabel(string label) : this(new GUIContent(label))
+        {
+        }
+
+        public void Dispose()
+        {
+            _indentReset.Dispose();
+            EditorGUILayout.EndHorizontal();
+        }
+    }
+
+    // Helper class to clear indentation
+    class ZeroIndent : IDisposable 
+    {
+        private readonly int _originalIndent;
+        public ZeroIndent()
+        {
+            _originalIndent = EditorGUI.indentLevel;
+            EditorGUI.indentLevel = 0;
+        }
+
+        public void Dispose()
+        {
+            EditorGUI.indentLevel = _originalIndent;
         }
     }
 }
