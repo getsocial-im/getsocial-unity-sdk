@@ -342,12 +342,12 @@ namespace GetSocialSdk.Core
 
         public void HandleOnStartUnityEvent()
         {
-            throw new NotImplementedException();
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }
 
         public void StartUnityTests(string scenario, Action readyAction)
         {
-            throw new NotImplementedException();
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), scenario, readyAction);
         }
     }
 }
