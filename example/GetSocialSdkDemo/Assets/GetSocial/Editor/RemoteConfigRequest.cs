@@ -8,7 +8,7 @@ namespace GetSocialSdk.Editor
 {
     public class RemoteConfigRequest
     {
-        private const string ConfigRequestUrlPattern = "https://hades.getsocial.im:8094/?app={0}";
+        private const string ConfigRequestUrlPattern = "https://hades.getsocial.im/plugin/?app={0}";
         
         public string AppId { get; private set; }
         public bool IsInProgress { get; private set; }
