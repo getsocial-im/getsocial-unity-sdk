@@ -51,6 +51,7 @@ namespace GetSocialSdk.Editor
                 AddAnalyticsSuperPropertiesMetaData(plistDocument);
                 WhitelistApps(plistDocument);
                 SetAutoRegisterForPushTag(plistDocument);
+                SetAutoInitSdk(plistDocument);
                 SetUiBackgroundModes(plistDocument);
                 SetDefaultUiConfigurationFilePathTag(plistDocument);
             });
@@ -236,6 +237,11 @@ namespace GetSocialSdk.Editor
         private static void SetAutoRegisterForPushTag(PlistDocument plistDocument)
         {
             plistDocument.root.SetBoolean("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled);
+        }
+
+        private static void SetAutoInitSdk(PlistDocument plistDocument)
+        {
+            plistDocument.root.SetBoolean("im.getsocial.sdk.AutoInitSdk", GetSocialSettings.IsAutoInitEnabled);
         }
 
         private static void SetUiBackgroundModes(PlistDocument plistDocument)

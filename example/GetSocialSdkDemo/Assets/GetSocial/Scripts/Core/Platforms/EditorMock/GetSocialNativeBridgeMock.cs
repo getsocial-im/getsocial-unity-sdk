@@ -22,6 +22,11 @@ namespace GetSocialSdk.Core
             get { return _instance ?? (_instance = new GetSocialNativeBridgeMock()); }
         }
 
+        public void StartInitialization()
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+        }
+
         public void WhenInitialized(Action action)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), action);
@@ -90,6 +95,11 @@ namespace GetSocialSdk.Core
         }
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
+        }
+
+        public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
         }

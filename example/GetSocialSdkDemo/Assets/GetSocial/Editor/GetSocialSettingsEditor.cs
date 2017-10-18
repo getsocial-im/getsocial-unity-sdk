@@ -112,6 +112,7 @@ namespace GetSocialSdk.Editor
             EditorGUILayout.BeginVertical(GUI.skin.box);
             {
                 DrawAppIdSettings();
+                DrawCommonSettings();
 
                 GUILayout.Space(15);
                 DrawPushNotificationSettings();
@@ -138,6 +139,14 @@ namespace GetSocialSdk.Editor
             SetAppId(newAppKeyValue);
         }
 
+        void DrawCommonSettings()
+        {
+            var autoInitSdkEnabled = new GUIContent("Initialize Automatically [?]", "If this setting is checked, GetSocial will be initialized automatically, if not, you need to call GetSocial.Init() method.");
+            var shouldAutoInitSdk = EditorGUILayout.ToggleLeft(autoInitSdkEnabled, GetSocialSettings.IsAutoInitEnabled);
+            
+            SetAutoInitEnabled(shouldAutoInitSdk);
+        }
+        
         static bool IsDemoAppPackage()
         {
             return PlayerSettingsCompat.bundleIdentifier == DemoAppPackage;
@@ -369,6 +378,15 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoRegisrationForPushesEnabled != value)
             {
                 GetSocialSettings.IsAutoRegisrationForPushesEnabled = value;
+                UpdateAndroidManifestCheck();
+            }
+        }
+
+        private void SetAutoInitEnabled(bool value)
+        {
+            if (GetSocialSettings.IsAutoInitEnabled != value)
+            {
+                GetSocialSettings.IsAutoInitEnabled = value;
                 UpdateAndroidManifestCheck();
             }
         }

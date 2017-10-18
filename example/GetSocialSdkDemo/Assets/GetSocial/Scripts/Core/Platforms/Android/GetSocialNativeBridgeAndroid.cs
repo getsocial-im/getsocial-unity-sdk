@@ -30,6 +30,11 @@ namespace GetSocialSdk.Core
 
         #region initialization
 
+        public void StartInitialization()
+        {
+            _getSocial.CallStatic("init");
+        }
+
         public void WhenInitialized(Action action)
         {
             _getSocial.CallStatic("whenInitialized", new RunnableProxy(action));
@@ -108,6 +113,11 @@ namespace GetSocialSdk.Core
         {
             _getSocial.CallStatic("getReferralData",
                 new FetchReferralDataCallbackProxy(onSuccess, onFailure));
+        }
+
+        public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("getReferredUsers", new ListCallbackProxy<ReferredUser>(onSuccess, onFailure));
         }
 
         public void RegisterForPushNotifications()
@@ -358,9 +368,10 @@ namespace GetSocialSdk.Core
         {
             try
             {
+                AndroidJavaObject activity = JniUtils.Activity;
                 using (var ajc = new AndroidJavaClass(AndroidAccessHelperClass))
                 {
-                    ajc.CallStatic("reset", JniUtils.Activity);
+                    ajc.CallStatic("reset", activity.CallAJO("getApplication"));
                 }
             }
             catch (Exception e)
@@ -411,8 +422,7 @@ namespace GetSocialSdk.Core
             {
                 return null;
             }
-            return new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", 
-                JniUtils.Activity, new InviteChannelPluginProxy(plugin));
+            return new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
         }
     }
 }

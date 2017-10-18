@@ -7,6 +7,7 @@ namespace GetSocialSdk.Ui
     class GetSocialUiNativeBridgeAndroid : IGetSocialUiNativeBridge
     {
         const string GetSocialUiClassSignature = "im.getsocial.sdk.ui.GetSocialUi";
+        const string AndroidUiAccessHelperClass = "im.getsocial.sdk.ui.GetSocialUiAccessHelper";
 
         static IGetSocialUiNativeBridge _instance;
 
@@ -66,6 +67,14 @@ namespace GetSocialSdk.Ui
             });
         }
         #endregion
+
+        public void Reset()
+        {
+            using (var ajc = new AndroidJavaClass(AndroidUiAccessHelperClass))
+            {
+                ajc.CallStatic("reset", JniUtils.Activity);
+            }
+        }
     }
 }
 

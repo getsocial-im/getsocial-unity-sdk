@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using GetSocialSdk.Core;
+using TheNextFlow.UnityPlugins;
 using UnityEngine;
 
 public class SmartInvitesApiSection : DemoMenuSection
@@ -92,6 +93,7 @@ public class SmartInvitesApiSection : DemoMenuSection
         DrawReferralData();
         DrawSendInvites();
         DrawSendCustomInvites();
+        DrawGetReferredUsers();
     }
 
     void GetSupportedInviteChannels()
@@ -155,6 +157,35 @@ public class SmartInvitesApiSection : DemoMenuSection
         GUILayout.Label("Referral data", GSStyles.BigLabelText);
 
         DemoGuiUtils.DrawButton("Get referral data", GetReferralData, style: GSStyles.Button);
+    }
+
+    private void DrawGetReferredUsers()
+    {
+        GUILayout.Label("Referred users", GSStyles.BigLabelText);
+
+        DemoGuiUtils.DrawButton("Get referred users", GetReferredUsers, style: GSStyles.Button);
+    }
+
+    private void GetReferredUsers()
+    {
+        GetSocial.GetReferredUsers(referredUsers =>
+            {
+                var message = "";
+                if (referredUsers.Count > 0)
+                {
+                    foreach (var referredUser in referredUsers)
+                    {
+                        message += referredUser.DisplayName + ",";
+                    }
+                    message = message.Substring(0, message.Length - 1);
+                }
+                else
+                {
+                    message = "No referred user found.";
+                }
+                MobileNativePopups.OpenAlertDialog("Referred Users", message, "OK", () => { });
+            }, 
+            error => _console.LogE(string.Format("Failed to get referred users: {0}", error.Message)));
     }
 
     private void GetReferralData()

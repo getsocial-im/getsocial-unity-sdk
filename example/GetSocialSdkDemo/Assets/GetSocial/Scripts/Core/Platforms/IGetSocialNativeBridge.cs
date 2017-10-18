@@ -8,11 +8,13 @@ namespace GetSocialSdk.Core
     {
 
         #region initialization
+        
+        void StartInitialization();
 
         void WhenInitialized(Action action);
 
         bool IsInitialized { get; }
-
+        
         void Init(Action onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
@@ -48,6 +50,8 @@ namespace GetSocialSdk.Core
         bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin);
 
         void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure);
+
+        void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 

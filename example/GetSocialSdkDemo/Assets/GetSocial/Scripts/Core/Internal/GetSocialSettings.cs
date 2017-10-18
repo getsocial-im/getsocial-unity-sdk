@@ -22,6 +22,9 @@ namespace GetSocialSdk.Core
 
         [SerializeField]
         bool _isAutoRegisrationForPushesEnabled = true;
+        
+        [SerializeField]
+        bool _autoInitEnabled = true;
 
         [SerializeField]
         bool _useGetSocialUi = true;
@@ -101,6 +104,17 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._isAutoRegisrationForPushesEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+
+
+        public static bool IsAutoInitEnabled
+        {
+            get { return Instance._autoInitEnabled; }
+            set
+            {
+                Instance._autoInitEnabled = value;
                 MarkAssetDirty();
             }
         }

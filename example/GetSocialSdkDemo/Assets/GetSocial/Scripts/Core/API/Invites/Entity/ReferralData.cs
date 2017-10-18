@@ -38,15 +38,22 @@ namespace GetSocialSdk.Core
         public bool IsGuaranteedMatch { get; private set; }
 
         /// <summary>
-        /// Gets the custom referral data.
+        /// Gets the custom referral data with the parameter overrides from the Smart Link.
         /// </summary>
         /// <value>The custom referral data.</value>
         public CustomReferralData CustomReferralData { get; private set; }
 
+        /// <summary>
+        /// Gets the original custom referral data. Overrides from the Smart Link are ignored.
+        /// </summary>
+        /// <value>The original custom referral data.</value>
+        public CustomReferralData OriginalCustomReferralData { get; private set; }
+
         public override string ToString()
         {
-            return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, IsGuaranteedMatch={4}, CustomReferralData={5}]",
-                Token, ReferrerUserId, ReferrerChannelId, IsFirstMatch, IsGuaranteedMatch, CustomReferralData.ToDebugString());
+            return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, IsGuaranteedMatch={4}, CustomReferralData={5}, " +
+                                 ", OriginalCustomReferralData={6}]",
+                Token, ReferrerUserId, ReferrerChannelId, IsFirstMatch, IsGuaranteedMatch, CustomReferralData.ToDebugString(), OriginalCustomReferralData.ToDebugString());
         }
 
 #if UNITY_ANDROID
@@ -71,6 +78,9 @@ namespace GetSocialSdk.Core
                 IsGuaranteedMatch = ajo.CallBool("isGuaranteedMatch");
                 var customReferralDataDict = ajo.CallAJO("getCustomReferralData").FromJavaHashMap();
                 CustomReferralData = new CustomReferralData(customReferralDataDict);
+                var originalCustomReferralDataDict = ajo.CallAJO("getOriginalCustomReferralData").FromJavaHashMap();
+                OriginalCustomReferralData = new CustomReferralData(originalCustomReferralDataDict);
+
             }
             return this;
         }
@@ -88,6 +98,8 @@ namespace GetSocialSdk.Core
             IsFirstMatch = (bool) json[IsFirstMatchFieldName];
             IsGuaranteedMatch = (bool) json[IsGuaranteedMatchName];
             CustomReferralData = new CustomReferralData(json[CustomReferralDataFieldName] as Dictionary<string, object>);
+            OriginalCustomReferralData =
+                new CustomReferralData(json[OriginalCustomReferralDataFieldName] as Dictionary<string, object>);
             return this;
         }
 
@@ -119,6 +131,11 @@ namespace GetSocialSdk.Core
         static string CustomReferralDataFieldName
         {
             get { return ReflectionUtils.GetMemberName((ReferralData c) => c.CustomReferralData); }
+        }
+
+        static string OriginalCustomReferralDataFieldName
+        {
+            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.OriginalCustomReferralData); }
         }
 
 #endif

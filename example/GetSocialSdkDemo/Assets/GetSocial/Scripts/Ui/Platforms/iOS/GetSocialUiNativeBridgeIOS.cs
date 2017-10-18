@@ -44,6 +44,10 @@ namespace GetSocialSdk.Ui
         {
             return _gs_restoreView();
         }
+    
+        public void Reset() {
+            _gs_ui_reset();
+        }
 
         #endregion
 
@@ -58,6 +62,9 @@ namespace GetSocialSdk.Ui
 
         [DllImport("__Internal")]
         static extern bool _gs_restoreView();
+    
+        [DllImport("__Internal")]
+        static extern bool _gs_ui_reset();
     }
 }
 #endif

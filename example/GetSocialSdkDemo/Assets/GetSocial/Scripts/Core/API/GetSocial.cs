@@ -77,6 +77,14 @@ namespace GetSocialSdk.Core
         #region initialization
 
         /// <summary>
+        /// Init the SDK. Use <see cref="WhenInitialized"/> to be notified when SDK is initialized. Check errors in logs or in GlobalErrorListener using <see cref="SetGlobalErrorListener"/>.
+        /// </summary>
+        public static void Init()
+        {
+            GetSocialImpl.StartInitialization();
+        }
+        
+        /// <summary>
         /// Set an action, which should be executed after SDK initialized.
         /// Executed immediately, if SDK is already initialized.
         /// </summary>
@@ -89,7 +97,7 @@ namespace GetSocialSdk.Core
         /// <summary>
         /// Provides the status of the GetSocial initialisation.
         /// </summary>
-        /// <returns><c>true</c> if <see cref="Init(System.Action,System.Action{string})"/>has completed successfully; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if SDK has completed successfully; otherwise, <c>false</c>.</returns>
         public static bool IsInitialized
         {
             get { return GetSocialImpl.IsInitialized; }
@@ -240,13 +248,26 @@ namespace GetSocialSdk.Core
         /// the deep link. 
         /// </summary>
         /// <param name="onSuccess">Called when invocation was successfull.</param>
-        /// <param name="onFailure">Called when failed retrieveing referral data.</param>
+        /// <param name="onFailure">Called when failed retrieving list of referred users.</param>
         public static void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
         {
             Check.Argument.IsNotNull(onSuccess, "onSuccess");
             Check.Argument.IsNotNull(onFailure, "onFailure");
 
             GetSocialImpl.GetReferralData(onSuccess, onFailure);
+        }
+
+        /// <summary>
+        /// Get list of users who installed the app by accepting invite of current user. 
+        /// </summary>
+        /// <param name="onSuccess">Called when invocation was successfull.</param>
+        /// <param name="onFailure">Called when failed retrieving list of referred users.</param>
+        public static void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.GetReferredUsers(onSuccess, onFailure);
         }
 
         #endregion

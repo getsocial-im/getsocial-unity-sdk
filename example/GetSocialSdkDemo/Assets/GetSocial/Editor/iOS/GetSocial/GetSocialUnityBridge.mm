@@ -8,6 +8,7 @@
 #include <GetSocial/GetSocial.h>
 #include <GetSocial/GetSocialAccessHelper.h>
 
+
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 extern "C" {
@@ -76,6 +77,11 @@ void _gs_init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
 {
     [GetSocialAccessHelper initWithSuccess:completeBlock(completeCallback, onCompletePtr)
                                    failure:errorBlock(failureCallback, onFailurePtr)];
+}
+
+void _gs_start_init()
+{
+    [GetSocial init];
 }
 
 bool _gs_isInitialized()
@@ -183,6 +189,12 @@ bool _gs_registerInviteProviderPlugin(const char *channelId, void *pluginPtr,
     }
 
     return [GetSocial registerInviteChannelPlugin:invitePlugin forChannelId:channelIdStr];
+}
+
+void _gs_getReferredUsers(StringCallbackDelegate getReferredUsersCallback, void *onSuccessActionPtr,
+                             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    [GetSocial referredUsersWithSuccess:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure: errorBlock(failureCallback, onSuccessActionPtr)];
 }
 
 #pragma mark - Invite Callbacks

@@ -21,6 +21,11 @@ namespace GetSocialSdk.Core
             get { return _instance ?? (_instance = new GetSocialNativeBridgeIOS()); }
         }
 
+        public void StartInitialization()
+        {
+            _gs_start_init();
+        }
+
         public void WhenInitialized(Action action)
         {
             _gs_executeWhenInitialized(Callbacks.ActionCallback, action.GetPointer());
@@ -94,7 +99,7 @@ namespace GetSocialSdk.Core
                 InviteChannelPluginCallbacks.IsAvailableForDevice,
                 InviteChannelPluginCallbacks.PresentChannelInterface);
         }
-
+        
         #endregion
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
@@ -103,6 +108,12 @@ namespace GetSocialSdk.Core
                 Callbacks.FetchReferralDataCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer()
             );
+        }
+
+        public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getReferredUsers(Callbacks.GetReferredUsers, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public void RegisterForPushNotifications()
@@ -431,6 +442,9 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern void _gs_executeWhenInitialized(VoidCallbackDelegate action, IntPtr actionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_start_init();
 
         [DllImport("__Internal")]
         static extern void _gs_init(VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
@@ -485,6 +499,11 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_getReferralData(
             FetchReferralDataCallbackDelegate fetchReferralDataCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_getReferredUsers(
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         // Invite Callbacks

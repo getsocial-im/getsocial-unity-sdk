@@ -16,7 +16,7 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
         bool OnBackPressed();
 #endif
-        
+        void Reset();
     }
 }
 #endif

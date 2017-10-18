@@ -25,9 +25,10 @@
         <provider android:name="im.getsocial.sdk.invites.ImageContentProvider" android:authorities="im.getsocial.demo.unity.smartinvite.images.provider" android:exported="true" android:enabled="true" />
         <provider android:name="im.getsocial.sdk.AutoInitSdkContentProvider" android:authorities="im.getsocial.demo.unity.AutoInitSdkContentProvider" android:exported="false" android:enabled="true" />
         <meta-data android:name="im.getsocial.sdk.UiConfigurationFile" android:value="" />
+        <meta-data android:name="im.getsocial.sdk.AutoInitSdk" android:value="true" />
         <meta-data android:name="im.getsocial.sdk.AutoRegisterForPush" android:value="true" />
-        <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.7.0" />
-        <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="5.5.1f1" />
+        <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.9.1" />
+        <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="5.5.3f1" />
         <meta-data android:name="im.getsocial.sdk.Runtime" android:value="UNITY" />
         <meta-data android:name="im.getsocial.sdk.AppId" android:value="LuDPp7W0J4" />
         <activity android:label="@string/app_name" android:name="com.unity3d.player.UnityPlayerActivity" android:screenOrientation="fullSensor" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
