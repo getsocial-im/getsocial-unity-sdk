@@ -19,12 +19,12 @@ namespace GetSocialSdk.Core
 
 #if UNITY_ANDROID
         
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public new UnityEngine.AndroidJavaObject ToAJO()
         {
             throw new System.NotImplementedException("ReferredUser is never passed to Android, only received");
         }
 
-        public ReferredUser ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public new ReferredUser ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
         {
             if (ajo.IsJavaNull())
             {
@@ -39,12 +39,12 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-        public string ToJson()
+        public new string ToJson()
         {
-            throw new System.NotImplementedException("ReferredUser is never passed to iOS, only received");
+            throw new NotImplementedException("ReferredUser is never passed to iOS, only received");
         }
 
-        public ReferredUser ParseFromJson(Dictionary<string, object> json)
+        public new ReferredUser ParseFromJson(Dictionary<string, object> json)
         {
             base.ParseFromJson(json);
             InstallationDate = DateUtils.FromUnixTime((long) json["InstallationDate"]);

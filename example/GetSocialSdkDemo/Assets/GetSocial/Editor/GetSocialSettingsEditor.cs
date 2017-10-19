@@ -55,9 +55,10 @@ namespace GetSocialSdk.Editor
         private static string _androidManifestConfigurationSummary = string.Empty;
 
         #region lifecycle
-
+        
         void OnEnable()
         {
+            UpdatePlatformLibraries();
             UpdateDefineSymbols();
             UpdateRemoteConfig();
             UpdateAndroidManifestCheck();
@@ -397,7 +398,13 @@ namespace GetSocialSdk.Editor
             {
                 GetSocialSettings.UseGetSocialUi = value;
                 UpdateDefineSymbols();
+                UpdatePlatformLibraries();
             }
+        }
+
+        static void UpdatePlatformLibraries()
+        {
+            FileHelper.SetGetSocialUiEnabled(GetSocialSettings.UseGetSocialUi);
         }
         
         static void UpdateDefineSymbols()
