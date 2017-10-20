@@ -4,12 +4,12 @@ namespace GetSocialSdk.Editor.Android.Manifest
 {
     public class Receiver : AndroidManifestNode
     {
-        public Receiver(string name, IntentFilter intentFilter) : base(
+        public Receiver(string name, List<IntentFilter> intentFilters) : base(
             "receiver", 
             ApplicationTag, 
             new Dictionary<string, string>{{NameAttribute, name}})
         {
-            AddChild(intentFilter);
+            intentFilters.ForEach(AddChild);
         }
 
         public override string ToString()

@@ -38,8 +38,8 @@ namespace GetSocialSdk.Editor
             new Provider("im.getsocial.sdk.AutoInitSdkContentProvider", string.Format("{0}.AutoInitSdkContentProvider", PlayerSettingsCompat.bundleIdentifier), false),
             new Provider("im.getsocial.sdk.invites.ImageContentProvider", string.Format("{0}.smartinvite.images.provider", PlayerSettingsCompat.bundleIdentifier), true),
         
-            new Activity("im.getsocial.sdk.unity.GetSocialDeepLinkingActivity", CreateDeepLinkingIntentFilter()),
-            new Receiver("im.getsocial.sdk.invites.MultipleInstallReferrerReceiver", CreateInstallReferrerIntentFilter())
+            new Activity("im.getsocial.sdk.unity.GetSocialDeepLinkingActivity", CreateDeepLinkingIntentFilters()),
+            new Receiver("im.getsocial.sdk.invites.MultipleInstallReferrerReceiver", CreateInstallReferrerIntentFilters())
         };
         
         /// <summary>
@@ -47,7 +47,7 @@ namespace GetSocialSdk.Editor
         /// </summary>
         readonly List<AndroidManifestNode> DeprecatedModifications = new List<AndroidManifestNode>
         {
-            new Receiver("im.getsocial.sdk.invites.InstallReferrerReceiver", CreateInstallReferrerIntentFilter())
+            new Receiver("im.getsocial.sdk.invites.InstallReferrerReceiver", CreateInstallReferrerIntentFilters())
         };
         #endregion
 
@@ -137,27 +137,32 @@ namespace GetSocialSdk.Editor
 
         #region private methods
 
-        private static IntentFilter CreateInstallReferrerIntentFilter()
+        private static List<IntentFilter> CreateInstallReferrerIntentFilters()
         {
-            var intentFilter = new IntentFilter();
+            var intentFilter = new IntentFilter(false);
             intentFilter.AddChild(new Action("com.android.vending.INSTALL_REFERRER"));
             
-            return intentFilter;
+            return new List<IntentFilter> {intentFilter};
         }
         
-        private static IntentFilter CreateDeepLinkingIntentFilter()
+        private static List<IntentFilter> CreateDeepLinkingIntentFilters()
         {
-            var intentFilter = new IntentFilter();
+            var deepLinkIntentFilter = new IntentFilter(false);
+            AddBrowsableTags(deepLinkIntentFilter);
+            deepLinkIntentFilter.AddChild(new Data("getsocial", GetSocialSettings.AppId));
             
-            intentFilter.AddChild(new Data("getsocial", GetSocialSettings.AppId));
-            GetSocialSettings.DeeplinkingDomains.ForEach(domain => intentFilter.AddChild(new Data("https", domain)));
+            var appLinkIntentFilter = new IntentFilter(true);
+            AddBrowsableTags(appLinkIntentFilter);
+            GetSocialSettings.DeeplinkingDomains.ForEach(domain => appLinkIntentFilter.AddChild(new Data("https", domain)));
             
+            return new List<IntentFilter>() {deepLinkIntentFilter, appLinkIntentFilter};
+        }
+
+        private static void AddBrowsableTags(IntentFilter intentFilter)
+        {
             intentFilter.AddChild(new Category("android.intent.category.BROWSABLE"));
             intentFilter.AddChild(new Category("android.intent.category.DEFAULT"));
-            
             intentFilter.AddChild(new Action("android.intent.action.VIEW"));
-            
-            return intentFilter;
         }
 
         private void EnsureManifestExists(string manifestPath)

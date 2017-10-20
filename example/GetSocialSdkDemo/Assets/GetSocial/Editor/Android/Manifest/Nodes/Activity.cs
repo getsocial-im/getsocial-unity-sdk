@@ -4,12 +4,12 @@ namespace GetSocialSdk.Editor.Android.Manifest
 {
     public class Activity : AndroidManifestNode
     {
-        public Activity(string name, IntentFilter intentFilter) : base(
+        public Activity(string name, List<IntentFilter> intentFilters) : base(
             "activity", 
             ApplicationTag, 
             new Dictionary<string, string>{{NameAttribute, name}})
         {
-            AddChild(intentFilter);
+            intentFilters.ForEach(AddChild);
         }
 
         public override string ToString()
