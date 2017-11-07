@@ -12,14 +12,17 @@ namespace GetSocialSdk.Ui
     /// </summary>
     public sealed class ActivityFeedViewBuilder : ViewBuilder<ActivityFeedViewBuilder>
     {
+#pragma warning disable 414
         readonly string _feed;
 
         Action<string, ActivityPost> _onButtonClickListener;
         Action<PublicUser> _onAvatarClickListener;
+        Action<string> _onMentionClickListener;
         
         string _filterUserId;
         bool _readOnly;
         bool _friendsFeed;
+#pragma warning restore 414
         
         internal ActivityFeedViewBuilder()
         {
@@ -51,6 +54,18 @@ namespace GetSocialSdk.Ui
         public ActivityFeedViewBuilder SetAvatarClickListener(Action<PublicUser> onAvatarClickListener)
         {
             _onAvatarClickListener = onAvatarClickListener;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set a listener that will be called when user taps on mention in activity post.
+        /// </summary>
+        /// <param name="mentionClickListener">Called with ID of mentioned user.</param>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
+        public ActivityFeedViewBuilder SetMentionClickListener(Action<string> mentionClickListener)
+        {
+            _onMentionClickListener = mentionClickListener;
 
             return this;
         }
@@ -106,7 +121,9 @@ namespace GetSocialSdk.Ui
                 UiActionListenerCallback.OnUiAction,
                 _uiActionListener.GetPointer(),
                 AvatarClickListenerCallback.OnAvatarClicked,
-                _onAvatarClickListener.GetPointer());
+                _onAvatarClickListener.GetPointer(),
+                MentionClickListenerCallback.OnMentionClicled,
+                _onMentionClickListener.GetPointer());
 #else
             return false;
 #endif
@@ -132,7 +149,11 @@ namespace GetSocialSdk.Ui
                 activityFeedBuilderAJO.CallAJO("setAvatarClickListener",
                     new AvatarClickListenerProxy(_onAvatarClickListener));
             }
-    
+            if (_onMentionClickListener != null)
+            {
+                activityFeedBuilderAJO.CallAJO("setMentionClickListener",
+                    new MentionClickListenerProxy(_onMentionClickListener));
+            }
             activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
             activityFeedBuilderAJO.CallAJO("setShowFriendsFeed", _friendsFeed);
 
@@ -147,7 +168,8 @@ namespace GetSocialSdk.Ui
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
             Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
-            Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr);
+            Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr,
+            Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr);
 
 #endif
     }

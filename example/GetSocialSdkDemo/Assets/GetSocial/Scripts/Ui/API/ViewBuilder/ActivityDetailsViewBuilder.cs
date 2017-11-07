@@ -12,6 +12,7 @@ namespace GetSocialSdk.Ui
     /// </summary>
     public sealed class ActivityDetailsViewBuilder : ViewBuilder<ActivityDetailsViewBuilder>
     {
+#pragma warning disable 414
         readonly string _activityId;
 
         private bool _showActivityFeedView;
@@ -19,6 +20,8 @@ namespace GetSocialSdk.Ui
 
         Action<string, ActivityPost> _onButtonClicked;
         Action<PublicUser> _onAvatarClickListener;
+        Action<string> _onMentionClickListener;
+#pragma warning restore 414
 
         internal ActivityDetailsViewBuilder(string activityId)
         {
@@ -55,10 +58,22 @@ namespace GetSocialSdk.Ui
         /// Set a listener that will be called when user taps on someones avatar.
         /// </summary>
         /// <param name="onAvatarClickListener"></param>
-        /// <returns></returns>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
         public ActivityDetailsViewBuilder SetAvatarClickListener(Action<PublicUser> onAvatarClickListener)
         {
             _onAvatarClickListener = onAvatarClickListener;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set a listener that will be called when user taps on mention in activity post.
+        /// </summary>
+        /// <param name="mentionClickListener">Called with ID of mentioned user.</param>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
+        public ActivityDetailsViewBuilder SetMentionClickListener(Action<string> mentionClickListener)
+        {
+            _onMentionClickListener = mentionClickListener;
 
             return this;
         }
@@ -89,8 +104,9 @@ namespace GetSocialSdk.Ui
                 UiActionListenerCallback.OnUiAction,
                 _uiActionListener.GetPointer(),
                 AvatarClickListenerCallback.OnAvatarClicked,
-                _onAvatarClickListener.GetPointer()
-                );
+                _onAvatarClickListener.GetPointer(),
+                MentionClickListenerCallback.OnMentionClicled,
+                _onMentionClickListener.GetPointer());
 #else
             return false;
 #endif
@@ -114,6 +130,11 @@ namespace GetSocialSdk.Ui
                 activityDetailsBuilderAJO.CallAJO("setAvatarClickListener",
                     new AvatarClickListenerProxy(_onAvatarClickListener));
             }
+            if (_onMentionClickListener != null)
+            {
+                activityDetailsBuilderAJO.CallAJO("setMentionClickListener",
+                    new MentionClickListenerProxy(_onMentionClickListener));
+            }
             activityDetailsBuilderAJO.CallAJO("setReadOnly", _readOnly);
             return activityDetailsBuilderAJO;
         }
@@ -126,7 +147,8 @@ namespace GetSocialSdk.Ui
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
             Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
-            Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr);
+            Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr,
+            Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr);
 
 #endif
     }

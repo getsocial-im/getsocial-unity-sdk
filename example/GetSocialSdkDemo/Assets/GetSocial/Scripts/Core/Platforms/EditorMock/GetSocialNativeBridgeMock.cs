@@ -14,17 +14,14 @@ namespace GetSocialSdk.Core
         static readonly Dictionary<string, string> EmptyIdentities = new Dictionary<string, string>();
         static readonly InviteChannel[] EmptyChannels = { };
 
-        static readonly GetSocialError FailedInEditorError =
-            new GetSocialError();
-
         public static IGetSocialNativeBridge Instance
         {
             get { return _instance ?? (_instance = new GetSocialNativeBridgeMock()); }
         }
 
-        public void StartInitialization()
+        public void Init(string appId)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), appId);
         }
 
         public void WhenInitialized(Action action)
@@ -35,12 +32,6 @@ namespace GetSocialSdk.Core
         public bool IsInitialized
         {
             get { return false; }
-        }
-
-        public void Init(Action onSuccess, Action<GetSocialError> onFailure)
-        {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
-            onFailure(FailedInEditorError);
         }
 
         public string GetNativeSdkVersion()
@@ -148,6 +139,12 @@ namespace GetSocialSdk.Core
             get { return true; }
         }
 
+        public void ResetUser(Action onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onError);
+            onSuccess();
+        }
+
         public Dictionary<string, string> UserAuthIdentities
         {
             get { return EmptyIdentities; }
@@ -237,6 +234,11 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), userId, onSuccess, onFailure);
         }
 
+        public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), query, onSuccess, onFailure);
+        }
+
         public void RemoveAuthIdentity(string providerId, Action onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), providerId, onSuccess, onFailure);
@@ -281,6 +283,12 @@ namespace GetSocialSdk.Core
         public void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), offset, limit, onSuccess,
+                onFailure);
+        }
+
+        public void GetFriendsReferences(Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess,
                 onFailure);
         }
 

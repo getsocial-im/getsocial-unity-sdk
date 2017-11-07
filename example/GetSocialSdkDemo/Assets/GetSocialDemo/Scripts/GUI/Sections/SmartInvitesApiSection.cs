@@ -175,9 +175,9 @@ public class SmartInvitesApiSection : DemoMenuSection
                 {
                     foreach (var referredUser in referredUsers)
                     {
-                        message += referredUser.DisplayName + ",";
+                        message += string.Format("{0}(on {1:yy-MM-dd HH:mm} via {2}), ", referredUser.DisplayName, referredUser.InstallationDate, referredUser.InstallationChannel);
                     }
-                    message = message.Substring(0, message.Length - 1);
+                    message = message.Substring(0, message.Length - 2);
                 }
                 else
                 {

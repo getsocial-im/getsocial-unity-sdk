@@ -9,16 +9,13 @@ namespace GetSocialSdk.Core
 
         #region initialization
         
-        void StartInitialization();
+        void Init(string appId);
 
         void WhenInitialized(Action action);
 
         bool IsInitialized { get; }
-        
-        void Init(Action onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
-
 
         #region general
 
@@ -72,6 +69,8 @@ namespace GetSocialSdk.Core
         string UserId { get; }
 
         bool IsUserAnonymous { get; }
+        
+        void ResetUser(Action onSuccess, Action<GetSocialError> onError);
 
         Dictionary<string, string> UserAuthIdentities { get; }
         
@@ -114,6 +113,8 @@ namespace GetSocialSdk.Core
             Action onSuccess, Action<GetSocialError> onFailure);
 
         void GetUserById (string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure);
+        
+        void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 
@@ -130,6 +131,8 @@ namespace GetSocialSdk.Core
         void GetFriends (int offset, int limit, Action<List<PublicUser>> onSuccess, Action<GetSocialError> onFailure);
         
         void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure);
+        
+        void GetFriendsReferences(Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 

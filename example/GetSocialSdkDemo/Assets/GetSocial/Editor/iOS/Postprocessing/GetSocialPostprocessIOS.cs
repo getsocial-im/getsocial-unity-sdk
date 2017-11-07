@@ -54,6 +54,7 @@ namespace GetSocialSdk.Editor
                 SetAutoInitSdk(plistDocument);
                 SetUiBackgroundModes(plistDocument);
                 SetDefaultUiConfigurationFilePathTag(plistDocument);
+                DisableViewControllerBasedStatusBar(plistDocument);
             });
         }
 
@@ -186,6 +187,10 @@ namespace GetSocialSdk.Editor
 
         #endregion
 
+        private static void DisableViewControllerBasedStatusBar(PlistDocument plistDocument)
+        {
+            plistDocument.root.SetString("UIViewControllerBasedStatusBarAppearance", "NO");
+        }
         
         private static void AddGetSocialAppId(PlistDocument plistDocument)
         {

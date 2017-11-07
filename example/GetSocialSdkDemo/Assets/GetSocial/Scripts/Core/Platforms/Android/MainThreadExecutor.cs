@@ -17,10 +17,6 @@ namespace GetSocialSdk.Core
             LoadInstance();
         }
 
-        MainThreadExecutor()
-        {
-        }
-
         internal static void Queue(Action action)
         {
             if (action == null)

@@ -18,11 +18,13 @@ namespace GetSocialSdk.Ui
     /// </summary>
     public sealed class InvitesViewBuilder : ViewBuilder<InvitesViewBuilder>
     {
+#pragma warning disable 414
         CustomReferralData _customReferralData;
         InviteContent _inviteContent;
         Action<string> _onInviteComplete;
         Action<string> _onInviteCancel;
         Action<string, GetSocialError> _onInviteFailure;
+#pragma warning restore 414
 
         /// <summary>
         /// Sets the custom invite content.

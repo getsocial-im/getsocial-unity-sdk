@@ -5,6 +5,7 @@
 #import "GetSocialActivityPost+Json.h"
 #import "NSMutableDictionary+GetSocial.h"
 #import "GetSocialPostAuthor+Json.h"
+#import "NSObject+Json.h"
 
 @implementation GetSocialActivityPost (Json)
 
@@ -24,7 +25,9 @@
     [dictionary gs_setValueOrNSNull:@(self.likesCount) forKey:@"LikesCount"];
     [dictionary gs_setValueOrNSNull:@(self.isLikedByMe) forKey:@"IsLikedByMe"];
     [dictionary gs_setValueOrNSNull:[self.author toJsonDictionary] forKey:@"Author"];
-
+    [dictionary gs_setValueOrNSNull:self.feedId forKey:@"FeedId"];
+    [dictionary gs_setValueOrNSNull:self.mentions.toJsonString forKey:@"Mentions"];
+    
     return dictionary;
 }
 

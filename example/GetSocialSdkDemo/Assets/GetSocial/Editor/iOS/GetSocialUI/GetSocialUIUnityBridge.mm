@@ -15,6 +15,8 @@ typedef void(UiActionListenerDelegate)(void *listenerPtr, int actionType);
 
 typedef void(AvatarClickListenerDelegate)(void *listenerPtr, const char *serializedPublicUser);
 
+typedef void(MentionClickListenerDelegate)(void *listenerPtr, const char *userId);
+
 static GetSocialUIPendingAction sPendingAction = nil;
 
 #pragma clang diagnostic push
@@ -109,7 +111,8 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
         VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
         UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
-        AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr) {
+        AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
+        AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr) {
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
@@ -121,7 +124,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
 
     if (onButtonClickPtr) {
         [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
-            callback(onButtonClickPtr, action.UTF8String, [post toJsonCString]);
+            callback(onButtonClickPtr, action.UTF8String, post.toJsonCString);
         }];
     }
     
@@ -134,7 +137,13 @@ bool _gs_showActivityFeedView(const char *windowTitle,
     
     if (avatarClickListener) {
         [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
-            avatarClickListener(avatarClickListenerPtr, [user toJsonCString]);
+            avatarClickListener(avatarClickListenerPtr, user.toJsonCString);
+        }];
+    }
+    
+    if (mentionClickListener) {
+        [view setMentionClickHandler:^(GetSocialId userId) {
+            mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
         }];
     }
     
@@ -160,7 +169,8 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
                               VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
                               VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
                               UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
-                              AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr) {
+                              AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
+                              AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr) {
     NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
     
     GetSocialUIActivityDetailsView *view = [GetSocialUI createActivityDetailsView:activityIdStr];
@@ -192,7 +202,13 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
     }
     if (avatarClickListener) {
         [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
-            avatarClickListener(avatarClickListenerPtr, [user toJsonCString] );
+            avatarClickListener(avatarClickListenerPtr, user.toJsonCString );
+        }];
+    }
+    
+    if (mentionClickListener) {
+        [view setMentionClickHandler:^(GetSocialId userId) {
+            mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
         }];
     }
     [view setReadOnly:readOnly];

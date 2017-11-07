@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GetSocialSdk.MiniJSON;
-using UnityEngine;
 
 #if UNITY_IOS
 
@@ -25,12 +24,14 @@ namespace GetSocialSdk.Core
         public static List<T> ParseList<T>(string json) where T : IGetSocialBridgeObject<T>, new()
         {
             var result = new List<T>();
+            
             if (string.IsNullOrEmpty(json))
             {
                 // return immediately in case of unexpected empty/null json
                 GetSocialDebugLogger.E("ParseList is parsing null or empty json string");
                 return result;
             }
+            
             
             var entities = GSJson.Deserialize(json) as List<object>;
             

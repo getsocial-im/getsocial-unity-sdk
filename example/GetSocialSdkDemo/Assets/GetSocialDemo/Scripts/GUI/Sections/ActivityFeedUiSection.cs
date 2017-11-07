@@ -95,9 +95,15 @@ public class ActivityFeedUiSection : DemoMenuSection
             .SetWindowTitle("Unity Global")
             .SetViewStateCallbacks(() => _console.LogD("Global feed opened"), () => _console.LogD("Global feed closed"))
             .SetButtonActionListener(OnActivityActionClicked)
+            .SetMentionClickListener(OnMentionClicked)
             .SetAvatarClickListener(OnUserAvatarClicked)
             .SetUiActionListener(OnUiAction)
             .Show();
+    }
+
+    private void OnMentionClicked(string userId)
+    {
+        GetSocial.GetUserById(userId, OnUserAvatarClicked, error => _console.LogE("Failed to get user details, error:" + error.Message));
     }
 
     private void OnUserAvatarClicked(PublicUser publicUser)

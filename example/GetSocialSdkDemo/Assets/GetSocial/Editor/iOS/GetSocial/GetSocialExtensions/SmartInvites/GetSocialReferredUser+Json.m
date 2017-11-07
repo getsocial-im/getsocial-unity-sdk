@@ -13,6 +13,7 @@
 {
     NSMutableDictionary *dictionary = [super toJsonDictionary];
     dictionary[@"InstallationDate"] = @(self.installationDate);
+    dictionary[@"InstallationChannel"] = self.installationChannel;
     return dictionary;
 }
 

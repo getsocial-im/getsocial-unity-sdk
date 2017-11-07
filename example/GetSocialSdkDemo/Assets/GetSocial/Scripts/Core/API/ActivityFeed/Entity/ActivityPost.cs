@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
@@ -135,12 +136,22 @@ namespace GetSocialSdk.Core
             return dateTime.Ticks > StickyStart.Ticks && dateTime.Ticks < StickyEnd.Ticks;
         }
 
+        /// <summary>
+        /// List of mentions in activity post.
+        /// </summary>
+        public List<Mention> Mentions { get; private set; }
+
+        /// <summary>
+        /// Feed name that this activity belongs to.
+        /// </summary>
+        public string FeedId { get; private set;  }
+
         public override string ToString()
         {
             return string.Format(
-                "Id: {0}, Text: {1}, HasText: {2}, ImageUrl: {3}, HasImage: {4}, CreatedAt: {5}, ButtonTitle: {6}, ButtonAction: {7}, HasButton: {8}, Author: {9}, CommentsCount: {10}, LikesCount: {11}, IsLikedByMe: {12}, StickyStart: {13}, StickyEnd: {14}",
+                "Id: {0}, Text: {1}, HasText: {2}, ImageUrl: {3}, HasImage: {4}, CreatedAt: {5}, ButtonTitle: {6}, ButtonAction: {7}, HasButton: {8}, Author: {9}, CommentsCount: {10}, LikesCount: {11}, IsLikedByMe: {12}, StickyStart: {13}, StickyEnd: {14}, FeedId: {15}, Mentions: {16}",
                 Id, Text, HasText, ImageUrl, HasImage, CreatedAt, ButtonTitle, ButtonAction, HasButton, Author,
-                CommentsCount, LikesCount, IsLikedByMe, StickyStart, StickyEnd);
+                CommentsCount, LikesCount, IsLikedByMe, StickyStart, StickyEnd, FeedId, Mentions);
         }
 
 #if UNITY_ANDROID
@@ -167,6 +178,14 @@ namespace GetSocialSdk.Core
 
                 StickyStart = DateUtils.FromUnixTime(ajo.CallLong("getStickyStart"));
                 StickyEnd = DateUtils.FromUnixTime(ajo.CallLong("getStickyEnd"));
+                FeedId = ajo.CallStr("getFeedId");
+                Mentions = ajo.CallAJO("getMentions").FromJavaList().ConvertAll(mentionAjo =>
+                {
+                    using (ajo)
+                    {
+                        return new Mention().ParseFromAJO(mentionAjo);
+                    }
+                }).ToList();
             }
             return this;
         }
@@ -197,6 +216,9 @@ namespace GetSocialSdk.Core
 
             StickyStart = DateUtils.FromUnixTime((long) jsonDic[StickyStartFieldName]);
             StickyEnd = DateUtils.FromUnixTime((long) jsonDic[StickyEndFieldName]);
+            Mentions = GSJsonUtils.ParseList<Mention>(jsonDic[MentionsFieldName] as string);
+            FeedId = jsonDic[FeedIdFieldName] as string;
+            
             return this;
         }
 
@@ -258,6 +280,16 @@ namespace GetSocialSdk.Core
         static string StickyEndFieldName
         {
             get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.StickyEnd); }
+        }
+
+        static string MentionsFieldName
+        {
+            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.Mentions); }
+        }
+
+        static string FeedIdFieldName
+        {
+            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.FeedId); }
         }
 
 #endif

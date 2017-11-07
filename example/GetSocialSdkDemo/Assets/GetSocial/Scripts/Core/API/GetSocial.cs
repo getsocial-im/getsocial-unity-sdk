@@ -81,7 +81,16 @@ namespace GetSocialSdk.Core
         /// </summary>
         public static void Init()
         {
-            GetSocialImpl.StartInitialization();
+            GetSocialImpl.Init(null);
+        }
+        
+        /// <summary>
+        /// Init the SDK. Use <see cref="WhenInitialized"/> to be notified when SDK is initialized. Check errors in logs or in GlobalErrorListener using <see cref="SetGlobalErrorListener"/>.
+        /// </summary>
+        /// <param name="appId">Application ID</param>
+        public static void Init(string appId)
+        {
+            GetSocialImpl.Init(appId);
         }
         
         /// <summary>
@@ -244,8 +253,8 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
-        /// Get the referral data from the deep link that started the game session or after the app installation from
-        /// the deep link. 
+        /// Get referral data attached to the GetSocial link that was clicked to open or install the app. 
+        /// Referral data will be returned only on the first app session started by GetSocial link.
         /// </summary>
         /// <param name="onSuccess">Called when invocation was successfull.</param>
         /// <param name="onFailure">Called when failed retrieving list of referred users.</param>
@@ -502,6 +511,22 @@ namespace GetSocialSdk.Core
             GetSocialImpl.GetUserById(userId, onSuccess, onFailure);
         }
 
+        /// <summary>
+        /// Find users matching query.
+        /// </summary>
+        /// <param name="query">Users query.</param>
+        /// <param name="onSuccess">Called with list of users.</param>
+        /// <param name="onFailure">Called if operation failed.</param>
+        public static void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess,
+            Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(query, "query");
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+
+            GetSocialImpl.FindUsers(query, onSuccess, onFailure);
+        }
+
         
         /// <summary>
         /// This corresponds the current user connected to GetSocial.
@@ -559,6 +584,12 @@ namespace GetSocialSdk.Core
                 get { return GetSocialImpl.AvatarUrl; }
             }
 
+
+            public static void Reset(Action onSuccess, Action<GetSocialError> onError)
+            {
+                GetSocialImpl.ResetUser(onSuccess, onError);
+            }
+            
             /// <summary>
             /// Set a new user avatar display name.
             /// </summary>
@@ -822,7 +853,7 @@ namespace GetSocialSdk.Core
             /// <summary>
             /// Get a count of friends for current user.
             /// </summary>
-            /// <param name="onSuccess">Called if with number of your friends.</param>
+            /// <param name="onSuccess">Called with number of your friends.</param>
             /// <param name="onFailure">Called if operation failed.</param>
             public static void GetFriendsCount(Action<int> onSuccess, Action<GetSocialError> onFailure)
             {
@@ -837,7 +868,7 @@ namespace GetSocialSdk.Core
             /// </summary>
             /// <param name="offset">Position from which start.</param>
             /// <param name="limit">Limit of users.</param>
-            /// <param name="onSuccess">Called if with list of your friends.</param>
+            /// <param name="onSuccess">Called with list of your friends.</param>
             /// <param name="onFailure">Called if operation failed.</param>
             public static void GetFriends(int offset, int limit, Action<List<PublicUser>> onSuccess, Action<GetSocialError> onFailure)
             {
@@ -846,6 +877,21 @@ namespace GetSocialSdk.Core
 
                 GetSocialImpl.GetFriends(offset, limit, onSuccess, onFailure);
             }
+
+            /// <summary>
+            /// Get a list of friends references for current user. 
+            /// <see cref="UserReference"/> is a lightweight version of <see cref="PublicUser"/>.
+            /// </summary>
+            /// <param name="onSuccess">Called with list of your friends.</param>
+            /// <param name="onFailure">Called if operation failed.</param>
+            public static void GetFriendsReferences(Action<List<UserReference>> onSuccess,
+                Action<GetSocialError> onFailure)
+            {
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onFailure, "onFailure");
+
+                GetSocialImpl.GetFriendsReferences(onSuccess, onFailure);
+            }
             
             /// <summary>
             /// Get a list of suggested friends for current user.
@@ -853,7 +899,7 @@ namespace GetSocialSdk.Core
             /// </summary>
             /// <param name="offset">Position from which start.</param>
             /// <param name="limit">Limit of users.</param>
-            /// <param name="onSuccess">Called if with list of your suggested friends.</param>
+            /// <param name="onSuccess">Called with list of your suggested friends.</param>
             /// <param name="onFailure">Called if operation failed.</param>
             public static void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
             {

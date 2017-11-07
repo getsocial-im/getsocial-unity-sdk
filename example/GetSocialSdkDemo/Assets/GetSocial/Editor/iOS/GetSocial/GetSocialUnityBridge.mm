@@ -72,11 +72,10 @@ void _gs_executeWhenInitialized(VoidCallbackDelegate action, void *actionPtr)
     [GetSocial executeWhenInitialized:completeBlock(action, actionPtr)];
 }
     
-void _gs_init(VoidCallbackDelegate completeCallback, void *onCompletePtr,
-        FailureCallbackDelegate failureCallback, void *onFailurePtr)
+void _gs_init(const char *appId)
 {
-    [GetSocialAccessHelper initWithSuccess:completeBlock(completeCallback, onCompletePtr)
-                                   failure:errorBlock(failureCallback, onFailurePtr)];
+    NSString *appIdStr = [GetSocialBridgeUtils createNSStringFrom:appId];
+    [GetSocial initWithAppId:appIdStr];
 }
 
 void _gs_start_init()
@@ -350,6 +349,13 @@ bool _gs_isUserAnonymous()
 {
     return [GetSocialUser isAnonymous];
 }
+    
+void _gs_resetUser(VoidCallbackDelegate completeCallback, void *onCompletePtr,
+                   FailureCallbackDelegate failureCallback, void *onFailurePtr)
+{
+    [GetSocialUser resetWithSuccess:completeBlock(completeCallback, onCompletePtr)
+                            failure:errorBlock(failureCallback, onFailurePtr)];
+}
 
 char *_gs_getAuthIdentities()
 {
@@ -440,6 +446,18 @@ void _gs_getUserById(const char * userId,
                   failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
     
+void _gs_findUsers(const char * query,
+                   StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                   FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+    GetSocialUsersQuery *usersQuery = [GetSocialJsonUtils deserializeUsersQuery:queryStr];
+    
+    [GetSocial findUsers:usersQuery
+                 success:objectBlock(successCallback, onSuccessActionPtr)
+                 failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
 #pragma mark - SocialGraph
 
 void _gs_addFriend(const char *userId,
@@ -503,6 +521,13 @@ void _gs_getSuggestedFriends(int offset, int limit,
                                        failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
+void _gs_getFriendsReferences(StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                              FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    [GetSocialUser friendsReferencesWithSuccess:objectBlock(successCallback, onSuccessActionPtr)
+                                        failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
 #pragma mark - Activity Feed API
 
 void _gs_getAnnouncements(const char *feed,

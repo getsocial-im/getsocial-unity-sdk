@@ -23,4 +23,6 @@
 
 + (GetSocialAuthIdentity *)deserializeIdentity:(NSString *)identity;
 
++ (GetSocialUsersQuery *)deserializeUsersQuery:(NSString *)query;
+
 @end

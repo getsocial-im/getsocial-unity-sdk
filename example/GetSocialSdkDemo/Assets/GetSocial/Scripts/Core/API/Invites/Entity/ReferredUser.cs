@@ -12,16 +12,23 @@ namespace GetSocialSdk.Core
         /// <value>Date of installation.</value>
         public DateTime InstallationDate { get; private set; }
 
+        
+        /// <summary>
+        /// One of the channels listed in <see cref="InviteChannelIds"/>.
+        /// </summary>
+        /// <value>Installation channel.</value>
+        public string InstallationChannel { get; private set; }
+
         public override string ToString()
         {
-            return string.Format("[ReferredUser: Id={0}, DisplayName={1}, Identities={2}, InstallationDate={3}]", Id, DisplayName, Identities.ToDebugString(), InstallationDate);
+            return string.Format("[ReferredUser: Id={0}, DisplayName={1}, Identities={2}, InstallationDate={3}, InstallationChannel={4}]", Id, DisplayName, Identities.ToDebugString(), InstallationDate, InstallationChannel);
         }
 
 #if UNITY_ANDROID
         
         public new UnityEngine.AndroidJavaObject ToAJO()
         {
-            throw new System.NotImplementedException("ReferredUser is never passed to Android, only received");
+            throw new NotImplementedException("ReferredUser is never passed to Android, only received");
         }
 
         public new ReferredUser ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
@@ -35,6 +42,7 @@ namespace GetSocialSdk.Core
             {
                 base.ParseFromAJO(ajo);                 
                 InstallationDate = DateUtils.FromUnixTime(ajo.CallLong("getInstallationDate"));
+                InstallationChannel = ajo.CallStr("getInstallationChannel");
             }
             return this;
         }
@@ -48,6 +56,7 @@ namespace GetSocialSdk.Core
         {
             base.ParseFromJson(json);
             InstallationDate = DateUtils.FromUnixTime((long) json["InstallationDate"]);
+            InstallationChannel = (string) json["InstallationChannel"];
             return this;
         }
 #endif

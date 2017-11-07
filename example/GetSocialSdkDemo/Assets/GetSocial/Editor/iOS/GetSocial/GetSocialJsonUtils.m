@@ -104,6 +104,15 @@ const int FILTER_AFTER = 2;
                                                 accessToken:dictionary[@"AccessToken"]];
 }
 
++ (GetSocialUsersQuery *)deserializeUsersQuery:(NSString *)query
+{
+    NSDictionary *dictionary = [self deserializeDictionary:query];
+    
+    GetSocialUsersQuery *usersQuery = [GetSocialUsersQuery usersByDisplayName:dictionary[@"Query"]];
+    [usersQuery setLimit:[dictionary[@"Limit"] intValue]];
+    return usersQuery;
+}
+
 #pragma mark - Helpers
 
 + (NSDictionary *)deserializeDictionary:(NSString *)jsonDic

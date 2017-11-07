@@ -142,7 +142,20 @@ public class AuthSection : DemoMenuSection
                 error => _console.LogE("Failed to remove property for key: " + _keyPrivate + ", error: " + error)
             );
         }, true, GSStyles.Button);
+
         GUILayout.EndHorizontal();
+
+        DemoGuiUtils.DrawButton("Log Out", () => 
+        {
+            GetSocial.User.Reset(() => 
+            {
+                _console.LogD("User has been successfully logged out.");
+                 demoController.FetchCurrentUserData();
+            },
+            error => _console.LogE("Failed to log out user, error: " + error)    
+            );
+        }, true, GSStyles.Button);
+
         GUILayout.EndVertical();
     }
 

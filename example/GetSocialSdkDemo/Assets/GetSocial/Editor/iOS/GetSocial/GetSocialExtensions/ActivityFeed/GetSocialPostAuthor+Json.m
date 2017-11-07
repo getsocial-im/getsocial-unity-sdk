@@ -11,7 +11,8 @@
 - (NSMutableDictionary *)toJsonDictionary
 {
     NSMutableDictionary *dictionary = [super toJsonDictionary];
-    dictionary[@"IsVerified"] = @(self.verified);
+    dictionary[@"IsVerified"]       = @(self.verified);
+    
     return dictionary;
 }
 

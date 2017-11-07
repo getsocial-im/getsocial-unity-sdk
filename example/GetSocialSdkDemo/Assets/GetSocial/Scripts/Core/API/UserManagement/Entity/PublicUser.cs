@@ -43,10 +43,12 @@ namespace GetSocialSdk.Core
             get { return new Dictionary<string, string>(_publicProperties); }
         }
 
+#pragma warning disable 414, 649      
         private Dictionary<string, string> _publicProperties;
 
         private Dictionary<string, string> _internalPublicProperties;
-
+#pragma warning restore 414, 649
+        
         public bool HasPublicProperty(string key)
         {
             return _publicProperties[key] != null;
@@ -86,8 +88,8 @@ namespace GetSocialSdk.Core
             DisplayName = ajo.CallStr("getDisplayName");
             AvatarUrl = ajo.CallStr("getAvatarUrl");
             Identities = ajo.CallAJO("getIdentities").FromJavaHashMap();
-            _publicProperties = ajo.GetSafe<AndroidJavaObject>("_publicProperties").FromJavaHashMap();
-            _internalPublicProperties = ajo.GetSafe<AndroidJavaObject>("_internalPublicProperties").FromJavaHashMap();
+            _publicProperties = ajo.CallAJO("getAllPublicProperties").FromJavaHashMap();
+            _internalPublicProperties = new AndroidJavaObject("im.getsocial.sdk.usermanagement.PublicUserAccessHelper", ajo).CallAJO("getAllInternalPublicProperties").FromJavaHashMap();
          
             return this;
         }

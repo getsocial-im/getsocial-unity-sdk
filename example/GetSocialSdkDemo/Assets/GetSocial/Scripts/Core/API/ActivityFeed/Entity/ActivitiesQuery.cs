@@ -33,6 +33,7 @@ namespace GetSocialSdk.Core
         public const string GlobalFeed = "g-global";
         public const int DefaultLimit = 10;
 
+#pragma warning disable 414        
         readonly ActivityPost.Type _type;
         readonly string _feed;
         readonly string _parentActivityId;
@@ -42,7 +43,7 @@ namespace GetSocialSdk.Core
         string _filteringActivityId;
         string _filterUserId;
         bool _isFriendsFeed;
-
+#pragma warning restore 414
         ActivitiesQuery(ActivityPost.Type type, string feed, string parentActivityId)
         {
             _type = type;

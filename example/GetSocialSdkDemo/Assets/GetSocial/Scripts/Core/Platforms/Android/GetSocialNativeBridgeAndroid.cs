@@ -30,9 +30,9 @@ namespace GetSocialSdk.Core
 
         #region initialization
 
-        public void StartInitialization()
+        public void Init(string appId)
         {
-            _getSocial.CallStatic("init");
+            _getSocial.CallStatic("init", appId);
         }
 
         public void WhenInitialized(Action action)
@@ -43,12 +43,6 @@ namespace GetSocialSdk.Core
         public bool IsInitialized
         {
             get { return _getSocial.CallStaticBool("isInitialized"); }
-        }
-
-        public void Init(Action onSuccess, Action<GetSocialError> onFailure)
-        {
-            _getSocial.CallStatic("init", JniUtils.Activity,
-                new CompletionCallback(onSuccess, onFailure));
         }
 
         public string GetNativeSdkVersion()
@@ -106,7 +100,6 @@ namespace GetSocialSdk.Core
         public bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin)
         {
             return _getSocial.CallStaticBool("registerInviteChannelPlugin", channelId, createAdapter(inviteChannelPlugin));
-                ;
         }
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
@@ -152,6 +145,11 @@ namespace GetSocialSdk.Core
         public bool IsUserAnonymous
         {
             get { return _user.CallStaticBool("isAnonymous"); }
+        }
+
+        public void ResetUser(Action onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("reset", new CompletionCallback(onSuccess, onError)); 
         }
 
         public Dictionary<string, string> UserAuthIdentities
@@ -269,6 +267,11 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("getUserById", userId, new CallbackProxy<PublicUser>(onSuccess, onFailure));
         }
 
+        public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("findUsers", query.ToAJO(), new ListCallbackProxy<UserReference>(onSuccess, onFailure));
+        }
+
         #endregion
 
         #region social_graph
@@ -301,6 +304,11 @@ namespace GetSocialSdk.Core
         public void GetSuggestedFriends(int offset, int limit, Action<List<SuggestedFriend>> onSuccess, Action<GetSocialError> onFailure)
         {
             _user.CallStatic ("getSuggestedFriends", offset, limit, new ListCallbackProxy<SuggestedFriend> (onSuccess, onFailure));
+        }
+
+        public void GetFriendsReferences(Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStatic("getFriendsReferences", new ListCallbackProxy<UserReference>(onSuccess, onFailure));
         }
 
         #endregion

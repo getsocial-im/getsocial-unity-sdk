@@ -10,10 +10,12 @@ namespace GetSocialSdk.Core
     /// </summary>
     public class AuthIdentity : IGetSocialBridgeObject<AuthIdentity>
     {
+#pragma warning disable 414
         private readonly string _providerId;
         private readonly string _providerUserId;
         private readonly string _accessToken;
-
+#pragma warning restore 414
+        
         private AuthIdentity(string providerName, string userId, string accessToken)
         {
             _providerId = providerName;

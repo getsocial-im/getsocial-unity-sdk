@@ -8,7 +8,7 @@ namespace Assets.GetSocialDemo.Scripts.Utils
     {
         public static string ToPrettyString<T>(this List<T> list)
         {
-            return string.Join("\n", list.ConvertAll(item => item.ToString()).ToArray());
+            return "[" + string.Join("\n", list.ConvertAll(item => item.ToString()).ToArray()) + "]";
         }
     }
 }

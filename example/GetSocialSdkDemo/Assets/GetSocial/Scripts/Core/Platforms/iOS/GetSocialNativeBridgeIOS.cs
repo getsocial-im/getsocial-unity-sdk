@@ -21,9 +21,9 @@ namespace GetSocialSdk.Core
             get { return _instance ?? (_instance = new GetSocialNativeBridgeIOS()); }
         }
 
-        public void StartInitialization()
+        public void Init(string appId)
         {
-            _gs_start_init();
+            _gs_init(appId);
         }
 
         public void WhenInitialized(Action action)
@@ -34,12 +34,6 @@ namespace GetSocialSdk.Core
         public bool IsInitialized
         {
             get { return _gs_isInitialized(); }
-        }
-
-        public void Init(Action onSuccess, Action<GetSocialError> onFailure)
-        {
-           _gs_init(Callbacks.ActionCallback, onSuccess.GetPointer(),
-                Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
         public string GetNativeSdkVersion()
@@ -156,6 +150,14 @@ namespace GetSocialSdk.Core
         public bool IsUserAnonymous
         {
             get { return _gs_isUserAnonymous(); }
+        }
+    
+        public void ResetUser(Action onSuccess, Action<GetSocialError> onError)
+        {
+           _gs_resetUser(
+                Callbacks.ActionCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer()
+            );
         }
 
         public Dictionary<string, string> UserAuthIdentities
@@ -280,7 +282,14 @@ namespace GetSocialSdk.Core
         public void GetUserById(string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
         {
             _gs_getUserById(userId, 
-                PublicUserCallback.OnPublicUser, onSuccess.GetPointer(), 
+                Callbacks.GetPublicUser, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_findUsers(query.ToJson(),
+                Callbacks.GetUserReferences, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -326,6 +335,13 @@ namespace GetSocialSdk.Core
         {
             _gs_getSuggestedFriends (offset, limit,
                 Callbacks.GetSuggestedFriends, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void GetFriendsReferences(Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getFriendsReferences(
+                Callbacks.GetUserReferences, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -444,11 +460,7 @@ namespace GetSocialSdk.Core
         static extern void _gs_executeWhenInitialized(VoidCallbackDelegate action, IntPtr actionPtr);
         
         [DllImport("__Internal")]
-        static extern void _gs_start_init();
-
-        [DllImport("__Internal")]
-        static extern void _gs_init(VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
-            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        static extern void _gs_init(string appId);
 
         [DllImport("__Internal")]
         static extern bool _gs_isInitialized();
@@ -544,6 +556,9 @@ namespace GetSocialSdk.Core
         static extern bool _gs_isUserAnonymous();
 
         [DllImport("__Internal")]
+        static extern void _gs_resetUser(VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr, FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
         static extern string _gs_getAuthIdentities();
 
         [DllImport("__Internal")]
@@ -616,9 +631,13 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern void _gs_getUserById(string userId,
-            OnPublicUserCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
+        [DllImport("__Internal")]
+        static extern void _gs_findUsers(string query,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
         
         #endregion
 
@@ -650,6 +669,11 @@ namespace GetSocialSdk.Core
         
         [DllImport("__Internal")]
         static extern void _gs_getSuggestedFriends(int offset, int limit,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_getFriendsReferences(
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 

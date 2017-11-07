@@ -11,13 +11,14 @@ namespace GetSocialSdk.Core
     /// </summary>
     public sealed class ActivityPostContent : IGetSocialBridgeObject<ActivityPostContent>
     {
+#pragma warning disable 414
         string _text;
 
         Texture2D _image;
 
         string _buttonTitle;
         string _buttonAction;
-
+#pragma warning restore 414
         ActivityPostContent()
         {
         }
