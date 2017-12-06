@@ -16,8 +16,10 @@ namespace GetSocialSdk.Core
         /// <summary>
         /// Unity forwards all calls from Java to C# including call to equals(), so we have to override it.
         /// More about issue: http://forum.unity3d.com/threads/androidjavaproxy-equals.243438/
+        /// Fixed in Unity 2017.1.
         /// </summary>
-        protected bool equals(AndroidJavaObject other)
+        #if !UNITY_2017_1_OR_NEWER
+        public bool equals(AndroidJavaObject other)
         {
             bool result;
 
@@ -35,10 +37,11 @@ namespace GetSocialSdk.Core
             return result;
         }
 
-        protected string toString()
+        public string toString()
         {
             return GetType().Name;
         }
+        #endif
 
         protected void ExecuteOnMainThread(Action action)
         {

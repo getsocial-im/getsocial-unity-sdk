@@ -61,7 +61,7 @@ namespace GetSocialSdk.Ui
         /// <summary>
         /// Set a listener that will be called when user taps on mention in activity post.
         /// </summary>
-        /// <param name="mentionClickListener">Called with ID of mentioned user.</param>
+        /// <param name="mentionClickListener">Called with ID of mentioned user or one of the shortcuts listed in <see cref="MentionShortcuts"/>.</param>
         /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
         public ActivityFeedViewBuilder SetMentionClickListener(Action<string> mentionClickListener)
         {

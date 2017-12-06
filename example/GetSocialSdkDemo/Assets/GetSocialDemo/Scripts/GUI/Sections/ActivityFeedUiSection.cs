@@ -101,9 +101,16 @@ public class ActivityFeedUiSection : DemoMenuSection
             .Show();
     }
 
-    private void OnMentionClicked(string userId)
+    private void OnMentionClicked(string mention)
     {
-        GetSocial.GetUserById(userId, OnUserAvatarClicked, error => _console.LogE("Failed to get user details, error:" + error.Message));
+        if (mention == MentionShortcuts.App)
+        {
+            MobileNativePopups.OpenAlertDialog("Mention", "Application mention clicked.", 
+                "OK",
+                () => { });
+            return;
+        }
+        GetSocial.GetUserById(mention, OnUserAvatarClicked, error => _console.LogE("Failed to get user details, error:" + error.Message));
     }
 
     private void OnUserAvatarClicked(PublicUser publicUser)

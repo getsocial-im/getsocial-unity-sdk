@@ -25,4 +25,6 @@
 
 + (GetSocialUsersQuery *)deserializeUsersQuery:(NSString *)query;
 
++ (NSArray<NSString *> *)deserializeStringList:(NSString *)jsonStringList;
+
 @end

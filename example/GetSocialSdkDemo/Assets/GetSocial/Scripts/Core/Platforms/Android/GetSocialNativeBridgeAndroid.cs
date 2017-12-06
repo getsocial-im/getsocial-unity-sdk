@@ -267,6 +267,16 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("getUserById", userId, new CallbackProxy<PublicUser>(onSuccess, onFailure));
         }
 
+        public void GetUserByAuthIdentity(string providerId, string providerUserId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("getUserByAuthIdentity", providerId, providerUserId, new CallbackProxy<PublicUser>(onSuccess, onFailure));
+        }
+
+        public void GetUsersByAuthIdentities(string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("getUsersByAuthIdentities", providerId, providerUserIds, new DictionaryCallbackProxy<PublicUser>(onSuccess, onFailure));
+        }
+
         public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
         {
             _getSocial.CallStatic("findUsers", query.ToAJO(), new ListCallbackProxy<UserReference>(onSuccess, onFailure));
@@ -281,9 +291,29 @@ namespace GetSocialSdk.Core
             _user.CallStatic ("addFriend", userId, new IntCallbackProxy (onSuccess, onFailure));
         }
 
+        public void AddFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStatic ("addFriendsByAuthIdentities", providerId, providerUserIds, new IntCallbackProxy (onSuccess, onFailure));
+        }
+
         public void RemoveFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
             _user.CallStatic ("removeFriend", userId, new IntCallbackProxy (onSuccess, onFailure));
+        }
+
+        public void RemoveFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStatic ("removeFriendsByAuthIdentities", providerId, providerUserIds, new IntCallbackProxy (onSuccess, onFailure));
+        }
+
+        public void SetFriends(List<string> userIds, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("setFriends", userIds, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public void SetFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("setFriendsByAuthIdentities", providerId, providerUserIds, new CompletionCallback(onSuccess, onFailure));
         }
 
         public void IsFriend (string userId, Action<bool> onSuccess, Action<GetSocialError> onFailure)

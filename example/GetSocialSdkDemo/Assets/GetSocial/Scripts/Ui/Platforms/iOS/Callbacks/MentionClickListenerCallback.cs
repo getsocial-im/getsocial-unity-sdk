@@ -9,13 +9,13 @@ namespace GetSocialSdk.Ui
     public class MentionClickListenerCallback
     {
         [AOT.MonoPInvokeCallback(typeof(MentionClickListenerDelegate))]
-        public static void OnMentionClicled(IntPtr mentionClickListenerPtr, string userId)
+        public static void OnMentionClicled(IntPtr mentionClickListenerPtr, string mention)
         {
-            GetSocialDebugLogger.D(string.Format("OnMentionClicled for user {0}", userId));
+            GetSocialDebugLogger.D(string.Format("OnMentionClicled for user {0}", mention));
 
             if (mentionClickListenerPtr != IntPtr.Zero)
             {
-                mentionClickListenerPtr.Cast<Action<string>>().Invoke(userId);
+                mentionClickListenerPtr.Cast<Action<string>>().Invoke(mention);
             }
         }
     }

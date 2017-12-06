@@ -152,6 +152,19 @@ namespace GetSocialSdk.Core
             GetObjectsListCallback<UserReference>(actionPtr, json);
         }
 
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetPublicUsersDictionary(IntPtr actionPtr, string json)
+        {
+            GetObjectsDictionaryCallback<PublicUser>(actionPtr, json);
+        }
+        
+        static void GetObjectsDictionaryCallback<TValue>(IntPtr actionPtr, string json) where TValue : IGetSocialBridgeObject<TValue>, new()
+        {
+            var result = GSJsonUtils.ParseDictionary<PublicUser>(json);
+            IOSUtils.TriggerCallback(actionPtr, result);
+        }
+        
+
     }
 }
 

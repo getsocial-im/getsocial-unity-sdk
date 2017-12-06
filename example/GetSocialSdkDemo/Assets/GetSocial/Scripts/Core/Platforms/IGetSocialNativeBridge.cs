@@ -113,7 +113,11 @@ namespace GetSocialSdk.Core
             Action onSuccess, Action<GetSocialError> onFailure);
 
         void GetUserById (string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure);
-        
+
+        void GetUserByAuthIdentity (string providerId, string providerUserId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure);
+
+        void GetUsersByAuthIdentities (string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess, Action<GetSocialError> onFailure);
+
         void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
@@ -122,7 +126,15 @@ namespace GetSocialSdk.Core
 
         void AddFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure);
 
+        void AddFriendsByAuthIdentities (string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure);
+
         void RemoveFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure);
+
+        void RemoveFriendsByAuthIdentities (string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure);
+
+        void SetFriends(List<string> userIds, Action onSuccess, Action<GetSocialError> onFailure);
+
+        void SetFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action onSuccess, Action<GetSocialError> onFailure);
 
         void IsFriend (string userId, Action<bool> onSuccess, Action<GetSocialError> onFailure);
 

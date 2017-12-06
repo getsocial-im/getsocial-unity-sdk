@@ -286,6 +286,20 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
+        public void GetUserByAuthIdentity(string providerId, string providerUserId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getUserByAuthIdentity(providerId, providerUserId, 
+                Callbacks.GetPublicUser, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void GetUsersByAuthIdentities(string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getUsersByAuthIdentities(providerId, GSJson.Serialize(providerUserIds), 
+                Callbacks.GetPublicUser, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
         public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
         {
             _gs_findUsers(query.ToJson(),
@@ -304,10 +318,38 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
+        public void AddFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_addFriendsByAuthIdentities(providerId, GSJson.Serialize(providerUserIds), 
+                Callbacks.IntCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
         public void RemoveFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
            _gs_removeFriend (userId,
                 Callbacks.IntCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void RemoveFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_removeFriendsByAuthIdentities(providerId, GSJson.Serialize(providerUserIds),
+                Callbacks.IntCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void SetFriends(List<string> userIds, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_setFriends(GSJson.Serialize(userIds),
+                Callbacks.ActionCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        public void SetFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_setFriendsByAuthIdentities(providerId, GSJson.Serialize(providerUserIds),
+                Callbacks.ActionCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
@@ -635,6 +677,16 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
+        static extern void _gs_getUserByAuthIdentity(string providerId, string providerUserId,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_getUsersByAuthIdentities(string providerId, string providerUserIdsJson,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
         static extern void _gs_findUsers(string query,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
@@ -649,8 +701,28 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
+        static extern void _gs_addFriendsByAuthIdentities(string providerId, string providerUserIdsJson,
+            IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
         static extern void _gs_removeFriend(string userId,
             IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_removeFriendsByAuthIdentities(string providerId, string providerUserIdsJson,
+            IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_setFriends(string userIdsJson,
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_setFriendsByAuthIdentities(string providerId, string providerUserIdsJson,
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]

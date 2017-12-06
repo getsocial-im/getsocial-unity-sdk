@@ -39,11 +39,11 @@ public class UiCustomizationSection : DemoMenuSection
     protected override void InitGuiElements()
     {
         _buttons.Add("Load Default UI", SetDefaultConfig);
-        _buttons.Add("Load Default UI Landscape", () => LoadUiConfiguration("getsocial/ui-landscape.json", ScreenOrientation.Landscape));
-        _buttons.Add("Load White UI Portrait", () => LoadUiConfiguration("getsocial_white/getsocial_white.json", ScreenOrientation.Portrait));
-        _buttons.Add("Load White UI Landscape", () => LoadUiConfiguration("getsocial_white_landscape/getsocial_white.json", ScreenOrientation.Landscape));
-        _buttons.Add("Load Dark UI Portrait", () => LoadUiConfiguration("getsocial_dark/getsocial_dark.json", ScreenOrientation.Portrait));
-        _buttons.Add("Load Dark UI Landscape", () => LoadUiConfiguration("getsocial_dark_landscape/getsocial_dark.json", ScreenOrientation.Landscape));
+        _buttons.Add("Load Default UI Landscape", () => LoadUiConfiguration("getsocial-default-landscape/ui-config.json", ScreenOrientation.Landscape));
+        _buttons.Add("Load Light UI Portrait", () => LoadUiConfiguration("getsocial-light/ui-config.json", ScreenOrientation.Portrait));
+        _buttons.Add("Load Light UI Landscape", () => LoadUiConfiguration("getsocial-light-landscape/ui-config.json", ScreenOrientation.Landscape));
+        _buttons.Add("Load Dark UI Portrait", () => LoadUiConfiguration("getsocial-dark/ui-config.json", ScreenOrientation.Portrait));
+        _buttons.Add("Load Dark UI Landscape", () => LoadUiConfiguration("getsocial-dark-landscape/ui-config.json", ScreenOrientation.Landscape));
     }
 
     protected override void DrawSectionBody()
@@ -71,7 +71,7 @@ public class UiCustomizationSection : DemoMenuSection
         {
             Screen.orientation = orientation;
             Screen.orientation = ScreenOrientation.AutoRotation;
-            _console.LogD("Successfully loaded default landscape configuration");
+            _console.LogD(string.Format("Successfully loaded '{0}' configuration", configurationPath));
         }
         else
         {

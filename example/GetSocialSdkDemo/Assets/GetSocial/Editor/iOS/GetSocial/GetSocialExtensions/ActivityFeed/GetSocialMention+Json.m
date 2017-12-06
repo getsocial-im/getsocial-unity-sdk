@@ -15,6 +15,7 @@
     dictionary[@"UserId"]       = self.userId;
     dictionary[@"StartIndex"]   = @(self.startIndex);
     dictionary[@"EndIndex"]     = @(self.endIndex);
+    dictionary[@"Type"]         = self.type;
     return dictionary;
 }
 

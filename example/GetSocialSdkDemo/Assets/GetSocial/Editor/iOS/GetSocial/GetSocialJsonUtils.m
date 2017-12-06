@@ -132,5 +132,12 @@ const int FILTER_AFTER = 2;
     return dictionary;
 }
 
++ (NSArray<NSString *> *)deserializeStringList:(NSString *)jsonStringList
+{
+    NSError* localError = nil;
+    NSArray<NSString*> *array = [NSJSONSerialization JSONObjectWithData:[jsonStringList dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&localError];
+
+    return array;
+}
 
 @end

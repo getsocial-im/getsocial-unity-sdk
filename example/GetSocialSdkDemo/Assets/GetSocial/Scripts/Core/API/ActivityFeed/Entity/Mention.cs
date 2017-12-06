@@ -9,11 +9,15 @@ namespace GetSocialSdk.Core
         public int StartIndex { get; private set; }
         public int EndIndex { get; private set; }
         
+        /// <summary>
+        /// Listed in <see cref="MentionTypes"/>.
+        /// </summary>
+        public string Type { get; private set; }
+        
         public override string ToString()
         {
-            return string.Format("{0} ({1}, {2})", UserId, StartIndex, EndIndex);
+            return string.Format("{0} ({1}, {2}) - {3}", UserId, StartIndex, EndIndex, Type);
         }
-
         
 #if UNITY_IOS
         public string ToJson()
@@ -26,6 +30,7 @@ namespace GetSocialSdk.Core
             UserId = json["UserId"] as string;
             StartIndex = (int) (long) json["StartIndex"];
             EndIndex = (int) (long) json["EndIndex"];
+            Type = json["Type"] as string;
             return this;
         }
 #elif UNITY_ANDROID
@@ -39,6 +44,7 @@ namespace GetSocialSdk.Core
             UserId = ajo.CallStr("getUserId");
             StartIndex = ajo.CallInt("getStartIndex");
             EndIndex = ajo.CallInt("getEndIndex");
+            Type = ajo.CallStr("getType");
             return this;
         }
 #endif

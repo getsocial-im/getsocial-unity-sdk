@@ -78,6 +78,26 @@ namespace GetSocialSdk.Core
 
             return json.ToDictionary(entry => entry.Key, entry => entry.Value as string);
         }
+
+        public static Dictionary<string, TValue> ParseDictionary<TValue>(string json)
+            where TValue : IGetSocialBridgeObject<TValue>, new()
+        {
+            var result = new Dictionary<string, TValue>();
+
+            if (string.IsNullOrEmpty(json))
+            {
+                // return immediately in case of unexpected empty/null json
+                GetSocialDebugLogger.E("ParseDictionary is parsing null or empty json string");
+                return result;
+            }
+
+            var stringDict = ParseDictionary(json);
+            foreach (var keyValuePairs in stringDict)
+            {
+                result.Add(keyValuePairs.Key, Parse<TValue>(keyValuePairs.Value));
+            }
+            return result;
+        }
     }
 }
 

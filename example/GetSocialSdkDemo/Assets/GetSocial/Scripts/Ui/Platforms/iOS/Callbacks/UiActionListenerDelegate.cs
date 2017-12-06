@@ -1,7 +1,6 @@
 #if UNITY_IOS && USE_GETSOCIAL_UI
 using System;
 using System.Runtime.InteropServices;
-using AOT;
 using GetSocialSdk.Core;
 
 namespace GetSocialSdk.Ui
@@ -10,7 +9,7 @@ namespace GetSocialSdk.Ui
 
     public static class UiActionListenerCallback
     {
-        [MonoPInvokeCallback(typeof(UiActionListenerDelegate))]
+        [AOT.MonoPInvokeCallback(typeof(UiActionListenerDelegate))]
         public static void OnUiAction(IntPtr ptr, int actionTypeOrdinal)
         {
             if (ptr != IntPtr.Zero)

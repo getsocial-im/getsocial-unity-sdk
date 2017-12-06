@@ -446,6 +446,28 @@ void _gs_getUserById(const char * userId,
                   failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
     
+void _gs_getUserByAuthIdentity(const char * providerId, const char * providerUserId,
+                                StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                                FailureCallbackDelegate failureCallback, void *onFailureActionPtr) {
+        
+    NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
+    NSString *providerUserIdStr = [GetSocialBridgeUtils createNSStringFrom:providerUserId];
+    
+    [GetSocial userWithId:providerUserIdStr forProvider:providerIdStr success:objectBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
+void _gs_getUsersByAuthIdentities(const char * providerId, const char * providerUserIdsJson,
+                                 StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                                 FailureCallbackDelegate failureCallback, void *onFailureActionPtr) {
+        
+    NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
+    NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+    
+    [GetSocial usersWithIds:providerUserIds forProvider:providerIdStr success:objectBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+        
+}
+
 void _gs_findUsers(const char * query,
                    StringCallbackDelegate successCallback, void *onSuccessActionPtr,
                    FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
@@ -471,6 +493,17 @@ void _gs_addFriend(const char *userId,
                      failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
+void _gs_addFriendsByAuthIdentities(const char *providerId, const char* providerUserIdsJson,
+                                        IntCallbackDelegate successCallback, void *onSuccessActionPtr,
+                                        FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
+    NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+    
+    [GetSocialUser addFriendsWithIds:providerUserIds forProvider:providerIdStr success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+
 void _gs_removeFriend(const char *userId,
         IntCallbackDelegate successCallback, void *onSuccessActionPtr,
         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
@@ -480,6 +513,38 @@ void _gs_removeFriend(const char *userId,
     [GetSocialUser removeFriend:userIdStr
                         success:intBlock(successCallback, onSuccessActionPtr)
                         failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
+void _gs_removeFriendsByAuthIdentities(const char *providerId, const char* providerUserIdsJson,
+                                    IntCallbackDelegate successCallback, void *onSuccessActionPtr,
+                                    FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
+    NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+        
+    [GetSocialUser removeFriendsWithIds:providerUserIds forProvider:providerIdStr success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+
+void _gs_setFriends(const char *userIdsJson,
+                    VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
+                        FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *userIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:userIdsJson];
+    NSArray *userIds = [GetSocialJsonUtils deserializeStringList:userIdsJsonStr];
+    
+    [GetSocialUser setFriendsWithIds:userIds success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+
+void _gs_setFriendsByAuthIdentities(const char * providerId, const char *providerUserIdsJson,
+                        VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
+                        FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+{
+    NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
+    NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+
+    [GetSocialUser setFriendsWithIds:providerUserIds forProvider:providerIdStr success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
 
 void _gs_isFriend(const char *userId,

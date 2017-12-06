@@ -226,12 +226,24 @@ namespace GetSocialSdk.Core
         public void AddAuthIdentity(AuthIdentity authIdentity, Action onComplete, Action<GetSocialError> onFailure, Action<ConflictUser> onConflict)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), authIdentity, onComplete,
-                onFailure, onComplete);
+                onFailure, onConflict);
         }
 
         public void GetUserById(string userId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), userId, onSuccess, onFailure);
+        }
+
+        public void GetUserByAuthIdentity(string providerId, string providerUserId, Action<PublicUser> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), providerId, onSuccess,
+                onFailure);
+        }
+
+        public void GetUsersByAuthIdentities(string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), providerId, providerUserIds, onSuccess,
+                onFailure);
         }
 
         public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
@@ -256,9 +268,33 @@ namespace GetSocialSdk.Core
                 onFailure);
         }
 
+        public void AddFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), providerId, providerUserIds, onSuccess,
+                onFailure);
+        }
+
         public void RemoveFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(),  userId, onSuccess,
+                onFailure);
+        }
+
+        public void RemoveFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), providerId, providerUserIds, onSuccess,
+                onFailure);
+        }
+
+        public void SetFriends(List<string> userIds, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), userIds, onSuccess,
+                onFailure);
+        }
+
+        public void SetFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), providerId, providerUserIds, onSuccess,
                 onFailure);
         }
 

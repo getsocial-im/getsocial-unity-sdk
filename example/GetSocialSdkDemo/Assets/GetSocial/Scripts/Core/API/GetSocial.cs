@@ -512,6 +512,45 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
+        /// Fetch a user by auth provider id and user id on this provider.
+        /// </summary>
+        ///
+        /// <param name="providerId">Auth identity provider id for which user id is provided. Can be "facebook", or any custom value.</param>
+        /// <param name="providerUserId">User id on the selected identity provider for which <see cref="PublicUser"/> will be returned.</param>
+        /// <param name="onSuccess">Called if user is found.</param>
+        /// <param name="onFailure">Called if operation failed or user not found.</param>
+        public static void GetUserByAuthIdentity(string providerId, string providerUserId, Action<PublicUser> onSuccess,
+            Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(providerId, "providerId");
+            Check.Argument.IsNotNull(providerUserId, "providerUserId");
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.GetUserByAuthIdentity(providerId, providerUserId, onSuccess, onFailure);
+        }
+
+        /// <summary>
+        /// Fetch a list of users by their auth identities pairs. 
+        /// Auth identity pair is a combination of provider id and user id on this provider.
+        /// </summary>
+        ///
+        /// <param name="providerId">Auth identity provider id for which user id is provided. Can be "facebook", or any custom value.</param>
+        /// <param name="providerUserIds">User id on the selected identity provider for which <see cref="PublicUser"/> will be returned.</param>
+        /// <param name="onSuccess">Called if any user is found. Please note, that not all requested user may be returned. </param>
+        /// <param name="onFailure">Called if operation failed or user not found.</param>
+        public static void GetUsersByAuthIdentities(string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess,
+            Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(providerId, "providerId");
+            Check.Argument.IsNotNull(providerUserIds, "providerUserIds");
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.GetUsersByAuthIdentities(providerId, providerUserIds, onSuccess, onFailure);
+        }
+
+        /// <summary>
         /// Find users matching query.
         /// </summary>
         /// <param name="query">Users query.</param>
@@ -819,9 +858,59 @@ namespace GetSocialSdk.Core
                 GetSocialImpl.AddFriend(userId, onSuccess, onFailure);
             }
 
+            /// <summary>
+            /// Add a list of users to the list of current user friends.
+            /// </summary>
+            /// <param name="providerId">An auth identity provider id for which user ids will be provided. Can be "facebook", or any custom value.</param>
+            /// <param name="providerUserIds">A list of user ids on the selected identity provider that need to be added to the current user's friends list.</param>
+            /// <param name="onSuccess">Called if adding friends was successful. Parameter contains number of friends.</param>
+            /// <param name="onFailure">Called if adding friends failed.</param>
+            public static void AddFriendsByAuthIdentities(string providerId, List<string> providerUserIds, 
+                Action<int> onSuccess, Action<GetSocialError> onFailure)
+            {
+                Check.Argument.IsNotNull(providerId, "providerId");
+                Check.Argument.IsNotNull(providerUserIds, "providerUserIds");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+                GetSocialImpl.AddFriendsByAuthIdentities(providerId, providerUserIds, onSuccess, onFailure);
+            }
 
             /// <summary>
-            /// Remove a user from friends list.
+            /// Replace existing friends with the provided list of users.
+            /// </summary>
+            /// <param name="userIds">List of unique user identifiers.</param>
+            /// <param name="onSuccess">Called if settings friends was successful.</param>
+            /// <param name="onFailure">Called if settings friends failed.</param>
+            public static void SetFriends(List<string> userIds, Action onSuccess, Action<GetSocialError> onFailure)
+            {
+                Check.Argument.IsNotNull(userIds, "providerId");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+                GetSocialImpl.SetFriends(userIds, onSuccess, onFailure);
+            }
+
+            /// <summary>
+            /// Replace existing friends with the provided list of users.
+            /// </summary>
+            /// <param name="providerId">A auth identity provider id for which user ids will be provided. Can be "facebook", or any custom value.</param>
+            /// <param name="providerUserIds">A list of user ids on the selected identity provider that will be set as the current user's friends list.</param>
+            /// <param name="onSuccess">Called if settings friends was successful.</param>
+            /// <param name="onFailure">Called if settings friends failed.</param>
+            public static void SetFriendsByAuthIdentities(string providerId, List<string> providerUserIds,
+                Action onSuccess, Action<GetSocialError> onFailure)
+            {
+                Check.Argument.IsNotNull(providerId, "providerId");
+                Check.Argument.IsNotNull(providerUserIds, "providerUserIds");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+                GetSocialImpl.SetFriendsByAuthIdentities(providerId, providerUserIds, onSuccess, onFailure);
+            }
+            
+            /// <summary>
+            /// Remove a list of users for list of current user's friends.
             /// </summary>
             /// <param name="userId">Unique user identifier you want to remove from friends list.</param>
             /// <param name="onSuccess">Called if removing friend was successful. Parameter contains number of friends.</param>
@@ -833,6 +922,24 @@ namespace GetSocialSdk.Core
                 Check.Argument.IsNotNull(onFailure, "onFailure");
 
                 GetSocialImpl.RemoveFriend(userId, onSuccess, onFailure);
+            }
+
+            /// <summary>
+            /// Remove a list of users for list of current user's friends.
+            /// </summary>
+            /// <param name="providerId">An auth identity provider id for which user ids will be provided. Can be "facebook", or any custom value.</param>
+            /// <param name="providerUserIds">A list of user ids on the selected identity provider that need to be added to the current user's friends list.</param>
+            /// <param name="onSuccess">Called if removing friends was successful. Parameter contains number of friends.</param>
+            /// <param name="onFailure">Called if removing friends failed.</param>
+            public static void RemoveFriendsByAuthIdentities(string providerId, List<string> providerUserIds,
+                Action<int> onSuccess, Action<GetSocialError> onFailure)
+            {
+                Check.Argument.IsNotNull(providerId, "providerId");
+                Check.Argument.IsNotNull(providerUserIds, "providerUserIds");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+                GetSocialImpl.RemoveFriendsByAuthIdentities(providerId, providerUserIds, onSuccess, onFailure);
             }
 
             /// <summary>
