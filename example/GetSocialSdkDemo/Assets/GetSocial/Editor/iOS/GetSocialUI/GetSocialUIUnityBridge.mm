@@ -106,13 +106,14 @@ bool _gs_restoreView() {
 #pragma mark - Activity Feed
 
 bool _gs_showActivityFeedView(const char *windowTitle,
-        const char *feed, const char *filterUserId, BOOL readOnly, BOOL friendsFeed,
+        const char *feed, const char *filterUserId, BOOL readOnly, BOOL friendsFeed, const char *tags,
         ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
         VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
         UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
         AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
-        AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr) {
+        AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
+        AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr) {
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
@@ -146,6 +147,12 @@ bool _gs_showActivityFeedView(const char *windowTitle,
             mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
         }];
     }
+
+    if (tagClickListener) {
+        [view setTagClickHandler:^(NSString *tag) {
+            tagClickListener(tagClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:tag]);
+        }];
+    }
     
     if (onOpenActionPtr || onCloseActionPtr) {
         [view setHandlerForViewOpen:^{
@@ -156,6 +163,11 @@ bool _gs_showActivityFeedView(const char *windowTitle,
     }
     if (filterUserId) {
         [view setFilterByUser:[GetSocialBridgeUtils createNSStringFrom:filterUserId]];
+    }
+    if (tags) {
+        NSString *tagsStr = [GetSocialBridgeUtils createNSStringFrom:tags];
+        NSArray *tagsArray = [GetSocialJsonUtils deserializeStringList:tagsStr];
+        [view setFilterByTags:tagsArray];
     }
     [view setReadOnly:readOnly];
     [view setShowFriendsFeed:friendsFeed];
@@ -170,7 +182,8 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
                               VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
                               UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
                               AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
-                              AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr) {
+                              AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
+                              AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr) {
     NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
     
     GetSocialUIActivityDetailsView *view = [GetSocialUI createActivityDetailsView:activityIdStr];
@@ -211,6 +224,13 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
             mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
         }];
     }
+
+    if (tagClickListener) {
+        [view setTagClickHandler:^(NSString *tag) {
+            tagClickListener(tagClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:tag]);
+        }];
+    }
+    
     [view setReadOnly:readOnly];
     
     [view setShowActivityFeedView:showFeedView];

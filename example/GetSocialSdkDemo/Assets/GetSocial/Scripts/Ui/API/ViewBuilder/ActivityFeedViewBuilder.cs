@@ -1,7 +1,9 @@
 ﻿#if USE_GETSOCIAL_UI
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using GetSocialSdk.Core;
+using GetSocialSdk.MiniJSON;
 using UnityEngine;
 
 namespace GetSocialSdk.Ui
@@ -18,10 +20,12 @@ namespace GetSocialSdk.Ui
         Action<string, ActivityPost> _onButtonClickListener;
         Action<PublicUser> _onAvatarClickListener;
         Action<string> _onMentionClickListener;
+        Action<string> _tagClickListener;
         
         string _filterUserId;
         bool _readOnly;
         bool _friendsFeed;
+        string[] _tags = new string[] {};
 #pragma warning restore 414
         
         internal ActivityFeedViewBuilder()
@@ -69,6 +73,17 @@ namespace GetSocialSdk.Ui
 
             return this;
         }
+
+        /// <summary>
+        /// Set tag click listener, that will be notified if tag was clicked.
+        /// </summary>
+        /// <param name="tagClickListener">Called with name of tag that was clicked.</param>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
+        public ActivityFeedViewBuilder SetTagClickListener(Action<string> tagClickListener) {
+            _tagClickListener = tagClickListener;
+
+            return this;
+        }
         
         
         /// <summary>
@@ -106,12 +121,23 @@ namespace GetSocialSdk.Ui
             return this;
         }
 
+        /// <summary>
+        /// Display feed with posts, that contains at least one tag from the list.
+        /// </summary>
+        /// <param name="tags"> List for tags that have to be present in activity feed posts.</param>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
+        public ActivityFeedViewBuilder SetFilterByTags(params string[] tags) {
+            _tags = tags;
+
+            return this;
+        }
+
         internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _gs_showActivityFeedView(_customWindowTitle, _feed, _filterUserId, _readOnly, _friendsFeed, 
+            return _gs_showActivityFeedView(_customWindowTitle, _feed, _filterUserId, _readOnly, _friendsFeed, GSJson.Serialize(new List<string>(_tags)),
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
                 _onButtonClickListener.GetPointer(),
                 Callbacks.ActionCallback,
@@ -123,7 +149,9 @@ namespace GetSocialSdk.Ui
                 AvatarClickListenerCallback.OnAvatarClicked,
                 _onAvatarClickListener.GetPointer(),
                 MentionClickListenerCallback.OnMentionClicled,
-                _onMentionClickListener.GetPointer());
+                _onMentionClickListener.GetPointer(),
+                TagClickListenerCallback.OnTagClicked,
+                _tagClickListener.GetPointer());
 #else
             return false;
 #endif
@@ -154,22 +182,48 @@ namespace GetSocialSdk.Ui
                 activityFeedBuilderAJO.CallAJO("setMentionClickListener",
                     new MentionClickListenerProxy(_onMentionClickListener));
             }
+            if (_tagClickListener != null) 
+            {
+                activityFeedBuilderAJO.CallAJO("setTagClickListener",
+                    new TagClickListenerProxy(_tagClickListener));   
+            }
+
             activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
             activityFeedBuilderAJO.CallAJO("setShowFriendsFeed", _friendsFeed);
+            activityFeedBuilderAJO.CallAJO("setFilterByTags", toJavaStringArray(_tags));
 
             return activityFeedBuilderAJO;
+        }
+
+        private static AndroidJavaObject toJavaStringArray(string[] values) {
+            if (values == null)
+            {
+                return null;
+            }
+            AndroidJavaClass arrayClass = new AndroidJavaClass("java.lang.reflect.Array");
+            AndroidJavaObject arrayObject = arrayClass.CallStatic<AndroidJavaObject>("newInstance",
+                new AndroidJavaClass("java.lang.String"),
+                values.Length);
+
+            for (int i = 0; i < values.Length; ++i ) 
+            {
+                arrayClass.CallStatic("set", arrayObject, i,
+                    new AndroidJavaObject("java.lang.String", values[i]));
+            }
+            return arrayObject;
         }
 
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed, string filterUserId, bool readOnly, bool friendsFeed, 
+        static extern bool _gs_showActivityFeedView(string customWindowTitle, string feed, string filterUserId, bool readOnly, bool friendsFeed, string tagsList,
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
             Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
             Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr,
-            Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr);
+            Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr,
+            Action<IntPtr, string> tagClickListener, IntPtr tagClickListenerPtr);
 
 #endif
     }

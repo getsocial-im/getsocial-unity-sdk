@@ -97,6 +97,7 @@ public class ActivityFeedUiSection : DemoMenuSection
             .SetButtonActionListener(OnActivityActionClicked)
             .SetMentionClickListener(OnMentionClicked)
             .SetAvatarClickListener(OnUserAvatarClicked)
+            .SetTagClickListener(OnTagClicked)
             .SetUiActionListener(OnUiAction)
             .Show();
     }
@@ -111,6 +112,15 @@ public class ActivityFeedUiSection : DemoMenuSection
             return;
         }
         GetSocial.GetUserById(mention, OnUserAvatarClicked, error => _console.LogE("Failed to get user details, error:" + error.Message));
+    }
+
+    private void OnTagClicked(string tag) 
+    {
+        GetSocialUi.CreateGlobalActivityFeedView()
+            .SetWindowTitle("Search #" + tag)
+            .SetReadOnly(true)
+            .SetFilterByTags(tag)
+            .Show();
     }
 
     private void OnUserAvatarClicked(PublicUser publicUser)

@@ -21,6 +21,7 @@ namespace GetSocialSdk.Ui
         Action<string, ActivityPost> _onButtonClicked;
         Action<PublicUser> _onAvatarClickListener;
         Action<string> _onMentionClickListener;
+        Action<string> _tagClickListener;
 #pragma warning restore 414
 
         internal ActivityDetailsViewBuilder(string activityId)
@@ -77,6 +78,17 @@ namespace GetSocialSdk.Ui
 
             return this;
         }
+
+        /// <summary>
+        /// Set tag click listener, that will be notified if tag was clicked.
+        /// </summary>
+        /// <param name="tagClickListener">Called with name of tag that was clicked.</param>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
+        public ActivityDetailsViewBuilder SetTagClickListener(Action<string> tagClickListener) {
+            _tagClickListener = tagClickListener;
+
+            return this;
+        }
         
         /// <summary>
         /// Make the feed read-only. UI elements, that allows to post, comment or like are hidden.
@@ -106,7 +118,9 @@ namespace GetSocialSdk.Ui
                 AvatarClickListenerCallback.OnAvatarClicked,
                 _onAvatarClickListener.GetPointer(),
                 MentionClickListenerCallback.OnMentionClicled,
-                _onMentionClickListener.GetPointer());
+                _onMentionClickListener.GetPointer(),
+                TagClickListenerCallback.OnTagClicked,
+                _tagClickListener.GetPointer());
 #else
             return false;
 #endif
@@ -135,6 +149,11 @@ namespace GetSocialSdk.Ui
                 activityDetailsBuilderAJO.CallAJO("setMentionClickListener",
                     new MentionClickListenerProxy(_onMentionClickListener));
             }
+            if (_tagClickListener != null) 
+            {
+                activityDetailsBuilderAJO.CallAJO("setTagClickListener",
+                    new TagClickListenerProxy(_tagClickListener));   
+            }
             activityDetailsBuilderAJO.CallAJO("setReadOnly", _readOnly);
             return activityDetailsBuilderAJO;
         }
@@ -148,7 +167,8 @@ namespace GetSocialSdk.Ui
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
             Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
             Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr,
-            Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr);
+            Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr,
+            Action<IntPtr, string> tagClickListener, IntPtr tagClickListenerPtr);
 
 #endif
     }

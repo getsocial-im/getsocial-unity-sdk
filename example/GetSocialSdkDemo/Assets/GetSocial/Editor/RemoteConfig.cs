@@ -20,15 +20,19 @@ namespace GetSocialSdk.Editor
 
         public static RemoteConfig FromDict(Dictionary<string,object> valueDictionary)
         {
-            var isSuccessful = valueDictionary.ContainsKey("success") ? (bool) valueDictionary["success"] : true;
+            var isSuccessful = (bool) valueDictionary.GetValueOrDefault("success", true);
             var errorMessage = string.Empty;
             PlatformConfig androidConfig = null;
             PlatformConfig iosConfig = null;
             
             if (isSuccessful)
             {
-                androidConfig = PlatformConfig.FromDict(valueDictionary["android"] as Dictionary<string, object>);
-                iosConfig = PlatformConfig.FromDict(valueDictionary["ios"] as Dictionary<string,object>);    
+                var androidConfigDictionary = valueDictionary.GetValueOrDefault("android", new Dictionary<string, object>()) as Dictionary<string, object>;
+                androidConfig = PlatformConfig.FromDict(androidConfigDictionary);
+
+
+                var iosConfiDictionary = valueDictionary.GetValueOrDefault("iosx", new Dictionary<string, object>()) as Dictionary<string, object>;
+                iosConfig = PlatformConfig.FromDict(iosConfiDictionary);    
             }
             else
             {
@@ -58,11 +62,11 @@ namespace GetSocialSdk.Editor
             public static PlatformConfig FromDict(Dictionary<string,object> valueDictionary)
             {
                 return new PlatformConfig(
-                    (bool) valueDictionary["enabled"],
-                    (bool) valueDictionary["push_enabled"],
-                    (string) valueDictionary["push_environment"],
-                    new List<string>(((List<object>) valueDictionary["domains"]).ConvertAll(v => (string)v)),
-                    new List<string>(((List<object>) valueDictionary["providers"]).ConvertAll(v => (string)v))
+                    (bool) valueDictionary.GetValueOrDefault("enabled", false),
+                    (bool) valueDictionary.GetValueOrDefault("push_enabled", false),
+                    (string) valueDictionary.GetValueOrDefault("push_environment", string.Empty),
+                    new List<string>(((List<object>) valueDictionary.GetValueOrDefault("domains", new List<object>())).ConvertAll(v => (string)v)),
+                    new List<string>(((List<object>) valueDictionary.GetValueOrDefault("providers", new List<object>())).ConvertAll(v => (string)v))
                 );
             }
         }
