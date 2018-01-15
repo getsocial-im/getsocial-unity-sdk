@@ -1,5 +1,5 @@
 /**
- *     Copyright 2015-2016 GetSocial B.V.
+ *     Copyright 2015-2018 GetSocial B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ using Facebook.Unity;
 using GetSocialSdk.Ui;
 #endif
 
+[Obsolete("Facebook is deprecating App Invites from February 5, 2018. Use FacebookSharePlugin instead.", false)]
 public class FacebookInvitePlugin : InviteChannelPlugin
 {
     #region IInvitePlugin implementation

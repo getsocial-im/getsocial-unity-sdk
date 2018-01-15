@@ -14,10 +14,13 @@
 * limitations under the License.
 */
 
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 
 namespace GetSocialSdk.Editor
 {
@@ -32,6 +35,12 @@ namespace GetSocialSdk.Editor
 
         static string _editorPath;
         static string _editorGuiPath;
+        
+        private static string signingKeyHash;
+        private static string keystoreUtilError;
+        private static string previousKeystorePath;
+        private static string previousKeystorePass;
+        private static string previousKeyAlias;
 
         static GetSocialEditorUtils()
         {
@@ -72,5 +81,184 @@ namespace GetSocialSdk.Editor
             files.Sort();
             return files.ToArray();
         }
+        
+        public static string SigningKeyHash
+        {
+            get
+            {
+                string keystorePath = DebugKeyStorePath;
+                string keystorePass = "android";
+                string keyAlias = "androiddebugkey";
+
+                if (UserDefinedKeystore())
+                {
+                    keystorePath = PlayerSettings.Android.keystoreName;
+                    keystorePass = PlayerSettings.Android.keystorePass;
+                    keyAlias = PlayerSettings.Android.keyaliasName;
+                    if (!KeystorePassDefined())
+                    {
+                        keystoreUtilError = "Keystore password is not set.";
+                        return "";
+                    }
+                }
+
+                bool settingsAreSame = keystorePath.Equals(previousKeystorePath) &&
+                                         keystorePass.Equals(previousKeystorePass) &&
+                                         keyAlias.Equals(previousKeyAlias);
+                
+                if ((signingKeyHash == null && keystoreUtilError == null) || !settingsAreSame)
+                {
+                    keystoreUtilError = null;
+                    previousKeystorePath = keystorePath;
+                    previousKeystorePass = keystorePass;
+                    previousKeyAlias = keyAlias;
+                    
+                    if (!HasAndroidKeystoreFile(keystorePath))
+                    {
+                        keystoreUtilError = "Error: Can't find Android keystore " + keystorePath;
+                        return "";
+                    }
+                    if (!DoesKeytoolExist())
+                    {
+                        keystoreUtilError = "Error: keytool command line utility does not exist.";
+                        return "";
+                    }
+                    if (!HasAndroidSdk())
+                    {
+                        keystoreUtilError = "Error: Can't find Android Sdk.";
+                        return "";
+                    }
+                    signingKeyHash = GetKeyHash(keystorePath, keystorePass, keyAlias); 
+                }
+                return signingKeyHash;
+            }
+        }
+
+        public static bool UserDefinedKeystore()
+        {
+            return !string.IsNullOrEmpty(PlayerSettings.Android.keystoreName);
+        }
+
+        public static bool KeystorePassDefined()
+        {
+            return !string.IsNullOrEmpty(PlayerSettings.Android.keystorePass);
+        }
+
+        public static string KeyStoreUtilError
+        {
+            get
+            {
+                return keystoreUtilError;
+            }
+        }
+
+        private static string DebugKeyStorePath
+        {
+            get
+            {
+                return (Application.platform == RuntimePlatform.WindowsEditor) ?
+                    Environment.GetEnvironmentVariable("HOMEDRIVE") + Environment.GetEnvironmentVariable("HOMEPATH") + @"\.android\debug.keystore" :
+                    Environment.GetFolderPath(Environment.SpecialFolder.Personal) + @"/.android/debug.keystore";
+            }
+        }
+
+        private static bool HasAndroidSdk()
+        {
+            return EditorPrefs.HasKey("AndroidSdkRoot") && Directory.Exists(EditorPrefs.GetString("AndroidSdkRoot"));
+        }
+        
+        private static bool HasAndroidKeystoreFile(string keystorePath)
+        {
+            return File.Exists(keystorePath);
+        }
+        
+        private static string GetKeyHash(string keystoreName, string keystorePassword, string aliasName)
+        {
+            var proc = new Process();
+            string arguments;
+            if (aliasName != null)
+            {
+                arguments = @"""keytool -list -v -keystore {0} -storepass {1} -alias {2}"""; 
+            }
+            else
+            {
+                arguments = @"""keytool -list -v -keystore {0} -storepass {1}""";
+            } 
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                proc.StartInfo.FileName = "cmd";
+                arguments = @"/C " + arguments;
+            }
+            else
+            {
+                proc.StartInfo.FileName = "bash";
+                arguments = @"-c " + arguments;
+            }
+
+            if (aliasName != null)
+            {
+                proc.StartInfo.Arguments = string.Format(arguments, keystoreName, keystorePassword, aliasName);
+            }
+            else
+            {
+                proc.StartInfo.Arguments = string.Format(arguments, keystoreName, keystorePassword);
+            }
+
+            proc.StartInfo.UseShellExecute = false;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.RedirectStandardOutput = true;
+            proc.Start();
+            var keyHash = new StringBuilder();
+            while (!proc.HasExited)
+            {
+                keyHash.Append(proc.StandardOutput.ReadToEnd());
+            }
+
+            if (proc.ExitCode == 255)
+            {
+                return "";
+            }
+
+            string response = keyHash.ToString();
+            const string sha256Literal = "SHA256:";
+            if (response.Contains(sha256Literal))
+            {
+                int shaBeginIndex = response.IndexOf(sha256Literal) + sha256Literal.Length;
+                int shaEndIndex = response.IndexOf('\n', shaBeginIndex);
+                return response.Substring(shaBeginIndex, (shaEndIndex - shaBeginIndex)).Trim();
+            }
+            keystoreUtilError = "Error: Can't read signature, Check Player Settings -> Android -> Publishing Settings";
+            return "";
+        }
+        
+        private static bool DoesKeytoolExist()
+        {
+            var proc = new Process();
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                proc.StartInfo.FileName = "cmd";
+                proc.StartInfo.Arguments = @"/C keytool";
+            }
+            else
+            {
+                proc.StartInfo.FileName = "bash";
+                proc.StartInfo.Arguments = @"-c keytool";
+            }
+
+            proc.StartInfo.UseShellExecute = false;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.Start();
+            proc.WaitForExit();
+            if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                return proc.ExitCode == 0;
+            }
+            else
+            {
+                return proc.ExitCode != 127;
+            }
+        }
+        
+
     }
 }

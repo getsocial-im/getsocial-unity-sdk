@@ -25,8 +25,8 @@ namespace GetSocialSdk.Editor
         public static void SelectableLabelField(GUIContent label, string value)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(label, GUILayout.Width(180), GUILayout.Height(16));
-            EditorGUILayout.SelectableLabel(value, GUILayout.Height(16));
+            EditorGUILayout.LabelField(label, GUILayout.Height(16), OneThirdWidth);
+            EditorGUILayout.SelectableLabel(value, GUILayout.Height(16), TwoThirdsWidth);
             EditorGUILayout.EndHorizontal();
         }
 
@@ -40,17 +40,17 @@ namespace GetSocialSdk.Editor
 
         public static GUILayoutOption OneThirdWidth
         {
-            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 50) / 3); }
+            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 60) / 3); }
         }
         
         public static GUILayoutOption TwoThirdsWidth
         {
-            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 50) / 3 * 2); }
+            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 60) / 3 * 2); }
         }
         
         public static GUILayoutOption HalfWidth
         {
-            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 50) / 2); }
+            get { return GUILayout.Width((EditorGUIUtility.currentViewWidth - 60) / 2); }
         }
 
         public static void ColoredBackground(Color backgroundColor, Action drawAction)

@@ -104,9 +104,7 @@ namespace GetSocialSdk.Core
             activitiesQuery.CallAJO("friendsFeed", _isFriendsFeed);
             if (_filter != Filter.NoFilter)
             {
-                var filterClass = new UnityEngine.AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery$Filter");
-                var filter = filterClass.CallStaticAJO("valueOf", _filter.ToString().ToUpper());
-                activitiesQuery.CallAJO("withFilter", filter, _filteringActivityId);
+                activitiesQuery.CallAJO("withFilter", _filter.ToAndroidJavaObject(), _filteringActivityId);
             }
             return activitiesQuery;
         }

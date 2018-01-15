@@ -20,6 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using com.adjust.sdk;
 using Facebook.Unity;
 using TheNextFlow.UnityPlugins;
 
@@ -49,7 +50,7 @@ public class GetSocialDemoController : MonoBehaviour
     void Awake()
     {
         _console = gameObject.GetComponent<DemoAppConsole>().Init();
-        
+        Adjust.start(new AdjustConfig("suzggk2586io", AdjustEnvironment.Production));
         SetupGetSocial();
         SetupMenuSections();
     }
@@ -184,20 +185,20 @@ public class GetSocialDemoController : MonoBehaviour
 
     void RegisterInvitePlugins()
     {
-        RegisterFacebookInvitePlugin();
+        RegisterFacebookSharePlugin();
     }
 
-    void RegisterFacebookInvitePlugin()
+    void RegisterFacebookSharePlugin()
     {
         var fbResult = GetSocial.RegisterInviteChannelPlugin(InviteChannelIds.Facebook,
-            new FacebookInvitePlugin());
+            new FacebookSharePlugin());
         if (fbResult)
         {
-            _console.LogD("Registered Facebook invite plugin.");
+            _console.LogD("Registered Facebook share plugin.");
         }
         else
         {
-            _console.LogE("Failed to register Facebook invite plugin.");
+            _console.LogE("Failed to register Facebook share plugin.");
         }
     }
 

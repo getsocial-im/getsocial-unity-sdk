@@ -160,7 +160,7 @@ namespace GetSocialSdk.Editor
 
         private void DrawPushNotificationSettings()
         {
-            EditorGUILayout.LabelField("Push Notifications", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Push Notifications", EditorStyles.boldLabel, EditorGuiUtils.OneThirdWidth);
 
             var enablePushNotificationAutoRegistering = new GUIContent("Register Automatically [?]", "If this setting is checked, GetSocial push notifications will be registered automatically, if not, you need to call GetSocial.RegisterForPushNotification() method.");
             var isAutoRegisrationForPushesEnabled = EditorGUILayout.ToggleLeft(enablePushNotificationAutoRegistering, GetSocialSettings.IsAutoRegisrationForPushesEnabled);
@@ -196,6 +196,12 @@ namespace GetSocialSdk.Editor
                     DrawDashboardSettingToogle("Push notifications status", 
                         GetSocialSettings.IsAndroidPushEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
 
+                    if (Application.platform == RuntimePlatform.WindowsEditor ||
+                        Application.platform == RuntimePlatform.OSXEditor)
+                    {
+                        DrawAndroidSigningSignatureHash();
+                    }
+                    
                     GUILayout.Space(15f);
                     DrawAndroidManifestSettings();
                 }
@@ -211,24 +217,26 @@ namespace GetSocialSdk.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Configuration status");
+                    EditorGUILayout.LabelField("Configuration status", EditorGuiUtils.OneThirdWidth);
                     
                     var lableContent = new GUIContent(
                         _isAndroidManifestConfigurationCorrect ? "✔ Correct [?]" : "✘ Not complete [?]",  
                         _androidManifestConfigurationSummary
                     );
-                    GUILayout.Button(lableContent, EditorStyles.label, EditorGuiUtils.OneThirdWidth);
+                    GUILayout.Button(lableContent, EditorStyles.label, EditorGuiUtils.TwoThirdsWidth);
                 }
                 
                 EditorGuiUtils.ColoredBackground(
                     _isAndroidManifestConfigurationCorrect ? GUI.backgroundColor : Color.green,
-                    () => {
-                        if (GUILayout.Button("Regenerate Manifest"))
+                    () =>
+                    {
+                        var regenerateManifest = _isAndroidManifestConfigurationCorrect ? "Regenerate manifest" : "Regenerate manifest to fix configuration";
+                        if (GUILayout.Button(regenerateManifest))
                         {
                             new AndroidManifestHelper().Regenerate();
                             UpdateAndroidManifestCheck();
                         }
-                });
+                    });
                 
                 if (!_isAndroidManifestConfigurationCorrect)
                 {
@@ -242,10 +250,10 @@ namespace GetSocialSdk.Editor
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField(settingText);
+                EditorGUILayout.LabelField(settingText, EditorGuiUtils.OneThirdWidth);
                 
                 var buttonLabel = new GUIContent(status, "Click on the label to update the setting on the GetSocial Dashboard. GetSocial Editor will fetch the latest setting automatically.");
-                if (GUILayout.Button(buttonLabel, EditorStyles.label, EditorGuiUtils.OneThirdWidth))
+                if (GUILayout.Button(buttonLabel, EditorStyles.label, EditorGuiUtils.TwoThirdsWidth))
                 {
                     OpenGetSocialDashboard();
                 }
@@ -306,6 +314,7 @@ namespace GetSocialSdk.Editor
             EditorGUI.EndDisabledGroup();
         }
 
+        
         static void DrawAdditionalInfo()
         {
             GetSocialEditorUtils.BeginSetSmallIconSize();
@@ -318,6 +327,27 @@ namespace GetSocialSdk.Editor
                 EditorGuiUtils.SelectableLabelField(
                     new GUIContent("SDK Version [?]", "GetSocial SDK Version"),
                     BuildConfig.UnitySdkVersion);    
+            }
+        }
+
+        static void DrawAndroidSigningSignatureHash()
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                string label = "Signing-certificate fingerprint [?]";
+                GUIContent content = new GUIContent(label,
+                    "SHA-256 hash of the keystore you use to sign your application.");
+                EditorGuiUtils.SelectableLabelField(content, GetSocialEditorUtils.SigningKeyHash);
+            }
+            if (GetSocialEditorUtils.KeyStoreUtilError != null)
+            {
+                EditorGUILayout.HelpBox(GetSocialEditorUtils.KeyStoreUtilError,
+                    MessageType.Error);
+            }
+            if (!GetSocialEditorUtils.UserDefinedKeystore())
+            {
+                EditorGUILayout.HelpBox("You are using default Android keystore to sign your application. Are you sure this is what you want?",
+                    MessageType.Warning);
             }
         }
 

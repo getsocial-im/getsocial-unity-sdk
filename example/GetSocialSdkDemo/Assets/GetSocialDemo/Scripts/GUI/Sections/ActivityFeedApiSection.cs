@@ -1,5 +1,7 @@
-﻿using Assets.GetSocialDemo.Scripts.Utils;
+﻿using System;
+using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
+using TheNextFlow.UnityPlugins;
 using UnityEngine;
 
 public class ActivityFeedApiSection : DemoMenuSection
@@ -55,6 +57,7 @@ public class ActivityFeedApiSection : DemoMenuSection
         DrawActivityIdTextField();
         GUILayout.EndVertical();
 
+        DemoGuiUtils.DrawButton("Fetch Last Activity", FetchLastActivity, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Global Feed Activities (No filter)", GetGlobalActivities, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Global Feed Activities (Only my posts)", GetMyGlobalActivities, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Global Friends Feed Activities", GetFriendsGlobalActivities, true, GSStyles.Button);
@@ -65,6 +68,7 @@ public class ActivityFeedApiSection : DemoMenuSection
             GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Feed Comments (No filter)", GetFeedComments, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Activity By Id ", GetActivityById, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Report Activity By Id ", ReportActivityById, true, GSStyles.Button);
     }
 
     void DrawAnnouncementsBlock()
@@ -115,6 +119,19 @@ public class ActivityFeedApiSection : DemoMenuSection
     #endregion
 
     #region query_activities
+    
+
+    void FetchLastActivity()
+    {
+        GetSocial.GetActivities(ActivitiesQuery.PostsForGlobalFeed().WithLimit(1), list =>
+        {
+            if (list.Count > 0)
+            {
+                _console.LogD(string.Format("Fetched activity: {0}", list[0]));
+                _activityId = list[0].Id;
+            }
+        }, OnError);
+    }
 
     void GetGlobalActivities()
     {
@@ -194,6 +211,23 @@ public class ActivityFeedApiSection : DemoMenuSection
     void GetActivityById()
     {
         GetSocial.GetActivity(_activityId, activity => { _console.LogD(activity.ToString()); }, OnError);
+    }
+
+    void ReportActivityById()
+    {
+        MobileNativePopups.OpenAlertDialog("Report Activity", "What's wrong ?", "Spam", "Inappropriate Content", "Cancel", 
+            _ReportActivityById(ReportingReason.Spam), _ReportActivityById(ReportingReason.InappropriateContent), () => { });
+    }
+
+    private Action _ReportActivityById(ReportingReason reportingReason)
+    {
+        return () =>
+        {
+            GetSocial.ReportActivity(_activityId, reportingReason, () =>
+            {
+                _console.LogD(string.Format("Activity {0} reported as {1}!", _activityId, reportingReason));
+            }, OnError);
+        };
     }
 
     #endregion

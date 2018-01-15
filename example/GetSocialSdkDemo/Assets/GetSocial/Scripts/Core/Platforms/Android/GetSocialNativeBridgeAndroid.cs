@@ -387,10 +387,7 @@ namespace GetSocialSdk.Core
 
         public void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            var reasonClass = new AndroidJavaClass("im.getsocial.sdk.activities.ReportingReason");
-            var reason = reasonClass.CallStaticAJO("valueOf", reportingReason.ToString().ToUpper());
-            
-            _getSocial.CallStatic("reportActivity", activityId, reason, new CompletionCallback(onSuccess, onFailure));
+            _getSocial.CallStatic("reportActivity", activityId, reportingReason.ToAndroidJavaObject(), new CompletionCallback(onSuccess, onFailure));
         }
 
         public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)

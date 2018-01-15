@@ -31,7 +31,7 @@ namespace GetSocialSdk.Editor
                 androidConfig = PlatformConfig.FromDict(androidConfigDictionary);
 
 
-                var iosConfiDictionary = valueDictionary.GetValueOrDefault("iosx", new Dictionary<string, object>()) as Dictionary<string, object>;
+                var iosConfiDictionary = valueDictionary.GetValueOrDefault("ios", new Dictionary<string, object>()) as Dictionary<string, object>;
                 iosConfig = PlatformConfig.FromDict(iosConfiDictionary);    
             }
             else
