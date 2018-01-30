@@ -56,7 +56,7 @@ namespace GetSocialSdk.Core
 
         void RegisterForPushNotifications();
 
-        void SetNotificationActionListener(Func<NotificationAction, bool> listener);
+        void SetNotificationListener(Func<Notification, bool, bool> listener);
 
         #endregion
 

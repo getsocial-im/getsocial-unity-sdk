@@ -6,5 +6,5 @@
 #import <GetSocial/GetSocial.h>
 #import "Json.h"
 
-@interface GetSocialNotificationAction (Json)<Json>
+@interface GetSocialNotification (Json)<Json>
 @end

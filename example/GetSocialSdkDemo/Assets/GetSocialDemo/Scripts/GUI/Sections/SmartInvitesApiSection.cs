@@ -25,7 +25,7 @@ public class SmartInvitesApiSection : DemoMenuSection
     // Custom invites
     string _customWindowTitle = "Custom Subject";
 
-    string _customText = string.Format("It's an awesome app!, Download it from {0}.",
+    string _customText = string.Format("It's an awesome app!, Download it from {0}",
         InviteTextPlaceholders.PlaceholderAppInviteUrl);
 
     string _key1 = "key1", _key2 = "key2", _key3 = "key3";

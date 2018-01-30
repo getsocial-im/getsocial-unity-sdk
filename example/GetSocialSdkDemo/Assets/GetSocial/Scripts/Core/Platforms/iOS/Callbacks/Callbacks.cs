@@ -1,5 +1,6 @@
 #if UNITY_IOS
 using System;
+using System.Collections.Generic;
 
 namespace GetSocialSdk.Core
 {
@@ -17,7 +18,7 @@ namespace GetSocialSdk.Core
 
     delegate void FetchReferralDataCallbackDelegate(IntPtr actionPtr, string referralDataJson);
 
-    delegate bool NotificationActionListenerDelegate(IntPtr funcPtr, string notificationActionJson);
+    delegate bool NotificationListenerDelegate(IntPtr funcPtr, string notificationDataJson);
 
     public static class Callbacks
     {
@@ -83,14 +84,18 @@ namespace GetSocialSdk.Core
             IOSUtils.TriggerCallback(actionPtr, data);
         }
 
-        [AOT.MonoPInvokeCallback(typeof(NotificationActionListenerDelegate))]
-        public static bool NotificationActionListener(IntPtr funcPtr, string notificationActionJson)
+        [AOT.MonoPInvokeCallback(typeof(NotificationListenerDelegate))]
+        public static bool NotificationListener(IntPtr funcPtr, string dataStr)
         {
-            GetSocialDebugLogger.D("NotificationActionReceived: " + notificationActionJson);
-            var notificationAction = new NotificationAction().ParseFromJson(notificationActionJson.ToDict());
+            GetSocialDebugLogger.D("NotificationReceived: " + dataStr);
+            var data = dataStr.ToDict();
+            var wasClicked = (bool) data["wasClicked"];
+            var notification = (string) data["notification"];
+            var notificationDictionary = notification.ToDict();
+            var notificationEntity = new Notification().ParseFromJson(notificationDictionary);
             if (funcPtr != IntPtr.Zero)
             {
-                return funcPtr.Cast<Func<NotificationAction, bool>>().Invoke(notificationAction);
+                return funcPtr.Cast<Func<Notification, bool, bool>>().Invoke(notificationEntity, wasClicked);
             }
             return false;
         }

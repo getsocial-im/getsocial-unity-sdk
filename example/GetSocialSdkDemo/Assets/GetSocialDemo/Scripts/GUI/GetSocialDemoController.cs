@@ -40,6 +40,7 @@ public class GetSocialDemoController : MonoBehaviour
     Dictionary<TopLevelMenuSection, DemoMenuSection> _menuSections;
 
     public string CurrentViewTitle { set; get; }
+    private string _latestReferralData;
 
     // store user info to avoid constant calls to native
     CurrentUserInfo _currentUserInfo = new CurrentUserInfo();
@@ -53,6 +54,41 @@ public class GetSocialDemoController : MonoBehaviour
         Adjust.start(new AdjustConfig("suzggk2586io", AdjustEnvironment.Production));
         SetupGetSocial();
         SetupMenuSections();
+    }
+
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (!pauseStatus)
+        {
+            GetSocial.WhenInitialized(() =>
+            {
+                GetSocial.GetReferralData(
+                    data =>
+                    {
+                        string referralToken = "";
+                        string message = "Referral data: " + data;
+                        if (data == null)
+                        {
+                            message = "No referral data";
+                        }
+                        else
+                        {
+                            referralToken = data.Token;
+                        }
+
+                        if (referralToken != _latestReferralData)
+                        {
+                            MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => {
+                            });
+                            _console.LogD(message);
+                            _latestReferralData = referralToken;
+                        }
+                    },
+                    error => _console.LogE("Failed to get referral data: " + error.Message)
+                );
+            });
+        }
     }
 
     void SetupMenuSections()
@@ -133,14 +169,17 @@ public class GetSocialDemoController : MonoBehaviour
 
     public void SetupGetSocial()
     {
-        GetSocial.SetNotificationActionListener(action =>
+        GetSocial.SetNotificationListener((notification, wasClicked) =>
         {
-            _console.LogD("Notification received: " + action.Type);
-            if (action.Type == NotificationAction.ActionType.OpenProfile)
+            if (!wasClicked)
             {
-                OpenProfileAction openProfile = (OpenProfileAction) action;
-                _console.LogD("New friend is " + openProfile.UserId);
-                newFriend(openProfile.UserId);
+                _console.LogD(string.Format("Notification: {0}, Title: {1}, Text: {2}, Data: {3}", notification.Action, notification.Title, notification.Text, notification.ActionData.ToDebugString()));
+                return false;
+            }
+            _console.LogD("Notification received: " + notification.Action + ", with data: " + notification.ActionData.ToDebugString());
+            if (notification.Action == Notification.Type.OpenProfile)
+            {
+                newFriend(notification.ActionData[Notification.Key.OpenProfile.UserId]);
                 return true;
             }
             return false;
@@ -162,24 +201,6 @@ public class GetSocialDemoController : MonoBehaviour
         {
             _console.LogD(string.Format("GetSocial is initialized and user is retrieved"));
             FetchCurrentUserData();
-        });
-
-        GetSocial.WhenInitialized(() =>
-        {
-            GetSocial.GetReferralData(
-                data =>
-                {
-                    string message = "Referral data: " + data;
-                    if (data == null)
-                    {
-                        message = "No referral data";
-                    }
-                    MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => {
-                    });
-                    _console.LogD(message);
-                },
-                error => _console.LogE("Failed to get referral data: " + error.Message)
-            );
         });
     }
 

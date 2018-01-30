@@ -100,7 +100,7 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }
 
-        public void SetNotificationActionListener(Func<NotificationAction, bool> listener)
+        public void SetNotificationListener(Func<Notification, bool, bool> listener)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
         }

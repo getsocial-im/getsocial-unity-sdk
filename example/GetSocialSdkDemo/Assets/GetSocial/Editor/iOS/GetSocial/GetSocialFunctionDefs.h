@@ -10,4 +10,4 @@ typedef void(FailureCallbackDelegate)(void *actionPtr, const char *error);
 
 typedef void(FailureWithDataCallbackDelegate)(void *actionPtr, const char *data, const char *error);
 
-typedef bool(NotificationActionListener)(void *funcPtr, const char *notificationAction);
+typedef bool(NotificationListener)(void *funcPtr, const char *notification);

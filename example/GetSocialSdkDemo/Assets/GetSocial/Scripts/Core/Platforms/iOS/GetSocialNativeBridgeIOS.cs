@@ -115,9 +115,9 @@ namespace GetSocialSdk.Core
            _gs_registerForPushNotifications();
         }
 
-        public void SetNotificationActionListener(Func<NotificationAction, bool> listener)
+        public void SetNotificationListener(Func<Notification, bool, bool> listener)
         {
-           _gs_setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationActionListener);
+            _gs_setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationListener);
         }
 
         public bool SetGlobalErrorListener(Action<GetSocialError> onError)
@@ -579,7 +579,7 @@ namespace GetSocialSdk.Core
 
         [DllImport("__Internal")]
         static extern bool _gs_setNotificationActionListener(IntPtr listenerPointer,
-            NotificationActionListenerDelegate listener);
+            NotificationListenerDelegate listener);
 
         #endregion
 

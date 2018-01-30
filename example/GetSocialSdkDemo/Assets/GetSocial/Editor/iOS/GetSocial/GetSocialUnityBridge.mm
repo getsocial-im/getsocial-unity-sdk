@@ -235,10 +235,14 @@ void _gs_registerForPushNotifications()
     [GetSocial registerForPushNotifications];
 }
     
-void _gs_setNotificationActionListener(void *listener, NotificationActionListener delegate)
+void _gs_setNotificationActionListener(void *listener, NotificationListener delegate)
 {
-    [GetSocial setNotificationActionHandler:^BOOL(GetSocialNotificationAction * _Nonnull action) {
-        return delegate(listener, [action toJsonCString]);
+    [GetSocial setNotificationHandler:^BOOL(GetSocialNotification * _Nonnull notification, BOOL wasClicked) {
+        NSDictionary *data = @{
+                               @"notification": notification.toJsonString,
+                               @"wasClicked": @(wasClicked)
+                               };
+        return delegate(listener, data.toJsonCString);
     }];
 }
 

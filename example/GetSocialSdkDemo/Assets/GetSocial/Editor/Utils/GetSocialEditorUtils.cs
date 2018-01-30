@@ -220,6 +220,15 @@ namespace GetSocialSdk.Editor
             }
 
             string response = keyHash.ToString();
+
+            const string errorLiteral = "keytool error:";
+            if (response.Contains(errorLiteral))
+            {
+                int errorBeginIndex = response.IndexOf("Exception:") + "Exception:".Length + 1;
+                int errorEndIndex = response.IndexOf('\n', errorBeginIndex);
+                keystoreUtilError = "Error: " + response.Substring(errorBeginIndex, (errorEndIndex - errorBeginIndex)).Trim();
+                return "";
+            }
             const string sha256Literal = "SHA256:";
             if (response.Contains(sha256Literal))
             {

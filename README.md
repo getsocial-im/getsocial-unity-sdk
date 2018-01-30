@@ -5,20 +5,20 @@ This is the demo application for GetSocial SDK. Learn more about the products we
 ## Running Demo
 
 Provided demo application will show you GetSocial SDK features effortlessly, no configuration needed.
- 
+
 1. Clone the repo:
 
        git clone git@github.com:getsocial-im/getsocial-unity-sdk.git
-       
+
    > ⚠️ Do not use GitHub download feature, downloaded archive will not contain files stored under [Git LFS](https://git-lfs.github.com/). As a result Unity/iOS build will fail with linkage errors.
-   
+
 1. Open project `example/GetSocialSdkDemo/` in Unity Editor.
 1. Switch platform to Android or iOS.
 1. Build the demo.
 
 In case of any questions ping us at [support@getsocial.im](mailto:support@getsocial.im).
 
-## Fresh Integration of the GetSocial SDK 
+## Fresh Integration of the GetSocial SDK
 
 Follow the Getting Started guide for Unity at: [docs.getsocial.im/guides/getting-started/unity/](http://docs.getsocial.im/guides/getting-started/unity/).
 

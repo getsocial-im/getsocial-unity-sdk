@@ -118,9 +118,9 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("registerForPushNotifications");
         }
 
-        public void SetNotificationActionListener(Func<NotificationAction, bool> listener)
+        public void SetNotificationListener(Func<Notification, bool, bool> listener)
         {
-            _getSocial.CallStatic("setNotificationActionListener", new NotificationActionListenerProxy(listener));
+            _getSocial.CallStatic("setNotificationListener", new NotificationListenerProxy(listener));
         }
 
         #endregion

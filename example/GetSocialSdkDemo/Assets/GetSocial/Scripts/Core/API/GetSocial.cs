@@ -6,11 +6,14 @@ namespace GetSocialSdk.Core
 {
 
     /// <summary>
-    /// You can use this listener to react if application was started by clicking on GetSocial push notification.
+    /// Listener to handle GetSocial notifications.
+    /// Called if application was started by clicking on GetSocial push notification
+    /// or notification was received while application is in foreground.
     /// </summary>
-    /// <param name="action">Received action</param>
-    /// <returns>true, if you handle this action, false otherwise</returns>
-    public delegate bool NotificationActionListener(NotificationAction action);
+    /// <param name="notification">Received notification</param>
+    /// <param name="wasClicked">is true, if notification was clicked by user in notification center, false if received while application was in foreground.</param>
+    /// <returns>true, if you handle this notification, false otherwise</returns>
+    public delegate bool NotificationListener(Notification notification, bool wasClicked);
 
     /// <summary>
     /// The GetSocial API
@@ -292,16 +295,17 @@ namespace GetSocialSdk.Core
             GetSocialImpl.RegisterForPushNotifications();
         }
         /// <summary>
-        /// Set a notification action listener, will be invoked if application was started with clicking on GetSocial notification.
+        /// Set a notification listener, will be invoked if application was started with clicking on GetSocial notification 
+        /// or if notification was received while application is in foreground.
         /// Action is not invoked on Unity UI thread, so you can not change any scene objects directly in callback,
         /// you need to manually execute scene update on Unity UI thread.
         /// </summary>
         /// <param name="listener">Called with received action.</param>
-        public static void SetNotificationActionListener(NotificationActionListener listener)
+        public static void SetNotificationListener(NotificationListener listener)
         {
             Check.Argument.IsNotNull(listener, "Notification Action Listener");
 
-            GetSocialImpl.SetNotificationActionListener(action => listener(action));
+            GetSocialImpl.SetNotificationListener((notification, wasClicked) => listener(notification, wasClicked));
         }
 
         #endregion
