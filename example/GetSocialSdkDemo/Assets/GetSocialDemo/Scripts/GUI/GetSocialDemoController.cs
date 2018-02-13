@@ -52,8 +52,26 @@ public class GetSocialDemoController : MonoBehaviour
     {
         _console = gameObject.GetComponent<DemoAppConsole>().Init();
         Adjust.start(new AdjustConfig("suzggk2586io", AdjustEnvironment.Production));
+        SetupAppsFlyer();
         SetupGetSocial();
         SetupMenuSections();
+    }
+
+    void SetupAppsFlyer()
+    {
+        AppsFlyer.setAppsFlyerKey ("AP8P3GvwHgw9NBdBTWAqrb");
+/* For detailed logging */
+/* AppsFlyer.setIsDebug (true); */
+#if UNITY_IOS
+        /* Mandatory - set your apple app ID
+           NOTE: You should enter the number only and not the "ID" prefix */
+        AppsFlyer.setAppID ("313131310");
+        AppsFlyer.trackAppLaunch ();
+#elif UNITY_ANDROID
+/* Mandatory - set your Android package name */
+        AppsFlyer.setAppID ("im.getsocial.demo.unity");
+        AppsFlyer.init ("AP8P3GvwHgw9NBdBTWAqrb");;
+#endif
     }
 
 
