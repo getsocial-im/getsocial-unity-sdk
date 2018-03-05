@@ -24,11 +24,11 @@ using GetSocialSdk.Core;
 
 namespace GetSocialSdk.Editor
 {
-    [InitializeOnLoad]
     [CustomEditor(typeof(GetSocialSettings))]
     public class GetSocialSettingsEditor : UnityEditor.Editor
     {
         public const string DemoAppPackage = "im.getsocial.demo.unity";
+        private const string PlatformDisabledLabel = " (platform disabled)";
 
         // Android
         const string ShowAndroidSettingsEditorPref = "ShowAndroidSettings";
@@ -50,9 +50,7 @@ namespace GetSocialSdk.Editor
 
         private static RemoteConfigRequest _remoteConfigRequest;
         private static string _remoteRequestStatusLabel;
-        private static bool _isAndroidManifestConfigurationCorrect = false;
         private static bool _isUiConfigurationFileCorrect = true;
-        private static string _androidManifestConfigurationSummary = string.Empty;
 
         #region lifecycle
         
@@ -61,7 +59,6 @@ namespace GetSocialSdk.Editor
             UpdatePlatformLibraries();
             UpdateDefineSymbols();
             UpdateRemoteConfig();
-            UpdateAndroidManifestCheck();
             UpdateUiConfigFileCheck();
         }
 
@@ -171,13 +168,9 @@ namespace GetSocialSdk.Editor
         void DrawAndroidSettings()
         {
             var androidSettingsText = " Android Settings";
-            if (!ShowAndroidSettings && !GetSocialSettings.IsAdroidEnabled)
+            if (!ShowAndroidSettings && !GetSocialSettings.IsAndroidEnabled)
             {
-                androidSettingsText += " (platform disabled)";
-            } 
-            else if (!ShowAndroidSettings && !_isAndroidManifestConfigurationCorrect)
-            {
-                androidSettingsText += " (need to regenerate AndroidManifest.xml)";
+                androidSettingsText += PlatformDisabledLabel;
             }
             
             var androidSettingsLabel = EditorGuiUtils.GetBoldLabel(androidSettingsText, "", GetSocialEditorUtils.AndroidIcon);
@@ -190,8 +183,9 @@ namespace GetSocialSdk.Editor
             {
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 {
+                    DrawAndroidFrameworkStatusSettings();
                     DrawDashboardSettingToogle("Platform status", 
-                        GetSocialSettings.IsAdroidEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
+                        GetSocialSettings.IsAndroidEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
                     
                     DrawDashboardSettingToogle("Push notifications status", 
                         GetSocialSettings.IsAndroidPushEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
@@ -201,49 +195,48 @@ namespace GetSocialSdk.Editor
                     {
                         DrawAndroidSigningSignatureHash();
                     }
-                    
-                    GUILayout.Space(15f);
-                    DrawAndroidManifestSettings();
                 }
                 EditorGUILayout.EndVertical();
             }
         }
 
-        private void DrawAndroidManifestSettings()
+        private void DrawAndroidFrameworkStatusSettings()
         {
-            EditorGUI.BeginDisabledGroup(!GetSocialSettings.IsAdroidEnabled || !GetSocialSettings.IsAppIdValidated);
+            bool frameworkStatus = FileHelper.CheckAndroidFramework();
+            using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField("Android Manifest", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Framework status", EditorGuiUtils.OneThirdWidth);
 
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Configuration status", EditorGuiUtils.OneThirdWidth);
-                    
-                    var lableContent = new GUIContent(
-                        _isAndroidManifestConfigurationCorrect ? "✔ Correct [?]" : "✘ Not complete [?]",  
-                        _androidManifestConfigurationSummary
-                    );
-                    GUILayout.Button(lableContent, EditorStyles.label, EditorGuiUtils.TwoThirdsWidth);
-                }
-                
-                EditorGuiUtils.ColoredBackground(
-                    _isAndroidManifestConfigurationCorrect ? GUI.backgroundColor : Color.green,
+                EditorGuiUtils.ColoredBackground(frameworkStatus || FileHelper.AndroidDownloadInProgress ? GUI.backgroundColor : Color.green, 
                     () =>
                     {
-                        var regenerateManifest = _isAndroidManifestConfigurationCorrect ? "Regenerate manifest" : "Regenerate manifest to fix configuration";
-                        if (GUILayout.Button(regenerateManifest))
+                        string buttonText;
+                        if (FileHelper.AndroidDownloadInProgress)
                         {
-                            new AndroidManifestHelper().Regenerate();
-                            UpdateAndroidManifestCheck();
+                            buttonText = "... Downloading, please wait ...";
+                        }
+                        else
+                        {
+                            buttonText = frameworkStatus ? "✔ Downloaded" : "✘ Not downloaded";
+                        }
+                            
+                        var style = frameworkStatus ? EditorStyles.label : EditorStyles.miniButton;
+                        
+                        if(GUILayout.Button(buttonText, style, EditorGuiUtils.OneThirdWidth))
+                        {
+                            if (!frameworkStatus && !FileHelper.AndroidDownloadInProgress)
+                            {
+                                FileHelper.DownloadAndroidFramework(() =>
+                                {
+                                    buttonText = "✔ Downloaded";
+                                }, error =>
+                                {
+                                    buttonText = "✘ Not downloaded";
+                                });
+                            }
                         }
                     });
-                
-                if (!_isAndroidManifestConfigurationCorrect)
-                {
-                    EditorGUILayout.HelpBox("AndroidManifest.xml configuration is not complete. Regenerate manifest to avoid issues with running GetSocial SDK.", MessageType.Warning);                            
-                }
             }
-            EditorGUI.EndDisabledGroup();
         }
         
         private static void DrawDashboardSettingToogle(string settingText, string status)
@@ -262,7 +255,11 @@ namespace GetSocialSdk.Editor
 
         void DrawIosSettings()
         {
-            var iosSettingsText = !ShowIosSettings && !GetSocialSettings.IsIosEnabled ? " iOS Settings (platform disabled)" : " iOS Settings";
+            var iosSettingsText = " iOS Settings";
+            if (!ShowIosSettings && !GetSocialSettings.IsIosEnabled)
+            {
+                iosSettingsText += PlatformDisabledLabel;
+            }
             var iosSettingsLabel = EditorGuiUtils.GetBoldLabel(iosSettingsText, "", GetSocialEditorUtils.IOSIcon);
             
             GetSocialEditorUtils.BeginSetSmallIconSize();
@@ -273,6 +270,7 @@ namespace GetSocialSdk.Editor
             {
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 {
+                    DrawiOSFrameworkStatusSettings();
                     DrawDashboardSettingToogle("Platform status", 
                         GetSocialSettings.IsIosEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
                     
@@ -286,6 +284,45 @@ namespace GetSocialSdk.Editor
                     }
                 }
                 EditorGUILayout.EndVertical();
+            }
+        }
+
+        private void DrawiOSFrameworkStatusSettings()
+        {
+            bool frameworkStatus = FileHelper.CheckiOSFramework();
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Framework status", EditorGuiUtils.OneThirdWidth);
+
+                EditorGuiUtils.ColoredBackground(frameworkStatus || FileHelper.IOSDownloadInProgress ? GUI.backgroundColor : Color.green, 
+                    () =>
+                    {
+                        string buttonText;
+                        if (FileHelper.IOSDownloadInProgress)
+                        {
+                            buttonText = "... Downloading, please wait ...";
+                        }
+                        else
+                        {
+                            buttonText = frameworkStatus ? "✔ Downloaded" : "✘ Not downloaded";
+                        }
+                            
+                        var style = frameworkStatus ? EditorStyles.label : EditorStyles.miniButton;
+                        
+                        if(GUILayout.Button(buttonText, style, EditorGuiUtils.OneThirdWidth))
+                        {
+                            if (!frameworkStatus && !FileHelper.IOSDownloadInProgress)
+                            {
+                                FileHelper.DownloadiOSFramework(() =>
+                                {
+                                    buttonText = "✔ Downloaded";
+                                }, error =>
+                                {
+                                    buttonText = "✘ Not downloaded";
+                                });
+                            }
+                        }
+                    });
             }
         }
 
@@ -366,6 +403,11 @@ namespace GetSocialSdk.Editor
                 EditorGUILayout.HelpBox("Missing app id? Don't worry, get one at the GetSocial Dashboard",
                     MessageType.Info);
             }
+            else if (_remoteRequestStatusLabel.Contains("resolve"))
+            {
+                EditorGUILayout.HelpBox(_remoteRequestStatusLabel,
+                    MessageType.Error);
+            }
             else if (!GetSocialSettings.IsAppIdValidated)
             {
                 EditorGUILayout.HelpBox("App Id is not valid. Please visit GetSocial Dashboard to get the correct one.",
@@ -389,7 +431,6 @@ namespace GetSocialSdk.Editor
             {
                 GetSocialSettings.AppId = value;
                 UpdateRemoteConfig();
-                UpdateAndroidManifestCheck();
             }
         }
 
@@ -399,7 +440,6 @@ namespace GetSocialSdk.Editor
             if (!value.Equals(GetSocialSettings.UiConfigurationDefaultFilePath))
             {
                 GetSocialSettings.UiConfigurationDefaultFilePath = value;
-                UpdateAndroidManifestCheck();
                 UpdateUiConfigFileCheck();
             }
         }
@@ -409,7 +449,6 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoRegisrationForPushesEnabled != value)
             {
                 GetSocialSettings.IsAutoRegisrationForPushesEnabled = value;
-                UpdateAndroidManifestCheck();
             }
         }
 
@@ -418,7 +457,6 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoInitEnabled != value)
             {
                 GetSocialSettings.IsAutoInitEnabled = value;
-                UpdateAndroidManifestCheck();
             }
         }
 
@@ -457,7 +495,7 @@ namespace GetSocialSdk.Editor
                 {
                     if (remoteConfig.IsSuccessful)
                     {
-                        GetSocialSettings.IsAdroidEnabled = remoteConfig.Android.IsEnabled;
+                        GetSocialSettings.IsAndroidEnabled = remoteConfig.Android.IsEnabled;
                         GetSocialSettings.IsAndroidPushEnabled = remoteConfig.Android.IsPushNotificationEnabled;
                         GetSocialSettings.IsIosEnabled = remoteConfig.Ios.IsEnabled;
                         GetSocialSettings.IsIosPushEnabled = remoteConfig.Ios.IsPushNotificationEnabled;
@@ -508,14 +546,6 @@ namespace GetSocialSdk.Editor
             }
             
             return deeplinks;
-        }
-
-        private static void UpdateAndroidManifestCheck()
-        {
-            var androidManifestHelper = new AndroidManifestHelper();
-            
-            _isAndroidManifestConfigurationCorrect = androidManifestHelper.IsConfigurationCorrect();
-            _androidManifestConfigurationSummary = androidManifestHelper.ConfigurationSummary();
         }
         
         private void UpdateUiConfigFileCheck()

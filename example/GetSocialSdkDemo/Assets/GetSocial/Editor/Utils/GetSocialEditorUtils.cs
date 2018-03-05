@@ -58,6 +58,8 @@ namespace GetSocialSdk.Editor
             var files = rootDir.GetFiles("GetSocialSettingsEditor.cs", SearchOption.AllDirectories);
             _editorPath = Path.GetDirectoryName(files[0].FullName.Replace("\\", "/").Replace(Application.dataPath, "Assets"));
             _editorGuiPath = Path.Combine(_editorPath, "GUI");
+
+            CheckNativeLibraries();
         }
 
         public static void BeginSetSmallIconSize()
@@ -265,6 +267,26 @@ namespace GetSocialSdk.Editor
             else
             {
                 return proc.ExitCode != 127;
+            }
+        }
+
+        private static void CheckNativeLibraries()
+        {
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
+            {
+                if (!FileHelper.CheckiOSFramework() && !FileHelper.IOSDownloadInProgress)
+                {
+                    FileHelper.DownloadiOSFramework();                    
+                }
+            }
+
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
+            {
+                if (!FileHelper.CheckAndroidFramework() && !FileHelper.AndroidDownloadInProgress)
+                {
+                    FileHelper.DownloadAndroidFramework();
+                }
+                
             }
         }
         

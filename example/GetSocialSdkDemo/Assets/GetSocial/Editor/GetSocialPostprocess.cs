@@ -22,7 +22,7 @@ using UnityEngine;
 namespace GetSocialSdk.Editor
 {
     public static class GetSocialPostprocess
-    {
+    {        
         [PostProcessBuild(256)]
         public static void OnPostProcessBuild(BuildTarget target, string path)
         {
@@ -38,17 +38,49 @@ namespace GetSocialSdk.Editor
 
             if (BuildTarget.Android == target)
             {
-                var androidManifestHelper = new AndroidManifestHelper();
-                if (!androidManifestHelper.IsConfigurationCorrect())
-                {
-                    Debug.LogWarning("GetSocial: AndroidManifest.xml configuration is not complete. Summary: \n\n" + androidManifestHelper.ConfigurationSummary());
-                }
-                
                 if (PlayerSettingsCompat.bundleIdentifier == "com.Company.ProductName")
                 {
                     Debug.LogError("GetSocial: Please change the default Unity Bundle Identifier (com.Company.ProductName) to your package.");
                 }
             }
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
+            {
+                if (!FileHelper.CheckiOSFramework())
+                {
+                    Debug.LogError("GetSocial: Native libraries for GetSocial SDK were missing. Because of the Unity limitations we could download them only after the build. Most likely current build will crash, but subsequent ones will be fine.");
+                }
+            }
+
+            if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android)
+            {
+                if (!FileHelper.CheckAndroidFramework())
+                {
+                    Debug.LogError("GetSocial: Native libraries for GetSocial SDK were missing. Because of the Unity limitations we could download them only after the build. Most likely current build will crash, but subsequent ones will be fine.");
+                }
+            }
+        }
+        
+        [PostProcessScene(0)]
+        public static void OnPostSceneBuild()
+        {
+            if (!IsAndroidBuild () || Application.isPlaying) {
+                return;
+            }
+
+            var manifestHelper = new AndroidManifestHelper();
+            if (!manifestHelper.IsConfigurationCorrect())
+            {
+                manifestHelper.Regenerate();
+                if (!manifestHelper.IsConfigurationCorrect())
+                {
+                    Debug.LogWarning("GetSocial: AndroidManifest.xml configuration is not complete. Summary: \n\n" + manifestHelper.ConfigurationSummary());
+                }
+            }
+        }
+        
+        private static bool IsAndroidBuild()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
         }
     }
 }

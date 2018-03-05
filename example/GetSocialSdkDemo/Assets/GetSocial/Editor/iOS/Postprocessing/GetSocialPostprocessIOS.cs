@@ -26,8 +26,6 @@ namespace GetSocialSdk.Editor
 {
     public static class GetSocialPostprocessIOS
     {
-        // modify this constant if GetSocial is not subdirectory of the Assets/
-        public const string RootGetSocialPath = "";
         private const int MinimumIosVersionRequirnment = 8;
         
         public static void UpdateXcodeProject(string projectPath)
@@ -97,11 +95,14 @@ namespace GetSocialSdk.Editor
         {
             const string defaultLocationInProj = "Frameworks/GetSocial/Plugins/iOS";
             const string coreFrameworkName = "GetSocial.framework";
-            const string uiFrameworkName = "GetSocialUI.framework";
             var relativeCoreFrameworkPath = Path.Combine(defaultLocationInProj, coreFrameworkName);
-            var relativeUiFrameworkPath = Path.Combine(defaultLocationInProj, uiFrameworkName);
+            if (GetSocialSettings.UseGetSocialUi)
+            {
+                const string uiFrameworkName = "GetSocialUI.framework";
+                var relativeUiFrameworkPath = Path.Combine(defaultLocationInProj, uiFrameworkName);
+                project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
+            }
             project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
-            project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
             Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
         }
 
@@ -150,19 +151,7 @@ namespace GetSocialSdk.Editor
 
         static void AddAppEntitlements(string projectPath, PBXProject project, string target)
         {
-            const string appEntitlementsFilePath = "GetSocial/Editor/iOS/Files/app.entitlements";
-
-            var appEntitlementsFilePathCombined = Path.Combine(RootGetSocialPath, appEntitlementsFilePath);
-            var unityProjectPath = Path.Combine(Application.dataPath, appEntitlementsFilePathCombined);
-            var xcodeProjectPath = Path.Combine(projectPath, "app.entitlements");
-
-            GenerateAppEntitlements(unityProjectPath);
-
-            // to avoid errors when building with "Append" option
-            if (!File.Exists(xcodeProjectPath))
-            {
-                File.Copy(unityProjectPath, xcodeProjectPath);
-            }
+            GenerateAppEntitlements(Path.Combine(projectPath, "app.entitlements"));
 
             project.AddFileToBuild(target,
                 project.AddFile("app.entitlements", "app.entitlements", PBXSourceTree.Source));
@@ -172,6 +161,10 @@ namespace GetSocialSdk.Editor
         public static void GenerateAppEntitlements(string path)
         {
             var entitlements = new PlistDocument();
+            if (File.Exists(path))
+            {
+                entitlements.ReadFromFile(path);
+            }
             
             // Universal Links
             var assosiatedDomainsNode = entitlements.root.CreateArray("com.apple.developer.associated-domains");
@@ -180,7 +173,14 @@ namespace GetSocialSdk.Editor
             );
 
             // Push Environment
-            entitlements.root.SetString("aps-environment", GetSocialSettings.IosPushEnvironment);
+            if (GetSocialSettings.IsIosPushEnabled)
+            {
+                entitlements.root.SetString("aps-environment", GetSocialSettings.IosPushEnvironment);
+            }
+            else
+            {
+                entitlements.root.Remove("aps-environment");
+            }
 
             entitlements.WriteToFile(path);
         }

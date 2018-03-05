@@ -95,6 +95,11 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             values[key] = v;
             return v;
         }
+
+        public bool Remove(string key)
+        {
+            return values.Remove(key);
+        }
     }
 
     public class PlistElementArray : PlistElement

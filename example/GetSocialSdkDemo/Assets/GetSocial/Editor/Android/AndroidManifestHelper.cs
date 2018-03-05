@@ -74,6 +74,24 @@ namespace GetSocialSdk.Editor
                 && DeprecatedModifications.All(node => !_manifest.Contains(node));
         }
 
+        public void Regenerate()
+        {
+            GetSocialModifications.ForEach(node =>
+            {
+                _manifest.RemoveSimilar(node);
+                _manifest.Add(node);
+            });
+            
+            DeprecatedModifications.ForEach(node =>
+            {
+                _manifest.RemoveSimilar(node);
+            });
+            
+            _manifest.Save();
+            
+            Debug.Log("GetSocial: successfully regenerated AndroidManifest.xml with GetSocial modifications");
+        }
+        
         public string ConfigurationSummary()
         {
             StringBuilder sb = new StringBuilder();
@@ -113,25 +131,6 @@ namespace GetSocialSdk.Editor
             
             return sb.ToString();
         }
-
-        public void Regenerate()
-        {
-            GetSocialModifications.ForEach(node =>
-            {
-                _manifest.RemoveSimilar(node);
-                _manifest.Add(node);
-            });
-            
-            DeprecatedModifications.ForEach(node =>
-            {
-                _manifest.RemoveSimilar(node);
-            });
-            
-            _manifest.Save();
-            
-            Debug.Log("GetSocial: successfully regenerated AndroidManifest.xml with GetSocial modifications");
-        }
-        
         #endregion
 
 

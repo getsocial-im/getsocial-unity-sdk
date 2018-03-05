@@ -139,7 +139,7 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public static bool IsAdroidEnabled
+        public static bool IsAndroidEnabled
         {
             get { return Instance._isAndroidEnabled; }
             set
