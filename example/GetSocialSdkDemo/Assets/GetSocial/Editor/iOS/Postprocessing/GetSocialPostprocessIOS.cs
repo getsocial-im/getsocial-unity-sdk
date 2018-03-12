@@ -111,7 +111,7 @@ namespace GetSocialSdk.Editor
         static void SetupDeepLinking(PBXProject project, string projectPath, string target)
         {
             Debug.LogWarning(
-                "GetSocial: Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-invites/unity/deep-linking/");
+                "GetSocial: Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-links/receive-smart-links/unity/");
 
             // URL Schemes (iOS <= 8)
             AddGetSocialUrlScheme(projectPath);
@@ -231,7 +231,9 @@ namespace GetSocialSdk.Editor
                 "kik-share",
                 "kakaolink",
                 "line",
-                "whatsapp"
+                "whatsapp",
+                "viber",
+                "tg"
             };
 
             var appsArray = plistInfoFile.root.CreateArray(LSApplicationQueriesSchemes);
