@@ -1,4 +1,12 @@
+using System;
+
+#if UNITY_ANDROID
+using UnityEngine;
+#endif
+
+#if UNITY_IOS
 using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -8,12 +16,12 @@ namespace GetSocialSdk.Core
     public class ConflictUser : PublicUser, IGetSocialBridgeObject<ConflictUser>
     {
 #if UNITY_ANDROID
-        public new UnityEngine.AndroidJavaObject ToAJO()
+        public new AndroidJavaObject ToAJO()
         {
-            throw new System.NotImplementedException("ConflictUser is never passed to Android");
+            throw new NotImplementedException("ConflictUser is never passed to Android");
         }
 
-        public new ConflictUser ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public new ConflictUser ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
             {
@@ -24,7 +32,7 @@ namespace GetSocialSdk.Core
 #elif UNITY_IOS
         public new string ToJson()
         {
-            throw new System.NotImplementedException("ConflictUser is never passed to iOS");
+            throw new NotImplementedException("ConflictUser is never passed to iOS");
         }
 
         public new ConflictUser ParseFromJson(Dictionary<string, object> json)

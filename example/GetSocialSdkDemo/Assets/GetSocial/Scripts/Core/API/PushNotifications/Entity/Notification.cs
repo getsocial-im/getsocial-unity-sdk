@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Linq;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -58,8 +64,7 @@ namespace GetSocialSdk.Core
 
         public Notification ParseFromAJO(AndroidJavaObject ajo)
         {
-            AndroidJavaObject type = ajo.CallAJO("getAction");
-            Action = (Type) type.CallInt("ordinal");
+            Action = (Type) ajo.CallAJO("getAction").CallInt("ordinal");
             Title = ajo.CallStr("getTitle");
             Text = ajo.CallStr("getText");
             ActionData = ajo.CallAJO("getActionData").FromJavaHashMap();
@@ -77,7 +82,7 @@ namespace GetSocialSdk.Core
         {
             Title = dictionary["Title"] as string;
             Text = dictionary["Text"] as string;
-            ActionData = ((Dictionary<string, object>) dictionary["Data"]).ToDictionary(entry => entry.Key, entry => entry.Value.ToString());
+            ActionData = (dictionary["Data"] as Dictionary<string, object>).ToStrStrDict();
             Action = (Type) (long) dictionary["Type"];
             return this;
         }

@@ -11,12 +11,11 @@ namespace GetSocialSdk.Core
         /// Determines whether this invite channel plugin is available for this device.
         /// </summary>
         /// <returns><c>true</c> if this invite channel plugin is available for this device; otherwise, <c>false</c>.</returns>
-        /// <param name="invitechannel">Invite channel.</param>
+        /// <param name="inviteChannel">Invite channel.</param>
         bool IsAvailableForDevice(InviteChannel inviteChannel);
 
         /// <summary>
         /// Presents the invite channel interface.
-        ///
         /// Implementation MUST guarantee that exactly one of the callbacks is eventually called. (i.e. either onComplete, onCancel or onFailure)
         /// </summary>
         /// <param name="inviteChannel">Invite channel.</param>

@@ -2,7 +2,7 @@
 
 namespace GetSocialSdk.Ui
 {
-    public class MentionShortcuts
+    public static class MentionShortcuts
     {
         public const string App = "app";
     }

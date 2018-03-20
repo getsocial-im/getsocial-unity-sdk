@@ -1,5 +1,12 @@
 using System.Collections.Generic;
+
+#if UNITY_ANDROID
+using UnityEngine;
+#endif
+
+#if UNITY_IOS
 using GetSocialSdk.MiniJSON;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -18,6 +25,7 @@ namespace GetSocialSdk.Core
 
         public CustomReferralData(IDictionary<string, object> data)
         {
+            if (data == null) return;
             foreach (var kv in data)
             {
                 this[kv.Key] = kv.Value as string;
@@ -30,20 +38,17 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
-            return new UnityEngine.AndroidJavaObject("im.getsocial.sdk.invites.CustomReferralData", this.ToJavaHashMap());
+            return new AndroidJavaObject("im.getsocial.sdk.invites.CustomReferralData", this.ToJavaHashMap());
         }
 
-        public CustomReferralData ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public CustomReferralData ParseFromAJO(AndroidJavaObject ajo)
         {
-            Clear();
-            var dict = ajo.FromJavaHashMap();
-            foreach (var keyValuePair in dict)
+            using (ajo)
             {
-                this[keyValuePair.Key] = keyValuePair.Value;
+                return new CustomReferralData(ajo.FromJavaHashMap());
             }
-            return this;
         }
 #elif UNITY_IOS
         public string ToJson()
@@ -53,14 +58,7 @@ namespace GetSocialSdk.Core
 
         public CustomReferralData ParseFromJson(Dictionary<string, object> json)
         {
-            Clear();
-
-            foreach (var kv in json)
-            {
-                this[kv.Key] = kv.Value as string;
-            }
-
-            return this;
+            return new CustomReferralData(json);
         }
 #endif
     }

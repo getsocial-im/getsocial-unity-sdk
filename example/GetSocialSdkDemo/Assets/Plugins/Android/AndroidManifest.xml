@@ -32,6 +32,9 @@
     <meta-data android:name="im.getsocial.sdk.UiConfigurationFile" android:value="" />
     <meta-data android:name="im.getsocial.sdk.AutoInitSdk" android:value="true" />
     <meta-data android:name="im.getsocial.sdk.AutoRegisterForPush" android:value="true" />
+    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.15.3" />
+    <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="5.6.5f1" />
+    <meta-data android:name="im.getsocial.sdk.Runtime" android:value="UNITY" />
     <meta-data android:name="im.getsocial.sdk.AppId" android:value="LuDPp7W0J4" />
     <receiver android:name="com.appsflyer.SingleInstallBroadcastReceiver" android:exported="true">
       <intent-filter>

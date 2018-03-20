@@ -176,7 +176,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
     
 BOOL _gs_showActivityDetailsView(const char *windowTitle,
                               const char *activityId,
-                              BOOL showFeedView, BOOL readOnly,
+                              BOOL showFeedView, BOOL readOnly, const char *commentId,
                               ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
                               VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
                               VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
@@ -191,6 +191,11 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
     if (windowTitle) {
         NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
         view.windowTitle = titleStr;
+    }
+    
+    NSString *commentIdStr = [GetSocialBridgeUtils createNSStringFrom:commentId];
+    if (commentIdStr.length) {
+        [view setCommentId:commentIdStr];
     }
     
     if (onButtonClickPtr) {

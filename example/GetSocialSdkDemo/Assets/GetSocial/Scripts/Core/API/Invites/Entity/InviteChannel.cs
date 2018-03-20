@@ -1,7 +1,12 @@
 using System;
-using System.Collections.Generic;
-using GetSocialSdk.MiniJSON;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -71,9 +76,7 @@ namespace GetSocialSdk.Core
                 IconImageUrl = ajo.CallStr("getIconImageUrl");
                 DisplayOrder = ajo.CallInt("getDisplayOrder");
                 IsEnabled = ajo.CallBool("isEnabled");
-
-                var inviteContent = InviteContent.CreateBuilder().Build();
-                InviteContent = inviteContent.ParseFromAJO(ajo.CallAJO("getInviteContent"));
+                InviteContent = new InviteContent().ParseFromAJO(ajo.CallAJO("getInviteContent"));
                 return this;
             }
         }
@@ -85,46 +88,16 @@ namespace GetSocialSdk.Core
         
         public InviteChannel ParseFromJson(Dictionary<string, object> jsonDic)
         {
-            Id = jsonDic[IdFieldName] as string;
-            Name = jsonDic[NameFieldName] as string;
-            IconImageUrl = jsonDic[IconImageUrlFieldName] as string;
-            DisplayOrder = (int) (long) jsonDic[DisplayOrderFieldName];
-            IsEnabled = (bool) jsonDic[IsEnabledFieldName];
+            Id = jsonDic["Id"] as string;
+            Name = jsonDic["Name"] as string;
+            IconImageUrl = jsonDic["IconImageUrl"] as string;
+            DisplayOrder = (int) (long) jsonDic["DisplayOrder"];
+            IsEnabled = (bool) jsonDic["IsEnabled"];
 
-            var inviteContent = jsonDic[InviteContentFieldName] as Dictionary<string, object>;
+            var inviteContent = jsonDic["InviteContent"] as Dictionary<string, object>;
             InviteContent = new InviteContent().ParseFromJson(inviteContent);
 
             return this;
-        }
-
-        static string IdFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteChannel c) => c.Id); }
-        }
-
-        static string NameFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteChannel c) => c.Name); }
-        }
-
-        static string IconImageUrlFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteChannel c) => c.IconImageUrl); }
-        }
-
-        static string DisplayOrderFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteChannel c) => c.DisplayOrder); }
-        }
-
-        static string IsEnabledFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteChannel c) => c.IsEnabled); }
-        }
-
-        static string InviteContentFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteChannel c) => c.InviteContent); }
         }
 #endif
     }

@@ -59,7 +59,7 @@ namespace GetSocialSdk.Core
 #if UNITY_ANDROID
         public UnityEngine.AndroidJavaObject ToAJO()
         {
-            throw new System.NotImplementedException("Referral Data is never passed to Android, only received");
+            throw new NotImplementedException("Referral Data is never passed to Android, only received");
         }
 
         public ReferralData ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
@@ -87,55 +87,20 @@ namespace GetSocialSdk.Core
 #elif UNITY_IOS
         public string ToJson()
         {
-            throw new System.NotImplementedException("Referral Data is never passed to iOS, only received");
+            throw new NotImplementedException("Referral Data is never passed to iOS, only received");
         }
 
         public ReferralData ParseFromJson(Dictionary<string, object> json)
         {
-            Token = json[TokenFieldName] as string;
-            ReferrerUserId = json[ReferrerUserIdFieldName] as string;
-            ReferrerChannelId = json[ReferrerChannelIdFieldName] as string;
-            IsFirstMatch = (bool) json[IsFirstMatchFieldName];
-            IsGuaranteedMatch = (bool) json[IsGuaranteedMatchName];
-            CustomReferralData = new CustomReferralData(json[CustomReferralDataFieldName] as Dictionary<string, object>);
+            Token = json["Token"] as string;
+            ReferrerUserId = json["ReferrerUserId"] as string;
+            ReferrerChannelId = json["ReferrerChannelId"] as string;
+            IsFirstMatch = (bool) json["IsFirstMatch"];
+            IsGuaranteedMatch = (bool) json["IsGuaranteedMatch"];
+            CustomReferralData = new CustomReferralData(json["CustomReferralData"] as Dictionary<string, object>);
             OriginalCustomReferralData =
-                new CustomReferralData(json[OriginalCustomReferralDataFieldName] as Dictionary<string, object>);
+                new CustomReferralData(json["OriginalCustomReferralData"] as Dictionary<string, object>);
             return this;
-        }
-
-        static string TokenFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.Token); }
-        }
-
-        static string ReferrerUserIdFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.ReferrerUserId); }
-        }
-
-        static string ReferrerChannelIdFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.ReferrerChannelId); }
-        }
-
-        static string IsFirstMatchFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.IsFirstMatch); }
-        }
-        
-        static string IsGuaranteedMatchName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.IsGuaranteedMatch); }
-        }
-
-        static string CustomReferralDataFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.CustomReferralData); }
-        }
-
-        static string OriginalCustomReferralDataFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ReferralData c) => c.OriginalCustomReferralData); }
         }
 
 #endif

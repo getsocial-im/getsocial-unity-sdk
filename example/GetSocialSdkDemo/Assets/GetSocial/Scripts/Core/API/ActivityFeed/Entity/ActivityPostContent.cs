@@ -1,10 +1,12 @@
 ﻿using System;
+using UnityEngine;
+#if UNITY_IOS
 using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
+#endif
 
 namespace GetSocialSdk.Core
 {
-    using UnityEngine;
 
     /// <summary>
     ///
@@ -61,13 +63,8 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
-
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
             var activityPostContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
 
@@ -94,14 +91,14 @@ namespace GetSocialSdk.Core
 
         public string ToJson()
         {
-            var jsonDic = new Dictionary<string, object>
+            var json = new Dictionary<string, object>
             {
                 {"Text", _text},
                 {"ButtonTitle", _buttonTitle},
                 {"ButtonAction", _buttonAction},
                 {"Image", _image.TextureToBase64()}
             };
-            return GSJson.Serialize(jsonDic);
+            return GSJson.Serialize(json);
         }
 
         public ActivityPostContent ParseFromJson(Dictionary<string, object> json)

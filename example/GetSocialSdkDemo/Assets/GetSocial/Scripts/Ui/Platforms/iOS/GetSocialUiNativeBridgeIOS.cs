@@ -1,6 +1,5 @@
-using System.IO;
-
 #if UNITY_IOS && USE_GETSOCIAL_UI
+using System.IO;
 using GetSocialSdk.Core;
 using System.Runtime.InteropServices;
 using UnityEngine;

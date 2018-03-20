@@ -217,7 +217,7 @@ public class GetSocialDemoController : MonoBehaviour
 
         GetSocial.User.SetOnUserChangedListener(() =>
         {
-            _console.LogD(string.Format("GetSocial is initialized and user is retrieved"));
+            _console.LogD("GetSocial is initialized and user is retrieved");
             FetchCurrentUserData();
         });
     }

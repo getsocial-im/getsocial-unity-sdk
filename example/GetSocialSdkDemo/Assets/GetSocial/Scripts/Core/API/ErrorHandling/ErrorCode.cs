@@ -18,37 +18,23 @@ namespace GetSocialSdk.Core
         public const int ActionDenied = 201;
         public const int SdkNotInitialized = 202;
         public const int SdkInitializationFailed = 203;
-        public const int InvalidArgument = 204;
+        public const int IllegalArgument = 204;
+        public const int IllegalState = 205;
+        public const int NullPointer = 206;
+        public const int NotFound = 207;
+        public const int UserIsBanned = 208;
+        public const int PlatformDisabled = 209;
+        public const int AppSignatureMismatch = 210;
+        public const int UserIdTokenMismatch = 211;
 
         #endregion
 
         #region GetSocial private API errors
 
         public const int InviteCancelled = 100;
-
-        #endregion
-
-        #region business logic layer errors (in UseCase's or Func'tions)
-
-        /// <summary>
-        /// Error code indicates that API returned unexpected
-        // response that was correctly parsed by business logic layer does not know how to handle it.
-        /// </summary>
-        public const int UnexpectedApiResponse = 401;
-        public const int NotFound = 404;
-
-        #endregion
-
-        #region parser layer errors
-
-        public const int JsonParsingException = 501;
-
-        #endregion
-
-        #region wamp layer errors
-
-        public const int GenericWampClientError = 600;
-        public const int WampClientInitializationError = 601;
+        public const int UserConflict = 101;
+        public const int NoReferrerMatch = 102;
+        public const int OOM = 103;
 
         #endregion
 
@@ -58,6 +44,14 @@ namespace GetSocialSdk.Core
         public const int NoInternet = 702;
         public const int TransportClosed = 703;
 
+        #endregion
+        
+        
+        #region media upload errors
+        
+        public const int MediaUploadFailed = 800;
+        public const int MediaUploadResourceNotReady = 801;
+        
         #endregion
     }
 }

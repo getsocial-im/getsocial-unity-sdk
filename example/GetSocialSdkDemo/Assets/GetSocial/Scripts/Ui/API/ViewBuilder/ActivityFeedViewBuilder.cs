@@ -1,10 +1,16 @@
 ﻿#if USE_GETSOCIAL_UI
 using System;
+using GetSocialSdk.Core;
+
+#if UNITY_IOS
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using GetSocialSdk.Core;
 using GetSocialSdk.MiniJSON;
+#endif
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
 
 namespace GetSocialSdk.Ui
 {
@@ -25,7 +31,7 @@ namespace GetSocialSdk.Ui
         string _filterUserId;
         bool _readOnly;
         bool _friendsFeed;
-        string[] _tags = new string[] {};
+        string[] _tags = {};
 #pragma warning restore 414
         
         internal ActivityFeedViewBuilder()
@@ -190,12 +196,12 @@ namespace GetSocialSdk.Ui
 
             activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
             activityFeedBuilderAJO.CallAJO("setShowFriendsFeed", _friendsFeed);
-            activityFeedBuilderAJO.CallAJO("setFilterByTags", toJavaStringArray(_tags));
+            activityFeedBuilderAJO.CallAJO("setFilterByTags", ToJavaStringArray(_tags));
 
             return activityFeedBuilderAJO;
         }
 
-        private static AndroidJavaObject toJavaStringArray(string[] values) {
+        private static AndroidJavaObject ToJavaStringArray(string[] values) {
             if (values == null)
             {
                 return null;
@@ -205,7 +211,7 @@ namespace GetSocialSdk.Ui
                 new AndroidJavaClass("java.lang.String"),
                 values.Length);
 
-            for (int i = 0; i < values.Length; ++i ) 
+            for (var i = 0; i < values.Length; ++i ) 
             {
                 arrayClass.CallStatic("set", arrayObject, i,
                     new AndroidJavaObject("java.lang.String", values[i]));

@@ -1,5 +1,12 @@
 ﻿using System;
+
+#if UNITY_ANDROID
+using UnityEngine;
+#endif
+
+#if UNITY_IOS
 using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -26,12 +33,12 @@ namespace GetSocialSdk.Core
 
 #if UNITY_ANDROID
         
-        public new UnityEngine.AndroidJavaObject ToAJO()
+        public new AndroidJavaObject ToAJO()
         {
             throw new NotImplementedException("ReferredUser is never passed to Android, only received");
         }
 
-        public new ReferredUser ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public new ReferredUser ParseFromAJO(AndroidJavaObject ajo)
         {
             if (ajo.IsJavaNull())
             {

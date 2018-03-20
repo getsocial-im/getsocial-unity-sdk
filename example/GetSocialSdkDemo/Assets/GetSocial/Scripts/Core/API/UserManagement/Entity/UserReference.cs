@@ -1,5 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -25,7 +32,7 @@ namespace GetSocialSdk.Core
 #if UNITY_IOS
         public string ToJson()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public UserReference ParseFromJson(Dictionary<string, object> json)
@@ -38,7 +45,7 @@ namespace GetSocialSdk.Core
 #elif UNITY_ANDROID
         public AndroidJavaObject ToAJO()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public UserReference ParseFromAJO(AndroidJavaObject ajo)

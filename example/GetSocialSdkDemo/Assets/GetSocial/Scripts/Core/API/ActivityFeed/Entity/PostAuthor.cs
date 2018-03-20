@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System;
+
+#if UNITY_ANDROID
+using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
     /// <summary>
-    /// User that is received in the case of conflict when adding auth identity.
+    /// The author of <see cref="ActivityPost"/>.
     /// </summary>
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class PostAuthor : PublicUser, IGetSocialBridgeObject<PostAuthor>
     {
         /// <summary>
@@ -22,12 +28,12 @@ namespace GetSocialSdk.Core
 
 
 #if UNITY_ANDROID
-        public new UnityEngine.AndroidJavaObject ToAJO()
+        public new AndroidJavaObject ToAJO()
         {
-            throw new System.NotImplementedException("PostAuthor is never passed to Android");
+            throw new NotImplementedException("PostAuthor is never passed to Android");
         }
 
-        public new PostAuthor ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public new PostAuthor ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
             {
@@ -40,19 +46,14 @@ namespace GetSocialSdk.Core
 
         public new string ToJson()
         {
-            throw new System.NotImplementedException("PostAuthor is never passed to iOS");
+            throw new NotImplementedException("PostAuthor is never passed to iOS");
         }
         
         public new PostAuthor ParseFromJson(Dictionary<string, object> jsonDic)
         {
             base.ParseFromJson(jsonDic);
-            IsVerified = (bool) jsonDic[IsVerifiedFieldName];
+            IsVerified = (bool) jsonDic["IsVerified"];
             return this;
-        }
-
-        static string IsVerifiedFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((PostAuthor c) => c.IsVerified); }
         }
 
 #endif

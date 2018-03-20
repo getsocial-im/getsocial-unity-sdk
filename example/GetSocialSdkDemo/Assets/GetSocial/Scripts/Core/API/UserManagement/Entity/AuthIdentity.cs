@@ -1,6 +1,13 @@
-﻿using System.Collections.Generic;
-using GetSocialSdk.MiniJSON;
+﻿using System;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+using GetSocialSdk.MiniJSON;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -57,7 +64,7 @@ namespace GetSocialSdk.Core
 
         public AuthIdentity ParseFromAJO(AndroidJavaObject ajo)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 #elif UNITY_IOS
         public string ToJson()
@@ -73,7 +80,7 @@ namespace GetSocialSdk.Core
 
         public AuthIdentity ParseFromJson(Dictionary<string, object> json)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
         #endif
     }

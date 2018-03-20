@@ -1,5 +1,12 @@
 using System;
+
+#if UNITY_ANDROID
+using UnityEngine;
+#endif
+
+#if UNITY_IOS
 using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -29,12 +36,12 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
             throw new NotImplementedException("Error is only received from Android");
         }
 
-        public GetSocialError ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public GetSocialError ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
             {
@@ -56,20 +63,10 @@ namespace GetSocialSdk.Core
 
         public GetSocialError ParseFromJson(Dictionary<string, object> jsonDic)
         {
-            Message = jsonDic[MessageFieldName] as string;
-            ErrorCode = (int)(long) jsonDic[ErrorCodeFieldName];
+            Message = jsonDic["Message"] as string;
+            ErrorCode = (int)(long) jsonDic["ErrorCode"];
 
             return this;
-        }
-
-        static string ErrorCodeFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((GetSocialError c) => c.ErrorCode); }
-        }
-
-        static string MessageFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((GetSocialError c) => c.Message); }
         }
 #endif
     }

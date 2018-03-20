@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+
+#if UNITY_ANDROID
 using System.Linq;
-using GetSocialSdk.MiniJSON;
+using UnityEngine;
+#endif
 
 namespace GetSocialSdk.Core
 {
     /// <summary>
-    ///
+    /// Activity post entity. Contains all information about post, its author and content.
     /// </summary>
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class ActivityPost : IGetSocialBridgeObject<ActivityPost>
     {
         /// <summary>
@@ -156,12 +157,12 @@ namespace GetSocialSdk.Core
 
 #if UNITY_ANDROID
 
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
             throw new NotImplementedException();
         }
 
-        public ActivityPost ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public ActivityPost ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
             {
@@ -181,7 +182,7 @@ namespace GetSocialSdk.Core
                 FeedId = ajo.CallStr("getFeedId");
                 Mentions = ajo.CallAJO("getMentions").FromJavaList().ConvertAll(mentionAjo =>
                 {
-                    using (ajo)
+                    using (mentionAjo)
                     {
                         return new Mention().ParseFromAJO(mentionAjo);
                     }
@@ -197,101 +198,30 @@ namespace GetSocialSdk.Core
             throw new NotImplementedException();
         }
 
-        public ActivityPost ParseFromJson(Dictionary<string, object> jsonDic)
+        public ActivityPost ParseFromJson(Dictionary<string, object> json)
         {
-            Id = (string) jsonDic[IdFieldName];
-            Text = jsonDic[TextFieldName] as string;
+            Id = (string) json["Id"];
+            Text = json["Text"] as string;
 
-            ImageUrl = jsonDic[ImageUrlFieldName] as string;
-            ButtonTitle = jsonDic[ButtonTitleFieldName] as string;
-            ButtonAction = jsonDic[ButtonActionFieldName] as string;
-            CreatedAt = DateUtils.FromUnixTime((long) jsonDic[CreatedAtFieldName]);
+            ImageUrl = json["ImageUrl"] as string;
+            ButtonTitle = json["ButtonTitle"] as string;
+            ButtonAction = json["ButtonAction"] as string;
+            CreatedAt = DateUtils.FromUnixTime((long) json["CreatedAt"]);
 
-            var authorDic = jsonDic[AuthorFieldName] as Dictionary<string, object>;
+            var authorDic = json["Author"] as Dictionary<string, object>;
             Author = new PostAuthor().ParseFromJson(authorDic);
 
-            CommentsCount = (int) (long) jsonDic[CommentsCountFieldName];
-            LikesCount = (int) (long) jsonDic[LikesCountFieldName];
-            IsLikedByMe = (bool) jsonDic[IsLikedByMeFieldName];
+            CommentsCount = (int) (long) json["CommentsCount"];
+            LikesCount = (int) (long) json["LikesCount"];
+            IsLikedByMe = (bool) json["IsLikedByMe"];
 
-            StickyStart = DateUtils.FromUnixTime((long) jsonDic[StickyStartFieldName]);
-            StickyEnd = DateUtils.FromUnixTime((long) jsonDic[StickyEndFieldName]);
-            Mentions = GSJsonUtils.ParseList<Mention>(jsonDic[MentionsFieldName] as string);
-            FeedId = jsonDic[FeedIdFieldName] as string;
+            StickyStart = DateUtils.FromUnixTime((long) json["StickyStart"]);
+            StickyEnd = DateUtils.FromUnixTime((long) json["StickyEnd"]);
+            Mentions = GSJsonUtils.ParseList<Mention>(json["Mentions"] as string);
+            FeedId = json["FeedId"] as string;
             
             return this;
         }
-
-        static string IdFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.Id); }
-        }
-
-        static string TextFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.Text); }
-        }
-
-        static string ImageUrlFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.ImageUrl); }
-        }
-
-        static string ButtonTitleFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.ButtonTitle); }
-        }
-
-        static string ButtonActionFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.ButtonAction); }
-        }
-
-        static string CreatedAtFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.CreatedAt); }
-        }
-
-        static string AuthorFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.Author); }
-        }
-
-        static string CommentsCountFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.CommentsCount); }
-        }
-
-        static string LikesCountFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.LikesCount); }
-        }
-
-        static string IsLikedByMeFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.IsLikedByMe); }
-        }
-
-        static string StickyStartFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.StickyStart); }
-        }
-
-        static string StickyEndFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.StickyEnd); }
-        }
-
-        static string MentionsFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.Mentions); }
-        }
-
-        static string FeedIdFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((ActivityPost c) => c.FeedId); }
-        }
-
 #endif
     }
 }

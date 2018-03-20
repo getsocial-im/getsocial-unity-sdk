@@ -1,6 +1,9 @@
+using UnityEngine;
+
+#if UNITY_IOS
 using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
-using UnityEngine;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -118,9 +121,9 @@ namespace GetSocialSdk.Core
 
 
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
-            var inviteContentBuilderAJO = new UnityEngine.AndroidJavaObject("im.getsocial.sdk.invites.InviteContent$Builder");
+            var inviteContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.invites.InviteContent$Builder");
 
             if (Subject != null)
             {
@@ -146,15 +149,9 @@ namespace GetSocialSdk.Core
             using (ajo)
             {
                 ImageUrl = ajo.CallStr("getImageUrl");
-
-                var subjectAjo = ajo.CallAJO("getSubject");
-                Subject = subjectAjo.IsJavaNull() ? null : subjectAjo.FromLocalizableText();
-
-                var textAjo = ajo.CallAJO("getText");
-                Text = textAjo.IsJavaNull() ? null : textAjo.FromLocalizableText();
-
-                var image = ajo.CallAJO("getImage");
-                Image = image.IsJavaNull() ? null : image.FromAndroidBitmap();
+                Subject = ajo.CallAJO("getSubject").FromLocalizableText();
+                Text = ajo.CallAJO("getText").FromLocalizableText();
+                Image = ajo.CallAJO("getImage").FromAndroidBitmap();
             }
             return this;
         }
@@ -163,42 +160,22 @@ namespace GetSocialSdk.Core
         {
             var jsonDic = new Dictionary<string, object>
             {
-                {SubjectFieldName, Subject},
-                {TextFieldName, Text},
-                {ImageUrlFieldName, ImageUrl},
-                {ImageFieldName, Image.TextureToBase64()}
+                {"Subject", Subject},
+                {"Text", Text},
+                {"ImageUrl", ImageUrl},
+                {"Image", Image.TextureToBase64()}
             };
             return GSJson.Serialize(jsonDic);
         }
         
         public InviteContent ParseFromJson(Dictionary<string, object> jsonDic)
         {
-            Subject = jsonDic[SubjectFieldName] as string;
-            Text = jsonDic[TextFieldName] as string;
-            ImageUrl = jsonDic[ImageUrlFieldName] as string;
-            Image = (jsonDic[ImageFieldName] as string).FromBase64();
+            Subject = jsonDic["Subject"] as string;
+            Text = jsonDic["Text"] as string;
+            ImageUrl = jsonDic["ImageUrl"] as string;
+            Image = (jsonDic["Image"] as string).FromBase64();
 
             return this;
-        }
-
-        static string SubjectFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteContent c) => c.Subject); }
-        }
-
-        static string TextFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteContent c) => c.Text); }
-        }
-
-        static string ImageUrlFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteContent c) => c.ImageUrl); }
-        }
-
-        static string ImageFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InviteContent c) => c.Image); }
         }
 #endif
     }

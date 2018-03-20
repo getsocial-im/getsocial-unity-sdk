@@ -1,8 +1,14 @@
 ﻿#if USE_GETSOCIAL_UI
 using System;
-using System.Runtime.InteropServices;
 using GetSocialSdk.Core;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
 
 namespace GetSocialSdk.Ui
 {
@@ -14,6 +20,7 @@ namespace GetSocialSdk.Ui
     {
 #pragma warning disable 414
         readonly string _activityId;
+        private string _commentId;
 
         private bool _showActivityFeedView;
         private bool _readOnly;
@@ -27,6 +34,7 @@ namespace GetSocialSdk.Ui
         internal ActivityDetailsViewBuilder(string activityId)
         {
             _activityId = activityId;
+            _showActivityFeedView = true;
         }
 
         /// <summary>
@@ -101,12 +109,22 @@ namespace GetSocialSdk.Ui
             return this;
         }
         
+        /// <summary>
+        /// Set detailed comment which should be focused. Default is null.
+        /// </summary>
+        /// <param name="commentId">comment identifier</param>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
+        public ActivityDetailsViewBuilder SetCommentId(string commentId) {
+            _commentId = commentId;
+            return this;
+        }
+        
         internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _gs_showActivityDetailsView(_customWindowTitle, _activityId, _showActivityFeedView, _readOnly,
+            return _gs_showActivityDetailsView(_customWindowTitle, _activityId, _showActivityFeedView, _readOnly, _commentId,
                 ActivityFeedActionButtonCallback.OnActionButtonClick,
                 _onButtonClicked.GetPointer(),
                 Callbacks.ActionCallback,
@@ -154,6 +172,10 @@ namespace GetSocialSdk.Ui
                 activityDetailsBuilderAJO.CallAJO("setTagClickListener",
                     new TagClickListenerProxy(_tagClickListener));   
             }
+            if (_commentId != null)
+            {
+                activityDetailsBuilderAJO.CallAJO("setCommentId", _commentId);
+            }
             activityDetailsBuilderAJO.CallAJO("setReadOnly", _readOnly);
             return activityDetailsBuilderAJO;
         }
@@ -161,7 +183,7 @@ namespace GetSocialSdk.Ui
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _gs_showActivityDetailsView(string customWindowTitle, string activityId, bool showFeedView, bool readOnly,
+        static extern bool _gs_showActivityDetailsView(string customWindowTitle, string activityId, bool showFeedView, bool readOnly, string commentId,
             Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,

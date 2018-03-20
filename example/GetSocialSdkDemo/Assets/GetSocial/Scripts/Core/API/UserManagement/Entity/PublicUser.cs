@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -76,12 +79,12 @@ namespace GetSocialSdk.Core
 
 #if UNITY_ANDROID
 
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
             throw new NotImplementedException();
         }
 
-        public PublicUser ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public PublicUser ParseFromAJO(AndroidJavaObject ajo)
         {
             // NOTE: Don't forget to call Dispose() in subclasses to avoid leaks!!
             Id = ajo.CallStr("getId");
@@ -100,42 +103,22 @@ namespace GetSocialSdk.Core
             throw new NotImplementedException();
         }
 
-        public PublicUser ParseFromJson(Dictionary<string, object> jsonDic)
+        public PublicUser ParseFromJson(Dictionary<string, object> json)
         {
-            Id = (string) jsonDic[IdFieldName];
-            DisplayName = (string) jsonDic[DisplayNameFieldName];
-            AvatarUrl = (string) jsonDic[AvatarUrlFieldName];
+            Id = (string) json["Id"];
+            DisplayName = (string) json["DisplayName"];
+            AvatarUrl = (string) json["AvatarUrl"];
 
-            var identitiesDic = jsonDic[IdentitiesFieldName] as Dictionary<string, object>;
-            Identities = identitiesDic.ToStrStrDict();
+            var identitiesDictionary = json["Identities"] as Dictionary<string, object>;
+            Identities = identitiesDictionary.ToStrStrDict();
 
-            var publicProperties = jsonDic["PublicProperties"] as Dictionary<string, object>;
+            var publicProperties = json["PublicProperties"] as Dictionary<string, object>;
             _publicProperties = publicProperties.ToStrStrDict();
 
-            var intPublicProperties = jsonDic["InternalPublicProperties"] as Dictionary<string, object>;
+            var intPublicProperties = json["InternalPublicProperties"] as Dictionary<string, object>;
             _internalPublicProperties = intPublicProperties.ToStrStrDict();
 
             return this;
-        }
-
-        static string IdFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((PublicUser c) => c.Id); }
-        }
-
-        static string DisplayNameFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((PublicUser c) => c.DisplayName); }
-        }
-
-        static string AvatarUrlFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((PublicUser c) => c.AvatarUrl); }
-        }
-
-        static string IdentitiesFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((PublicUser c) => c.Identities); }
         }
 #endif
     }

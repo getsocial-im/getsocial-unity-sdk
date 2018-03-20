@@ -1,6 +1,13 @@
-﻿using System.Collections.Generic;
-using GetSocialSdk.MiniJSON;
+﻿using System;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+using GetSocialSdk.MiniJSON;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -33,17 +40,17 @@ namespace GetSocialSdk.Core
 #if UNITY_IOS
         public string ToJson()
         {
-            var jsonDic = new Dictionary<string, object>
+            var json = new Dictionary<string, object>
             {
                 {"Query", _query},
                 {"Limit", _limit}
             };
-            return GSJson.Serialize(jsonDic);
+            return GSJson.Serialize(json);
         }
 
         public UsersQuery ParseFromJson(Dictionary<string, object> json)
         {
-            throw new System.NotImplementedException("Users Query is never sent from native to unity");
+            throw new NotImplementedException("Users Query is never sent from native to unity");
         }
 #elif UNITY_ANDROID
         public AndroidJavaObject ToAJO()
@@ -54,7 +61,7 @@ namespace GetSocialSdk.Core
         }
         public UsersQuery ParseFromAJO(AndroidJavaObject ajo)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 #endif
     }

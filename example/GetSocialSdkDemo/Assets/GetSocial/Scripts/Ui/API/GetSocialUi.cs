@@ -1,6 +1,6 @@
-using System;
-
 #if USE_GETSOCIAL_UI
+
+using System;
 
 namespace GetSocialSdk.Ui
 {

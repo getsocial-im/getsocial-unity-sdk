@@ -1,7 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -20,12 +25,12 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public new UnityEngine.AndroidJavaObject ToAJO()
+        public new AndroidJavaObject ToAJO()
         {
-            throw new System.NotImplementedException("SuggestedFriend is never passed to Android");
+            throw new NotImplementedException("SuggestedFriend is never passed to Android");
         }
 
-        public new SuggestedFriend ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public new SuggestedFriend ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
             {
@@ -37,14 +42,14 @@ namespace GetSocialSdk.Core
 #elif UNITY_IOS
         public new string ToJson()
         {
-            throw new System.NotImplementedException("SuggestedFriend is never passed to iOS");
+            throw new NotImplementedException("SuggestedFriend is never passed to iOS");
         }
 
-        public new SuggestedFriend ParseFromJson(Dictionary<string, object> jsonDic)
+        public new SuggestedFriend ParseFromJson(Dictionary<string, object> json)
         {
-            base.ParseFromJson(jsonDic);
+            base.ParseFromJson(json);
 
-            var friendsCount = jsonDic["MutualFriendsCount"];
+            var friendsCount = json["MutualFriendsCount"];
             
             if (friendsCount != null)
             {

@@ -1,6 +1,6 @@
 ﻿namespace GetSocialSdk.Core
 {
-    public class InviteChannelIds
+    public static class InviteChannelIds
     {
         public const string Sms = "sms";
         public const string Email = "email";

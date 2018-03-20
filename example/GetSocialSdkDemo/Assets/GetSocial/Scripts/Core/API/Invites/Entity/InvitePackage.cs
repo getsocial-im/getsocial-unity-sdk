@@ -1,6 +1,10 @@
 ﻿using System;
+using UnityEngine;
+
+#if UNITY_IOS
 using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -37,7 +41,7 @@ namespace GetSocialSdk.Core
         /// Gets the image of the invite.
         /// </summary>
         /// <value>The invite image.</value>
-        public UnityEngine.Texture2D Image { get; private set; }
+        public Texture2D Image { get; private set; }
 
         /// <summary>
         /// Gets the url of the invite image.
@@ -53,12 +57,12 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
             throw new NotImplementedException("This object is never passed to Android");
         }
 
-        public InvitePackage ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public InvitePackage ParseFromAJO(AndroidJavaObject ajo)
         {
             JniUtils.CheckIfClassIsCorrect(ajo, "InvitePackage");
 
@@ -82,45 +86,14 @@ namespace GetSocialSdk.Core
 
         public InvitePackage ParseFromJson(Dictionary<string, object> json)
         {
-            Subject = json[SubjectFieldName] as string;
-            Text = json[TextFieldName] as string;
-            UserName = json[UserNameFieldName] as string;
-            ReferralDataUrl = json[ReferralDataUrlFieldName] as string;
-            Image = (json[ImageFieldName] as string).FromBase64();
-            ImageUrl = json[ImageUrlFieldName] as string;
+            Subject = json["Subject"] as string;
+            Text = json["Text"] as string;
+            UserName = json["UserName"] as string;
+            ReferralDataUrl = json["ReferralDataUrl"] as string;
+            Image = (json["Image"] as string).FromBase64();
+            ImageUrl = json["ImageUrl"] as string;
             return this;
         }
-
-        static string SubjectFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.Subject); }
-        }
-
-        static string TextFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.Text); }
-        }
-
-        static string UserNameFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.UserName); }
-        }
-
-        static string ReferralDataUrlFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.ReferralDataUrl); }
-        }
-
-        static string ImageFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.Image); }
-        }
-
-        static string ImageUrlFieldName
-        {
-            get { return ReflectionUtils.GetMemberName((InvitePackage c) => c.ImageUrl); }
-        }
-
 #endif
     }
 }

@@ -1,6 +1,13 @@
 ﻿using System;
+
+#if UNITY_ANDROID
+using UnityEngine;
+#endif
+
+#if UNITY_IOS
 using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -10,7 +17,7 @@ namespace GetSocialSdk.Core
     public sealed class ActivitiesQuery : IGetSocialBridgeObject<ActivitiesQuery>
     {
         /// <summary>
-        /// Set of filtering options for <see cref="WithFilter(Filter, long)"/> method
+        /// Set of filtering options for <see cref="WithFilter(Filter, string)"/> method
         /// </summary>
         public enum Filter
         {
@@ -92,9 +99,9 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
-            var activitiesQueryClass = new UnityEngine.AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery");
+            var activitiesQueryClass = new AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery");
             var activitiesQuery = _type == ActivityPost.Type.Post
                 ? activitiesQueryClass.CallStaticAJO("postsForFeed", _feed)
                 : activitiesQueryClass.CallStaticAJO("commentsToPost", _parentActivityId);
@@ -109,7 +116,7 @@ namespace GetSocialSdk.Core
             return activitiesQuery;
         }
 
-        public ActivitiesQuery ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public ActivitiesQuery ParseFromAJO(AndroidJavaObject ajo)
         {
             throw new NotImplementedException("ActivitiesQuery is never received from Android");
         }
@@ -117,7 +124,7 @@ namespace GetSocialSdk.Core
 
         public string ToJson()
         {
-            var jsonDic = new Dictionary<string, object>
+            var json = new Dictionary<string, object>
             {
                 {"Feed", _feed},
                 {"Type", (int) _type},
@@ -128,7 +135,7 @@ namespace GetSocialSdk.Core
                 {"FilterUserId", _filterUserId},
                 {"FriendsFeed", _isFriendsFeed}
             };
-            return GSJson.Serialize(jsonDic);
+            return GSJson.Serialize(json);
         }
 
         public ActivitiesQuery ParseFromJson(Dictionary<string, object> json)
