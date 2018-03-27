@@ -41,7 +41,7 @@ namespace GetSocialSdk.Core
         void SendInvite(string channelId, InviteContent customInviteContent,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure);
 
-        void SendInvite(string channelId, InviteContent customInviteContent, CustomReferralData customReferralData,
+        void SendInvite(string channelId, InviteContent customInviteContent, LinkParams linkParams,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure);
 
         bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin);

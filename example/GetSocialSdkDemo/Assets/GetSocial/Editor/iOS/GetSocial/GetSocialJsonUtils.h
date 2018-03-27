@@ -15,7 +15,7 @@
 
 + (GetSocialMutableInviteContent *)deserializeCustomInviteContent:(NSString *)customInviteContentJson;
 
-+ (NSDictionary *)deserializeCustomReferralData:(NSString *)customReferralDataJson;
++ (NSDictionary *)deserializeLinkParams:(NSString *)customLinkParamsJson;
 
 + (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSString *)serializedQuery;
 

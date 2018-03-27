@@ -79,10 +79,10 @@ namespace GetSocialSdk.Core
         }
 
         public void SendInvite(string channelId, InviteContent customInviteContent,
-            CustomReferralData customReferralData,
+            LinkParams linkParams,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-           _gs_sendInviteCustomAndReferralData(channelId, customInviteContent.ToJson(), customReferralData.ToJson(),
+           _gs_sendInviteCustomAndLinkParams(channelId, customInviteContent.ToJson(), linkParams.ToJson(),
                 Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -540,8 +540,8 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _gs_sendInviteCustomAndReferralData(string channelId, string customInviteContentJson,
-            string customReferralDataJson,
+        static extern void _gs_sendInviteCustomAndLinkParams(string channelId, string customInviteContentJson,
+            string linkParamsJson,
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr, IntPtr onCancelActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 

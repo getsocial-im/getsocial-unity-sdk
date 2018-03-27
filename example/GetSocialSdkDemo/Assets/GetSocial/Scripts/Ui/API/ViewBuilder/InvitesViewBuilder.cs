@@ -20,7 +20,7 @@ namespace GetSocialSdk.Ui
     public sealed class InvitesViewBuilder : ViewBuilder<InvitesViewBuilder>
     {
 #pragma warning disable 414
-        CustomReferralData _customReferralData;
+        LinkParams _linkParams;
         InviteContent _inviteContent;
         Action<string> _onInviteComplete;
         Action<string> _onInviteCancel;
@@ -43,9 +43,22 @@ namespace GetSocialSdk.Ui
         /// </summary>
         /// <returns>The custom referral data.</returns>
         /// <param name="customReferralData">Custom referral data.</param>
+        /// Deprecated, use <see cref="SetLinkParams"/> instead.
+        [Obsolete("Deprecated, use SetLinkParams instead.")]
         public InvitesViewBuilder SetCustomReferralData(CustomReferralData customReferralData)
         {
-            _customReferralData = customReferralData;
+            _linkParams = new LinkParams(customReferralData);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the link parameters.
+        /// </summary>
+        /// <returns>InviteBuilder.</returns>
+        /// <param name="linkParams">Link parameters.</param>
+        public InvitesViewBuilder SetLinkParams(LinkParams linkParams)
+        {
+            _linkParams = linkParams;
             return this;
         }
 
@@ -80,9 +93,9 @@ namespace GetSocialSdk.Ui
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
             var serializedInviteContent = _inviteContent == null ? null : _inviteContent.ToJson();
-            var serializedCustomReferralData = _customReferralData == null ? null : _customReferralData.ToJson();
+            var serializedLinkParams = _linkParams == null ? null : _linkParams.ToJson();
 
-            return _gs_showSmartInvitesView(_customWindowTitle, serializedInviteContent, serializedCustomReferralData,
+            return _gs_showSmartInvitesView(_customWindowTitle, serializedInviteContent, serializedLinkParams,
                 Callbacks.StringCallback, _onInviteComplete.GetPointer(), _onInviteCancel.GetPointer(),
                 Callbacks.FailureWithDataCallback, _onInviteFailure.GetPointer(),
                 Callbacks.ActionCallback, _onOpen.GetPointer(),
@@ -100,9 +113,9 @@ namespace GetSocialSdk.Ui
         {
             var invitesBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.ui.invites.InvitesViewBuilder");
 
-            if (_customReferralData != null)
+            if (_linkParams != null)
             {
-                invitesBuilderAJO.CallAJO("setCustomReferralData", _customReferralData.ToAJO());
+                invitesBuilderAJO.CallAJO("setLinkParams", _linkParams.ToAJO());
             }
 
             if (_inviteContent != null)
@@ -125,7 +138,7 @@ namespace GetSocialSdk.Ui
         static extern bool _gs_showSmartInvitesView(
             string title,
             string serializedInviteContent,
-            string serializedCustomReferralData,
+            string serializedLinkParams,
             StringCallbackDelegate stringCallback, IntPtr onInviteCompletePtr, IntPtr onInviteCancelPtr,
             FailureWithDataCallbackDelegate failureCallback, IntPtr onFailurePtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,

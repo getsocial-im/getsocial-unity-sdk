@@ -158,20 +158,20 @@ void _gs_sendInviteCustom(const char *channelId, const char *customInviteContent
 }
 
     
-void _gs_sendInviteCustomAndReferralData(const char *channelId, const char *customInviteContentJson, const char *customReferralDataJson,
+void _gs_sendInviteCustomAndLinkParams(const char *channelId, const char *customInviteContentJson, const char *linkParamsJson,
         VoidCallbackDelegate completeCallback, void *onCompletePtr, void *onCancelPtr,
         FailureCallbackDelegate failureCallback, void *onFailurePtr)
 {
     NSString *channelIdStr = [GetSocialBridgeUtils createNSStringFrom:channelId];
     NSString *customInviteContentJsonStr = [GetSocialBridgeUtils createNSStringFrom:customInviteContentJson];
-    NSString *customReferralDataJsonStr = [GetSocialBridgeUtils createNSStringFrom:customReferralDataJson];
+    NSString *linkParamsJsonStr = [GetSocialBridgeUtils createNSStringFrom:linkParamsJson];
 
     GetSocialMutableInviteContent *inviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:customInviteContentJsonStr];
-    NSDictionary *customReferralData = [GetSocialJsonUtils deserializeCustomReferralData:customReferralDataJsonStr];
+    NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:linkParamsJsonStr];
 
     [GetSocial sendInviteWithChannelId:channelIdStr
                          inviteContent:inviteContent
-                    customReferralData:customReferralData
+                    linkParams:linkParams
                                success:completeBlock(completeCallback, onCompletePtr)
                                 cancel:completeBlock(completeCallback, onCancelPtr)
                                failure:errorBlock(failureCallback, onFailurePtr)];

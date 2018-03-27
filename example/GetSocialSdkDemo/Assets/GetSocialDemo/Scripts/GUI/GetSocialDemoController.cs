@@ -23,6 +23,7 @@ using System.Diagnostics.CodeAnalysis;
 using com.adjust.sdk;
 using Facebook.Unity;
 using TheNextFlow.UnityPlugins;
+using System.Runtime.InteropServices;
 
 public class GetSocialDemoController : MonoBehaviour
 {
@@ -224,6 +225,7 @@ public class GetSocialDemoController : MonoBehaviour
 
     void RegisterInvitePlugins()
     {
+        GetSocialFBMessengerPluginHelper.RegisterFBMessengerPlugin();
         RegisterFacebookSharePlugin();
     }
 

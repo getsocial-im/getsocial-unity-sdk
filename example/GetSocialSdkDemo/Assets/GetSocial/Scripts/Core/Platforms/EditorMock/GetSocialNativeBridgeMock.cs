@@ -72,10 +72,10 @@ namespace GetSocialSdk.Core
         }
 
         public void SendInvite(string channelId, InviteContent customInviteContent,
-            CustomReferralData customReferralData,
+            LinkParams linkParams,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), channelId, customInviteContent, customReferralData,
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), channelId, customInviteContent, linkParams,
                 onComplete, onCancel, onFailure);
         }
 

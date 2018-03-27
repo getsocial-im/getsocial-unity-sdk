@@ -90,10 +90,10 @@ namespace GetSocialSdk.Core
         }
 
         public void SendInvite(string channelId, InviteContent customInviteContent,
-            CustomReferralData customReferralData,
+            LinkParams linkParams,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("sendInvite", channelId, customInviteContent.ToAJO(), customReferralData.ToAJO(),
+            _getSocial.CallStatic("sendInvite", channelId, customInviteContent.ToAJO(), linkParams.ToAJO(),
                 new InviteCallbackProxy(onComplete, onCancel, onFailure));
         }
 

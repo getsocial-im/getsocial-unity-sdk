@@ -89,16 +89,16 @@ namespace GetSocialSdk.Core
 
         const string JavaHashMapClass = "java.util.HashMap";
 
-        public static AndroidJavaObject ToJavaHashMap(this Dictionary<string, string> stringStringDictionary)
+        public static AndroidJavaObject ToJavaHashMap<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
         {
-            if (stringStringDictionary == null)
+            if (dictionary == null)
             {
                 return null;
             }
 
             var objHashMap = new AndroidJavaObject(JavaHashMapClass);
 
-            foreach (var keyValuePair in stringStringDictionary)
+            foreach (var keyValuePair in dictionary)
             {
                 objHashMap.CallStr("put", keyValuePair.Key, keyValuePair.Value);
             }

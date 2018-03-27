@@ -1,6 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+
+#if UNITY_ANDROID
 using UnityEngine;
+#endif
+
+#if UNITY_IOS
+using System.Collections.Generic;
+#endif
 
 namespace GetSocialSdk.Core
 {
@@ -26,7 +32,7 @@ namespace GetSocialSdk.Core
         public string ReferrerChannelId { get; private set; }
 
         /// <summary>
-        /// Returns true if the referral data is retrieved on this device for a first time. False otherwise.
+        /// Returns true if the app is installed for the first time on this device. False otherwise.
         /// </summary>
         public bool IsFirstMatch { get; private set; }
         
@@ -38,31 +44,61 @@ namespace GetSocialSdk.Core
         public bool IsGuaranteedMatch { get; private set; }
 
         /// <summary>
+        /// Returns true if the app is reinstalled on this device. False otherwise.
+        /// </summary>
+        public bool IsReinstall { get; private set; }
+
+        /// <summary>
+        /// Returns true if the app is opened for this link the first time on this device. False otherwise.
+        /// </summary>
+        public bool IsFirstMatchLink { get; private set; }
+        
+        /// <summary>
         /// Gets the custom referral data with the parameter overrides from the Smart Link.
         /// </summary>
         /// <value>The custom referral data.</value>
+        /// Deprecated, use <see cref="LinkParams"/> instead.
+        [Obsolete("Deprecated, use LinkParams instead.")]
+#pragma warning disable 0618
         public CustomReferralData CustomReferralData { get; private set; }
+#pragma warning restore 0618
+
+        /// <summary>
+        /// Gets the overriden link parameters assigned to the Smart Link.
+        /// </summary>
+        /// <value>The custom link parameters.</value>
+        public LinkParams LinkParams { get ; private set; }
 
         /// <summary>
         /// Gets the original custom referral data. Overrides from the Smart Link are ignored.
         /// </summary>
         /// <value>The original custom referral data.</value>
+        /// Deprecated, use <see cref="OriginalLinkParams"/> instead.
+        [Obsolete("Deprecated, use OriginalLinkParams instead.")]
+#pragma warning disable 0618
         public CustomReferralData OriginalCustomReferralData { get; private set; }
+#pragma warning restore 0618
+
+        /// <summary>
+        /// Gets the original link parameters. Overrides from the Smart Link are ignored.
+        /// </summary>
+        /// <value>The original link parameters.</value>
+        public LinkParams OriginalLinkParams { get; private set; }
 
         public override string ToString()
         {
-            return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, IsGuaranteedMatch={4}, CustomReferralData={5}, " +
-                                 ", OriginalCustomReferralData={6}]",
-                Token, ReferrerUserId, ReferrerChannelId, IsFirstMatch, IsGuaranteedMatch, CustomReferralData.ToDebugString(), OriginalCustomReferralData.ToDebugString());
+            return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, IsGuaranteedMatch={4}, LinkParams={5}, " +
+                                 ", OriginalLinkParams={6}]",
+                Token, ReferrerUserId, ReferrerChannelId, IsFirstMatch, IsGuaranteedMatch, LinkParams.ToDebugString(), OriginalLinkParams.ToDebugString());
         }
 
 #if UNITY_ANDROID
-        public UnityEngine.AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAJO()
         {
             throw new NotImplementedException("Referral Data is never passed to Android, only received");
         }
 
-        public ReferralData ParseFromAJO(UnityEngine.AndroidJavaObject ajo)
+        public ReferralData ParseFromAJO(AndroidJavaObject ajo)
         {
             if (ajo.IsJavaNull())
             {
@@ -76,11 +112,16 @@ namespace GetSocialSdk.Core
                 ReferrerChannelId = ajo.CallStr("getReferrerChannelId");
                 IsFirstMatch = ajo.CallBool("isFirstMatch");
                 IsGuaranteedMatch = ajo.CallBool("isGuaranteedMatch");
-                var customReferralDataDict = ajo.CallAJO("getCustomReferralData").FromJavaHashMap();
-                CustomReferralData = new CustomReferralData(customReferralDataDict);
-                var originalCustomReferralDataDict = ajo.CallAJO("getOriginalCustomReferralData").FromJavaHashMap();
-                OriginalCustomReferralData = new CustomReferralData(originalCustomReferralDataDict);
-
+                IsReinstall = ajo.CallBool("isReinstall");
+                IsFirstMatchLink = ajo.CallBool("isFirstMatchLink");
+                var linkParamsDict = ajo.CallAJO("getLinkParams").FromJavaHashMap();
+                LinkParams = new LinkParams(linkParamsDict);
+                var originalLinkParamsDict = ajo.CallAJO("getOriginalLinkParams").FromJavaHashMap();
+                OriginalLinkParams = new LinkParams(originalLinkParamsDict);
+#pragma warning disable 0618
+                CustomReferralData = new CustomReferralData(LinkParams);
+                OriginalCustomReferralData = new CustomReferralData(OriginalLinkParams);
+#pragma warning restore 0618
             }
             return this;
         }
@@ -97,12 +138,17 @@ namespace GetSocialSdk.Core
             ReferrerChannelId = json["ReferrerChannelId"] as string;
             IsFirstMatch = (bool) json["IsFirstMatch"];
             IsGuaranteedMatch = (bool) json["IsGuaranteedMatch"];
-            CustomReferralData = new CustomReferralData(json["CustomReferralData"] as Dictionary<string, object>);
-            OriginalCustomReferralData =
-                new CustomReferralData(json["OriginalCustomReferralData"] as Dictionary<string, object>);
+            IsReinstall = (bool) json["IsReinstall"];
+            IsFirstMatchLink = (bool) json["IsFirstMatchLink"];
+            LinkParams = new LinkParams(json["LinkParams"] as Dictionary<string, object>);
+            OriginalLinkParams =
+                new LinkParams(json["OriginalLinkParams"] as Dictionary<string, object>);
+#pragma warning disable 0618
+            CustomReferralData = new CustomReferralData(LinkParams);
+            OriginalCustomReferralData = new CustomReferralData(OriginalLinkParams);
+#pragma warning restore 0618
             return this;
         }
-
 #endif
     }
 }

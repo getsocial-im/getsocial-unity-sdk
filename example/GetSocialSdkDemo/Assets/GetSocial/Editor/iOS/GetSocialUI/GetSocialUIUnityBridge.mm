@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 bool _gs_showSmartInvitesView(
         const char *title,
         const char *serializedInviteContent,
-        const char *serializedCustomReferralData,
+        const char *serializedLinkParams,
         StringCallbackDelegate stringCallback /* with providerId */, void *onInviteCompletePtr, void *onInviteCancelPtr,
         FailureWithDataCallbackDelegate failureCallback, void *onFailurePtr,
         VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
@@ -47,10 +47,10 @@ bool _gs_showSmartInvitesView(
         [invitesView setCustomInviteContent:customInviteContent];
     }
 
-    if (serializedCustomReferralData) {
-        NSString *serializedCustomReferralDataStr = [GetSocialBridgeUtils createNSStringFrom:serializedCustomReferralData];
-        NSDictionary *referralData = [GetSocialJsonUtils deserializeCustomReferralData:serializedCustomReferralDataStr];
-        [invitesView setCustomReferralData:referralData];
+    if (serializedLinkParams) {
+        NSString *serializedLinkParamsStr = [GetSocialBridgeUtils createNSStringFrom:serializedLinkParams];
+        NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:serializedLinkParamsStr];
+        [invitesView setLinkParams:linkParams];
     }
     
     if (uiActionListenerPtr) {

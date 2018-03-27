@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 #if UNITY_ANDROID
@@ -13,6 +14,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Custom referral data attached to the invite.
     /// </summary>
+    [Obsolete("Deprecated. Use LinkParams class instead.")]
     public sealed class CustomReferralData : Dictionary<string, string>, IGetSocialBridgeObject<CustomReferralData>
     {
         public CustomReferralData()

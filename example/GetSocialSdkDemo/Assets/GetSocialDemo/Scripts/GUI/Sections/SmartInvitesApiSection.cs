@@ -37,7 +37,37 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         get { return _image ?? (_image = Resources.Load<Texture2D>("activityImage")); }
     }
+    
+    // Custom Link Params
+    string _customLandingPageTitle = "Custom Landing Page Title";
 
+    string _customLandingPageDescription = "Custom Landing Page Description";
+    
+    string _customLandingPageImageURL = "";
+
+    string _customLandingPageVideoURL = "";
+
+    private bool _useInviteImage;
+    private bool _useCustomImage;
+
+    private Texture2D CustomLandingPageImage
+    {
+        get
+        {
+            if (_useCustomImage)
+            {
+                return Resources.Load<Texture2D>("landingPage");
+            }
+            if (_useInviteImage)
+            {
+                return Image;
+            }
+            return null;
+            
+        }
+    }
+
+    
     InviteChannel[] _currentInviteChannels = { };
 
     public string CustomTitle
@@ -45,16 +75,37 @@ public class SmartInvitesApiSection : DemoMenuSection
         get { return _customWindowTitle; }
     }
 
-    public CustomReferralData CustomReferralData
+    public LinkParams LinkParams
     {
         get
         {
-            return new CustomReferralData
+            LinkParams linkParams = new LinkParams
             {
                 {_key1, _value1},
                 {_key2, _value2},
                 {_key3, _value3}
             };
+            if (_customLandingPageTitle.Length > 0)
+            {
+                linkParams[LinkParams.KeyCustomTitle] =  _customLandingPageTitle;
+            }
+            if (_customLandingPageDescription.Length > 0)
+            {
+                linkParams[LinkParams.KeyCustomDescription] = _customLandingPageDescription;
+            }
+            if (_customLandingPageImageURL.Length > 0)
+            {
+                linkParams[LinkParams.KeyCustomImage] = _customLandingPageImageURL;
+            }
+            if (_customLandingPageVideoURL.Length > 0)
+            {
+                linkParams[LinkParams.KeyCustomYouTubeVideo] = _customLandingPageVideoURL;
+            }
+            if (CustomLandingPageImage != null)
+            {
+                linkParams[LinkParams.KeyCustomImage] = CustomLandingPageImage;
+            }
+            return linkParams;
         }
     }
 
@@ -123,6 +174,88 @@ public class SmartInvitesApiSection : DemoMenuSection
         _customText = GUILayout.TextField(_customText, GSStyles.TextField, GUILayout.Width(Screen.width * 0.75f));
         GUILayout.EndHorizontal();
 
+        // Link Params
+        GUILayout.Label("Customize landing page (optional)", GSStyles.NormalLabelText);
+
+        // Title
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Title", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        _customLandingPageTitle = GUILayout.TextField(_customLandingPageTitle, GSStyles.TextField,
+            GUILayout.Width(Screen.width * 0.75f));
+        GUILayout.EndHorizontal();
+
+        // Description
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Description", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        _customLandingPageDescription = GUILayout.TextField(_customLandingPageDescription, GSStyles.TextField,
+            GUILayout.Width(Screen.width * 0.75f));
+        GUILayout.EndHorizontal();
+
+        // Image URL
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Image URL", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        _customLandingPageImageURL = GUILayout.TextField(_customLandingPageImageURL, GSStyles.TextField,
+            GUILayout.Width(Screen.width * 0.75f));
+        GUILayout.EndHorizontal();
+
+        // Video URL
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Video URL", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        _customLandingPageVideoURL = GUILayout.TextField(_customLandingPageVideoURL, GSStyles.TextField,
+            GUILayout.Width(Screen.width * 0.75f));
+        GUILayout.EndHorizontal();
+
+        // Image
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Image", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+
+        if (GUILayout.Toggle(_useCustomImage, "", new GUIStyle(GUI.skin.toggle)
+        {
+            name = "toggleCustomImage",
+            padding = new RectOffset(40, 0, 40, 0),
+            border = new RectOffset(0, 0, 0, 0),
+            overflow = new RectOffset(0, 0, 0, 0),
+            imagePosition = ImagePosition.ImageOnly,
+            stretchHeight = false,
+            stretchWidth = false
+        }))
+        {
+            _useCustomImage = true; 
+            _useInviteImage = false;
+        }
+        GUILayout.Label("Use Custom Image", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+
+        if (GUILayout.Toggle(_useInviteImage, "", new GUIStyle(GUI.skin.toggle)
+        {
+            name = "toggleInviteImage",
+            padding = new RectOffset(40, 0, 40, 0),
+            border = new RectOffset(0, 0, 0, 0),
+            overflow = new RectOffset(0, 0, 0, 0),
+            imagePosition = ImagePosition.ImageOnly,
+            stretchHeight = false,
+            stretchWidth = false
+        }))
+        {
+            _useCustomImage = false;
+            _useInviteImage = true;
+        }
+        GUILayout.Label("Use Invite Image", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        
+        if (GUILayout.Button("Clear", new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 16,
+            fixedHeight = 40,
+            stretchWidth = true,
+            richText = false,
+            alignment = TextAnchor.MiddleCenter
+        }))
+        {
+            _useCustomImage = false;
+            _useInviteImage = false;
+        }
+
+        GUILayout.EndHorizontal();
+        
         // Custom data
         GUILayout.Label("Attach some key/value pairs to your invite (optional)", GSStyles.NormalLabelText);
         DrawKeyValuePair(ref _key1, ref _value1);
@@ -201,7 +334,7 @@ public class SmartInvitesApiSection : DemoMenuSection
                     logMessage += string.Format("Referrer channel: {0}\n", referralData.ReferrerChannelId);
                     logMessage += string.Format("Is first match: {0}\n", referralData.IsFirstMatch);
                     logMessage += string.Format("Is guarateed match: {0}\n", referralData.IsGuaranteedMatch);
-                    logMessage += "Custom referral data:\n" + referralData.CustomReferralData.ToDebugString();
+                    logMessage += "Link params:\n" + referralData.LinkParams.ToDebugString();
                 }
                 else
                 {
@@ -256,7 +389,7 @@ public class SmartInvitesApiSection : DemoMenuSection
     void SendCustomInvite(string channelId)
     {
         _console.LogD(string.Format("Sending custom {0} invite...", channelId));
-        GetSocial.SendInvite(channelId, CustomInviteContent, CustomReferralData,
+        GetSocial.SendInvite(channelId, CustomInviteContent, LinkParams,
             () => _console.LogD("Successfully sent invite"),
             () => _console.LogW("Sending invite cancelled"),
             error => _console.LogE(string.Format("Failed to send invite: {0}", error.Message))

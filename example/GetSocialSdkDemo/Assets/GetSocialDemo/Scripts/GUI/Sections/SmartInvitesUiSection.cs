@@ -49,7 +49,7 @@ public class SmartInvitesUiSection : DemoMenuSection
     {
         GetSocialUi.CreateInvitesView()
             .SetWindowTitle(_smartInvitesApiSection.CustomTitle)
-            .SetCustomReferralData(_smartInvitesApiSection.CustomReferralData)
+            .SetLinkParams(_smartInvitesApiSection.LinkParams)
             .SetCustomInviteContent(_smartInvitesApiSection.CustomInviteContent)
             .SetInviteCallbacks(
                 channelId => _console.LogD("Successfully sent invite for " + channelId),

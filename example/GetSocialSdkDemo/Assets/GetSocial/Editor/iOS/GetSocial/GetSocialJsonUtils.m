@@ -26,14 +26,23 @@
     return content;
 }
 
-+ (NSDictionary *)deserializeCustomReferralData:(NSString *)customReferralDataJson
++ (NSDictionary *)deserializeLinkParams:(NSString *)customLinkParamsJson
 {
 
 #if DEBUG
-    NSLog(@"JSON Input: %@", customReferralDataJson);
+    NSLog(@"JSON Input: %@", customLinkParamsJson);
 #endif
 
-    NSDictionary *json = [self deserializeDictionary:customReferralDataJson];
+    NSDictionary<NSString*, id> *json = [self deserializeDictionary:customLinkParamsJson];
+    id rawImage = json[@"$image"];
+    if (rawImage != nil)
+    {
+        UIImage* image = [GetSocialBridgeUtils decodeUIImageFrom:(NSString*)rawImage];
+        if (image)
+        {
+            [json setValue:image forKey:@"$image"];
+        }
+    }
     return json;
 }
 

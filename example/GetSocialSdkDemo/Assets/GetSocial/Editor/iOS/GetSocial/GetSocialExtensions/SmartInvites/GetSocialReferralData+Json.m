@@ -16,8 +16,10 @@
     [dictionary gs_setValueOrNSNull:self.referrerChannelId forKey:@"ReferrerChannelId"];
     [dictionary gs_setValueOrNSNull:@(self.isFirstMatch) forKey:@"IsFirstMatch"];
     [dictionary gs_setValueOrNSNull:@(self.isGuaranteedMatch) forKey:@"IsGuaranteedMatch"];
-    [dictionary gs_setValueOrNSNull:self.customData forKey:@"CustomReferralData"];
-    [dictionary gs_setValueOrNSNull:self.originalCustomData forKey:@"OriginalCustomReferralData"];
+    [dictionary gs_setValueOrNSNull:@(self.isReinstall) forKey:@"IsReinstall"];
+    [dictionary gs_setValueOrNSNull:@(self.isFirstMatchLink) forKey:@"IsFirstMatchLink"];
+    [dictionary gs_setValueOrNSNull:self.linkParams forKey:@"LinkParams"];
+    [dictionary gs_setValueOrNSNull:self.originalLinkParams forKey:@"OriginalLinkParams"];
     return dictionary;
 }
 

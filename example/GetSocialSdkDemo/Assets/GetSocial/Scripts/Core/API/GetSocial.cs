@@ -226,18 +226,41 @@ namespace GetSocialSdk.Core
         /// <param name="onComplete">Called when the invite process was successful.</param>
         /// <param name="onCancel">Called when the invite process was cancelled by the user.</param>
         /// <param name="onFailure">Called when the invite process failed.</param>
+        /// Deprecated, use <see cref="SendInvite(string,InviteContent,LinkParams,System.Action,System.Action,System.Action{GetSocialSdk.Core.GetSocialError})"/> instead.
+        [Obsolete("Deprecated, please use SendInvite(string channelId, InviteContent customInviteContent, " +
+                  "LinkParams linkParams, " +
+                  "Action onComplete, " +
+                  "Action onCancel, " +
+                  "Action<GetSocialError> onFailure) instead.")]
         public static void SendInvite(string channelId, InviteContent customInviteContent,
             CustomReferralData customReferralData,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
+            LinkParams linkParams = new LinkParams(customReferralData);
+            SendInvite(channelId, customInviteContent, linkParams, onComplete, onCancel, onFailure);
+        }
+
+        /// <summary>
+        /// Invite friends via a specific invite channel.
+        /// </summary>
+        /// <param name="channelId">The channel through which the invite will be sent, will be lowercased.</param>
+        /// <param name="customInviteContent">Custom content to override the default content provided from the Dashboard.</param>
+        /// <param name="linkParams">Link customization parameters.</param>
+        /// <param name="onComplete">Called when the invite process was successful.</param>
+        /// <param name="onCancel">Called when the invite process was cancelled by the user.</param>
+        /// <param name="onFailure">Called when the invite process failed.</param>
+        public static void SendInvite(string channelId, InviteContent customInviteContent,
+            LinkParams linkParams,
+            Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
+        {
             Check.Argument.IsStrNotNullOrEmpty(channelId, "channelId");
             Check.Argument.IsNotNull(customInviteContent, "customInviteContent");
-            Check.Argument.IsNotNull(customReferralData, "customReferralData");
+            Check.Argument.IsNotNull(linkParams, "linkParams");
             Check.Argument.IsNotNull(onComplete, "onComplete");
             Check.Argument.IsNotNull(onCancel, "onCancel");
             Check.Argument.IsNotNull(onFailure, "onFailure");
 
-            GetSocialImpl.SendInvite(channelId, customInviteContent, customReferralData, onComplete, onCancel,
+            GetSocialImpl.SendInvite(channelId, customInviteContent, linkParams, onComplete, onCancel,
                 onFailure);
         }
 
