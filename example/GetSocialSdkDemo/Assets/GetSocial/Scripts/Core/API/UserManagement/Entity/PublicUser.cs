@@ -48,29 +48,7 @@ namespace GetSocialSdk.Core
 
 #pragma warning disable 414, 649      
         private Dictionary<string, string> _publicProperties;
-
-        private Dictionary<string, string> _internalPublicProperties;
 #pragma warning restore 414, 649
-        
-        public bool HasPublicProperty(string key)
-        {
-            return _publicProperties[key] != null;
-        }
-
-        public string GetPublicProperty(string key)
-        {
-            return _publicProperties[key];
-        }
-
-        internal bool HasInternalPublicProperty(string key)
-        {
-            return _internalPublicProperties[key] != null;
-        }
-
-        internal string GetInternalPublicProperty(string key)
-        {
-            return _internalPublicProperties[key];
-        }
 
         public override string ToString()
         {
@@ -92,8 +70,6 @@ namespace GetSocialSdk.Core
             AvatarUrl = ajo.CallStr("getAvatarUrl");
             Identities = ajo.CallAJO("getIdentities").FromJavaHashMap();
             _publicProperties = ajo.CallAJO("getAllPublicProperties").FromJavaHashMap();
-            _internalPublicProperties = new AndroidJavaObject("im.getsocial.sdk.usermanagement.PublicUserAccessHelper", ajo).CallAJO("getAllInternalPublicProperties").FromJavaHashMap();
-         
             return this;
         }
 
@@ -114,9 +90,6 @@ namespace GetSocialSdk.Core
 
             var publicProperties = json["PublicProperties"] as Dictionary<string, object>;
             _publicProperties = publicProperties.ToStrStrDict();
-
-            var intPublicProperties = json["InternalPublicProperties"] as Dictionary<string, object>;
-            _internalPublicProperties = intPublicProperties.ToStrStrDict();
 
             return this;
         }

@@ -10,7 +10,6 @@ namespace GetSocialSdk.Core
         const string GetSocialClassSignature = "im.getsocial.sdk.GetSocial";
         const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
         const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
-        const string HadesConfigurationTypeClass = "im.getsocial.sdk.core.thrifty.HadesConfigurationProvider$Type";
 
         static IGetSocialNativeBridge _instance;
 
@@ -399,6 +398,20 @@ namespace GetSocialSdk.Core
 
         #region access_helpers
 
+        public void HandleOnStartUnityEvent()
+        {
+            _getSocial.CallStatic("handleOnStartUnityEvent");
+        }
+
+        private AndroidJavaObject createAdapter(InviteChannelPlugin plugin)
+        {
+            if (plugin == null)
+            {
+                return null;
+            }
+            return new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
+        }
+
         public void Reset()
         {
             try
@@ -419,10 +432,8 @@ namespace GetSocialSdk.Core
         public void SetHadesConfiguration(int hadesConfigurationType)
         {
             using (var accessHelperJavaClass = new AndroidJavaClass(AndroidAccessHelperClass))
-            using (var hadesConfigurationTypeJavaClass = new AndroidJavaClass(HadesConfigurationTypeClass))
             {
-                var hadesConfigurationTypeAjo = hadesConfigurationTypeJavaClass.CallStaticAJO("findByValue", hadesConfigurationType);
-                accessHelperJavaClass.CallStatic("setHadesConfiguration", hadesConfigurationTypeAjo);
+                accessHelperJavaClass.CallStatic("setHadesConfiguration", hadesConfigurationType);
             }
         }
 
@@ -430,16 +441,9 @@ namespace GetSocialSdk.Core
         {
             using (var accessHelperJavaClass = new AndroidJavaClass(AndroidAccessHelperClass))
             {
-                var currentHadesConfigurationAjo = accessHelperJavaClass.CallStaticAJO("getCurrentHadesConfiguration");
-                return currentHadesConfigurationAjo.CallInt("getValue");
+                return accessHelperJavaClass.CallStaticInt("getCurrentHadesConfiguration");
             }
         }
-
-        public void HandleOnStartUnityEvent()
-        {
-            _getSocial.CallStatic("handleOnStartUnityEvent");
-        }
-
         public void StartUnityTests(string scenario, Action readyAction)
         {
             var testPrepare = new AndroidJavaClass("im.getsocial.sdk.tests.TestPrepare");
@@ -450,15 +454,6 @@ namespace GetSocialSdk.Core
         }
 
         #endregion
-
-        private AndroidJavaObject createAdapter(InviteChannelPlugin plugin)
-        {
-            if (plugin == null)
-            {
-                return null;
-            }
-            return new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
-        }
     }
 }
 

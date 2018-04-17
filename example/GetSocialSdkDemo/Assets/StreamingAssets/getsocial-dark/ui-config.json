@@ -1,0 +1,256 @@
+{
+    "base-design": {
+        "scale-mode": "scale-with-screen-size",
+        "width": 320,
+        "height": 640,
+        "ppi": 72
+    },
+    "assets-base-path": "getsocial-dark",
+    "elements": {
+        "window": {
+            "width": 320,
+            "height": 620,
+            "bg-color": "0xFF232323",
+            "tint-color": "0xCC000000",
+            "animation-style": "scale"
+        },
+        "header": {
+            "height": 38,
+            "bg-color": "0xFF242525",
+            "padding-top": 2,
+            "padding-bottom": 0
+        },
+        "title": {
+            "text-style": "header"
+        },
+        "back-button": {
+            "width": 33,
+            "height": 38,
+            "margin-left": 0,
+            "margin-top": 0,
+            "bg-image-normal": "back-button.bg-image-normal.png",
+            "bg-image-pressed": "back-button.bg-image-pressed.png"
+        },
+        "close-button": {
+            "width": 33,
+            "height": 38,
+            "margin-right": 0,
+            "margin-top": 0,
+            "bg-image-normal": "close-button.bg-image-normal.png",
+            "bg-image-pressed": "close-button.bg-image-pressed.png"
+        },
+        "content": {
+            "margin-top": 38,
+            "margin-left": 0,
+            "margin-right": 0,
+            "margin-bottom": 0,
+            "text-style": "content"
+        },
+        "entity-name": {
+            "text-style": "entity"
+        },
+        "timestamp": {
+            "text-style": "timestamp"
+        },
+        "badge": {
+            "text-style": "badge",
+            "bg-image": "badge.bg-image.png",
+            "bg-image-insets": "32 32 32 32",
+            "text-insets": "0 4 0 4"
+        },
+        "link": {
+            "text-style": "link"
+        },
+        "verified-account-badge": {
+            "bg-image": "verified-account-badge.bg-image.png"
+        },
+        "invite-friends-button": {
+            "text-style": "call-to-action",
+            "text-y-offset-normal": 0,
+            "text-y-offset-pressed": 0,
+            "bar-color": "0x19000000",
+            "bg-image-normal": "invite-friends-button.bg-image-normal.png",
+            "bg-image-normal-insets": "12 12 12 12",
+            "bg-image-pressed": "invite-friends-button.bg-image-pressed.png",
+            "bg-image-pressed-insets": "12 12 12 12"
+        },
+        "activity-action-button": {
+            "text-style": "call-to-action",
+            "text-y-offset-normal": 0,
+            "text-y-offset-pressed": 0,
+            "bg-image-normal": "activity-action-button.bg-image-normal.png",
+            "bg-image-normal-insets": "12 12 12 12",
+            "bg-image-pressed": "activity-action-button.bg-image-pressed.png",
+            "bg-image-pressed-insets": "12 12 12 12"
+        },
+        "overscroll": {
+            "text-style": "overscroll"
+        },
+        "placeholder-title": {
+            "text-style": "content"
+        },
+        "placeholder-content": {
+            "text-style": "overscroll"
+        },
+        "input-field": {
+            "text-style": "input-field",
+            "bg-color": "0xFF454546",
+            "hint-color": "0xFFFFFFFF",
+            "highlight-color": "0xFFFFF6D1",
+            "border-size": 0,
+            "border-color": "0x00000000",
+            "radius": 3
+        },
+        "activity-input-bar": {
+            "bg-color": "0xFF303031"
+        },
+        "comment-input-bar": {
+            "bg-color": "0xFF303031"
+        },
+        "avatar": {
+            "border-size": 0,
+            "border-color": "0x00000000",
+            "radius": 3,
+            "default-image": "avatar.default-image.png"
+        },
+        "like-button": {
+            "bg-image-normal": "like-button.bg-image-normal.png",
+            "bg-image-selected": "like-button.bg-image-selected.png"
+        },
+        "more-button": {
+            "bg-image-normal": "more-button.bg-image-normal.png",
+            "bg-image-pressed": "more-button.bg-image-pressed.png"
+        },
+        "divider": {
+            "bg-color": "0xFFCFD3D9",
+            "height": 1
+        },
+        "activity-comment": {
+            "bg-color": "0x0F000000"
+        },
+        "load-more-button": {
+            "text-style": "call-to-action",
+            "text-y-offset-normal": 0,
+            "text-y-offset-pressed": 0,
+            "bg-image-normal": "load-more-button.bg-image-normal.png",
+            "bg-image-normal-insets": "12 12 12 12",
+            "bg-image-pressed": "load-more-button.bg-image-pressed.png",
+            "bg-image-pressed-insets": "12 12 12 12"
+        },
+        "post-button": {
+            "bg-image-normal": "post-button.bg-image-normal.png",
+            "bg-image-pressed": "post-button.bg-image-pressed.png"
+        },
+        "segment-bar": {
+            "text-style-normal": "segment",
+            "text-style-selected": "segment",
+            "border-color": "0xCC000000",
+            "border-size": 0,
+            "border-radius": 3,
+            "bg-color-normal": "0xFF488EE7",
+            "bg-color-selected": "0xFF4180CF"
+        },
+        "loading-indicator": {
+            "bg-image": "loading-indicator.bg-image.png"
+        },
+        "notification-icon-comment": {
+            "bg-image": "notification-icon-comment.bg-image.png"
+        },
+        "notification-icon-like": {
+            "bg-image": "notification-icon-like.bg-image.png"
+        },
+        "no-network-placeholder": {
+            "bg-image": "no-network-placeholder.bg-image.png"
+        },
+        "no-activity-placeholder": {
+            "bg-image": "no-activity-placeholder.bg-image.png"
+        },
+        "invite-provider-placeholder": {
+            "bg-image": "invite-provider-placeholder.bg-image.png"
+        },
+        "list-item": {
+            "bg-color-odd": "0xFF383838",
+            "bg-color-even": "0xFF262626"
+        },
+        "notification-list-item": {
+            "bg-color-read": "0xFFFFFFFF",
+            "bg-color-unread": "0xFFD7E2F2"
+        },
+        "activity-image": {
+            "aspect-ratio": "16:9",
+            "radius": 3,
+            "default-image": "activity-image.default-image.png",
+            "video-overlay-color": "0x99323945"
+        },
+        "activity-not-found-placeholder": {
+            "bg-image": "activity-not-found.bg-image.png"
+        }
+    },
+    "text-styles": {
+        "header": {
+            "font": "SourceSansPro-Regular.ttf",
+            "font-size": 20,
+            "font-color": "0xFFFFFFFF"
+        },
+        "content" : {
+            "font": "SourceSansPro-Semibold.ttf",
+            "font-size": 16,
+            "font-color": "0xFF999999"
+        },
+        "input-field": {
+            "font": "SourceSansPro-Regular.ttf",
+            "font-size": 16,
+            "font-color": "0xFFFFFFFF"
+        },
+        "entity": {
+            "font": "SourceSansPro-Semibold.ttf",
+            "font-size": 18,
+            "font-color": "0xFFFFFFFF"
+        },
+        "timestamp": {
+            "font": "SourceSansPro-Regular.ttf",
+            "font-size": 16,
+            "font-color": "0xFF999999"
+        },
+        "segment": {
+            "font": "HelveticaNeue-Bold",
+            "font-size": 15,
+            "font-color": "0xFFFFFFFF"
+        },
+        "badge": {
+            "font": "HelveticaNeue-Bold",
+            "font-size": 10,
+            "font-color": "0xFFFFFFFF"
+        },
+        "link": {
+            "font": "SourceSansPro-Semibold.ttf",
+            "font-size": 18,
+            "font-color": "0xFF488ee7"
+        },
+        "placeholderTitle": {
+            "font": "SourceSansPro-Bold.ttf",
+            "font-size": 18,
+            "font-color": "0xFF9EA6B2"
+        },
+        "placeholderContent": {
+            "font": "SourceSansPro-Regular.ttf",
+            "font-size": 16,
+            "font-color": "0xFF9EA6B2"
+        },
+        "overscroll": {
+            "font": "SourceSansPro-Regular.ttf",
+            "font-size": 12,
+            "font-color": "0xFF9EA6B2"
+        },
+        "inputField": {
+            "font": "SourceSansPro-Regular.ttf",
+            "font-size": 16,
+            "font-color": "0xFF666666"
+        },
+        "call-to-action": {
+            "font": "SourceSansPro-Bold.ttf",
+            "font-size": 16,
+            "font-color": "0xFFFFFFFF"
+        }
+    }
+}

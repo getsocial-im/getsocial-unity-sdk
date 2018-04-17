@@ -162,7 +162,11 @@ namespace GetSocialSdk.Editor
             var enablePushNotificationAutoRegistering = new GUIContent("Register Automatically [?]", "If this setting is checked, GetSocial push notifications will be registered automatically, if not, you need to call GetSocial.RegisterForPushNotification() method.");
             var isAutoRegisrationForPushesEnabled = EditorGUILayout.ToggleLeft(enablePushNotificationAutoRegistering, GetSocialSettings.IsAutoRegisrationForPushesEnabled);
             
+            var enableForegroundNotifications = new GUIContent("Show Notification In Foreground [?]", "If this setting is checked, all GetSocial push notifications will be shown when app is in foreground. Otherwise, the notification will be delegated to NotificationListener.");
+            var isForegroundNotificationEnabled = EditorGUILayout.ToggleLeft(enableForegroundNotifications, GetSocialSettings.IsForegroundNotificationsEnabled);
+            
             SetAutoRegisterPushEnabled(isAutoRegisrationForPushesEnabled);
+            SetForegroundNotificationsEnabled(isForegroundNotificationEnabled);
         }
 
         void DrawAndroidSettings()
@@ -449,6 +453,14 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoRegisrationForPushesEnabled != value)
             {
                 GetSocialSettings.IsAutoRegisrationForPushesEnabled = value;
+            }
+        }
+
+        private void SetForegroundNotificationsEnabled(bool value)
+        {
+            if (GetSocialSettings.IsForegroundNotificationsEnabled != value)
+            {
+                GetSocialSettings.IsForegroundNotificationsEnabled = value;
             }
         }
 

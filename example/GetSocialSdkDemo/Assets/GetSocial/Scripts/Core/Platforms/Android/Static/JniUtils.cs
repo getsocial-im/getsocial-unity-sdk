@@ -60,11 +60,6 @@ namespace GetSocialSdk.Core
             return new AndroidJavaObject("java.lang.Throwable", message);
         }
 
-        public static AndroidJavaObject NewJavaGetSocialException(int errorCode, string message)
-        {
-            return new AndroidJavaObject("im.getsocial.sdk.core.exception.GetSocialException", errorCode, message);
-        }
-
         public static string FromLocalizableText(this AndroidJavaObject localizableTextAJO)
         {
             if (localizableTextAJO.IsJavaNull())
@@ -118,7 +113,7 @@ namespace GetSocialSdk.Core
                 return new Dictionary<string, string>();
             }
 
-            int size = javaHashMap.CallInt("size");
+            var size = javaHashMap.CallInt("size");
             var dictionary = new Dictionary<string, string>(size);
 
             var iterator = javaHashMap.CallAJO("keySet").CallAJO("iterator");

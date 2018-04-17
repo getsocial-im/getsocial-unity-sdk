@@ -1,0 +1,14 @@
+{
+	"base-design": {
+		"scale-mode": "scale-with-screen-size",
+		"width": 640,
+		"height": 320,
+		"ppi": 72
+	},
+	"elements": {
+		"window": {
+			"width": 500,
+			"height": 320
+		}
+	}
+}

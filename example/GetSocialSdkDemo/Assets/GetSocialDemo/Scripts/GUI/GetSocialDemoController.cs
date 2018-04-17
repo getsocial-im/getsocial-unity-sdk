@@ -51,6 +51,8 @@ public class GetSocialDemoController : MonoBehaviour
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     void Awake()
     {
+        // change default framerate
+        Application.targetFrameRate = 100;
         _console = gameObject.GetComponent<DemoAppConsole>().Init();
         Adjust.start(new AdjustConfig("suzggk2586io", AdjustEnvironment.Production));
         SetupAppsFlyer();
@@ -140,6 +142,7 @@ public class GetSocialDemoController : MonoBehaviour
 
     protected void Update()
     {
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         HandleAndroidBackButton();
     }
 
@@ -269,6 +272,16 @@ public class GetSocialDemoController : MonoBehaviour
             MobileNativePopups.OpenAlertDialog("Info", _currentUserInfo.ToString(), "OK", () => { });
             _console.LogD(_currentUserInfo.ToString());
         }
+        GUIStyle fpsStyle = new GUIStyle
+        {
+            margin = new RectOffset(4, 4, 4, 4),
+            fontSize = 16,
+            alignment = TextAnchor.UpperLeft,
+            wordWrap = true,
+            richText = false,
+            stretchWidth = true
+        };
+        GUILayout.Label("FPS: " + GetFPS(), fpsStyle);
         GUILayout.EndVertical();
 
         if (!string.IsNullOrEmpty(_currentUserInfo.Guid))
@@ -310,6 +323,16 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GUILayout.Label(GetFooterText(), GSStyles.NormalLabelText);
     }
+
+    float deltaTime = 0.0f;
+
+    protected virtual string GetFPS()
+    {
+        float msec = deltaTime * 1000.0f;
+        float fps = 1.0f / deltaTime;
+        return string.Format("{0:0.} fps ({1:0.} ms)", fps, msec);
+    }
+
 
     protected virtual string GetFooterText()
     {

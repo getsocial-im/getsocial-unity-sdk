@@ -22,6 +22,9 @@ namespace GetSocialSdk.Core
 
         [SerializeField]
         bool _isAutoRegisrationForPushesEnabled = true;
+
+        [SerializeField]
+        bool _isForegroundNotificationsEnabled = false;
         
         [SerializeField]
         bool _autoInitEnabled = true;
@@ -104,6 +107,16 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._isAutoRegisrationForPushesEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+
+        public static bool IsForegroundNotificationsEnabled
+        {
+            get { return Instance._isForegroundNotificationsEnabled; }
+            set
+            {
+                Instance._isForegroundNotificationsEnabled = value;
                 MarkAssetDirty();
             }
         }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _appId: LuDPp7W0J4
   _isAutoRegisrationForPushesEnabled: 1
+  _isForegroundNotificationsEnabled: 0
   _autoInitEnabled: 1
   _useGetSocialUi: 1
   _getSocialDefaultConfigurationFilePath: 

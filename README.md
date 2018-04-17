@@ -8,7 +8,7 @@ Provided demo application will show you GetSocial SDK features effortlessly, no 
 
 1. Clone the repo:
 
-       git clone git@github.com:getsocial-im/getsocial-unity-sdk.git
+        git clone git@github.com:getsocial-im/getsocial-unity-sdk.git
 
 1. Open project `example/GetSocialSdkDemo/` in Unity Editor.
 1. Switch platform to Android or iOS.

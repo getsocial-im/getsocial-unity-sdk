@@ -49,6 +49,7 @@ namespace GetSocialSdk.Editor
                 AddAnalyticsSuperPropertiesMetaData(plistDocument);
                 WhitelistApps(plistDocument);
                 SetAutoRegisterForPushTag(plistDocument);
+                SetForegroundNotifications(plistDocument);
                 SetAutoInitSdk(plistDocument);
                 SetUiBackgroundModes(plistDocument);
                 SetDefaultUiConfigurationFilePathTag(plistDocument);
@@ -223,6 +224,7 @@ namespace GetSocialSdk.Editor
                 "fbauth2",
                 "fb-messenger-api20140430",
                 "fb-messenger-api",
+                "fb-messenger-share-api",
                 "fbshareextension"
             };
 
@@ -244,6 +246,11 @@ namespace GetSocialSdk.Editor
         private static void SetAutoRegisterForPushTag(PlistDocument plistDocument)
         {
             plistDocument.root.SetBoolean("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled);
+        }
+
+        private static void SetForegroundNotifications(PlistDocument plistDocument)
+        {
+            plistDocument.root.SetBoolean("im.getsocial.sdk.ShowNotificationInForeground", GetSocialSettings.IsForegroundNotificationsEnabled);
         }
 
         private static void SetAutoInitSdk(PlistDocument plistDocument)
