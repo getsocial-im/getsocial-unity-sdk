@@ -39,7 +39,7 @@ namespace GetSocialSdk.Editor
             new Provider("im.getsocial.sdk.AutoInitSdkContentProvider", string.Format("{0}.AutoInitSdkContentProvider", PlayerSettingsCompat.bundleIdentifier), false),
             new Provider("im.getsocial.sdk.invites.ImageContentProvider", string.Format("{0}.smartinvite.images.provider", PlayerSettingsCompat.bundleIdentifier), true),
         
-            new Activity("im.getsocial.sdk.unity.GetSocialDeepLinkingActivity", CreateDeepLinkingIntentFilters()),
+            new Activity("im.getsocial.sdk.internal.unity.GetSocialDeepLinkingActivity", CreateDeepLinkingIntentFilters()),
             new Receiver("im.getsocial.sdk.invites.MultipleInstallReferrerReceiver", CreateInstallReferrerIntentFilters())
         };
         
@@ -48,7 +48,8 @@ namespace GetSocialSdk.Editor
         /// </summary>
         readonly List<AndroidManifestNode> DeprecatedModifications = new List<AndroidManifestNode>
         {
-            new Receiver("im.getsocial.sdk.invites.InstallReferrerReceiver", CreateInstallReferrerIntentFilters())
+            new Receiver("im.getsocial.sdk.invites.InstallReferrerReceiver", CreateInstallReferrerIntentFilters()),
+            new Activity("im.getsocial.sdk.unity.GetSocialDeepLinkingActivity", new List<IntentFilter>())
         };
         #endregion
 

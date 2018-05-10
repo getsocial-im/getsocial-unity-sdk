@@ -409,7 +409,7 @@ namespace GetSocialSdk.Core
             {
                 return null;
             }
-            return new AndroidJavaObject("im.getsocial.sdk.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
+            return new AndroidJavaObject("im.getsocial.sdk.internal.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
         }
 
         public void Reset()

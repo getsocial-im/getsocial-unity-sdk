@@ -182,7 +182,7 @@ namespace GetSocialSdk.Core
         {
             if (!bitmapAJO.IsJavaNull())
             {
-                return new AndroidJavaClass("im.getsocial.sdk.unity.BitmapFactory")
+                return new AndroidJavaClass("im.getsocial.sdk.internal.unity.BitmapFactory")
                     .CallStaticStr("encodeBase64", bitmapAJO).FromBase64();
             }
             return null;
@@ -190,7 +190,7 @@ namespace GetSocialSdk.Core
 
         public static AndroidJavaObject ToAjoBitmap(this Texture2D texture2D)
         {
-            return new AndroidJavaClass("im.getsocial.sdk.unity.BitmapFactory").CallStaticAJO("decodeBase64", texture2D.TextureToBase64());
+            return new AndroidJavaClass("im.getsocial.sdk.internal.unity.BitmapFactory").CallStaticAJO("decodeBase64", texture2D.TextureToBase64());
         }
     }
 }

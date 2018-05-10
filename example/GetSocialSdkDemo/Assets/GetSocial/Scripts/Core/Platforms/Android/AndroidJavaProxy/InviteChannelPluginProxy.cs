@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
         readonly InviteChannelPlugin _invitePlugin;
 
         public InviteChannelPluginProxy(InviteChannelPlugin invitePlugin)
-            : base("im.getsocial.sdk.unity.InviteChannelPluginAdapter$InviteChannelPluginInterface")
+            : base("im.getsocial.sdk.internal.unity.InviteChannelPluginAdapter$InviteChannelPluginInterface")
         {
             _invitePlugin = invitePlugin;
         }
