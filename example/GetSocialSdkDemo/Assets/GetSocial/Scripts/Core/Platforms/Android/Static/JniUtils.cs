@@ -24,7 +24,7 @@ namespace GetSocialSdk.Core
 
         public static void RunOnUiThread(Action action)
         {
-            Activity.Call("runOnUiThread", new AndroidJavaRunnable(action));
+            Activity.CallSafe("runOnUiThread", new AndroidJavaRunnable(action));
         }
 
         /// <summary>
@@ -132,18 +132,30 @@ namespace GetSocialSdk.Core
         {
             var list = new List<AndroidJavaObject>();
             using (javaList)
+            using (var iterator = javaList.CallAJO("iterator"))
             {
-                using (var iterator = javaList.CallAJO("iterator"))
+                while (iterator.CallBool("hasNext"))
                 {
-                    while (iterator.CallBool("hasNext"))
-                    {
-                        var item = iterator.CallAJO("next");
-                        list.Add(item);
-                    }    
-                }
-                
+                    var item = iterator.CallAJO("next");
+                    list.Add(item);
+                }    
             }
             return list;
+        }
+
+        private const string JavaArrayList = "java.util.ArrayList";
+        
+        public static AndroidJavaObject ToJavaList<T>(this List<T> list)
+        {
+            if (list == null)
+            {
+                return null;
+            }
+            
+            var javaList = new AndroidJavaObject(JavaArrayList);
+            list.ForEach(item => javaList.CallBool("add", item));
+
+            return javaList;
         }
 
         #endregion
@@ -160,12 +172,12 @@ namespace GetSocialSdk.Core
 
         public static string GetClassName(this AndroidJavaObject ajo)
         {
-            return ajo.GetJavaClass().Call<string>("getName");
+            return ajo.GetJavaClass().CallStr("getName");
         }
 
         public static string GetClassSimpleName(this AndroidJavaObject ajo)
         {
-            return ajo.GetJavaClass().Call<string>("getSimpleName");
+            return ajo.GetJavaClass().CallStr("getSimpleName");
         }
 
         public static AndroidJavaObject GetJavaClass(this AndroidJavaObject ajo)
@@ -175,7 +187,7 @@ namespace GetSocialSdk.Core
 
         public static string JavaToString(this AndroidJavaObject ajo)
         {
-            return ajo.Call<string>("toString");
+            return ajo.CallStr("toString");
         }
 
         public static Texture2D FromAndroidBitmap(this AndroidJavaObject bitmapAJO)

@@ -46,26 +46,13 @@
     return json;
 }
 
-const int FILTER_NONE = 0;
-const int FILTER_BEFORE = 1;
-const int FILTER_AFTER = 2;
-
 + (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSString *)serializedQuery
 {
     NSDictionary *json = [self deserializeDictionary:serializedQuery];
-
-    GetSocialActivitiesQuery *query;
-
     NSString *feed = json[@"Feed"];
-    if (feed == nil)
-    {
-        // comments
-        query = [GetSocialActivitiesQuery commentsToPost:json[@"ParentActivityId"]];
-    } else
-    {
-        // posts
-        query = [GetSocialActivitiesQuery postsForFeed:feed];
-    }
+    GetSocialActivitiesQuery *query = feed == nil
+    ? [GetSocialActivitiesQuery commentsToPost:json[@"ParentActivityId"]]
+    : [GetSocialActivitiesQuery postsForFeed:feed];
 
     // Limit
     int limit = [json[@"Limit"] intValue];
@@ -74,21 +61,14 @@ const int FILTER_AFTER = 2;
 
     // Filtering
     int filter = [json[@"Filter"] intValue];
-    if (filter != FILTER_NONE)
+    if (filter != 0)
     {
-        [query setFilter:[self parseFilter:filter] activityId:json[@"FilteringActivityId"]];
+        [query setFilter:(GetSocialActivitiesFilter)filter activityId:json[@"FilteringActivityId"]];
     }
     BOOL isFriendsFeed = [json[@"FriendsFeed"] boolValue];
     [query setIsFriendsFeed:isFriendsFeed];
 
     return query;
-}
-
-+ (GetSocialActivitiesFilter)parseFilter:(int)filter
-{
-    if (filter == FILTER_BEFORE) return ActivitiesBefore;
-    if (filter == FILTER_AFTER) return ActivitiesAfter;
-    return NoFilter;
 }
 
 + (GetSocialActivityPostContent *)deserializeActivityContent:(NSString *)content
@@ -122,6 +102,45 @@ const int FILTER_AFTER = 2;
     return usersQuery;
 }
 
++ (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSString *)serializedQuery
+{
+    NSDictionary *json = [self deserializeDictionary:serializedQuery];
+    NSNumber *isRead = json[@"IsRead"];
+    
+    GetSocialNotificationsQuery *query = isRead == nil
+    ? [GetSocialNotificationsQuery readAndUnread]
+    : [isRead boolValue] ? [GetSocialNotificationsQuery read] : [GetSocialNotificationsQuery unread];
+    
+    // Limit
+    int limit = [json[@"Limit"] intValue];
+    [query setLimit:limit];
+    
+    // Filtering
+    int filter = [json[@"Filter"] intValue];
+    if (filter != 0)
+    {
+        [query setFilter:(GetSocialNotificationsFilter)filter notificationId:json[@"FilteringNotificationId"]];
+    }
+    id types = json[@"Types"];
+    [query setTypes:types];
+    
+    return query;
+}
+
++ (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSString *)serializedQuery
+{
+    NSDictionary *json = [self deserializeDictionary:serializedQuery];
+    NSNumber *isRead = json[@"IsRead"];
+    GetSocialNotificationsCountQuery *query = isRead == nil
+    ? [GetSocialNotificationsCountQuery readAndUnread]
+    : [isRead boolValue] ? [GetSocialNotificationsCountQuery read] : [GetSocialNotificationsCountQuery unread];
+    
+    
+    id types = json[@"Types"];
+    [query setTypes:types];
+    
+    return query;
+}
 #pragma mark - Helpers
 
 + (NSDictionary *)deserializeDictionary:(NSString *)jsonDic
@@ -141,10 +160,10 @@ const int FILTER_AFTER = 2;
     return dictionary;
 }
 
-+ (NSArray<NSString *> *)deserializeStringList:(NSString *)jsonStringList
++ (NSArray *)deserializeList:(NSString *)jsonList
 {
     NSError* localError = nil;
-    NSArray<NSString*> *array = [NSJSONSerialization JSONObjectWithData:[jsonStringList dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&localError];
+    NSArray *array = [NSJSONSerialization JSONObjectWithData:[jsonList dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&localError];
 
     return array;
 }

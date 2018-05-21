@@ -13,7 +13,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// The author of <see cref="ActivityPost"/>.
     /// </summary>
-    public sealed class PostAuthor : PublicUser, IGetSocialBridgeObject<PostAuthor>
+    public sealed class PostAuthor : PublicUser, IConvertableFromNative<PostAuthor>
     {
         /// <summary>
         /// Gets a value indicating whether this user is verified.
@@ -28,11 +28,6 @@ namespace GetSocialSdk.Core
 
 
 #if UNITY_ANDROID
-        public new AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException("PostAuthor is never passed to Android");
-        }
-
         public new PostAuthor ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
@@ -43,12 +38,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-
-        public new string ToJson()
-        {
-            throw new NotImplementedException("PostAuthor is never passed to iOS");
-        }
-        
         public new PostAuthor ParseFromJson(Dictionary<string, object> jsonDic)
         {
             base.ParseFromJson(jsonDic);

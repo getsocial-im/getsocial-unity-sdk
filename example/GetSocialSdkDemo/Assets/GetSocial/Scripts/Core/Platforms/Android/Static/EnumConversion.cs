@@ -15,6 +15,11 @@ namespace GetSocialSdk.Core
         {
             return ToAndroidJavaObject((int) filter, "im.getsocial.sdk.activities.ActivitiesQuery$Filter");
         }
+        
+        public static AndroidJavaObject ToAndroidJavaObject(this NotificationsQuery.Filter filter)
+        {
+            return ToAndroidJavaObject((int) filter, "im.getsocial.sdk.pushnotifications.NotificationsQuery$Filter");
+        }
 
         private static AndroidJavaObject ToAndroidJavaObject<T>(T type, string javaClass) where T : IConvertible
         {

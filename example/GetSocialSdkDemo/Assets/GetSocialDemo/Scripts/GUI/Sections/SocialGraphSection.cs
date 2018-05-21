@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using Assets.GetSocialDemo.Scripts.Utils;
+﻿using Assets.GetSocialDemo.Scripts.Utils;
 using UnityEngine;
 
 using GetSocialSdk.Core;

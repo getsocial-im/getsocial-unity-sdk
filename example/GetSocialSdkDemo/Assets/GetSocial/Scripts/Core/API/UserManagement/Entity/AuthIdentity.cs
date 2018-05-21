@@ -15,7 +15,7 @@ namespace GetSocialSdk.Core
     /// This class is representation of User Auth Identity, that is used by GetSocial framework to identify user
     /// and to manage his accounts.
     /// </summary>
-    public class AuthIdentity : IGetSocialBridgeObject<AuthIdentity>
+    public class AuthIdentity : IConvertableToNative
     {
 #pragma warning disable 414
         private readonly string _providerId;
@@ -56,15 +56,10 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             var identityClass = new AndroidJavaClass("im.getsocial.sdk.usermanagement.AuthIdentity");
             return identityClass.CallStaticAJO("createCustomIdentity", _providerId, _providerUserId, _accessToken);
-        }
-
-        public AuthIdentity ParseFromAJO(AndroidJavaObject ajo)
-        {
-            throw new NotImplementedException();
         }
 #elif UNITY_IOS
         public string ToJson()
@@ -77,11 +72,6 @@ namespace GetSocialSdk.Core
             };
             return GSJson.Serialize(jsonDic);
         }
-
-        public AuthIdentity ParseFromJson(Dictionary<string, object> json)
-        {
-            throw new NotImplementedException();
-        }
-        #endif
+#endif
     }
 }

@@ -126,7 +126,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 6.17.1
+  bundleVersion: 6.18.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -165,7 +165,7 @@ PlayerSettings:
     tvOS: im.getsocial.demo.unity
   buildNumber:
     iOS: 0
-  AndroidBundleVersionCode: 867
+  AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -176,7 +176,7 @@ PlayerSettings:
   ForceInternetPermission: 1
   ForceSDCardPermission: 1
   CreateWallpaper: 0
-  APKExpansionFiles: 1
+  APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
   StripUnusedMeshComponents: 0
   VertexChannelCompressionMask:

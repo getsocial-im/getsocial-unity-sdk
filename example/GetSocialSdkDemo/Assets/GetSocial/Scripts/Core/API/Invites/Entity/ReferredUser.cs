@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GetSocialSdk.Core
 {
-    public sealed class ReferredUser : PublicUser, IGetSocialBridgeObject<ReferredUser>
+    public sealed class ReferredUser : PublicUser, IConvertableFromNative<ReferredUser>
     {
 
         /// <summary>
@@ -32,12 +32,6 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        
-        public new AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException("ReferredUser is never passed to Android, only received");
-        }
-
         public new ReferredUser ParseFromAJO(AndroidJavaObject ajo)
         {
             if (ajo.IsJavaNull())
@@ -54,11 +48,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-        public new string ToJson()
-        {
-            throw new NotImplementedException("ReferredUser is never passed to iOS, only received");
-        }
-
         public new ReferredUser ParseFromJson(Dictionary<string, object> json)
         {
             base.ParseFromJson(json);

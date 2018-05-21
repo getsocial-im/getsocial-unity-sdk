@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GetSocialSdk.Core
 {
-    public class Mention : IGetSocialBridgeObject<Mention>
+    public class Mention : IConvertableFromNative<Mention>
     {
         public string UserId { get; private set; }
         public int StartIndex { get; private set; }
@@ -27,11 +27,6 @@ namespace GetSocialSdk.Core
         }
         
 #if UNITY_IOS
-        public string ToJson()
-        {
-            throw new NotImplementedException("Mentions are not passed to the native from Unity.");
-        }
-
         public Mention ParseFromJson(Dictionary<string, object> json)
         {
             UserId = json["UserId"] as string;
@@ -41,11 +36,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException();
-        }
-
         public Mention ParseFromAJO(AndroidJavaObject ajo)
         {
             UserId = ajo.CallStr("getUserId");

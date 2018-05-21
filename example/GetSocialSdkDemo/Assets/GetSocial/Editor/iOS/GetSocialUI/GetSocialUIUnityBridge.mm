@@ -166,7 +166,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
     }
     if (tags) {
         NSString *tagsStr = [GetSocialBridgeUtils createNSStringFrom:tags];
-        NSArray *tagsArray = [GetSocialJsonUtils deserializeStringList:tagsStr];
+        NSArray *tagsArray = [GetSocialJsonUtils deserializeList:tagsStr];
         [view setFilterByTags:tagsArray];
     }
     [view setReadOnly:readOnly];

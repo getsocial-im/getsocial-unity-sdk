@@ -13,7 +13,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Referral data of the smart invite.
     /// </summary>
-    public sealed class ReferralData : IGetSocialBridgeObject<ReferralData>
+    public sealed class ReferralData : IConvertableFromNative<ReferralData>
     {
         /// <summary>
         /// The unique Smart Invite link token. There is unique association between
@@ -93,11 +93,6 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException("Referral Data is never passed to Android, only received");
-        }
-
         public ReferralData ParseFromAJO(AndroidJavaObject ajo)
         {
             if (ajo.IsJavaNull())
@@ -126,10 +121,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-        public string ToJson()
-        {
-            throw new NotImplementedException("Referral Data is never passed to iOS, only received");
-        }
 
         public ReferralData ParseFromJson(Dictionary<string, object> json)
         {

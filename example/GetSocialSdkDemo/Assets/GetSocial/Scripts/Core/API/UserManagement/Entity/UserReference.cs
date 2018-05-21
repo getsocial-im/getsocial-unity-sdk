@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GetSocialSdk.Core
 {
-    public class UserReference : IGetSocialBridgeObject<UserReference>
+    public class UserReference : IConvertableFromNative<UserReference>
     {
         /// <summary>
         /// Gets the user identifier.
@@ -30,11 +30,6 @@ namespace GetSocialSdk.Core
         /// <value>The user avatar URL.</value>
         public string AvatarUrl { get; protected set; }
 #if UNITY_IOS
-        public string ToJson()
-        {
-            throw new NotImplementedException();
-        }
-
         public UserReference ParseFromJson(Dictionary<string, object> json)
         {
             Id = (string) json["Id"];
@@ -43,11 +38,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException();
-        }
-
         public UserReference ParseFromAJO(AndroidJavaObject ajo)
         {
             Id = ajo.CallStr("getId");

@@ -15,7 +15,7 @@ namespace GetSocialSdk.Core
     /// Custom referral data attached to the invite.
     /// </summary>
     [Obsolete("Deprecated. Use LinkParams class instead.")]
-    public sealed class CustomReferralData : Dictionary<string, string>, IGetSocialBridgeObject<CustomReferralData>
+    public sealed class CustomReferralData : Dictionary<string, string>, IConvertableFromNative<CustomReferralData>, IConvertableToNative
     {
         public CustomReferralData()
         {
@@ -40,7 +40,7 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             return new AndroidJavaObject("im.getsocial.sdk.invites.CustomReferralData", this.ToJavaHashMap());
         }

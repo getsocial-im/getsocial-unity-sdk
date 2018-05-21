@@ -245,7 +245,50 @@ void _gs_setNotificationActionListener(void *listener, NotificationListener dele
         return delegate(listener, data.toJsonCString);
     }];
 }
+    
+void _gs_getNotifications(const char* query,
+                                StringCallbackDelegate successCallback, void * onSuccessActionPtr,
+                                FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+    GetSocialNotificationsQuery *notificationsQuery = [GetSocialJsonUtils deserializeNotificationsQuery:queryStr];
 
+    [GetSocialUser notificationsWithQuery:notificationsQuery success:objectBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+                                                       
+}
+    
+void _gs_getNotificationsCount(const char* query,
+                                 IntCallbackDelegate successCallback, void * onSuccessActionPtr,
+                                 FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+    GetSocialNotificationsCountQuery *notificationsQuery = [GetSocialJsonUtils deserializeNotificationsCountQuery:queryStr];
+    
+    [GetSocialUser notificationsCountWithQuery:notificationsQuery success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+
+void _gs_setNotificationsRead(const char* ids, bool read,
+                                VoidCallbackDelegate successCallback, void * onSuccessActionPtr,
+                                FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    NSString *idsStr = [GetSocialBridgeUtils createNSStringFrom:ids];
+    NSArray *notificationsIds = [GetSocialJsonUtils deserializeList:idsStr];
+    
+    [GetSocialUser setNotificationsRead:notificationsIds read:read success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
+void _gs_setPushNotificationsEnabled(bool isEnabled,
+                                     VoidCallbackDelegate successCallback, void * onSuccessActionPtr,
+                                     FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    [GetSocialUser setPushNotificationsEnabled:isEnabled success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
+    
+void _gs_isPushNotificationsEnabled(BoolCallbackDelegate successCallback, void * onSuccessActionPtr,
+                                     FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+{
+    [GetSocialUser isPushNotificationsEnabledWithSuccess:boolBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+}
 #pragma mark - User Management
 
 bool _gs_setOnUserChangedListener(void *listener, VoidCallbackDelegate delegate)
@@ -466,7 +509,7 @@ void _gs_getUsersByAuthIdentities(const char * providerId, const char * provider
         
     NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
     NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
     
     [GetSocial usersWithIds:providerUserIds forProvider:providerIdStr success:objectBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
         
@@ -503,7 +546,7 @@ void _gs_addFriendsByAuthIdentities(const char *providerId, const char* provider
 {
     NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
     NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
     
     [GetSocialUser addFriendsWithIds:providerUserIds forProvider:providerIdStr success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
@@ -525,7 +568,7 @@ void _gs_removeFriendsByAuthIdentities(const char *providerId, const char* provi
 {
     NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
     NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
         
     [GetSocialUser removeFriendsWithIds:providerUserIds forProvider:providerIdStr success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
@@ -535,7 +578,7 @@ void _gs_setFriends(const char *userIdsJson,
                         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
 {
     NSString *userIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:userIdsJson];
-    NSArray *userIds = [GetSocialJsonUtils deserializeStringList:userIdsJsonStr];
+    NSArray *userIds = [GetSocialJsonUtils deserializeList:userIdsJsonStr];
     
     [GetSocialUser setFriendsWithIds:userIds success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
 }
@@ -546,7 +589,7 @@ void _gs_setFriendsByAuthIdentities(const char * providerId, const char *provide
 {
     NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
     NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-    NSArray *providerUserIds = [GetSocialJsonUtils deserializeStringList:providerUserIdsJsonStr];
+    NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
 
     [GetSocialUser setFriendsWithIds:providerUserIds forProvider:providerIdStr success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
 }

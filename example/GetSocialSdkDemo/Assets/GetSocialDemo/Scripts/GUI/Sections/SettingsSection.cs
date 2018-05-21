@@ -27,6 +27,8 @@ public class SettingsSection : DemoMenuSection
         ChooseLanguage
     }
 
+
+    private bool _pnEnabled = true;
     protected SettingsSubSection _currentSection = SettingsSubSection.Main;
 
     static readonly string[] _supportedLanguagesRow1 = {"da", "de", "en", "es"};
@@ -49,6 +51,7 @@ public class SettingsSection : DemoMenuSection
 
     protected override void InitGuiElements()
     {
+        GetSocial.User.IsPushNotificationsEnabled(isEnabled => _pnEnabled = isEnabled, error => Debug.LogError("Failed to get PN status " + error));
         InitLanguageButtonsRow(_languageButtonsRow1, _supportedLanguagesRow1);
         InitLanguageButtonsRow(_languageButtonsRow2, _supportedLanguagesRow2);
         InitLanguageButtonsRow(_languageButtonsRow3, _supportedLanguagesRow3);
@@ -79,6 +82,7 @@ public class SettingsSection : DemoMenuSection
 
     void DrawMainSection()
     {
+        DemoGuiUtils.DrawButton(_pnEnabled ? "Disable Push Notifications" : "Enable Push Notifications", TogglePNEnabled, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Change Language", () => _currentSection = SettingsSubSection.ChooseLanguage,
             style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Set Global Error Listener", () =>
@@ -126,12 +130,21 @@ public class SettingsSection : DemoMenuSection
         }
     }
 
+    void TogglePNEnabled()
+    {
+        bool pnStatus = !_pnEnabled;
+        GetSocial.User.SetPushNotificationsEnabled(pnStatus, () => { _pnEnabled = pnStatus; }, error => Debug.LogError("Failed to change status" + error));
+    }
+
     #region set_language
 
     void DrawChooseLanguageSubsection()
     {
         DemoGuiUtils.DrawButton("Get Current Language",
             () => { _console.LogD(string.Format("Current lang is '{0}'", GetSocial.GetLanguage())); },
+            style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Try Set Incorrect Language",
+            () => { SetLanguage("INCORRECT_LNAG_CODE"); },
             style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Try Set Incorrect Language",
             () => { SetLanguage("INCORRECT_LNAG_CODE"); },

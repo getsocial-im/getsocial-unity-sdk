@@ -8,7 +8,7 @@ namespace GetSocialSdk.Core
 {
     public static class GSJsonUtils
     {
-        public static T Parse<T>(string json) where T : IGetSocialBridgeObject<T>, new()
+        public static T Parse<T>(string json) where T : IConvertableFromNative<T>, new()
         {
             T result = new T();
             if (string.IsNullOrEmpty(json))
@@ -21,7 +21,7 @@ namespace GetSocialSdk.Core
             return result.ParseFromJson(json.ToDict());
         }
 
-        public static List<T> ParseList<T>(string json) where T : IGetSocialBridgeObject<T>, new()
+        public static List<T> ParseList<T>(string json) where T : IConvertableFromNative<T>, new()
         {
             var result = new List<T>();
             
@@ -46,13 +46,13 @@ namespace GetSocialSdk.Core
 
         public static Dictionary<string, string> ParseDictionary(string json)
         {
-            var parsedDic = GSJson.Deserialize(json) as Dictionary<string, object>;
+            var dictionary = GSJson.Deserialize(json) as Dictionary<string, object>;
 
             var result = new Dictionary<string, string>();
 
-            foreach (var key in parsedDic.Keys)
+            foreach (var key in dictionary.Keys)
             {
-                result[key] = (string) parsedDic[key];
+                result[key] = (string) dictionary[key];
             }
 
             return result;
@@ -80,7 +80,7 @@ namespace GetSocialSdk.Core
         }
 
         public static Dictionary<string, TValue> ParseDictionary<TValue>(string json)
-            where TValue : IGetSocialBridgeObject<TValue>, new()
+            where TValue : IConvertableFromNative<TValue>, new()
         {
             var result = new Dictionary<string, TValue>();
 

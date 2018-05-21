@@ -14,7 +14,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Suggested friend entity.
     /// </summary>
-    public class SuggestedFriend : PublicUser, IGetSocialBridgeObject<SuggestedFriend>
+    public class SuggestedFriend : PublicUser, IConvertableFromNative<SuggestedFriend>
     {
 
         public int MutualFriendsCount { get; private set; }
@@ -25,11 +25,6 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public new AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException("SuggestedFriend is never passed to Android");
-        }
-
         public new SuggestedFriend ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
@@ -40,11 +35,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-        public new string ToJson()
-        {
-            throw new NotImplementedException("SuggestedFriend is never passed to iOS");
-        }
-
         public new SuggestedFriend ParseFromJson(Dictionary<string, object> json)
         {
             base.ParseFromJson(json);

@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class CallbackProxy<T> : JavaInterfaceProxy where T : IGetSocialBridgeObject<T>, new()
+    class CallbackProxy<T> : JavaInterfaceProxy where T : IConvertableFromNative<T>, new()
     {
         readonly Action<T> _onSuccess;
         readonly Action<GetSocialError> _onFailure;

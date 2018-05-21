@@ -69,10 +69,9 @@ namespace GetSocialSdk.Core
             {
                 var channelsJavaList = _getSocial.CallStaticAJO("getInviteChannels");
                 var channelsAJOs = channelsJavaList.FromJavaList();
-                var channels = channelsAJOs.ConvertAll(ajo => new InviteChannel().ParseFromAJO(ajo));
-                channelsAJOs.ForEach(ajo => ajo.Dispose());
+                var channels = channelsAJOs.ConvertAll(ajo => new InviteChannel().ParseFromAJO(ajo)).ToArray();
 
-                return channels.ToArray();
+                return channels;
             }
         }
 
@@ -84,7 +83,9 @@ namespace GetSocialSdk.Core
         public void SendInvite(string channelId, InviteContent customInviteContent, Action onComplete, Action onCancel,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("sendInvite", channelId, customInviteContent.ToAJO(),
+            var inviteContentAjo = customInviteContent == null ? null : customInviteContent.ToAjo();
+
+            _getSocial.CallStatic("sendInvite", channelId, inviteContentAjo,
                 new InviteCallbackProxy(onComplete, onCancel, onFailure));
         }
 
@@ -92,13 +93,16 @@ namespace GetSocialSdk.Core
             LinkParams linkParams,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("sendInvite", channelId, customInviteContent.ToAJO(), linkParams.ToAJO(),
+            var inviteContentAjo = customInviteContent == null ? null : customInviteContent.ToAjo();
+            var linkParamsAjo = linkParams == null ? null : linkParams.ToAjo();
+            
+            _getSocial.CallStatic("sendInvite", channelId, inviteContentAjo, linkParamsAjo,
                 new InviteCallbackProxy(onComplete, onCancel, onFailure));
         }
 
         public bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin)
         {
-            return _getSocial.CallStaticBool("registerInviteChannelPlugin", channelId, createAdapter(inviteChannelPlugin));
+            return _getSocial.CallStaticBool("registerInviteChannelPlugin", channelId, CreateAdapter(inviteChannelPlugin));
         }
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
@@ -120,6 +124,31 @@ namespace GetSocialSdk.Core
         public void SetNotificationListener(Func<Notification, bool, bool> listener)
         {
             _getSocial.CallStatic("setNotificationListener", new NotificationListenerProxy(listener));
+        }
+
+        public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("getNotifications", query.ToAjo(), new ListCallbackProxy<Notification>(onSuccess, onError));
+        }
+
+        public void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("getNotificationsCount", query.ToAjo(), new IntCallbackProxy(onSuccess, onError));
+        }
+
+        public void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("setNotificationsRead", notificationsIds.ToJavaList(), isRead, new CompletionCallback(onSuccess, onError));
+        }
+
+        public void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("setPushNotificationsEnabled", isEnabled, new CompletionCallback(onSuccess, onError));
+        }
+
+        public void IsPushNotificationsEnabled(Action<bool> onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("isPushNotificationsEnabled", new BoolCallbackProxy (onSuccess, onError));
         }
 
         #endregion
@@ -236,14 +265,14 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure,
             Action<ConflictUser> onConflict)
         {
-            _user.CallStatic("addAuthIdentity", identity.ToAJO(),
+            _user.CallStatic("addAuthIdentity", identity.ToAjo(),
                 new AddAuthIdentityCallbackProxy(onComplete, onFailure, onConflict));
         }
 
         public void SwitchUser(AuthIdentity identity, Action onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _user.CallStatic("switchUser", identity.ToAJO(), new CompletionCallback(onSuccess, onFailure));
+            _user.CallStatic("switchUser", identity.ToAjo(), new CompletionCallback(onSuccess, onFailure));
         }
 
         public void RemoveAuthIdentity(string providerId, Action onSuccess, Action<GetSocialError> onFailure)
@@ -273,12 +302,12 @@ namespace GetSocialSdk.Core
 
         public void GetUsersByAuthIdentities(string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("getUsersByAuthIdentities", providerId, providerUserIds, new DictionaryCallbackProxy<PublicUser>(onSuccess, onFailure));
+            _getSocial.CallStatic("getUsersByAuthIdentities", providerId, providerUserIds.ToJavaList(), new DictionaryCallbackProxy<PublicUser>(onSuccess, onFailure));
         }
 
         public void FindUsers(UsersQuery query, Action<List<UserReference>> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("findUsers", query.ToAJO(), new ListCallbackProxy<UserReference>(onSuccess, onFailure));
+            _getSocial.CallStatic("findUsers", query.ToAjo(), new ListCallbackProxy<UserReference>(onSuccess, onFailure));
         }
 
         #endregion
@@ -292,7 +321,7 @@ namespace GetSocialSdk.Core
 
         public void AddFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
-            _user.CallStatic ("addFriendsByAuthIdentities", providerId, providerUserIds, new IntCallbackProxy (onSuccess, onFailure));
+            _user.CallStatic ("addFriendsByAuthIdentities", providerId, providerUserIds.ToJavaList(), new IntCallbackProxy (onSuccess, onFailure));
         }
 
         public void RemoveFriend (string userId, Action<int> onSuccess, Action<GetSocialError> onFailure)
@@ -302,7 +331,7 @@ namespace GetSocialSdk.Core
 
         public void RemoveFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action<int> onSuccess, Action<GetSocialError> onFailure)
         {
-            _user.CallStatic ("removeFriendsByAuthIdentities", providerId, providerUserIds, new IntCallbackProxy (onSuccess, onFailure));
+            _user.CallStatic ("removeFriendsByAuthIdentities", providerId, providerUserIds.ToJavaList(), new IntCallbackProxy (onSuccess, onFailure));
         }
 
         public void SetFriends(List<string> userIds, Action onSuccess, Action<GetSocialError> onFailure)
@@ -312,7 +341,7 @@ namespace GetSocialSdk.Core
 
         public void SetFriendsByAuthIdentities(string providerId, List<string> providerUserIds, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("setFriendsByAuthIdentities", providerId, providerUserIds, new CompletionCallback(onSuccess, onFailure));
+            _getSocial.CallStatic("setFriendsByAuthIdentities", providerId, providerUserIds.ToJavaList(), new CompletionCallback(onSuccess, onFailure));
         }
 
         public void IsFriend (string userId, Action<bool> onSuccess, Action<GetSocialError> onFailure)
@@ -353,7 +382,7 @@ namespace GetSocialSdk.Core
         public void GetActivities(ActivitiesQuery query, Action<List<ActivityPost>> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("getActivities", query.ToAJO(), new ListCallbackProxy<ActivityPost>(onSuccess, onFailure));
+            _getSocial.CallStatic("getActivities", query.ToAjo(), new ListCallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void GetActivity(string activityId, Action<ActivityPost> onSuccess, Action<GetSocialError> onFailure)
@@ -363,13 +392,13 @@ namespace GetSocialSdk.Core
 
         public void PostActivityToFeed(string feed, ActivityPostContent content, Action<ActivityPost> onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("postActivityToFeed", feed, content.ToAJO(), new CallbackProxy<ActivityPost>(onSuccess, onFailure));
+            _getSocial.CallStatic("postActivityToFeed", feed, content.ToAjo(), new CallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void PostCommentToActivity(string activityId, ActivityPostContent comment, Action<ActivityPost> onSuccess,
             Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("postCommentToActivity", activityId, comment.ToAJO(), new CallbackProxy<ActivityPost>(onSuccess, onFailure));
+            _getSocial.CallStatic("postCommentToActivity", activityId, comment.ToAjo(), new CallbackProxy<ActivityPost>(onSuccess, onFailure));
         }
 
         public void LikeActivity(string activityId, bool isLiked, Action<ActivityPost> onSuccess,
@@ -403,20 +432,16 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("handleOnStartUnityEvent");
         }
 
-        private AndroidJavaObject createAdapter(InviteChannelPlugin plugin)
+        private static AndroidJavaObject CreateAdapter(InviteChannelPlugin plugin)
         {
-            if (plugin == null)
-            {
-                return null;
-            }
-            return new AndroidJavaObject("im.getsocial.sdk.internal.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
+            return plugin == null ? null : new AndroidJavaObject("im.getsocial.sdk.internal.unity.InviteChannelPluginAdapter", new InviteChannelPluginProxy(plugin));
         }
 
         public void Reset()
         {
             try
             {
-                AndroidJavaObject activity = JniUtils.Activity;
+                var activity = JniUtils.Activity;
                 using (var ajc = new AndroidJavaClass(AndroidAccessHelperClass))
                 {
                     ajc.CallStatic("reset", activity.CallAJO("getApplication"));

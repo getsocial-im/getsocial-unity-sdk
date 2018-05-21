@@ -105,6 +105,32 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
         }
 
+        public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), query, onSuccess, onError);
+        }
+
+        public void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), query, onSuccess, onError);
+        }
+
+        public void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+            Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), notificationsIds, isRead, onSuccess, onError);
+        }
+
+        public void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), isEnabled, onSuccess, onError);
+        }
+
+        public void IsPushNotificationsEnabled(Action<bool> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onError);
+        }
+
         public bool SetOnUserChangedListener(Action listener)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);

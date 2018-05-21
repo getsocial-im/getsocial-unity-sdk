@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Link parameters attached to an invite link.
     /// </summary>
-    public sealed class LinkParams : Dictionary<string, object>, IGetSocialBridgeObject<LinkParams>
+    public sealed class LinkParams : Dictionary<string, object>, IConvertableFromNative<LinkParams>, IConvertableToNative
     {
         public const string KeyCustomTitle = "$title";
         public const string KeyCustomDescription = "$description";
@@ -46,15 +46,16 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             var retValue = new Dictionary<string, object>(this);
             if (retValue.ContainsKey(KeyCustomImage))
             {
                 var image = retValue[KeyCustomImage];
-                if (image is Texture2D)
+                var texture2D = image as Texture2D;
+                if (texture2D != null)
                 {
-                    retValue[KeyCustomImage] = ((Texture2D)image).ToAjoBitmap();
+                    retValue[KeyCustomImage] = texture2D.ToAjoBitmap();
                 }
             }
             return new AndroidJavaObject("im.getsocial.sdk.invites.LinkParams", retValue.ToJavaHashMap());
@@ -71,9 +72,10 @@ namespace GetSocialSdk.Core
             if (retValue.ContainsKey(KeyCustomImage))
             {
                 var image = retValue[KeyCustomImage];
-                if (image is Texture2D)
+                var texture2D = image as Texture2D;
+                if (texture2D != null)
                 {
-                    retValue[KeyCustomImage] = ((Texture2D)image).TextureToBase64();
+                    retValue[KeyCustomImage] = texture2D.TextureToBase64();
                 }
             }
             return GSJson.Serialize(retValue);

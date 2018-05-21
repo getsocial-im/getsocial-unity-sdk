@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     ///
     /// </summary>
-    public sealed class ActivityPostContent : IGetSocialBridgeObject<ActivityPostContent>
+    public sealed class ActivityPostContent
     {
 #pragma warning disable 414
         string _text;
@@ -64,7 +64,7 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             var activityPostContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
 
@@ -82,11 +82,6 @@ namespace GetSocialSdk.Core
             }
             return activityPostContentBuilderAJO.CallAJO("build");
         }
-
-        public ActivityPostContent ParseFromAJO(AndroidJavaObject ajo)
-        {
-            throw new NotImplementedException();
-        }
 #elif UNITY_IOS
 
         public string ToJson()
@@ -99,11 +94,6 @@ namespace GetSocialSdk.Core
                 {"Image", _image.TextureToBase64()}
             };
             return GSJson.Serialize(json);
-        }
-
-        public ActivityPostContent ParseFromJson(Dictionary<string, object> json)
-        {
-            return this;
         }
 
 #endif

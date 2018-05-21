@@ -13,7 +13,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Error object containing detailed information about error that happened.
     /// </summary>
-    public sealed class GetSocialError : IGetSocialBridgeObject<GetSocialError>
+    public sealed class GetSocialError : IConvertableFromNative<GetSocialError>
     {
         public int ErrorCode { get; private set; }
         public string Message { get; private set; }
@@ -36,11 +36,6 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException("Error is only received from Android");
-        }
-
         public GetSocialError ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
@@ -51,11 +46,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-        public string ToJson()
-        {
-            throw new NotImplementedException("Error is only received from iOS");
-        }
-
         public GetSocialError ParseFromJson(string json)
         {
             return ParseFromJson(json.ToDict());

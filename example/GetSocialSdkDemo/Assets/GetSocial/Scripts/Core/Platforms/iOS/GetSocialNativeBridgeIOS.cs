@@ -73,7 +73,12 @@ namespace GetSocialSdk.Core
         public void SendInvite(string channelId, InviteContent customInviteContent,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-           _gs_sendInviteCustom(channelId, customInviteContent.ToJson(),
+            string customInviteContentJson = null;
+            if (customInviteContent != null)
+            {
+                customInviteContentJson = customInviteContent.ToJson();
+            }
+           _gs_sendInviteCustom(channelId, customInviteContentJson,
                 Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -82,7 +87,17 @@ namespace GetSocialSdk.Core
             LinkParams linkParams,
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
-           _gs_sendInviteCustomAndLinkParams(channelId, customInviteContent.ToJson(), linkParams.ToJson(),
+            string customInviteContentJson = null;
+            if (customInviteContent != null)
+            {
+                customInviteContentJson = customInviteContent.ToJson();
+            }
+            string linkParamsJson = null;
+            if (linkParams != null)
+            {
+                linkParamsJson = linkParams.ToJson();
+            }
+           _gs_sendInviteCustomAndLinkParams(channelId, customInviteContentJson, linkParamsJson,
                 Callbacks.ActionCallback, onComplete.GetPointer(), onCancel.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -118,6 +133,38 @@ namespace GetSocialSdk.Core
         public void SetNotificationListener(Func<Notification, bool, bool> listener)
         {
             _gs_setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationListener);
+        }
+
+        public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_getNotifications(query.ToJson(), Callbacks.GetNotificationsCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        public void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_getNotificationsCount(query.ToJson(), Callbacks.IntCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        public void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+            Action<GetSocialError> onError)
+        {
+            _gs_setNotificationsRead(GSJson.Serialize(notificationsIds), isRead, Callbacks.ActionCallback,
+                onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        public void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_setPushNotificationsEnabled(isEnabled, Callbacks.ActionCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        public void IsPushNotificationsEnabled(Action<bool> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_isPushNotificationsEnabled(Callbacks.BoolCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
         }
 
         public bool SetGlobalErrorListener(Action<GetSocialError> onError)
@@ -581,6 +628,31 @@ namespace GetSocialSdk.Core
         static extern bool _gs_setNotificationActionListener(IntPtr listenerPointer,
             NotificationListenerDelegate listener);
 
+        [DllImport("__Internal")]
+        static extern void _gs_getNotifications(string query,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_getNotificationsCount(string query, 
+            IntCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_setNotificationsRead(string ids, bool read, 
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_setPushNotificationsEnabled(bool read, 
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_isPushNotificationsEnabled( 
+            BoolCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
         #endregion
 
         #region external_user_management

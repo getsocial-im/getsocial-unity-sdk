@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-
+﻿#if UNITY_IOS
+using System.Collections.Generic;
+#endif
 namespace GetSocialSdk.Core
 {
-    public interface IGetSocialBridgeObject<out T>
+    public interface IConvertableFromNative<out T>
     {
 #if UNITY_ANDROID
-        UnityEngine.AndroidJavaObject ToAJO();
-
         T ParseFromAJO(UnityEngine.AndroidJavaObject ajo);
 #elif UNITY_IOS
-        string ToJson();
-
         T ParseFromJson(Dictionary<string, object> json);
 #endif
     }

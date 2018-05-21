@@ -1,15 +1,18 @@
 fileFormatVersion: 2
 guid: 36d95a083360248349657f21cddd2029
-timeCreated: 1511884059
+timeCreated: 1526653884
 licenseType: Free
 PluginImporter:
-  serializedVersion: 1
+  externalObjects: {}
+  serializedVersion: 2
   iconMap: {}
   executionOrder: {}
   isPreloaded: 0
   isOverridable: 0
   platformData:
-    Any:
+  - first:
+      Any: 
+    second:
       enabled: 0
       settings:
         Exclude Android: 1
@@ -23,11 +26,15 @@ PluginImporter:
         Exclude Win: 1
         Exclude Win64: 1
         Exclude iOS: 0
-    Editor:
+  - first:
+      Editor: Editor
+    second:
       enabled: 0
       settings:
         DefaultValueInitialized: true
-    iOS:
+  - first:
+      iPhone: iOS
+    second:
       enabled: 1
       settings: {}
   userData: 

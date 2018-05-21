@@ -100,7 +100,7 @@ namespace GetSocialSdk.Core
             return false;
         }
         
-        static void GetObjectCallback<T>(IntPtr actionPtr, string json) where T : IGetSocialBridgeObject<T>, new()
+        static void GetObjectCallback<T>(IntPtr actionPtr, string json) where T : IConvertableFromNative<T>, new()
         {  
             if (actionPtr != IntPtr.Zero)
             {
@@ -121,7 +121,7 @@ namespace GetSocialSdk.Core
             GetObjectCallback<PublicUser>(actionPtr, json);
         }
         
-        static void GetObjectsListCallback<T>(IntPtr actionPtr, string json) where T : IGetSocialBridgeObject<T>, new()
+        static void GetObjectsListCallback<T>(IntPtr actionPtr, string json) where T : IConvertableFromNative<T>, new()
         {
             var result = GSJsonUtils.ParseList<T>(json);
             IOSUtils.TriggerCallback(actionPtr, result);
@@ -163,7 +163,13 @@ namespace GetSocialSdk.Core
             GetObjectsDictionaryCallback<PublicUser>(actionPtr, json);
         }
         
-        static void GetObjectsDictionaryCallback<TValue>(IntPtr actionPtr, string json) where TValue : IGetSocialBridgeObject<TValue>, new()
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetNotificationsCallback(IntPtr actionPtr, string json)
+        {
+            GetObjectsListCallback<Notification>(actionPtr, json);
+        }
+        
+        static void GetObjectsDictionaryCallback<TValue>(IntPtr actionPtr, string json) where TValue : IConvertableFromNative<TValue>, new()
         {
             var result = GSJsonUtils.ParseDictionary<PublicUser>(json);
             IOSUtils.TriggerCallback(actionPtr, result);

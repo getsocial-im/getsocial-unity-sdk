@@ -58,6 +58,17 @@ namespace GetSocialSdk.Core
 
         void SetNotificationListener(Func<Notification, bool, bool> listener);
 
+        void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError);
+
+        void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess, Action<GetSocialError> onError);
+        
+        void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+            Action<GetSocialError> onError);
+        
+        void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError);
+        
+        void IsPushNotificationsEnabled(Action<bool> onSuccess, Action<GetSocialError> onError);
+        
         #endregion
 
         #region user_management
@@ -190,7 +201,8 @@ namespace GetSocialSdk.Core
 
         // For testing only
         void HandleOnStartUnityEvent();
-        
+
+
         // For testing only
         void StartUnityTests(string scenario, Action readyAction);
     }

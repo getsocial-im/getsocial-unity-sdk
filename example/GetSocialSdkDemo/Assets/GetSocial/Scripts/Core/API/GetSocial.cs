@@ -208,7 +208,6 @@ namespace GetSocialSdk.Core
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
             Check.Argument.IsStrNotNullOrEmpty(channelId, "channelId");
-            Check.Argument.IsNotNull(customInviteContent, "customInviteContent");
             Check.Argument.IsNotNull(onComplete, "onComplete");
             Check.Argument.IsNotNull(onCancel, "onCancel");
             Check.Argument.IsNotNull(onFailure, "onFailure");
@@ -254,8 +253,6 @@ namespace GetSocialSdk.Core
             Action onComplete, Action onCancel, Action<GetSocialError> onFailure)
         {
             Check.Argument.IsStrNotNullOrEmpty(channelId, "channelId");
-            Check.Argument.IsNotNull(customInviteContent, "customInviteContent");
-            Check.Argument.IsNotNull(linkParams, "linkParams");
             Check.Argument.IsNotNull(onComplete, "onComplete");
             Check.Argument.IsNotNull(onCancel, "onCancel");
             Check.Argument.IsNotNull(onFailure, "onFailure");
@@ -1069,6 +1066,68 @@ namespace GetSocialSdk.Core
             {
                 return GetSocialImpl.RemoveOnUserChangedListener();
             }
+
+            #region Notifications
+
+            /// <summary>
+            /// Get a list of notifications for current user.
+            /// </summary>
+            /// <param name="query">Notifications query.</param>
+            /// <param name="onSuccess">Called with a list of notifications.</param>
+            /// <param name="onError">Called if operation failed.</param>
+            public static void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess,
+                Action<GetSocialError> onError)
+            {
+                GetSocialImpl.GetNotifications(query, onSuccess, onError);
+            }
+
+            /// <summary>
+            /// Get a number of notifications for current user.
+            /// </summary>
+            /// <param name="query">Notifications count query.</param>
+            /// <param name="onSuccess">Called with a number of notifications.</param>
+            /// <param name="onError">Called if operation failed.</param>
+            public static void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess,
+                Action<GetSocialError> onError)
+            {
+                GetSocialImpl.GetNotificationsCount(query, onSuccess, onError);
+            }
+
+            /// <summary>
+            /// Set notifications read or unread.
+            /// </summary>
+            /// <param name="notificationsIds">List of notifications IDs to change the read status.</param>
+            /// <param name="onSuccess">Called if operation succeeded.</param>
+            /// <param name="onError">Called if operation failed.</param>
+            public static void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+                Action<GetSocialError> onError)
+            {
+                GetSocialImpl.SetNotificationsRead(notificationsIds, isRead, onSuccess, onError);
+            }
+
+            /// <summary>
+            /// If set to `false` - current user won't receive GetSocial notifications anymore, until called with `true`.
+            /// </summary>
+            /// <param name="isEnabled">Disabled or enable PNs.</param>
+            /// <param name="onSuccess">Called if operation succeeded.</param>
+            /// <param name="onError">Called if operation failed.</param>
+            public static void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess,
+                Action<GetSocialError> onError)
+            {
+                GetSocialImpl.SetPushNotificationsEnabled(isEnabled, onSuccess, onError);
+            }
+            
+            /// <summary>
+            /// Check if PNs are enabled for current user.
+            /// </summary>
+            /// <param name="onSuccess">Called with true, if Push Notifications are enabled, false otherwise.</param>
+            /// <param name="onError">Called if operation failed.</param>
+            public static void IsPushNotificationsEnabled(Action<bool> onSuccess,
+                Action<GetSocialError> onError)
+            {
+                GetSocialImpl.IsPushNotificationsEnabled(onSuccess, onError);
+            }
+            #endregion
 
         }
 

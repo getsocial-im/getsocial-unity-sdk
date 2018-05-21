@@ -8,7 +8,7 @@ using System.Linq;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class ListCallbackProxy<T> : JavaInterfaceProxy where T : IGetSocialBridgeObject<T>, new()
+    class ListCallbackProxy<T> : JavaInterfaceProxy where T : IConvertableFromNative<T>, new()
     {
         readonly Action<List<T>> _onSuccess;
         readonly Action<GetSocialError> _onFailure;

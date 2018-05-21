@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Activity post entity. Contains all information about post, its author and content.
     /// </summary>
-    public sealed class ActivityPost : IGetSocialBridgeObject<ActivityPost>
+    public sealed class ActivityPost : IConvertableFromNative<ActivityPost>
     {
         /// <summary>
         /// Type of Activity Feed content
@@ -157,11 +157,6 @@ namespace GetSocialSdk.Core
 
 #if UNITY_ANDROID
 
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException();
-        }
-
         public ActivityPost ParseFromAJO(AndroidJavaObject ajo)
         {
             using (ajo)
@@ -192,12 +187,6 @@ namespace GetSocialSdk.Core
         }
 
 #elif UNITY_IOS
-
-        public string ToJson()
-        {
-            throw new NotImplementedException();
-        }
-
         public ActivityPost ParseFromJson(Dictionary<string, object> json)
         {
             Id = (string) json["Id"];

@@ -9,7 +9,7 @@ using UnityEngine;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class DictionaryCallbackProxy<TValue> : JavaInterfaceProxy where TValue: IGetSocialBridgeObject<TValue>, new()
+    class DictionaryCallbackProxy<TValue> : JavaInterfaceProxy where TValue: IConvertableFromNative<TValue>, new()
     {
         private readonly Action<Dictionary<string, TValue>> _onSuccess;
         private readonly Action<GetSocialError> _onFailure;
@@ -32,8 +32,8 @@ namespace GetSocialSdk.Core
                     var iterator = resultAJO.CallAJO("keySet").CallAJO("iterator");
                     while (iterator.CallBool("hasNext"))
                     {
-                        string key = iterator.CallStr("next");
-                        TValue value = new TValue().ParseFromAJO(resultAJO.Call<AndroidJavaObject>("get", key));
+                        var key = iterator.CallStr("next");
+                        var value = new TValue().ParseFromAJO(resultAJO.Call<AndroidJavaObject>("get", key));
                         retValue.Add(key, value);
                     }
                 }

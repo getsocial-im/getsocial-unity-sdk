@@ -14,7 +14,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Builder for a query to retrieve activity posts or comments.
     /// </summary>
-    public sealed class ActivitiesQuery : IGetSocialBridgeObject<ActivitiesQuery>
+    public sealed class ActivitiesQuery : IConvertableToNative
     {
         /// <summary>
         /// Set of filtering options for <see cref="WithFilter(Filter, string)"/> method
@@ -99,7 +99,7 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             var activitiesQueryClass = new AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery");
             var activitiesQuery = _type == ActivityPost.Type.Post
@@ -114,11 +114,6 @@ namespace GetSocialSdk.Core
                 activitiesQuery.CallAJO("withFilter", _filter.ToAndroidJavaObject(), _filteringActivityId);
             }
             return activitiesQuery;
-        }
-
-        public ActivitiesQuery ParseFromAJO(AndroidJavaObject ajo)
-        {
-            throw new NotImplementedException("ActivitiesQuery is never received from Android");
         }
 #elif UNITY_IOS
 
@@ -137,12 +132,6 @@ namespace GetSocialSdk.Core
             };
             return GSJson.Serialize(json);
         }
-
-        public ActivitiesQuery ParseFromJson(Dictionary<string, object> json)
-        {
-            throw new NotImplementedException("ActivitiesQuery is never received from iOS");
-        }
-
 #endif
     }
 }

@@ -38,7 +38,7 @@ public class GetSocialDemoController : MonoBehaviour
     Vector2 _scrollPos;
     DemoAppConsole _console;
 
-    Dictionary<TopLevelMenuSection, DemoMenuSection> _menuSections;
+    List<DemoMenuSection> _menuSections;
 
     public string CurrentViewTitle { set; get; }
     private string _latestReferralData;
@@ -114,23 +114,22 @@ public class GetSocialDemoController : MonoBehaviour
 
     void SetupMenuSections()
     {
-        _menuSections = new Dictionary<TopLevelMenuSection, DemoMenuSection>
+        _menuSections = new List<DemoMenuSection>
         {
-            {TopLevelMenuSection.UserManagement, GetComponentInChildren<AuthSection>()},
-			{TopLevelMenuSection.SmartInvitesApi, GetComponentInChildren<SmartInvitesApiSection>()},
-			{TopLevelMenuSection.ActivityFeedApi, GetComponentInChildren<ActivityFeedApiSection>()},
-			{TopLevelMenuSection.SocialGraphApi, GetComponentInChildren<SocialGraphSection>()},
+            GetComponentInChildren<AuthSection>(),
+            GetComponentInChildren<SmartInvitesApiSection>(),
+            GetComponentInChildren<ActivityFeedApiSection>(),
+            GetComponentInChildren<SocialGraphSection>(),
+            GetComponentInChildren<NotificationsApiSection>(),
 #if USE_GETSOCIAL_UI
-            {TopLevelMenuSection.SmartInvitesUi, GetComponentInChildren<SmartInvitesUiSection>()},
-            {TopLevelMenuSection.ActivityFeedUi, GetComponentInChildren<ActivityFeedUiSection>()},
-            {TopLevelMenuSection.UiCustomization, GetComponentInChildren<UiCustomizationSection>()},
+            GetComponentInChildren<SmartInvitesUiSection>(),
+            GetComponentInChildren<ActivityFeedUiSection>(),
+            GetComponentInChildren<UiCustomizationSection>(),
 #endif
-            {TopLevelMenuSection.Settings, GetComponentInChildren<SettingsSection>()}
+            GetComponentInChildren<SettingsSection>()
         };
-        foreach (var section in _menuSections.Values)
-        {
-            section.Initialize(this, _console);
-        }
+        
+        _menuSections.ForEach(section => section.Initialize(this, _console));
         ShowMainMenu();
     }
 
@@ -193,12 +192,11 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GetSocial.SetNotificationListener((notification, wasClicked) =>
         {
+            _console.LogD(string.Format("Notification(wasClicked : {0}): {1}", wasClicked, notification));
             if (!wasClicked)
             {
-                _console.LogD(string.Format("Notification: {0}, Title: {1}, Text: {2}, Data: {3}", notification.Action, notification.Title, notification.Text, notification.ActionData.ToDebugString()));
                 return false;
             }
-            _console.LogD("Notification received: " + notification.Action + ", with data: " + notification.ActionData.ToDebugString());
             if (notification.Action == Notification.Type.OpenProfile)
             {
                 newFriend(notification.ActionData[Notification.Key.OpenProfile.UserId]);
@@ -253,7 +251,7 @@ public class GetSocialDemoController : MonoBehaviour
             MobileNativePopups.OpenAlertDialog("You have a new friend!", user.DisplayName +" is now your friend.", "OK", () => { });
         }, error =>
         {
-            _console.LogE("Failed to get user: " + error.Message);
+            _console.LogE("Failed to get user: " + error.Message + ", code: " + error.ErrorCode);
         });
     }
 
@@ -343,20 +341,21 @@ public class GetSocialDemoController : MonoBehaviour
     void DrawMainView()
     {
         GUILayout.Label("API", GSStyles.NormalLabelText);
-		Button("Smart Invites", () => ShowMenuSection(TopLevelMenuSection.SmartInvitesApi));
-		Button("Activity Feed", () => ShowMenuSection(TopLevelMenuSection.ActivityFeedApi));
-        Button("User Management", () => ShowMenuSection(TopLevelMenuSection.UserManagement));
-		Button("Social Graph", () => ShowMenuSection(TopLevelMenuSection.SocialGraphApi));
+		Button("Smart Invites", () => ShowMenuSection<SmartInvitesApiSection>());
+		Button("Activity Feed", () => ShowMenuSection<ActivityFeedApiSection>());
+        Button("User Management", () => ShowMenuSection<AuthSection>());
+		Button("Social Graph", () => ShowMenuSection<SocialGraphSection>());
+		Button("Notifications Api", () => ShowMenuSection<NotificationsApiSection>());
 #if USE_GETSOCIAL_UI
         GUILayout.Space(30f);
         GUILayout.Label("UI", GSStyles.NormalLabelText);
-        Button("Smart Invites", () => ShowMenuSection(TopLevelMenuSection.SmartInvitesUi));
-        Button("Activity Feed", () => ShowMenuSection(TopLevelMenuSection.ActivityFeedUi));
-        Button("UI Customization", () => ShowMenuSection(TopLevelMenuSection.UiCustomization));
+        Button("Smart Invites", () => ShowMenuSection<SmartInvitesUiSection>());
+        Button("Activity Feed", () => ShowMenuSection<ActivityFeedUiSection>());
+        Button("UI Customization", () => ShowMenuSection<UiCustomizationSection>());
 #endif
         GUILayout.Space(30f);
         GUILayout.Label("Other", GSStyles.NormalLabelText);
-        Button("Settings", () => ShowMenuSection(TopLevelMenuSection.Settings));
+        Button("Settings", () => ShowMenuSection<SettingsSection>());
     }
     #endregion
 
@@ -364,27 +363,15 @@ public class GetSocialDemoController : MonoBehaviour
 
     public void ShowMainMenu()
     {
+        _isInMainMenu = true;
+        _menuSections.ForEach(section => section.gameObject.SetActive(false));
         CurrentViewTitle = MainMenuTitle;
-        ShowMenuSection(TopLevelMenuSection.Main);
     }
 
-    void ShowMenuSection(TopLevelMenuSection menuSection)
-    {
-        foreach (var section in _menuSections)
-        {
-            section.Value.gameObject.SetActive(false);
-        }
-
-        if (menuSection == TopLevelMenuSection.Main)
-        {
-            _isInMainMenu = true;
-            CurrentViewTitle = MainMenuTitle;
-        }
-        else
-        {
-            _menuSections[menuSection].gameObject.SetActive(true);
-            _isInMainMenu = false;
-        }
+    void ShowMenuSection<Menu>() where Menu : DemoMenuSection
+    {  
+        _isInMainMenu = false;
+        _menuSections.ForEach(section => section.gameObject.SetActive(section is Menu));
     }
 
     #endregion
@@ -472,23 +459,6 @@ public class GetSocialDemoController : MonoBehaviour
             };
 			return GSJson.Serialize (dict);
         }
-    }
-
-    enum TopLevelMenuSection
-    {
-        Main,
-        UserManagement,
-        SocialGraphApi,
-        // Smart Invites
-        SmartInvitesApi,
-        SmartInvitesUi,
-
-        // Activity Feed
-        ActivityFeedApi,
-        ActivityFeedUi,
-
-        UiCustomization,
-        Settings
     }
     #endregion
 }

@@ -10,7 +10,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Invite content being sent along with smart invite.
     /// </summary>
-    public sealed class InviteContent : IGetSocialBridgeObject<InviteContent>
+    public sealed class InviteContent : IConvertableToNative
     {
         public static Builder CreateBuilder()
         {
@@ -121,7 +121,7 @@ namespace GetSocialSdk.Core
 
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             var inviteContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.invites.InviteContent$Builder");
 
@@ -143,18 +143,6 @@ namespace GetSocialSdk.Core
             }
             return inviteContentBuilderAJO.CallAJO("build");
         }
-
-        public InviteContent ParseFromAJO(AndroidJavaObject ajo)
-        {
-            using (ajo)
-            {
-                ImageUrl = ajo.CallStr("getImageUrl");
-                Subject = ajo.CallAJO("getSubject").FromLocalizableText();
-                Text = ajo.CallAJO("getText").FromLocalizableText();
-                Image = ajo.CallAJO("getImage").FromAndroidBitmap();
-            }
-            return this;
-        }
 #elif UNITY_IOS
         public string ToJson()
         {
@@ -166,16 +154,6 @@ namespace GetSocialSdk.Core
                 {"Image", Image.TextureToBase64()}
             };
             return GSJson.Serialize(jsonDic);
-        }
-        
-        public InviteContent ParseFromJson(Dictionary<string, object> jsonDic)
-        {
-            Subject = jsonDic["Subject"] as string;
-            Text = jsonDic["Text"] as string;
-            ImageUrl = jsonDic["ImageUrl"] as string;
-            Image = (jsonDic["Image"] as string).FromBase64();
-
-            return this;
         }
 #endif
     }

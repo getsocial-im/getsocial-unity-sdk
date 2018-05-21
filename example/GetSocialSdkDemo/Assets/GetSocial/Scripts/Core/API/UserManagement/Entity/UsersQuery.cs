@@ -11,7 +11,7 @@ using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
 {
-    public class UsersQuery : IGetSocialBridgeObject<UsersQuery>
+    public class UsersQuery : IConvertableToNative
     {
         private const int DefaultLimit = 20;
         
@@ -47,21 +47,12 @@ namespace GetSocialSdk.Core
             };
             return GSJson.Serialize(json);
         }
-
-        public UsersQuery ParseFromJson(Dictionary<string, object> json)
-        {
-            throw new NotImplementedException("Users Query is never sent from native to unity");
-        }
 #elif UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
+        public AndroidJavaObject ToAjo()
         {
             return new AndroidJavaClass("im.getsocial.sdk.usermanagement.UsersQuery")
                 .CallStaticAJO("usersByDisplayName", _query)
                 .CallStaticAJO("withLimit", _limit);
-        }
-        public UsersQuery ParseFromAJO(AndroidJavaObject ajo)
-        {
-            throw new NotImplementedException();
         }
 #endif
     }

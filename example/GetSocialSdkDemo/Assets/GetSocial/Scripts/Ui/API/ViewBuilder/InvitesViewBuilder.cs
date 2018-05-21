@@ -115,12 +115,12 @@ namespace GetSocialSdk.Ui
 
             if (_linkParams != null)
             {
-                invitesBuilderAJO.CallAJO("setLinkParams", _linkParams.ToAJO());
+                invitesBuilderAJO.CallAJO("setLinkParams", _linkParams.ToAjo());
             }
 
             if (_inviteContent != null)
             {
-                var inviteContentAJO = _inviteContent.ToAJO();
+                var inviteContentAJO = _inviteContent.ToAjo();
                 invitesBuilderAJO.CallAJO("setCustomInviteContent", inviteContentAJO);
             }
 

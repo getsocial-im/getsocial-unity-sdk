@@ -10,7 +10,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Immutable properties for a public user.
     /// </summary>
-    public class PublicUser : IGetSocialBridgeObject<PublicUser>
+    public class PublicUser : IConvertableFromNative<PublicUser>
     {
         /// <summary>
         /// Gets the user identifier.
@@ -56,12 +56,6 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException();
-        }
-
         public PublicUser ParseFromAJO(AndroidJavaObject ajo)
         {
             // NOTE: Don't forget to call Dispose() in subclasses to avoid leaks!!
@@ -74,11 +68,6 @@ namespace GetSocialSdk.Core
         }
 
 #elif UNITY_IOS
-        public string ToJson()
-        {
-            throw new NotImplementedException();
-        }
-
         public PublicUser ParseFromJson(Dictionary<string, object> json)
         {
             Id = (string) json["Id"];

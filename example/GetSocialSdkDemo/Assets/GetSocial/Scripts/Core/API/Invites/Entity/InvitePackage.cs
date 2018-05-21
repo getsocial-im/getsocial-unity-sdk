@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Invite package containing the invite data.
     /// </summary>
-    public sealed class InvitePackage : IGetSocialBridgeObject<InvitePackage>
+    public sealed class InvitePackage : IConvertableFromNative<InvitePackage>
     {
         /// <summary>
         /// Gets the invite subject.
@@ -57,11 +57,6 @@ namespace GetSocialSdk.Core
         }
 
 #if UNITY_ANDROID
-        public AndroidJavaObject ToAJO()
-        {
-            throw new NotImplementedException("This object is never passed to Android");
-        }
-
         public InvitePackage ParseFromAJO(AndroidJavaObject ajo)
         {
             JniUtils.CheckIfClassIsCorrect(ajo, "InvitePackage");
@@ -78,12 +73,6 @@ namespace GetSocialSdk.Core
             return this;
         }
 #elif UNITY_IOS
-
-        public string ToJson()
-        {
-            throw new NotImplementedException("This object is never passed to iOS");
-        }
-
         public InvitePackage ParseFromJson(Dictionary<string, object> json)
         {
             Subject = json["Subject"] as string;
