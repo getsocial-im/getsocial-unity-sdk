@@ -15,6 +15,7 @@ namespace GetSocialSdk.Core
     /// </summary>
     public sealed class InviteChannel : IConvertableFromNative<InviteChannel>
     {
+
         /// <summary>
         /// Gets the invite channel identifier.
         /// </summary>
@@ -45,12 +46,51 @@ namespace GetSocialSdk.Core
         /// <value><c>true</c> if this invite channel is enabled on GetSocial Dashboard; otherwise, <c>false</c>.</value>
         public bool IsEnabled { get; private set; }
 
+        internal InviteChannel(string id, string name, string iconImageUrl, int displayOrder, bool isEnabled)
+        {
+            Id = id;
+            Name = name;
+            IconImageUrl = iconImageUrl;
+            DisplayOrder = displayOrder;
+            IsEnabled = isEnabled;
+        }
+
+        public InviteChannel()
+        {
+            
+        }
+        
         public override string ToString()
         {
             return
                 string.Format(
                     "[InviteChannel: Id={0}, Name={1}, IconImageUrl={2}, DisplayOrder={3}, IsEnabled={4}]",
                     Id, Name, IconImageUrl, DisplayOrder, IsEnabled);
+        }
+
+        private bool Equals(InviteChannel other)
+        {
+            return string.Equals(Id, other.Id) && string.Equals(Name, other.Name) && string.Equals(IconImageUrl, other.IconImageUrl) && DisplayOrder == other.DisplayOrder && IsEnabled == other.IsEnabled;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is InviteChannel && Equals((InviteChannel) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Id != null ? Id.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (IconImageUrl != null ? IconImageUrl.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ DisplayOrder;
+                hashCode = (hashCode * 397) ^ IsEnabled.GetHashCode();
+                return hashCode;
+            }
         }
 
 #if UNITY_ANDROID
@@ -61,7 +101,7 @@ namespace GetSocialSdk.Core
             using (ajo)
             {
                 Id = ajo.CallStr("getChannelId");
-                Name = ajo.CallAJO("getName").FromLocalizableText();
+                Name = ajo.CallStr("getChannelName");
                 IconImageUrl = ajo.CallStr("getIconImageUrl");
                 DisplayOrder = ajo.CallInt("getDisplayOrder");
                 IsEnabled = ajo.CallBool("isEnabled");

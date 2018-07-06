@@ -75,6 +75,7 @@ namespace GetSocialSdk.Editor
             }
 
             project.RemoveFileFromBuild(target, uiBridgeGuid);
+            project.RemoveFile(uiBridgeGuid);
         }
 
         static void AddOtherLinkerFlags(PBXProject project, string target)
@@ -96,14 +97,20 @@ namespace GetSocialSdk.Editor
         {
             const string defaultLocationInProj = "Frameworks/GetSocial/Plugins/iOS";
             const string coreFrameworkName = "GetSocial.framework";
+            const string uiFrameworkName = "GetSocialUI.framework";
             var relativeCoreFrameworkPath = Path.Combine(defaultLocationInProj, coreFrameworkName);
+            var relativeUiFrameworkPath = Path.Combine(defaultLocationInProj, uiFrameworkName);
+            
+            project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
+            
             if (GetSocialSettings.UseGetSocialUi)
             {
-                const string uiFrameworkName = "GetSocialUI.framework";
-                var relativeUiFrameworkPath = Path.Combine(defaultLocationInProj, uiFrameworkName);
                 project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
             }
-            project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
+            else
+            {
+                project.RemoveDynamicFramework(relativeUiFrameworkPath);
+            }
             Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
         }
 

@@ -60,21 +60,6 @@ namespace GetSocialSdk.Core
             return new AndroidJavaObject("java.lang.Throwable", message);
         }
 
-        public static string FromLocalizableText(this AndroidJavaObject localizableTextAJO)
-        {
-            if (localizableTextAJO.IsJavaNull())
-            {
-                return null;
-            }
-
-            CheckIfClassIsCorrect(localizableTextAJO, "LocalizableText");
-
-            using (localizableTextAJO)
-            {
-                return localizableTextAJO.CallStr("getLocalisedString");
-            }
-        }
-
         public static bool IsJavaNull(this AndroidJavaObject ajo)
         {
             return ajo == null || ajo.GetRawObject().ToInt32() == 0;
@@ -160,11 +145,6 @@ namespace GetSocialSdk.Core
 
         #endregion
 
-        public static string GetErrorMsg(this AndroidJavaObject throwable)
-        {
-            return throwable.CallStr("getMessage");
-        }
-
         public static GetSocialError ToGetSocialError(this AndroidJavaObject getSocialExceptionAJO)
         {
             return new GetSocialError().ParseFromAJO(getSocialExceptionAJO);
@@ -185,11 +165,24 @@ namespace GetSocialSdk.Core
             return ajo.CallAJO("getClass");
         }
 
-        public static string JavaToString(this AndroidJavaObject ajo)
-        {
-            return ajo.CallStr("toString");
-        }
+        public static AndroidJavaObject ToJavaStringArray(this IList<string> values) {
+            if (values == null)
+            {
+                return null;
+            }
+            var arrayClass = new AndroidJavaClass("java.lang.reflect.Array");
+            var arrayObject = arrayClass.CallStatic<AndroidJavaObject>("newInstance",
+                new AndroidJavaClass("java.lang.String"),
+                values.Count);
 
+            for (var i = 0; i < values.Count; ++i ) 
+            {
+                arrayClass.CallStatic("set", arrayObject, i,
+                    new AndroidJavaObject("java.lang.String", values[i]));
+            }
+            return arrayObject;
+        }
+        
         public static Texture2D FromAndroidBitmap(this AndroidJavaObject bitmapAJO)
         {
             if (!bitmapAJO.IsJavaNull())

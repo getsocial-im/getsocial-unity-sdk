@@ -4,11 +4,6 @@
     <package>com.android.support:cardview-v7:25.3.1</package>
     <package>com.android.support:customtabs:25.3.1</package>
     <package>com.android.support:support-v4:25.3.1</package>
-    <package>com.google.android.gms:play-services-base:10.2.0</package>
-    <package>com.google.firebase:firebase-app-unity:3.0.1</package>
-    <package>com.google.firebase:firebase-common:10.2.0</package>
-    <package>com.google.firebase:firebase-messaging:10.2.0</package>
-    <package>com.google.firebase:firebase-messaging-unity:3.0.1</package>
   </packages>
   <files>
     <file>Assets/Plugins/Android/com.android.support.animated-vector-drawable-25.3.1.aar</file>
@@ -23,13 +18,5 @@
     <file>Assets/Plugins/Android/com.android.support.support-media-compat-25.3.1.aar</file>
     <file>Assets/Plugins/Android/com.android.support.support-v4-25.3.1.aar</file>
     <file>Assets/Plugins/Android/com.android.support.support-vector-drawable-25.3.1.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-base-10.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-basement-10.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-tasks-10.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-app-unity-3.0.1.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-common-10.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-iid-10.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-10.2.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-messaging-unity-3.0.1.aar</file>
   </files>
 </dependencies>

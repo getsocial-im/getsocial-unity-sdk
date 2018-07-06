@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class RunnableProxy : JavaInterfaceProxy
+    internal class RunnableProxy : JavaInterfaceProxy
     {
         readonly Action _runnable;
 

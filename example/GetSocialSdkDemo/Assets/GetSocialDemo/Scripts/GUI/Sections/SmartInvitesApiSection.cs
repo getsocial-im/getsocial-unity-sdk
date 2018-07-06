@@ -15,7 +15,11 @@
  */
 
 using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 using TheNextFlow.UnityPlugins;
 using UnityEngine;
@@ -50,6 +54,9 @@ public class SmartInvitesApiSection : DemoMenuSection
     private bool _useInviteImage;
     private bool _useCustomImage;
 
+    private bool _sendCustomImage;
+    private bool _sendCustomVideo;
+
     private Texture2D CustomLandingPageImage
     {
         get
@@ -66,8 +73,22 @@ public class SmartInvitesApiSection : DemoMenuSection
             
         }
     }
-
     
+    byte[] _video;
+
+    private byte[] Video
+    {
+        get
+        {
+            if (_video == null)
+            {
+                _video = DemoUtils.LoadSampleVideoBytes();
+            }
+            return _video;
+        }
+    }
+
+
     InviteChannel[] _currentInviteChannels = { };
 
     public string CustomTitle
@@ -113,11 +134,19 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         get
         {
-            return InviteContent.CreateBuilder()
-                .WithSubject(_customWindowTitle)
-                .WithText(_customText)
-                .WithImage(Image)
-                .Build();
+            InviteContent.Builder builder = InviteContent.CreateBuilder();
+            builder.WithSubject(_customWindowTitle);
+            builder.WithText(_customText);
+            if (_sendCustomImage)
+            {
+                builder.WithImage(Image);
+            }
+            if (_sendCustomVideo)
+            {
+                builder.WithVideo(Video);
+            }
+
+            return builder.Build();
         }
     }
 
@@ -137,7 +166,8 @@ public class SmartInvitesApiSection : DemoMenuSection
 
     void DrawMainSection()
     {
-        DemoGuiUtils.DrawButton("Get Supported Channels", GetSupportedInviteChannels, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Get Available Channels Details", PrintAvailableInviteChannelsDetails, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Get Available Channels", PrintAvailbleChannelsList, style: GSStyles.Button);
         DrawCustomInviteParamsForm();
 
         // API calls to SendInvite
@@ -147,12 +177,26 @@ public class SmartInvitesApiSection : DemoMenuSection
         DrawGetReferredUsers();
     }
 
-    void GetSupportedInviteChannels()
+    void PrintAvailableInviteChannelsDetails()
     {
         _currentInviteChannels = GetSocial.InviteChannels;
         var channels = _currentInviteChannels.ToList().ConvertAll(x => x.ToString()).ToArray();
         var channelsJoined = string.Join(", ", channels);
         _console.LogD(string.Format("Available invite channels: {0}", channelsJoined));
+    }
+    
+    private void PrintAvailbleChannelsList()
+    {
+        var channelIds = typeof(InviteChannelIds)
+            .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+            .Where(fi => fi.IsLiteral && !fi.IsInitOnly)
+            .Select(field => field.GetValue("").ToString())
+            .ToList();
+
+        var messageBuilder = new StringBuilder("Invite channels availability:\n");
+        channelIds.ForEach(channelId => messageBuilder.AppendLine(string.Format("{0}: {1}", channelId, GetSocial.IsInviteChannelAvailable(channelId))));
+        
+        _console.LogD(messageBuilder.ToString());
     }
 
     public void DrawCustomInviteParamsForm()
@@ -174,6 +218,32 @@ public class SmartInvitesApiSection : DemoMenuSection
         _customText = GUILayout.TextField(_customText, GSStyles.TextField, GUILayout.Width(Screen.width * 0.75f));
         GUILayout.EndHorizontal();
 
+        // Image/Video
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Image/Video", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+
+        if (GUILayout.Toggle(_sendCustomImage, "", GSStyles.ImageToggle))
+        {
+            _sendCustomImage = true; 
+            _sendCustomVideo = false;
+        }
+        GUILayout.Label("Send Custom Image", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+
+        if (GUILayout.Toggle(_sendCustomVideo, "", GSStyles.ImageToggle))
+        {
+            _sendCustomImage = false;
+            _sendCustomVideo = true;
+        }
+        GUILayout.Label("Send Custom Video", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        
+        if (GUILayout.Button("Clear", GSStyles.ClearButton))
+        {
+            _sendCustomImage = false;
+            _sendCustomVideo = false;
+        }
+        
+        GUILayout.EndHorizontal();
+          
         // Link Params
         GUILayout.Label("Customize landing page (optional)", GSStyles.NormalLabelText);
 
@@ -291,7 +361,7 @@ public class SmartInvitesApiSection : DemoMenuSection
 
         DemoGuiUtils.DrawButton("Get referral data", GetReferralData, style: GSStyles.Button);
     }
-
+    
     private void DrawGetReferredUsers()
     {
         GUILayout.Label("Referred users", GSStyles.BigLabelText);

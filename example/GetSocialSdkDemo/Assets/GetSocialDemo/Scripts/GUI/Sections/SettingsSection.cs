@@ -27,6 +27,11 @@ public class SettingsSection : DemoMenuSection
         ChooseLanguage
     }
 
+    public bool PnEnabled
+    {
+        get { return _pnEnabled; }
+        set { _pnEnabled = value; }
+    }
 
     private bool _pnEnabled = true;
     protected SettingsSubSection _currentSection = SettingsSubSection.Main;
@@ -51,7 +56,6 @@ public class SettingsSection : DemoMenuSection
 
     protected override void InitGuiElements()
     {
-        GetSocial.User.IsPushNotificationsEnabled(isEnabled => _pnEnabled = isEnabled, error => Debug.LogError("Failed to get PN status " + error));
         InitLanguageButtonsRow(_languageButtonsRow1, _supportedLanguagesRow1);
         InitLanguageButtonsRow(_languageButtonsRow2, _supportedLanguagesRow2);
         InitLanguageButtonsRow(_languageButtonsRow3, _supportedLanguagesRow3);
@@ -132,8 +136,8 @@ public class SettingsSection : DemoMenuSection
 
     void TogglePNEnabled()
     {
-        bool pnStatus = !_pnEnabled;
-        GetSocial.User.SetPushNotificationsEnabled(pnStatus, () => { _pnEnabled = pnStatus; }, error => Debug.LogError("Failed to change status" + error));
+        var pnStatus = !PnEnabled;
+        GetSocial.User.SetPushNotificationsEnabled(pnStatus, () => { PnEnabled = pnStatus; }, error => Debug.LogError("Failed to change status" + error));
     }
 
     #region set_language

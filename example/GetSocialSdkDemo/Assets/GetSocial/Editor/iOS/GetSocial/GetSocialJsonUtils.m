@@ -22,6 +22,7 @@
     content.imageUrl = json[@"ImageUrl"];
     content.text = json[@"Text"];
     content.image = [GetSocialBridgeUtils decodeUIImageFrom:json[@"Image"]];
+    content.video = [GetSocialBridgeUtils decodeNSDataFrom:json[@"Video"]];
 
     return content;
 }
@@ -65,6 +66,12 @@
     {
         [query setFilter:(GetSocialActivitiesFilter)filter activityId:json[@"FilteringActivityId"]];
     }
+
+    NSArray *tags = json[@"Tags"];
+    if (tags) 
+    {
+        [query setTags:tags];
+    }
     BOOL isFriendsFeed = [json[@"FriendsFeed"] boolValue];
     [query setIsFriendsFeed:isFriendsFeed];
 
@@ -80,6 +87,7 @@
     postContent.buttonTitle = dictionary[@"ButtonTitle"];
     postContent.buttonAction = dictionary[@"ButtonAction"];
     postContent.image = [GetSocialBridgeUtils decodeUIImageFrom:dictionary[@"Image"]];
+    postContent.video = [GetSocialBridgeUtils decodeNSDataFrom:dictionary[@"Video"]];
 
     return postContent;
 }

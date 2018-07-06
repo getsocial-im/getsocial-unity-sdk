@@ -85,6 +85,61 @@ namespace GetSocialSdk.Core
         /// <value>The original link parameters.</value>
         public LinkParams OriginalLinkParams { get; private set; }
 
+        public ReferralData()
+        {
+        }
+
+#pragma warning disable 0618
+        internal ReferralData(string token, string referrerUserId, string referrerChannelId, bool isFirstMatch, bool isGuaranteedMatch, bool isReinstall, bool isFirstMatchLink, CustomReferralData customReferralData, LinkParams linkParams, CustomReferralData originalCustomReferralData, LinkParams originalLinkParams)
+        {
+            Token = token;
+            ReferrerUserId = referrerUserId;
+            ReferrerChannelId = referrerChannelId;
+            IsFirstMatch = isFirstMatch;
+            IsGuaranteedMatch = isGuaranteedMatch;
+            IsReinstall = isReinstall;
+            IsFirstMatchLink = isFirstMatchLink;
+            CustomReferralData = customReferralData;
+            OriginalCustomReferralData = originalCustomReferralData;
+            LinkParams = linkParams;
+            OriginalLinkParams = originalLinkParams;
+        }
+        
+        private bool Equals(ReferralData other)
+        {
+            return string.Equals(Token, other.Token) && string.Equals(ReferrerUserId, other.ReferrerUserId) && string.Equals(ReferrerChannelId, other.ReferrerChannelId) && IsFirstMatch == other.IsFirstMatch && IsGuaranteedMatch == other.IsGuaranteedMatch && IsReinstall == other.IsReinstall && IsFirstMatchLink == other.IsFirstMatchLink && Equals(CustomReferralData, other.CustomReferralData) && Equals(LinkParams, other.LinkParams) && Equals(OriginalCustomReferralData, other.OriginalCustomReferralData) && Equals(OriginalLinkParams, other.OriginalLinkParams);
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is ReferralData && Equals((ReferralData) obj);
+        }
+#pragma warning restore 0618
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Token != null ? Token.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ReferrerUserId != null ? ReferrerUserId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ReferrerChannelId != null ? ReferrerChannelId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsFirstMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsGuaranteedMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsReinstall.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFirstMatchLink.GetHashCode();
+                
+#pragma warning disable 0618
+                hashCode = (hashCode * 397) ^ (CustomReferralData != null ? CustomReferralData.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OriginalCustomReferralData != null ? OriginalCustomReferralData.GetHashCode() : 0);
+#pragma warning restore 0618
+                hashCode = (hashCode * 397) ^ (LinkParams != null ? LinkParams.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OriginalLinkParams != null ? OriginalLinkParams.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         public override string ToString()
         {
             return string.Format("[ReferralData: Token: {0}, ReferrerUserId={1}, ReferrerChannelId={2}, IsFirstMatch={3}, IsGuaranteedMatch={4}, LinkParams={5}, " +

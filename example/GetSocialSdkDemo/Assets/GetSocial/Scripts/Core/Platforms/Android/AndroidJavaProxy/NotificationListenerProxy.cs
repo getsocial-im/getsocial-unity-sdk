@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class NotificationListenerProxy : JavaInterfaceProxy
+    internal class NotificationListenerProxy : JavaInterfaceProxy
     {
         readonly Func<Notification, bool, bool> _onNotification;
 
@@ -18,7 +18,7 @@ namespace GetSocialSdk.Core
 
         bool onNotificationReceived(AndroidJavaObject ajo, bool wasClicked)
         {
-            return _onNotification(new Notification().ParseFromAJO(ajo), wasClicked);
+            return _onNotification != null && _onNotification(new Notification().ParseFromAJO(ajo), wasClicked);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class AddAuthIdentityCallbackProxy : JavaInterfaceProxy
+    internal class AddAuthIdentityCallbackProxy : JavaInterfaceProxy
     {
         readonly Action _onComplete;
         readonly Action<GetSocialError> _onFailure;
@@ -28,10 +28,7 @@ namespace GetSocialSdk.Core
 
         void onFailure(AndroidJavaObject throwableAJO)
         {
-            var ex = throwableAJO.ToGetSocialError();
-            GetSocialDebugLogger.D("AddAuthIdentityCallbackProxy onFailure: " + ex);
-
-            ExecuteOnMainThread(() => _onFailure(ex));
+            HandleError(throwableAJO, _onFailure);
         }
 
         void onConflict(AndroidJavaObject conflictUserAJO)
@@ -39,7 +36,7 @@ namespace GetSocialSdk.Core
             GetSocialDebugLogger.D("AddAuthIdentityCallbackProxy onConflict");
 
             var conflictUser = new ConflictUser().ParseFromAJO(conflictUserAJO);
-            ExecuteOnMainThread(() => _onConflict(conflictUser));
+            HandleValue(conflictUser, _onConflict);
         }
     }
 }

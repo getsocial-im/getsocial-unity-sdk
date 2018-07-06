@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class FetchReferralDataCallbackProxy : JavaInterfaceProxy
+    internal class FetchReferralDataCallbackProxy : JavaInterfaceProxy
     {
         private readonly Action<ReferralData> _onSuccess;
         private readonly Action<GetSocialError> _onFailure;
@@ -24,16 +24,12 @@ namespace GetSocialSdk.Core
 
             GetSocialDebugLogger.D("On success: " + referralData);
 
-            ExecuteOnMainThread(() => _onSuccess(referralData));
+            HandleValue(referralData, _onSuccess);
         }
 
         void onFailure(AndroidJavaObject throwable)
         {
-            var e = throwable.ToGetSocialError();
-
-            GetSocialDebugLogger.D("On onFailure: " + e.Message);
-
-            ExecuteOnMainThread(() => _onFailure(e));
+            HandleError(throwable, _onFailure);
         }
     }
 }

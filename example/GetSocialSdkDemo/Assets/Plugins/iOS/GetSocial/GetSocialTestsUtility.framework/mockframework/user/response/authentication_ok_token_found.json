@@ -1,0 +1,27 @@
+{
+	"sessionId": "71122b2e-f29d-4650-8c71-cfd529ba2ba0",
+	"user": {
+		"id": "12345",
+		"password": "7a1b3e36-e5f6-4586-b1fb-61ee42d83637",
+		"displayName": "106d3b950b76467ca6d1a413964b9248",
+		"avatarUrl": null,
+		"publicProperties": {
+			"[validPublicPropertyKey]": "someRandomValue"
+		},
+		"privateProperties": {
+			"[validPrivatePropertyKey]": "someRandomValue"
+		},
+		"internalPublicProperties": null,
+		"identities": null
+	},
+	"serverTime": 1491296857,
+	"appPlatformProperties": {
+		"pushNotificationsStatus": true,
+		"pushNotificationsSenderId": "123"
+	},
+	"token": "12345",
+	"applicationInfo": {
+		"name": "ApplicationName",
+		"iconUrl": null
+	}
+}

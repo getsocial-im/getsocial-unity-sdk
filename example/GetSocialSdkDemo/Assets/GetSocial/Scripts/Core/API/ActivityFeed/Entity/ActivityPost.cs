@@ -152,7 +152,64 @@ namespace GetSocialSdk.Core
             return string.Format(
                 "Id: {0}, Text: {1}, HasText: {2}, ImageUrl: {3}, HasImage: {4}, CreatedAt: {5}, ButtonTitle: {6}, ButtonAction: {7}, HasButton: {8}, Author: {9}, CommentsCount: {10}, LikesCount: {11}, IsLikedByMe: {12}, StickyStart: {13}, StickyEnd: {14}, FeedId: {15}, Mentions: {16}",
                 Id, Text, HasText, ImageUrl, HasImage, CreatedAt, ButtonTitle, ButtonAction, HasButton, Author,
-                CommentsCount, LikesCount, IsLikedByMe, StickyStart, StickyEnd, FeedId, Mentions);
+                CommentsCount, LikesCount, IsLikedByMe, StickyStart, StickyEnd, FeedId, Mentions.ToDebugString());
+        }
+
+        public ActivityPost()
+        {
+            
+        }
+
+        internal ActivityPost(string id, string text, string imageUrl, DateTime createdAt, string buttonTitle, string buttonAction, PostAuthor author, int commentsCount, int likesCount, bool isLikedByMe, DateTime stickyStart, DateTime stickyEnd, List<Mention> mentions, string feedId)
+        {
+            Id = id;
+            Text = text;
+            ImageUrl = imageUrl;
+            CreatedAt = createdAt;
+            ButtonTitle = buttonTitle;
+            ButtonAction = buttonAction;
+            Author = author;
+            CommentsCount = commentsCount;
+            LikesCount = likesCount;
+            IsLikedByMe = isLikedByMe;
+            StickyStart = stickyStart;
+            StickyEnd = stickyEnd;
+            Mentions = mentions;
+            FeedId = feedId;
+        }
+
+        private bool Equals(ActivityPost other)
+        {
+            return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(ImageUrl, other.ImageUrl) && CreatedAt.Equals(other.CreatedAt) && string.Equals(ButtonTitle, other.ButtonTitle) && string.Equals(ButtonAction, other.ButtonAction) && Equals(Author, other.Author) && CommentsCount == other.CommentsCount && LikesCount == other.LikesCount && IsLikedByMe == other.IsLikedByMe && StickyStart.Equals(other.StickyStart) && StickyEnd.Equals(other.StickyEnd) && Mentions.ListEquals(other.Mentions) && string.Equals(FeedId, other.FeedId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is ActivityPost && Equals((ActivityPost) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Id != null ? Id.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ImageUrl != null ? ImageUrl.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CreatedAt.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ButtonTitle != null ? ButtonTitle.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ButtonAction != null ? ButtonAction.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Author != null ? Author.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CommentsCount;
+                hashCode = (hashCode * 397) ^ LikesCount;
+                hashCode = (hashCode * 397) ^ IsLikedByMe.GetHashCode();
+                hashCode = (hashCode * 397) ^ StickyStart.GetHashCode();
+                hashCode = (hashCode * 397) ^ StickyEnd.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Mentions != null ? Mentions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FeedId != null ? FeedId.GetHashCode() : 0);
+                return hashCode;
+            }
         }
 
 #if UNITY_ANDROID

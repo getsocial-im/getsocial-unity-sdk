@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class CompletionCallback : JavaInterfaceProxy
+    internal class CompletionCallback : JavaInterfaceProxy
     {
         readonly Action _onSuccess;
         readonly Action<GetSocialError> _onFailure;
@@ -26,9 +26,7 @@ namespace GetSocialSdk.Core
 
         void onFailure(AndroidJavaObject throwable)
         {
-            var e = throwable.ToGetSocialError();
-            GetSocialDebugLogger.D("CompletionCallback failure: " + e.Message);
-            ExecuteOnMainThread(() => _onFailure(e));
+            HandleError(throwable, _onFailure);
         }
     }
 }

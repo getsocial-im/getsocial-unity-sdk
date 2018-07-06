@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 #if UNITY_IOS
@@ -45,6 +46,22 @@ namespace GetSocialSdk.Core
             return string.Format("[LinkParams: {0}]", this.ToDebugString());
         }
 
+        private bool Equals(LinkParams other)
+        {
+            return this.DictionaryEquals(other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is LinkParams && Equals((LinkParams) obj);
+        }
+        
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {

@@ -1,0 +1,758 @@
+{
+	"scenarios": {
+		"init_ok": {
+			"parent_id": "track_install_no_match",
+			"request_response_pairs": [{
+				"request_id": "get_upload_url",
+				"response_id": "upload_url_success"
+			}]
+		},
+		"auth_ok": {
+			"parent_id": null,
+			"request_response_pairs": [{
+				"request_id": "authentication_valid_appId",
+				"response_id": "authentication_ok"
+			}]
+		},
+		"get_invite_providers_ok": {
+			"parent_id": "auth_ok",
+			"request_response_pairs": [
+				{
+					"request_id": "get_inviteproviders",
+					"response_id": "get_inviteproviders_ok"
+				}
+			]
+		},
+		"track_install_no_match": {
+			"parent_id": "get_invite_providers_ok",
+			"request_response_pairs": [
+				{
+					"request_id": "track_install",
+					"response_id": "track_install_no_match"
+				}
+			]
+		},
+		"track_install_match": {
+			"parent_id": "get_invite_providers_ok",
+			"request_response_pairs": [
+				{
+					"request_id": "track_install",
+					"response_id": "track_install_match"
+				}
+			]
+		},
+		"fetch_referral_data": {
+			"parent_id": "track_install_match",
+			"request_response_pairs": [
+				{
+					"request_id": "fetch_referral_data",
+					"response_id": "fetch_referral_data_ok"
+				}
+			]
+		},
+		"send_invite_ok": {
+			"parent_id": "init_ok",
+			"request_response_pairs": [{
+				"request_id": "createInviteUrl",
+				"response_id": "createInviteUrl_ok"
+			}]
+		},
+		"auth_failure": {
+			"parent_id": null,
+			"request_response_pairs": [{
+				"request_id": "authentication_invalid_appId",
+				"response_id": "authentication_failure"
+			}]
+		},
+		"identityTests": {
+			"parent_id": "init_ok",
+			"request_response_pairs": [{
+				"request_id": "addIdentity_invalidAccessToken",
+				"response_id": "addIdentity_invalidAccessToken_errorResponse"
+			}, {
+				"request_id": "addIdentity_invalidProviderId",
+				"response_id": "addIdentity_invalidProviderId_errorResponse"
+			}, {
+				"request_id": "addIdentity_validParameters",
+				"response_id": "addIdentity_ok"
+			}, {
+				"request_id": "addIdentity_conflictingIdentity",
+				"response_id": "addIdentity_conflict_errorResponse"
+			}, {
+				"request_id": "addIdentityWithProviderId_invalidProviderId",
+				"response_id": "addIdentity_invalidProviderId_errorResponse"
+			}, {
+				"request_id": "addIdentityWithProviderId_invalidAccessToken",
+				"response_id": "addIdentity_invalidAccessToken_errorResponse"
+			}, {
+				"request_id": "addIdentityWithProviderId_invalidProviderUserId",
+				"response_id": "addIdentity_invalidProviderUserId_errorResponse"
+			}, {
+				"request_id": "addIdentityWithProviderId_validParameters",
+				"response_id": "addIdentity_ok"
+			}, {
+				"request_id": "addIdentityWithProviderId_conflictingIdentity",
+				"response_id": "addIdentity_conflict_errorResponse"
+			}, {
+				"request_id": "removeIdentity_invalidProviderId",
+				"response_id": "removeIdentity_invalidProviderId_errorResponse"
+			}, {
+				"request_id": "removeIdentity_validParameters",
+				"response_id": "removeIdentity_ok"
+			}, {
+				"request_id": "fetchPrivateUser_invalidAccessToken",
+				"response_id": "fetchPrivateUser_invalidAccessToken_errorResponse"
+			}, {
+				"request_id": "fetchPrivateUser_invalidProviderId",
+				"response_id": "fetchPrivateUser_invalidProviderId_errorResponse"
+			}, {
+				"request_id": "fetchPrivateUser_validParameters",
+				"response_id": "fetchPrivateUser_ok"
+			}, {
+				"request_id": "fetchConflictUser_validParameters",
+				"response_id": "fetchPrivateUser_ok"
+			}, {
+				"request_id": "fetchPrivateUserWithProviderId_invalidProviderId",
+				"response_id": "fetchPrivateUser_invalidProviderId_errorResponse"
+			}, {
+				"request_id": "fetchPrivateUserWithProviderId_invalidAccessToken",
+				"response_id": "fetchPrivateUser_invalidAccessToken_errorResponse"
+			}, {
+				"request_id": "fetchPrivateUserWithProviderId_invalidProviderUserId",
+				"response_id": "fetchPrivateUser_invalidProviderUserId_errorResponse"
+			}, {
+				"request_id": "fetchPrivateUserWithProviderId_validParameters",
+				"response_id": "fetchPrivateUser_ok"
+			}, {
+				"request_id": "fetchConflictUserWithProviderId_validParameters",
+				"response_id": "fetchPrivateUser_ok"
+			}, {
+				"request_id": "authenticate_after_switch",
+				"response_id": "authenticate_after_switch_ok"
+			}, {
+				"request_id": "update_user_details",
+				"response_id": "update_user_details_ok"
+			}, {
+				"request_id": "fetchPublicUser_validParameters",
+				"response_id": "fetchPrivateUser_ok"
+			}, {
+				"request_id": "fetchPublicUser_invalidParameters",
+				"response_id": "fetchPublicUser_notFound"
+			}
+			]
+		},
+		"activity_feed_scope": {
+			"parent_id": "init_ok",
+			"request_response_pairs": [
+				{
+					"request_id": "get_activities",
+					"response_id": "get_activities_ok"
+				},
+				{
+					"request_id": "get_sticky_activities",
+					"response_id": "get_activities_ok"
+				},
+				{
+					"request_id": "get_activities_newer_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "get_activities_older_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "get_comments_newer_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "get_comments_older_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "get_activity_existing",
+					"response_id": "get_activity_ok"
+				},
+				{
+					"request_id": "get_activity_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "get_comments",
+					"response_id": "get_activities_ok"
+				},
+				{
+					"request_id": "like_activity",
+					"response_id": "like_activity_ok"
+				},
+				{
+					"request_id": "unlike_activity",
+					"response_id": "unlike_activity_ok"
+				},
+				{
+					"request_id": "like_activity_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "unlike_activity_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "get_likers_activity",
+					"response_id": "get_likers_ok"
+				},
+				{
+					"request_id": "get_likers_activity_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "post_activity",
+					"response_id": "post_activity_ok"
+				},
+				{
+					"request_id": "post_activity_with_image",
+					"response_id": "post_activity_with_image_ok"
+				},
+				{
+					"request_id": "post_comment",
+					"response_id": "post_activity_ok"
+				},
+				{
+					"request_id": "post_comment_with_image",
+					"response_id": "post_activity_with_image_ok"
+				},
+				{
+					"request_id": "post_comment_to_not_existing_activity",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "report_activity",
+					"response_id": "report_activity_success"
+				},
+				{
+					"request_id": "report_activity_not_existing",
+					"response_id": "activity_not_found"
+				},
+				{
+					"request_id": "delete_activity",
+					"response_id": "delete_activity_success"
+				},
+				{
+					"request_id": "delete_activity_not_existing",
+					"response_id": "activity_not_found"
+				}
+			]
+		}, "set_external_friends_ok": {
+			"parent_id": "init_ok",
+			"request_response_pairs": [{
+				"request_id": "update_user_details",
+				"response_id": "update_user_details_ok"
+			}]
+		}
+	},
+	"requests": {
+		"authentication_valid_appId": {
+			"method": "authenticateSdk",
+			"params": {}
+		},
+		"authenticate_after_switch": {
+			"method": "authenticateSdk",
+			"params": {
+				"userId" : 567890,
+				"password" : "7a1b3e36-e5f6-4586-b1fb-61ee42d83637"
+			}
+		},
+		"authentication_invalid_appId": {
+			"method": "authenticateSdk",
+			"params": {
+				"appId": "[invalidappid]"
+			}
+		},
+		"get_inviteproviders": {
+			"method": "getInviteProviders",
+			"params": {}
+		},
+		"fetchPrivateUser_invalidAccessToken": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[invalidAccessToken]",
+				"providerId": null
+			}
+		},
+		"fetchPrivateUser_invalidProviderId": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[invalidProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": null
+			}
+		},
+		"fetchPrivateUserWithProviderId_invalidAccessToken": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[invalidAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"fetchPrivateUserWithProviderId_invalidProviderId": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[invalidProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"fetchPrivateUserWithProviderId_invalidProviderUserId": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[invalidProviderUserId]"
+			}
+		},
+		"fetchPrivateUserWithProviderId_validParameters": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"fetchConflictUserWithProviderId_validParameters": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[conflictingProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"fetchPrivateUser_validParameters": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[validAccessToken]"
+			}
+		},
+		"fetchConflictUser_validParameters": {
+			"method": "getPrivateUserByIdentity",
+			"params": {
+				"provider": "[conflictingProviderId]",
+				"accessToken": "[validAccessToken]"
+			}
+		},
+		"fetchPublicUser_validParameters": {
+			"method": "getPublicUser",
+			"params": {
+				"id": "567890"
+			}
+		},
+		"fetchPublicUser_invalidParameters": {
+			"method": "getPublicUser",
+			"params": {
+				"id": "[invalidUserId]"
+			}
+		},
+		"addIdentity_invalidAccessToken": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[invalidAccessToken]",
+				"providerId": null
+			}
+		},
+		"addIdentity_invalidProviderId": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[invalidProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": null
+			}
+		},
+		"addIdentity_validParameters": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": null
+			}
+		},
+		"addIdentity_conflictingIdentity": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[conflictingProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": null
+			}
+		},
+		"addIdentityWithProviderId_invalidAccessToken": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[invalidAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"addIdentityWithProviderId_invalidProviderId": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[invalidProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"addIdentityWithProviderId_invalidProviderUserId": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[invalidProviderUserId]"
+			}
+		},
+		"addIdentityWithProviderId_validParameters": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[validProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"addIdentityWithProviderId_conflictingIdentity": {
+			"method": "addIdentity",
+			"params": {
+				"provider": "[conflictingProviderId]",
+				"accessToken": "[validAccessToken]",
+				"providerId": "[validProviderUserId]"
+			}
+		},
+		"removeIdentity_invalidProviderId": {
+			"method": "removeIdentity",
+			"params": {
+				"provider": "[invalidProviderId]"
+			}
+		},
+		"removeIdentity_validParameters": {
+			"method": "removeIdentity",
+			"params": {
+				"provider": "[validProviderId]"
+			}
+		},
+		"update_user_details": {
+			"method": "updateUser",
+			"params": {}
+		},
+		"track_install": {
+			"method": "processAppOpen",
+			"params": {}
+		},
+		"fetch_referral_data": {
+			"method": "getTokenInfo",
+			"params": {}
+		},
+		"get_activities": {
+			"method": "getActivities",
+			"params": {}
+		},
+		"get_sticky_activities": {
+			"method": "getStickyActivities",
+			"params": {}
+		},
+		"get_activities_newer_not_existing": {
+			"method": "getActivities",
+			"params": {
+				"newer": "13"
+			}
+		},
+		"get_activities_older_not_existing": {
+			"method": "getActivities",
+			"params": {
+				"older": "13"
+			}
+		},
+		"get_comments_newer_not_existing": {
+			"method": "getComments",
+			"params": {
+				"newer": "13"
+			}
+		},
+		"get_comments_older_not_existing": {
+			"method": "getComments",
+			"params": {
+				"older": "13"
+			}
+		},
+		"get_comments": {
+			"method": "getComments",
+			"params": {}
+		},
+		"get_comments_not_existing": {
+			"method": "getComments",
+			"params": {
+				"activityId": "13"
+			}
+		},
+		"get_activity_existing": {
+			"method": "getActivity",
+			"params": {
+				"activityId": "42"
+			}
+		},
+		"get_activity_not_existing": {
+			"method": "getActivity",
+			"params": {
+				"activityId": "13"
+			}
+		},
+		"like_activity": {
+			"method": "likeActivity",
+			"params": {
+				"isLiked": "true"
+			}
+		},
+		"like_activity_not_existing": {
+			"method": "likeActivity",
+			"params": {
+				"activityId": "13",
+				"isLiked": "true"
+			}
+		},
+		"unlike_activity": {
+			"method": "likeActivity",
+			"params": {
+				"isLiked": "false"
+			}
+		},
+		"unlike_activity_not_existing": {
+			"method": "delete",
+			"params": {
+				"activityId": "13",
+				"isLiked": "false"
+			}
+		},
+		"get_likers_activity": {
+			"method": "getActivityLikers",
+			"params": {
+
+			}
+		},
+		"get_likers_activity_not_existing": {
+			"method": "getActivityLikers",
+			"params": {
+				"activityId": "13"
+			}
+		},
+		"post_activity": {
+			"method": "postActivity",
+			"params": {}
+		},
+		"post_activity_with_image": {
+			"method": "postActivity",
+			"params": {
+				"hasImage": "true"
+			}
+		},
+		"post_comment": {
+			"method": "postComment",
+			"params": {}
+		},
+		"post_comment_with_image": {
+			"method": "postComment",
+			"params": {
+				"hasImage": "true"
+			}
+		},
+		"post_comment_to_not_existing_activity": {
+			"method": "postComment",
+			"params": {
+				"activityId": "13"
+			}
+		},
+		"report_activity": {
+			"method": "reportActivity",
+			"params": {
+
+			}
+		},
+		"delete_activity": {
+			"method": "deleteActivity",
+			"params": {
+				"activityId": "42"
+			}
+		},
+		"report_activity_not_existing": {
+			"method": "reportActivity",
+			"params": {
+				"activityId": "13"
+			}
+		},
+		"delete_activity_not_existing": {
+			"method": "deleteActivity",
+			"params": {
+				"activityId": "13"
+			}
+		},
+		"get_upload_url": {
+			"method": "getUploadUrl",
+			"params": {}
+		},
+		"createInviteUrl": {
+			"method": "createInviteUrl",
+			"params": {}
+		}
+	},
+	"responses": {
+		"authentication_ok": {
+			"path": "user/response/authentication_ok.json"
+		},
+		"get_inviteproviders_ok": {
+			"path-android": "invites/response/get_invites_ok.json",
+			"path": "invites/response/get_invites_ok.json"
+		},
+		"authenticate_after_switch_ok": {
+			"path": "user/response/authentication_after_switch_ok.json"
+		},
+		"addIdentity_invalidProviderId_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"addIdentity_invalidProviderUserId_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"addIdentity_invalidAccessToken_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"addIdentity_conflict_errorResponse": {
+			"errors": [{
+				"errorCode": "EMResourceAlreadyExists",
+				"errorMsg": "EMResourceAlreadyExists",
+				"context": null
+			}]
+		},
+		"addIdentity_ok": {
+			"path": "user/response/addIdentity_ok.json"
+		},
+		"removeIdentity_invalidProviderId_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"removeIdentity_ok": {
+			"path": "user/response/removeIdentity_ok.json"
+		},
+		"fetchPrivateUser_invalidProviderId_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"fetchPrivateUser_invalidProviderUserId_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"fetchPrivateUser_invalidAccessToken_errorResponse": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"fetchPrivateUser_ok": {
+			"path": "user/response/fetchPrivateUser_ok.json"
+		},
+		"fetchPublicUser_notFound": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+
+		"update_user_details_ok": {
+			"path": "user/response/updateUserDetails_ok.json"
+		},
+		"update_user_details_error": {
+			"path": "user/response/updateUserDetails_errorResponse.json"
+		},
+		"authentication_failure": {
+			"errors": [{
+				"errorCode": "InvalidUserOrPassword",
+				"errorMsg": "InvalidUserOrPassword",
+				"context": null
+			}]
+		},
+		"track_install_no_match": {
+			"errors": [{
+				"errorCode": "SIErrProcessAppOpenNoMatch",
+				"errorMsg": "SIErrProcessAppOpenNoMatch",
+				"context": null
+			}]
+		},
+		"track_install_match": {
+			"path": "invites/response/referraldata_ok.json"
+		},
+		"fetch_referral_data_ok": {
+			"path": "invites/response/referraldata_ok.json"
+		},
+		"get_activities_ok": {
+			"path": "activities/response/get_activities_ok.json"
+		},
+		"get_activity_ok": {
+			"path": "activities/response/get_activity_ok.json"
+		},
+		"activity_not_found": {
+			"errors": [{
+				"errorCode": "EMNotFound",
+				"errorMsg": "activity not found",
+				"context": null
+			}]
+		},
+		"like_activity_ok": {
+			"path": "activities/response/like_activity_liked.json"
+		},
+		"unlike_activity_ok": {
+			"path": "activities/response/like_activity_not_liked.json"
+		},
+		"get_likers_ok": {
+			"path": "activities/response/get_likers_ok.json"
+		},
+		"report_activity_success": {
+			"response": null
+		},
+		"delete_activity_success": {
+			"response": null
+		},
+		"post_activity_ok": {
+			"path": "activities/response/post_activity.json"
+		},
+		"post_activity_with_image_ok": {
+			"path": "activities/response/post_activity_with_image.json"
+		},
+		"upload_url_success": {
+			"response": "valid_url"
+		},
+		"createInviteUrl_ok": {
+			"response": "{
+				\"url\": \"https:\/\/getsocialtestapp123t.testing.gsc.im\/hMivEDTUvF\",
+				\"token\": \"12345\"
+			}"
+		}
+
+	}
+}

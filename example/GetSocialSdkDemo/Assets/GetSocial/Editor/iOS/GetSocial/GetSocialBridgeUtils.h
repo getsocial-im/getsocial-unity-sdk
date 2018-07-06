@@ -11,4 +11,6 @@
 
 + (UIImage *)decodeUIImageFrom:(NSString *)base64String;
 
++ (NSData *)decodeNSDataFrom:(NSString *)base64String;
+
 @end

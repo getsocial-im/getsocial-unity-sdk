@@ -9,7 +9,7 @@ using UnityEngine;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class DictionaryCallbackProxy<TValue> : JavaInterfaceProxy where TValue: IConvertableFromNative<TValue>, new()
+    internal class DictionaryCallbackProxy<TValue> : JavaInterfaceProxy where TValue: IConvertableFromNative<TValue>, new()
     {
         private readonly Action<Dictionary<string, TValue>> _onSuccess;
         private readonly Action<GetSocialError> _onFailure;
@@ -23,36 +23,25 @@ namespace GetSocialSdk.Core
         
         void onSuccess(AndroidJavaObject resultAJO)
         {
-            ExecuteOnMainThread(() =>
+            var retValue = new Dictionary<string, TValue>();
+
+            if (resultAJO != null && !resultAJO.IsJavaNull())
             {
-                var retValue = new Dictionary<string, TValue>();
-
-                if (resultAJO != null && !resultAJO.IsJavaNull())
+                var iterator = resultAJO.CallAJO("keySet").CallAJO("iterator");
+                while (iterator.CallBool("hasNext"))
                 {
-                    var iterator = resultAJO.CallAJO("keySet").CallAJO("iterator");
-                    while (iterator.CallBool("hasNext"))
-                    {
-                        var key = iterator.CallStr("next");
-                        var value = new TValue().ParseFromAJO(resultAJO.Call<AndroidJavaObject>("get", key));
-                        retValue.Add(key, value);
-                    }
+                    var key = iterator.CallStr("next");
+                    var value = new TValue().ParseFromAJO(resultAJO.Call<AndroidJavaObject>("get", key));
+                    retValue.Add(key, value);
                 }
-
-                _onSuccess(retValue);
-            });
+            }
+            
+            HandleValue(retValue, _onSuccess);
         }
 
         void onFailure(AndroidJavaObject throwable)
         {
-            ExecuteOnMainThread(() =>
-            {
-                using (throwable)
-                {
-                    var e = throwable.ToGetSocialError();
-                    GetSocialDebugLogger.D("On onFailure: " + e.Message);
-                    _onFailure(e);
-                }
-            });
+            HandleError(throwable, _onFailure);
         }
     }
 }

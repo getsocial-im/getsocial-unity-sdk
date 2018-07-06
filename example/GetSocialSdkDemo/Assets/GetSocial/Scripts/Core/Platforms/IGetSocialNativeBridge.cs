@@ -34,6 +34,8 @@ namespace GetSocialSdk.Core
 
         #region smart_invites
 
+        bool IsInviteChannelAvailable(string channelId);
+        
         InviteChannel[] InviteChannels { get; }
 
         void SendInvite(string channelId, Action onComplete, Action onCancel, Action<GetSocialError> onFailure);
@@ -205,5 +207,11 @@ namespace GetSocialSdk.Core
 
         // For testing only
         void StartUnityTests(string scenario, Action readyAction);
+        
+        string TestCases();
+        
+        List<object> TestCasesFor(string module, string type);
+        
+        string NativeCompare<T>(string module, string type, List<T> converted) where T : IConvertableToNative;
     }
 }

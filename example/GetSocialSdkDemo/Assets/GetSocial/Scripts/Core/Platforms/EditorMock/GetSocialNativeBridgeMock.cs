@@ -53,6 +53,12 @@ namespace GetSocialSdk.Core
 
         public string Language { get; set; }
 
+        public bool IsInviteChannelAvailable(string channelId)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), channelId);
+            return false;
+        }
+
         public InviteChannel[] InviteChannels
         {
             get { return EmptyChannels; }
@@ -428,6 +434,21 @@ namespace GetSocialSdk.Core
         public void StartUnityTests(string scenario, Action readyAction)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), scenario, readyAction);
+        }
+
+        public string TestCases()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<object> TestCasesFor(string module, string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string NativeCompare<T>(string module, string type, List<T> converted) where T : IConvertableToNative
+        {
+            throw new NotImplementedException();
         }
     }
 }

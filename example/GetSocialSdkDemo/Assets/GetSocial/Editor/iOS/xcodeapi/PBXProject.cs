@@ -297,6 +297,23 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             AddBuildFileImpl(targetGuid, fileGuid, weak, null);
         }
 
+        public void RemoveDynamicFramework(string frameworkPathInProject)
+        {
+            var fileGuid = FindFileGuidByProjectPath(frameworkPathInProject);
+            if (fileGuid == null)
+            {
+                Debug.Log("Framework not found: " + frameworkPathInProject);
+                return;
+            }
+            RemoveFile(fileGuid);
+            var embedFrameworkFileData = FindEmbeddedFramework(fileGuid);
+            var embedFrameworkSection = FindEmbeddedFrameworkSection();
+            if (embedFrameworkSection != null && embedFrameworkFileData != null)
+            {
+                embedFrameworkSection.files.RemoveGUID(embedFrameworkFileData.guid);
+            }
+        }
+        
         public void AddDynamicFrameworkToProject(string targetGuid, string frameworkPathInProject)
         {
             var fileGuid = FindFileGuidByProjectPath(frameworkPathInProject);
@@ -306,38 +323,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
                 return;
             }
             // add file reference as embed framework
-            PBXBuildFileData embedFrameworkFileData = null;
-            foreach (var buildFileData in BuildFilesGetAll())
-            {
-                if (buildFileData.fileRef == fileGuid)
-                {
-                    PBXElementDict pbxElementDict = buildFileData.GetPropertiesWhenSerializing();
-                    if (pbxElementDict.Contains("settings"))
-                    {
-                        PBXElementDict settingsDict = pbxElementDict["settings"].AsDict();
-                        if (settingsDict.Contains("ATTRIBUTES"))
-                        {
-                            PBXElementArray attributes = settingsDict["ATTRIBUTES"].AsArray();
-                            Boolean codeSignOnCopyFound = false;
-                            Boolean removeHeadersOnCopyFound = false;
-                            foreach (var attributeValue in attributes.values)
-                            {
-                                if (attributeValue.AsString() == "CodeSignOnCopy")
-                                {
-                                    codeSignOnCopyFound = true;
-                                } else if (attributeValue.AsString() == "RemoveHeadersOnCopy")
-                                {
-                                    removeHeadersOnCopyFound = true;
-                                }
-                            }
-                            if (codeSignOnCopyFound && removeHeadersOnCopyFound)
-                            {
-                                embedFrameworkFileData = buildFileData;
-                            }
-                        }
-                    }
-                }
-            }
+            var embedFrameworkFileData = FindEmbeddedFramework(fileGuid);
             if (embedFrameworkFileData == null)
             {
                 embedFrameworkFileData = PBXBuildFileData.CreateFromFramework(fileGuid);
@@ -345,21 +331,14 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             }
 
             // add "Embed Frameworks" section
-            PBXCopyFilesBuildPhaseData embedFrameworksSection = null;
-            foreach (var copyFileEntry in copyFiles.GetEntries())
-            {
-                if (copyFileEntry.Value.name == "Embed Frameworks")
-                {
-                    embedFrameworksSection = copyFileEntry.Value;
-                }
-            }
+            var embedFrameworksSection = FindEmbeddedFrameworkSection();
             if (embedFrameworksSection == null)
             {
                 embedFrameworksSection = PBXCopyFilesBuildPhaseData.Create("Embed Frameworks", "10");
                 copyFiles.AddEntry(embedFrameworksSection);
             }
 
-            Boolean frameworkAlreadyAdded = false;
+            var frameworkAlreadyAdded = false;
             foreach (var fileEntry in embedFrameworksSection.files)
             {
                 if (fileEntry == embedFrameworkFileData.guid)
@@ -373,16 +352,50 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             }
 
             // add "Embed Frameworks" section to "Build phases"
-            PBXNativeTargetData target = nativeTargets[targetGuid];
-            if (!target.phases.Contains(embedFrameworksSection.guid))
+            var targetPhases = nativeTargets[targetGuid].phases;
+            if (!targetPhases.Contains(embedFrameworksSection.guid))
             {
-                target.phases.AddGUID(embedFrameworksSection.guid);
+                targetPhases.AddGUID(embedFrameworksSection.guid);
             }
             foreach (var buildConfigEntry in buildConfigs.GetEntries())
             {
                 XCBuildConfigurationData configurationData = buildConfigEntry.Value;
                 configurationData.AddProperty("LD_RUNPATH_SEARCH_PATHS","$(inherited) @executable_path/Frameworks");
             }
+        }
+
+        internal PBXCopyFilesBuildPhaseData FindEmbeddedFrameworkSection()
+        {
+            return copyFiles.GetEntries()
+                .Where(copyFileEntry => copyFileEntry.Value.name == "Embed Frameworks")
+                .Select(copyFileEntry => copyFileEntry.Value).FirstOrDefault();
+        }
+
+        internal PBXBuildFileData FindEmbeddedFramework(string fileGuid)
+        {
+            foreach (var buildFileData in BuildFilesGetAll())
+            {
+                if (buildFileData.fileRef != fileGuid) continue;
+                var pbxElementDict = buildFileData.GetPropertiesWhenSerializing();
+                if (!pbxElementDict.Contains("settings")) continue;
+                var settingsDict = pbxElementDict["settings"].AsDict();
+                if (!settingsDict.Contains("ATTRIBUTES")) continue;
+                var attributes = settingsDict["ATTRIBUTES"].AsArray();
+                var codeSignOnCopyFound = false;
+                var removeHeadersOnCopyFound = false;
+                foreach (var attributeValue in attributes.values)
+                {
+                    var attribute = attributeValue.AsString();
+                    codeSignOnCopyFound = codeSignOnCopyFound || attribute == "CodeSignOnCopy";
+                    removeHeadersOnCopyFound = removeHeadersOnCopyFound || attribute == "RemoveHeadersOnCopy";
+                    if (codeSignOnCopyFound && removeHeadersOnCopyFound)
+                    {
+                        return buildFileData;
+                    }
+                }
+            }
+
+            return null;
         }
 
         public void AddShellScript(string targetGuid, string script)

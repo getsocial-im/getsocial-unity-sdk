@@ -27,7 +27,8 @@
     [dictionary gs_setValueOrNSNull:[self.author toJsonDictionary] forKey:@"Author"];
     [dictionary gs_setValueOrNSNull:self.feedId forKey:@"FeedId"];
     [dictionary gs_setValueOrNSNull:self.mentions.toJsonString forKey:@"Mentions"];
-    
+    [dictionary gs_setValueOrNSNull:self.videoUrl forKey:@"VideoUrl"];
+
     return dictionary;
 }
 

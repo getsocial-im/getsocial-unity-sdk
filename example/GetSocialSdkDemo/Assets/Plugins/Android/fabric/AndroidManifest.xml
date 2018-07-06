@@ -6,6 +6,7 @@
     <meta-data android:name="io.fabric.crashlytics.qualified" android:value="com.crashlytics.android.Crashlytics" />
     <meta-data android:name="io.fabric.crashlytics.unqualified" android:value="Crashlytics" />
     <meta-data android:name="io.fabric.kits" android:value="crashlytics" />
+    <meta-data android:name="io.fabric.InitializationKitsList" android:value="Fabric.Internal.Crashlytics.CrashlyticsInit.RegisterExceptionHandlers" />
     <meta-data android:name="io.fabric.InitializationType" android:value="Automatic" />
   </application>
 </manifest>

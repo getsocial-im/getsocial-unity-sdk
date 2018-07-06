@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class InviteCallbackProxy : JavaInterfaceProxy
+    internal class InviteCallbackProxy : JavaInterfaceProxy
     {
         readonly Action _onComplete;
         readonly Action _onCancel;
@@ -34,8 +34,7 @@ namespace GetSocialSdk.Core
 
         void onError(AndroidJavaObject throwable)
         {
-            Debug.Log("Failure");
-            ExecuteOnMainThread(() => _onFailure(throwable.ToGetSocialError()));
+            HandleError(throwable, _onFailure);
         }
     }
 }

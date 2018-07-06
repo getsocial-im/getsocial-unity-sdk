@@ -34,4 +34,14 @@
     return [UIImage imageWithData:data];
 }
 
++ (NSData *)decodeNSDataFrom:(NSString *)base64String
+{
+    if (base64String.length == 0) {
+        return nil;
+    }
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    return data;
+}
+
+
 @end

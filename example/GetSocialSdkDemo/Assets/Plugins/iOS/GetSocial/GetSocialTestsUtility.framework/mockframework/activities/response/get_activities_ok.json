@@ -1,0 +1,42 @@
+[{
+	"id": "1",
+	"content": {
+		"text": "text",
+		"imageUrl": "url",
+		"button": {
+			"buttonAction": "action",
+			"buttonTitle": "title"
+		}
+	},
+	"author": {
+		"id": 12345,
+		"displayName": "demo",
+		"avatarUrl": null,
+		"identities": null
+	},
+	"createdAt": 473829,
+	"commentsCount": 4,
+	"likesCount": 5,
+	"likedByMe": true
+},
+{
+	"id": "12",
+	"content": {
+		"text": "text",
+		"imageUrl": "url",
+		"button": {
+			"buttonAction": "action",
+			"buttonTitle": "title"
+		}
+	},
+	"author": {
+		"id": 12345,
+		"displayName": "demo",
+		"avatarUrl": null,
+		"identities": null
+	},
+	"createdAt": 473829,
+	"commentsCount": 4,
+	"likesCount": 5,
+	"likedByMe": true
+}]

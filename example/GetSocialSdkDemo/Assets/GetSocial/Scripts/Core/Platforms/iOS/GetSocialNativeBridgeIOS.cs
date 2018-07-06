@@ -53,6 +53,11 @@ namespace GetSocialSdk.Core
 
         #region invites
 
+        public bool IsInviteChannelAvailable(string channelId)
+        {
+            return _gs_isInviteChannelAvailable(channelId);
+        }
+
         public InviteChannel[] InviteChannels
         {
             get
@@ -540,6 +545,25 @@ namespace GetSocialSdk.Core
             _gs_initWithScenario(scenario);
         }
 
+        public string TestCases()
+        {
+            Reset();
+            _gs_setUpComponents();
+            return _gs_getTestCases();
+        }
+
+        public List<object> TestCasesFor(string module, string type)
+        {
+            var testCases = _gs_getTestCasesFor(module, type);
+            return GSJson.Deserialize(testCases) as List<object>;
+        }
+
+        public string NativeCompare<T>(string module, string type, List<T> converted) where T : IConvertableToNative
+        {
+            var serialized = GSJson.Serialize(converted.ConvertAll(item => item.ToJson()));
+            return _gs_compareTests(module, type, serialized);
+        }
+
         #endregion
 
 
@@ -572,6 +596,9 @@ namespace GetSocialSdk.Core
         static extern bool _gs_removeGlobalErrorListener();
 
         #region external_invites
+
+        [DllImport("__Internal")]
+        static extern bool _gs_isInviteChannelAvailable(string channelId);
 
         [DllImport("__Internal")]
         static extern string _gs_getInviteChannels();
@@ -891,6 +918,15 @@ namespace GetSocialSdk.Core
         
         [DllImport("__Internal")]
         static extern void _gs_initWithScenario(string scenario);
+        
+        [DllImport("__Internal")]
+        static extern string _gs_getTestCases();
+        
+        [DllImport("__Internal")]
+        static extern string _gs_getTestCasesFor(string module, string type);
+        
+        [DllImport("__Internal")]
+        static extern string _gs_compareTests(string module, string type, string results);
 
         #endregion
     }

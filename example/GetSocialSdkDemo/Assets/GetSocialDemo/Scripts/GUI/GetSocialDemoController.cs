@@ -220,6 +220,7 @@ public class GetSocialDemoController : MonoBehaviour
         GetSocial.User.SetOnUserChangedListener(() =>
         {
             _console.LogD("GetSocial is initialized and user is retrieved");
+            GetSocial.User.IsPushNotificationsEnabled(isEnabled => ((SettingsSection) _menuSections.Find(section => section is SettingsSection)).PnEnabled = isEnabled, error => Debug.LogError("Failed to get PN status " + error));
             FetchCurrentUserData();
         });
     }

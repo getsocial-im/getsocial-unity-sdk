@@ -11,15 +11,15 @@ namespace GetSocialSdk.Core
     /// <summary>
     ///
     /// </summary>
-    public sealed class ActivityPostContent
+    public sealed class ActivityPostContent : IConvertableToNative
     {
 #pragma warning disable 414
         string _text;
-
         Texture2D _image;
-
         string _buttonTitle;
         string _buttonAction;
+        byte[] _video;
+        
 #pragma warning restore 414
         ActivityPostContent()
         {
@@ -57,6 +57,12 @@ namespace GetSocialSdk.Core
                 return this;
             }
 
+            public Builder WithVideo(byte[] video)
+            {
+                _content._video = video;
+                return this;
+            }
+
             public ActivityPostContent Build()
             {
                 return _content;
@@ -80,6 +86,10 @@ namespace GetSocialSdk.Core
             {
                 activityPostContentBuilderAJO.CallAJO("withButton", _buttonTitle, _buttonAction);
             }
+            if (_video != null)
+            {
+                activityPostContentBuilderAJO.CallAJO("withVideo", _video);
+            }
             return activityPostContentBuilderAJO.CallAJO("build");
         }
 #elif UNITY_IOS
@@ -91,7 +101,8 @@ namespace GetSocialSdk.Core
                 {"Text", _text},
                 {"ButtonTitle", _buttonTitle},
                 {"ButtonAction", _buttonAction},
-                {"Image", _image.TextureToBase64()}
+                {"Image", _image.TextureToBase64()},
+                {"Video", _video.ByteArrayToBase64()}
             };
             return GSJson.Serialize(json);
         }

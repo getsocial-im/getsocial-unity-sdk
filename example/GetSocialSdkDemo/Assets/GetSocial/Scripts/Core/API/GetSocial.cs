@@ -168,6 +168,11 @@ namespace GetSocialSdk.Core
 
         #region smart_invites
 
+        public static bool IsInviteChannelAvailable(string channelId)
+        {
+            return GetSocialImpl.IsInviteChannelAvailable(channelId);
+        }
+        
         /// <summary>
         /// Returns all supported invite channels.
         /// </summary>
@@ -1078,6 +1083,10 @@ namespace GetSocialSdk.Core
             public static void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess,
                 Action<GetSocialError> onError)
             {
+                Check.Argument.IsNotNull(query, "query");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                
                 GetSocialImpl.GetNotifications(query, onSuccess, onError);
             }
 
@@ -1090,6 +1099,10 @@ namespace GetSocialSdk.Core
             public static void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess,
                 Action<GetSocialError> onError)
             {
+                Check.Argument.IsNotNull(query, "query");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                
                 GetSocialImpl.GetNotificationsCount(query, onSuccess, onError);
             }
 
@@ -1102,6 +1115,10 @@ namespace GetSocialSdk.Core
             public static void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
                 Action<GetSocialError> onError)
             {
+                Check.Argument.IsNotNull(notificationsIds, "notificationsIds");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                
                 GetSocialImpl.SetNotificationsRead(notificationsIds, isRead, onSuccess, onError);
             }
 
@@ -1114,6 +1131,9 @@ namespace GetSocialSdk.Core
             public static void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess,
                 Action<GetSocialError> onError)
             {
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                
                 GetSocialImpl.SetPushNotificationsEnabled(isEnabled, onSuccess, onError);
             }
             
@@ -1125,6 +1145,9 @@ namespace GetSocialSdk.Core
             public static void IsPushNotificationsEnabled(Action<bool> onSuccess,
                 Action<GetSocialError> onError)
             {
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                
                 GetSocialImpl.IsPushNotificationsEnabled(onSuccess, onError);
             }
             #endregion

@@ -50,6 +50,7 @@ namespace GetSocialSdk.Core
         string _filteringActivityId;
         string _filterUserId;
         bool _isFriendsFeed;
+        string[] _tags = {};
 #pragma warning restore 414
         ActivitiesQuery(ActivityPost.Type type, string feed, string parentActivityId)
         {
@@ -86,7 +87,7 @@ namespace GetSocialSdk.Core
             return this;
         }
 
-        public ActivitiesQuery FilterByUser(String userId)
+        public ActivitiesQuery FilterByUser(string userId)
         {
             _filterUserId = userId;
             return this;
@@ -95,6 +96,12 @@ namespace GetSocialSdk.Core
         public ActivitiesQuery FriendsFeed(bool isFriendsFeed)
         {
             _isFriendsFeed = isFriendsFeed;
+            return this;
+        }
+
+        public ActivitiesQuery WithTags(params string[] tags)
+        {
+            _tags = tags;
             return this;
         }
 
@@ -109,6 +116,8 @@ namespace GetSocialSdk.Core
             activitiesQuery.CallAJO("withLimit", _limit);
             activitiesQuery.CallAJO("filterByUser", _filterUserId);
             activitiesQuery.CallAJO("friendsFeed", _isFriendsFeed);
+            activitiesQuery.CallAJO("withTags", _tags.ToJavaStringArray());
+            
             if (_filter != Filter.NoFilter)
             {
                 activitiesQuery.CallAJO("withFilter", _filter.ToAndroidJavaObject(), _filteringActivityId);
@@ -128,7 +137,8 @@ namespace GetSocialSdk.Core
                 {"Filter", (int) _filter},
                 {"FilteringActivityId", _filteringActivityId},
                 {"FilterUserId", _filterUserId},
-                {"FriendsFeed", _isFriendsFeed}
+                {"FriendsFeed", _isFriendsFeed},
+                {"Tags", new List<string>(_tags)}
             };
             return GSJson.Serialize(json);
         }

@@ -3,6 +3,7 @@ using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Debug = UnityEngine.Debug;
 
 namespace GetSocialSdk.Core
@@ -49,11 +50,12 @@ namespace GetSocialSdk.Core
 
             if (dictionary.Count == 0)
             {
-                return "[]";
+                return "{}";
             }
 
-            StringBuilder sb = new StringBuilder();
-            foreach(TKey key in dictionary.Keys)
+            var sb = new StringBuilder();
+            sb.Append("{");
+            foreach(var key in dictionary.Keys)
             {
                 sb.Append("{");
                 sb.Append(key);
@@ -61,6 +63,32 @@ namespace GetSocialSdk.Core
                 sb.Append(dictionary[key]);
                 sb.Append("}\n");
             }
+
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        public static string ToDebugString<T>(this IList<T> list)
+        {
+            if (list == null)
+            {
+                return "null";
+            }
+
+            if (list.Count == 0)
+            {
+                return "[]";
+            }
+            var sb = new StringBuilder();
+            sb.Append("[");
+            sb.Append("\n");
+            foreach(var item in list)
+            {
+                sb.Append(item);
+                sb.Append("\n");
+            }
+
+            sb.Append("]");
             return sb.ToString();
         }
     }

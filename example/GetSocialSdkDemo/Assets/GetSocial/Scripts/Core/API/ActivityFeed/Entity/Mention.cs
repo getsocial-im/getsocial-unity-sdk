@@ -25,7 +25,45 @@ namespace GetSocialSdk.Core
         {
             return string.Format("{0} ({1}, {2}) - {3}", UserId, StartIndex, EndIndex, Type);
         }
-        
+
+        public Mention()
+        {
+            
+        }
+
+        internal Mention(string userId, int startIndex, int endIndex, string type)
+        {
+            UserId = userId;
+            StartIndex = startIndex;
+            EndIndex = endIndex;
+            Type = type;
+        }
+
+        protected bool Equals(Mention other)
+        {
+            return string.Equals(UserId, other.UserId) && StartIndex == other.StartIndex && EndIndex == other.EndIndex && string.Equals(Type, other.Type);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Mention) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (UserId != null ? UserId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ StartIndex;
+                hashCode = (hashCode * 397) ^ EndIndex;
+                hashCode = (hashCode * 397) ^ (Type != null ? Type.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
 #if UNITY_IOS
         public Mention ParseFromJson(Dictionary<string, object> json)
         {

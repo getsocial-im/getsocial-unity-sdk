@@ -55,6 +55,48 @@ namespace GetSocialSdk.Core
             return string.Format("[PublicUser: Id={0}, DisplayName={1}, Identities={2}, PublicProperties={3}]", Id, DisplayName, Identities.ToDebugString(), _publicProperties.ToDebugString());
         }
 
+        public PublicUser()
+        {
+            
+        }
+        
+        internal PublicUser(Dictionary<string, string> publicProperties, string id, string displayName, string avatarUrl, Dictionary<string, string> identities)
+        {
+            _publicProperties = publicProperties;
+            Id = id;
+            DisplayName = displayName;
+            AvatarUrl = avatarUrl;
+            Identities = identities;
+        }
+
+        protected bool Equals(PublicUser other)
+        {
+            return _publicProperties.DictionaryEquals(other._publicProperties) && string.Equals(Id, other.Id) &&
+                   string.Equals(DisplayName, other.DisplayName) && string.Equals(AvatarUrl, other.AvatarUrl) &&
+                   Identities.DictionaryEquals(other.Identities);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((PublicUser) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (_publicProperties != null ? _publicProperties.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (AvatarUrl != null ? AvatarUrl.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Identities != null ? Identities.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
 #if UNITY_ANDROID
         public PublicUser ParseFromAJO(AndroidJavaObject ajo)
         {

@@ -196,27 +196,9 @@ namespace GetSocialSdk.Ui
 
             activityFeedBuilderAJO.CallAJO("setReadOnly", _readOnly);
             activityFeedBuilderAJO.CallAJO("setShowFriendsFeed", _friendsFeed);
-            activityFeedBuilderAJO.CallAJO("setFilterByTags", ToJavaStringArray(_tags));
+            activityFeedBuilderAJO.CallAJO("setFilterByTags", _tags.ToJavaStringArray());
 
             return activityFeedBuilderAJO;
-        }
-
-        private static AndroidJavaObject ToJavaStringArray(string[] values) {
-            if (values == null)
-            {
-                return null;
-            }
-            AndroidJavaClass arrayClass = new AndroidJavaClass("java.lang.reflect.Array");
-            AndroidJavaObject arrayObject = arrayClass.CallStatic<AndroidJavaObject>("newInstance",
-                new AndroidJavaClass("java.lang.String"),
-                values.Length);
-
-            for (var i = 0; i < values.Length; ++i ) 
-            {
-                arrayClass.CallStatic("set", arrayObject, i,
-                    new AndroidJavaObject("java.lang.String", values[i]));
-            }
-            return arrayObject;
         }
 
 #elif UNITY_IOS

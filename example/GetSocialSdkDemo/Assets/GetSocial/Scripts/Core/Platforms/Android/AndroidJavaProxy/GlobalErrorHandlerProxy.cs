@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class GlobalErrorListenerProxy : JavaInterfaceProxy
+    internal class GlobalErrorListenerProxy : JavaInterfaceProxy
     {
         readonly Action<GetSocialError> _onError;
 
@@ -18,10 +18,7 @@ namespace GetSocialSdk.Core
 
         void onError(AndroidJavaObject throwable)
         {
-            var ex = throwable.ToGetSocialError();
-            GetSocialDebugLogger.D(string.Format("Global error handler: {0}", ex.Message));
-
-            ExecuteOnMainThread(() => _onError(ex));
+            HandleError(throwable, _onError);
         }
     }
 }

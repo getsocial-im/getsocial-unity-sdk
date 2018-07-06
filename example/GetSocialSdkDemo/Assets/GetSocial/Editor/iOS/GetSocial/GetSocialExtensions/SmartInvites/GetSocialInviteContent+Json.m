@@ -16,6 +16,8 @@
     [dictionary gs_setValueOrNSNull:self.subject forKey:@"Subject"];
     [dictionary gs_setValueOrNSNull:self.text forKey:@"Text"];
     [dictionary gs_setValueOrNSNull:[self.image toBase64] forKey:@"Image"];
+    [dictionary gs_setValueOrNSNull:self.gifUrl forKey:@"GifUrl"];
+    [dictionary gs_setValueOrNSNull:self.videoUrl forKey:@"VideoUrl"];
     return dictionary;
 }
 

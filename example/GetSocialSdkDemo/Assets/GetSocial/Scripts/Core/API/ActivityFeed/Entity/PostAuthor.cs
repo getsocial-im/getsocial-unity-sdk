@@ -1,11 +1,8 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 #if UNITY_ANDROID
 using UnityEngine;
-#endif
-
-#if UNITY_IOS
-using System.Collections.Generic;
 #endif
 
 namespace GetSocialSdk.Core
@@ -20,12 +17,41 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <value><c>true</c> if this user is verified; otherwise, <c>false</c>.</value>
         public bool IsVerified { get; private set; }
-
+        
         public override string ToString()
         {
             return string.Format("[PostAuthor: Id={0}, DisplayName={1}, Identities={2}, IsVerified={3}]", Id, DisplayName, Identities.ToDebugString(), IsVerified);
         }
 
+        public PostAuthor()
+        {
+            
+        }
+
+        internal PostAuthor(Dictionary<string, string> publicProperties, string id, string displayName, string avatarUrl, Dictionary<string, string> identities, bool isVerified) : base(publicProperties, id, displayName, avatarUrl, identities)
+        {
+            IsVerified = isVerified;
+        }
+
+        private bool Equals(PostAuthor other)
+        {
+            return base.Equals(other) && IsVerified == other.IsVerified;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is PostAuthor && Equals((PostAuthor) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ IsVerified.GetHashCode();
+            }
+        }
 
 #if UNITY_ANDROID
         public new PostAuthor ParseFromAJO(AndroidJavaObject ajo)

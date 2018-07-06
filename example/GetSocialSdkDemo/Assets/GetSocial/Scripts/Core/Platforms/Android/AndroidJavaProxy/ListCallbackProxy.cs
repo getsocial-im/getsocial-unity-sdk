@@ -8,7 +8,7 @@ using System.Linq;
 namespace GetSocialSdk.Core
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    class ListCallbackProxy<T> : JavaInterfaceProxy where T : IConvertableFromNative<T>, new()
+    internal class ListCallbackProxy<T> : JavaInterfaceProxy where T : IConvertableFromNative<T>, new()
     {
         readonly Action<List<T>> _onSuccess;
         readonly Action<GetSocialError> _onFailure;
@@ -22,30 +22,19 @@ namespace GetSocialSdk.Core
 
         void onSuccess(AndroidJavaObject resultAJO)
         {
-            ExecuteOnMainThread(() =>
+            var value = resultAJO.FromJavaList().ConvertAll(ajo =>
             {
-                var res = resultAJO.FromJavaList().ConvertAll(ajo =>
+                using (ajo)
                 {
-                    using (ajo)
-                    {
-                        return new T().ParseFromAJO(ajo);
-                    }
-                }).ToList();
-                _onSuccess(res);
-            });
+                    return new T().ParseFromAJO(ajo);
+                }
+            }).ToList();
+            HandleValue(value, _onSuccess);
         }
 
         void onFailure(AndroidJavaObject throwable)
         {
-            ExecuteOnMainThread(() =>
-            {
-                using (throwable)
-                {
-                    var e = throwable.ToGetSocialError();
-                    GetSocialDebugLogger.D("On onFailure: " + e.Message);
-                    _onFailure(e);
-                }
-            });
+            HandleError(throwable, _onFailure);
         }
     }
 }

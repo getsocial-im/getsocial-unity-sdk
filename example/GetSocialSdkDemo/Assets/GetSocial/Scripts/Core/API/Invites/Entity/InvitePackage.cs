@@ -49,11 +49,52 @@ namespace GetSocialSdk.Core
         /// <value>The url of invite image.</value>
         public string ImageUrl { get; private set; }
 
+        public InvitePackage()
+        {
+            
+        }
+        
+        internal InvitePackage(string subject, string text, string userName, string referralDataUrl, Texture2D image, string imageUrl)
+        {
+            Subject = subject;
+            Text = text;
+            UserName = userName;
+            ReferralDataUrl = referralDataUrl;
+            Image = image;
+            ImageUrl = imageUrl;
+        }
+
         public override string ToString()
         {
             return string.Format(
                 "[InvitePackage: Subject={0}, Text={1}, UserName={2}, HasImage={3}, ImageUrl={4}, ReferralDataUrl={5}]",
                 Subject, Text, UserName, Image != null, ImageUrl, ReferralDataUrl);
+        }
+
+        private bool Equals(InvitePackage other)
+        {
+            return string.Equals(Subject, other.Subject) && string.Equals(Text, other.Text) && string.Equals(UserName, other.UserName) && string.Equals(ReferralDataUrl, other.ReferralDataUrl) && Image.Texture2DEquals(other.Image) && string.Equals(ImageUrl, other.ImageUrl);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is InvitePackage && Equals((InvitePackage) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Subject != null ? Subject.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ReferralDataUrl != null ? ReferralDataUrl.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Image != null ? Image.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ImageUrl != null ? ImageUrl.GetHashCode() : 0);
+                return hashCode;
+            }
         }
 
 #if UNITY_ANDROID

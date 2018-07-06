@@ -1,0 +1,11 @@
+{
+	"errors": [{
+		"errorCode": "EMFieldCannotBeNull",
+		"errorMsg": "userIdAtProvider may not be null",
+		"context": null
+	}, {
+		"errorCode": "EMFieldCannotBeNull",
+		"errorMsg": "userIdAtProvider may not be empty",
+		"context": null
+	}]
+}

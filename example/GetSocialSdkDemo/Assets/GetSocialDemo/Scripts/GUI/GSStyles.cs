@@ -27,6 +27,8 @@ public static class GSStyles
     public static readonly GUIStyle Button;
     public static readonly GUIStyle ConsoleBg;
     public static readonly GUIStyle ConsoleText;
+    public static readonly GUIStyle ImageToggle;
+    public static readonly GUIStyle ClearButton;
 
     static GSStyles()
     {
@@ -101,6 +103,25 @@ public static class GSStyles
             padding = new RectOffset(8, 8, 0, 0),
             normal = {textColor = Color.green},
             font = (Font) Resources.Load("Fonts/courier-new")
+        };
+
+        ImageToggle = new GUIStyle(GUI.skin.toggle)
+        {
+            padding = new RectOffset(40, 0, 40, 0),
+            border = new RectOffset(0, 0, 0, 0),
+            overflow = new RectOffset(0, 0, 0, 0),
+            imagePosition = ImagePosition.ImageOnly,
+            stretchHeight = false,
+            stretchWidth = false
+        };
+
+        ClearButton = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 16,
+            fixedHeight = 40,
+            stretchWidth = true,
+            richText = false,
+            alignment = TextAnchor.MiddleCenter
         };
     }
 }

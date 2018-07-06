@@ -43,9 +43,32 @@ namespace GetSocialSdk.Core
         }
         #endif
 
-        protected void ExecuteOnMainThread(Action action)
+        protected static void ExecuteOnMainThread(Action action)
         {
             MainThreadExecutor.Queue(action);
+        }
+
+        protected void HandleError(AndroidJavaObject throwable, Action<GetSocialError> onFailure)
+        {
+            if (onFailure == null)
+            {
+                return;
+            }
+
+            using (throwable)
+            {
+                var ex = throwable.ToGetSocialError();
+                GetSocialDebugLogger.D(GetType().Name + " onFailure: " + ex);
+                ExecuteOnMainThread(() => onFailure(ex));
+            }
+        }
+
+        protected void HandleValue<T>(T value, Action<T> onSuccess)
+        {
+            if (onSuccess != null)
+            {
+                ExecuteOnMainThread(() => onSuccess(value));
+            }
         }
     }
 }

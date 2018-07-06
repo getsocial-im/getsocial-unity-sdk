@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 using TheNextFlow.UnityPlugins;
@@ -12,6 +13,23 @@ public class ActivityFeedApiSection : DemoMenuSection
     {
         get { return _image ?? (_image = Resources.Load<Texture2D>("activityImage")); }
     }
+
+    byte[] _video;
+
+    private byte[] Video
+    {
+        get
+        {
+            if (_video == null)
+            {
+                _video = DemoUtils.LoadSampleVideoBytes();
+            }
+            return _video;
+        }
+    }
+
+    private bool _postImage;
+    private bool _postVideo;
 
     string _feed = ActivitiesQuery.GlobalFeed;
     string _activityId = "123";
@@ -86,6 +104,33 @@ public class ActivityFeedApiSection : DemoMenuSection
         GUILayout.Label("Settings for posting: ", GSStyles.NormalLabelText);
         DrawFeedNameTextField();
         DrawActivityIdTextField();
+
+        // Image/Video
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Image/Video", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+
+        if (GUILayout.Toggle(_postImage, "", GSStyles.ImageToggle))
+        {
+            _postImage = true; 
+            _postVideo = false;
+        }
+        GUILayout.Label("Post Image", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+
+        if (GUILayout.Toggle(_postVideo, "", GSStyles.ImageToggle))
+        {
+            _postImage = false;
+            _postVideo = true;
+        }
+        GUILayout.Label("Post Video", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        
+        if (GUILayout.Button("Clear", GSStyles.ClearButton))
+        {
+            _postImage = false;
+            _postVideo = false;
+        }
+        
+        GUILayout.EndHorizontal();
+        
         GUILayout.EndVertical();
 
         DemoGuiUtils.DrawButton("Post to Global Feed", PostToGlobalFeed, true, GSStyles.Button);
@@ -263,11 +308,18 @@ public class ActivityFeedApiSection : DemoMenuSection
 
     ActivityPostContent GetPost()
     {
-        return ActivityPostContent.CreateBuilder()
-            .WithText("My awesome post")
-            .WithButton("Awesome Button", "action_id")
-            .WithImage(Image)
-            .Build();
+        ActivityPostContent.Builder builder = ActivityPostContent.CreateBuilder();
+        builder.WithText("My awesome post");
+        builder.WithButton("Awesome Button", "action_id");
+        if (_postImage)
+        {
+            builder.WithImage(Image);
+        }
+        if (_postVideo)
+        {
+            builder.WithVideo(Video);
+        }
+        return builder.Build();
     }
 
     void LikeActivity()

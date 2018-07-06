@@ -39,6 +39,22 @@ namespace GetSocialSdk.Core
             return string.Format("[CustomReferralData: {0}]", this.ToDebugString());
         }
 
+        private bool Equals(CustomReferralData other)
+        {
+            return this.DictionaryEquals(other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is CustomReferralData && Equals((CustomReferralData) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
