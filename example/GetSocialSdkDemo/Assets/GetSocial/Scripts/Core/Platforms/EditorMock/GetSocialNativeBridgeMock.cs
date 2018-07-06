@@ -430,25 +430,5 @@ namespace GetSocialSdk.Core
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }
-
-        public void StartUnityTests(string scenario, Action readyAction)
-        {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), scenario, readyAction);
-        }
-
-        public string TestCases()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<object> TestCasesFor(string module, string type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string NativeCompare<T>(string module, string type, List<T> converted) where T : IConvertableToNative
-        {
-            throw new NotImplementedException();
-        }
     }
 }

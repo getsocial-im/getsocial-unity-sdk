@@ -8,22 +8,19 @@ namespace GetSocialSdk.Core
 {
     class GetSocialNativeBridgeAndroid : IGetSocialNativeBridge
     {
-        const string GetSocialClassSignature = "im.getsocial.sdk.GetSocial";
-        const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
-        const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
-        const string TestPrepare = "im.getsocial.sdk.utils.TestPrepare";
+        private const string GetSocialClassSignature = "im.getsocial.sdk.GetSocial";
+        private const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
+        private const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
 
         static IGetSocialNativeBridge _instance;
 
         readonly AndroidJavaClass _getSocial;
         readonly AndroidJavaClass _user;
-        readonly AndroidJavaClass _testPrepare;
 
         GetSocialNativeBridgeAndroid()
         {
             _getSocial = new AndroidJavaClass(GetSocialClassSignature);
             _user = new AndroidJavaClass(GetSocialUserClassSignature);
-            _testPrepare = new AndroidJavaClass(TestPrepare);
         }
 
         public static IGetSocialNativeBridge Instance
@@ -478,29 +475,6 @@ namespace GetSocialSdk.Core
                 return accessHelperJavaClass.CallStaticInt("getCurrentHadesConfiguration");
             }
         }
-        public void StartUnityTests(string scenario, Action readyAction)
-        {
-            _testPrepare.CallStatic("setUpUnity", JniUtils.Activity);
-            _testPrepare.CallStatic("initWithScenario", scenario, new RunnableProxy(readyAction));
-        }
-
-        public string TestCases()
-        {
-            _testPrepare.CallStatic("setUpUnity", JniUtils.Activity);
-            return _testPrepare.CallStaticStr("getTestCases");
-        }
-
-        public List<object> TestCasesFor(string module, string type)
-        {
-            return _testPrepare.CallStaticAJO("getTestCasesFor", module, type).FromJavaList().ConvertAll(ajo => (object) ajo);
-        }
-
-        public string NativeCompare<T>(string module, string type, List<T> converted) where T : IConvertableToNative
-        {
-            var javaList = converted.ConvertAll(t => t.ToAjo()).ToList().ToJavaList();
-            return _testPrepare.CallStaticStr("compare", module, type, javaList);
-        }
-
         #endregion
     }
 }

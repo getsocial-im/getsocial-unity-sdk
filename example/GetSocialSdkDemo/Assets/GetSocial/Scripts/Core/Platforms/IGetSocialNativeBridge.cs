@@ -201,17 +201,6 @@ namespace GetSocialSdk.Core
 
         #endregion
 
-        // For testing only
         void HandleOnStartUnityEvent();
-
-
-        // For testing only
-        void StartUnityTests(string scenario, Action readyAction);
-        
-        string TestCases();
-        
-        List<object> TestCasesFor(string module, string type);
-        
-        string NativeCompare<T>(string module, string type, List<T> converted) where T : IConvertableToNative;
     }
 }
