@@ -38,11 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
     };
 
-    void _gs_resetInternal()
-    {
-        [GetSocialAccessHelper reset];
-    }
-        
     void _gs_setUpComponents()
     {
         [GetSocialTestPrepare setUpComponentResolver];

@@ -741,6 +741,12 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [GetSocialAccessHelper handleOnStartUnityEvent];
     }
+    
+    
+    void _gs_resetInternal()
+    {
+        [GetSocialAccessHelper reset];
+    }
 
 #pragma mark 
 NS_ASSUME_NONNULL_END
