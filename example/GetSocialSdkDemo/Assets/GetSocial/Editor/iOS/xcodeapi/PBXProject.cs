@@ -889,6 +889,20 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             foreach (string guid in configs[GetConfigListForTarget(targetGuid)].buildConfigs)
                 SetBuildPropertyForConfig(guid, name, value);
         }
+        // targetGuid may refer to PBXProject object
+        public List<string> GetBuildPropertyValues(string targetGuid, string name)
+        {
+            var retValue = new List<string>();
+            foreach (string guid in configs[GetConfigListForTarget(targetGuid)].buildConfigs)
+                retValue.AddRange(GetBuildPropertyValuesForConfig(guid, name));
+            retValue = retValue.Where(x => !string.IsNullOrEmpty(x.Trim())).ToList();
+            return retValue;
+        }
+        public List<string> GetBuildPropertyValuesForConfig(string configGuid, string name)
+        {
+            return buildConfigs[configGuid].GetPropertyValues(name);
+        }
+
         public void SetBuildProperty(IEnumerable<string> targetGuids, string name, string value)
         {
             foreach (string t in targetGuids)

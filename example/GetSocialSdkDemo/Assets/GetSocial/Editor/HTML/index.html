@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body class="proSkin">
+<header>
+    <h1>Thanks for installing GetSocial Unity SDK</h1>
+</header>
+
+<section>
+    <h2>To start with GetSocial:</h2>
+    <ol>
+        <li>Create your account at <a href="https://dashboard.getsocial.im" target="_blank">dashboard.getsocial.im</a></li>
+        <li>Copy GetSocial app ID from the Dashboard into <a href="#" onclick="sendMessage ('OpenGetSocialSettings')">GetSocial Unity settings</a></li>
+        <li>Visit <a href="https://docs.getsocial.im/" target="_blank">documentation</a> to learn how to integrate GetSocial features</li>
+    </ol>
+</section>
+
+<footer>
+    <a href="https://www.getsocial.im/products/" target="_blank">Product overview</a>
+    <a href="https://docs.getsocial.im/" target="_blank">Docs</a>
+    <a href="mailto:support@getsocial.im" target="_blank">Support</a>
+</footer>
+
+<script type="text/javascript">
+    
+    function sendMessage(method) {
+        unityAsync({
+            className: "window.webScriptObject",
+            funcName: "ProcessMessage",
+            funcArgs: [JSON.stringify({
+                type: "INVOKE",
+                messageID: 1,
+                version: "0",
+                reference: "GetSocialGetStartedWindow",
+                destination: "GetSocialGetStartedWindow",
+                method: method,
+                params: []
+            })],
+            onSuccess: function (a) {
+                console.log("returnValue : " + a)
+            }
+        })
+    }
+</script>
+</body>
+</html>

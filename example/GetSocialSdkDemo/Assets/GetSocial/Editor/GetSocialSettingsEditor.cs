@@ -80,19 +80,19 @@ namespace GetSocialSdk.Editor
 
         
         #region menus definition
-        [MenuItem("GetSocial/Edit Settings")]
+        [MenuItem("GetSocial/Edit Settings", false, 1000)]
         public static void Edit()
         {
             Selection.activeObject = GetSocialSettings.Instance;
         }
 
-        [MenuItem("GetSocial/GetSocial Dashboard")]
+        [MenuItem("GetSocial/GetSocial Dashboard", false, 1500)]
         public static void OpenGetSocialDashboard()
         {
             Application.OpenURL("http://dashboard.getsocial.im/");
         }
 
-        [MenuItem("GetSocial/Documentation")]
+        [MenuItem("GetSocial/Documentation", false, 1500)]
         public static void OpenGetSocialDocumentation()
         {
             Application.OpenURL("http://docs.getsocial.im");

@@ -658,6 +658,11 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             return "\"" + value + "\"";
         }
 
+        public List<string> GetPropertyValues(string name)
+        {
+            return entries.ContainsKey(name) ? entries[name].val : new List<string>();
+        }
+        
         public void SetProperty(string name, string value)
         {
             entries[name] = BuildConfigEntryData.FromNameValue(name, EscapeWithQuotesIfNeeded(name, value));

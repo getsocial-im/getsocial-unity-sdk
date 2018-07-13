@@ -20,7 +20,6 @@ using System.IO;
 using UnityEditor.iOS.Xcode.GetSocial;
 using GetSocialSdk.Core;
 using System.Linq;
-using UnityEditor;
 
 namespace GetSocialSdk.Editor
 {
@@ -159,38 +158,67 @@ namespace GetSocialSdk.Editor
 
         static void AddAppEntitlements(string projectPath, PBXProject project, string target)
         {
-            GenerateAppEntitlements(Path.Combine(projectPath, "app.entitlements"));
+            var existingEntitlementsFiles = project.GetBuildPropertyValues(target, "CODE_SIGN_ENTITLEMENTS");
+            if (existingEntitlementsFiles.Count == 0)
+            {
+                project.AddFileToBuild(target,
+                    project.AddFile("app.entitlements", "app.entitlements", PBXSourceTree.Source));
+                project.AddBuildProperty(target, "CODE_SIGN_ENTITLEMENTS", "app.entitlements");
+                existingEntitlementsFiles.Add("app.entitlements");
+            }
+            foreach (var entitlementsSetting in existingEntitlementsFiles)
+            {
+                var entitlementsFilePath = Path.Combine(projectPath, entitlementsSetting); 
+                var entitlements = new PlistDocument();
+                if (File.Exists(entitlementsFilePath))
+                {
+                    entitlements.ReadFromFile(entitlementsFilePath);
+                }
 
-            project.AddFileToBuild(target,
-                project.AddFile("app.entitlements", "app.entitlements", PBXSourceTree.Source));
-            project.AddBuildProperty(target, "CODE_SIGN_ENTITLEMENTS", "app.entitlements");
+                ConfigureAssociatedDomains(entitlements);
+                ConfigurePushNotifications(entitlements);
+                
+                entitlements.WriteToFile(entitlementsFilePath);
+            }
         }
 
-        public static void GenerateAppEntitlements(string path)
+        public static void ConfigureAssociatedDomains(PlistDocument entitlements)
         {
-            var entitlements = new PlistDocument();
-            if (File.Exists(path))
-            {
-                entitlements.ReadFromFile(path);
-            }
-            
             // Universal Links
-            var assosiatedDomainsNode = entitlements.root.CreateArray("com.apple.developer.associated-domains");
+            var associatedDomainsNode = entitlements.root["com.apple.developer.associated-domains"] != null 
+                ? entitlements.root["com.apple.developer.associated-domains"].AsArray() 
+                : entitlements.root.CreateArray("com.apple.developer.associated-domains");
             GetSocialSettings.DeeplinkingDomains.ForEach(domain =>
-                assosiatedDomainsNode.AddString(string.Format("applinks:{0}", domain))
-            );
+            {
+                var valueToAdd = string.Format("applinks:{0}", domain);
 
+                var addValue = associatedDomainsNode.values.All(existingValue => !existingValue.AsString().Equals(valueToAdd));
+                if (addValue)
+                {
+                    associatedDomainsNode.AddString(valueToAdd);
+                }
+            });
+        }
+
+
+        public static void ConfigurePushNotifications(PlistDocument entitlements)
+        {
             // Push Environment
-            if (GetSocialSettings.IsIosPushEnabled)
+            if (!GetSocialSettings.IsIosPushEnabled) return;
+
+            // read current value
+            var currentPushSettings = entitlements.ContainsKey("aps-environment")
+                ? entitlements.root["aps-environment"].AsString()
+                : null;
+            if (currentPushSettings != null && !GetSocialSettings.IosPushEnvironment.Equals(currentPushSettings))
+            {
+                // show warning
+                Debug.LogWarning("GetSocial: Push notification settings are different, check the settings in the GetSocial Dashboard at http://dashboard.getsocial.im .");
+            }
+            if (currentPushSettings == null)
             {
                 entitlements.root.SetString("aps-environment", GetSocialSettings.IosPushEnvironment);
             }
-            else
-            {
-                entitlements.root.Remove("aps-environment");
-            }
-
-            entitlements.WriteToFile(path);
         }
 
         #endregion
