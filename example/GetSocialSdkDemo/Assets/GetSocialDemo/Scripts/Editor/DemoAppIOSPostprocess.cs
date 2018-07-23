@@ -36,10 +36,8 @@ namespace GetSocialSdk.Editors
         public static void OnPostProcessBuild(BuildTarget buildTarget, string projectPath)
         {
             if (BuildTarget.iOS != buildTarget) return;
-    
-            Copy(Path.Combine(Application.dataPath, "../IosStreamingAssets/Raw"), Path.Combine(projectPath, "Data/Raw"));
+
             PBXProjectUtils.ModifyPbxProject(projectPath, DisableBitcode);
-            PBXProjectUtils.ModifyPbxProject(projectPath, AddTestingFramework);
             PBXProjectUtils.ModifyPlist(projectPath, AllowArbitraryLoads);
         }
 
@@ -48,11 +46,6 @@ namespace GetSocialSdk.Editors
             project.SetBuildProperty(target, "ENABLE_BITCODE", "NO");
         }
 
-        static void AddTestingFramework(PBXProject project, string target)
-        {
-            project.AddDynamicFrameworkToProject(target, "Frameworks/Plugins/iOS/GetSocial/GetSocialTestsUtility.framework");
-        }
-        
         static void Copy(string sourceDir, string targetDir)
         {
             if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
