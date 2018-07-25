@@ -3,9 +3,9 @@
 --- !u!1 &115478
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 415478}
   - component: {fileID: 11482148}
@@ -19,7 +19,7 @@ GameObject:
 --- !u!4 &415478
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -32,7 +32,7 @@ Transform:
 --- !u!114 &11482148
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 115478}
   m_Enabled: 1
@@ -40,14 +40,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525ece82a472e4dea837e1ef938fd15d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startManually: 0
+  startManually: 1
   eventBuffering: 0
-  printAttribution: 1
   sendInBackground: 0
   launchDeferredDeeplink: 1
-  appToken: suzggk2586io
+  appToken: '{Your App Token}'
   logLevel: 3
-  environment: 1
+  environment: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -56,6 +55,6 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 115478}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1

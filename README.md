@@ -12,6 +12,7 @@ Provided demo application will show you GetSocial SDK features effortlessly, no 
 
 1. Open project `example/GetSocialSdkDemo/` in Unity Editor.
 1. Switch platform to Android or iOS.
+1. If building for Android, go to **Edit** → **Project Settings** → **Player** → **Android** → **Publish Settings** and enter the passwrd `android` for the configured keystore and key.
 1. Build the demo.
 
 In case of any questions ping us at [support@getsocial.im](mailto:support@getsocial.im).
