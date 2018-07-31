@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace com.adjust.sdk
-{
-    public class AdjustAttribution
-    {
-        public string adid { get; set; }
+namespace com.adjust.sdk {
+    public class AdjustAttribution {
+        #region Properties
+        public string adid {get; set; }
         public string network { get; set; }
         public string adgroup { get; set; }
         public string campaign { get; set; }
@@ -13,14 +12,15 @@ namespace com.adjust.sdk
         public string clickLabel { get; set; }
         public string trackerName { get; set; }
         public string trackerToken { get; set; }
+        #endregion
 
+        #region Constructors
         public AdjustAttribution() {}
 
-        public AdjustAttribution(string jsonString)
-        {
+        public AdjustAttribution(string jsonString) {
             var jsonNode = JSON.Parse(jsonString);
-            if (jsonNode == null)
-            {
+            
+            if (jsonNode == null) {
                 return;
             }
 
@@ -34,10 +34,8 @@ namespace com.adjust.sdk
             adid = AdjustUtils.GetJsonString(jsonNode, AdjustUtils.KeyAdid);
         }
 
-        public AdjustAttribution(Dictionary<string, string> dicAttributionData)
-        {
-            if (dicAttributionData == null)
-            {
+        public AdjustAttribution(Dictionary<string, string> dicAttributionData) {
+            if (dicAttributionData == null) {
                 return;
             }
 
@@ -50,15 +48,18 @@ namespace com.adjust.sdk
             clickLabel = TryGetValue(dicAttributionData, AdjustUtils.KeyClickLabel);
             adid = TryGetValue(dicAttributionData, AdjustUtils.KeyAdid);
         }
+        #endregion
 
-        private static string TryGetValue(Dictionary<string, string> dic, string key)
-        {
+        #region Private & helper methods
+        private static string TryGetValue(Dictionary<string, string> dic, string key) {
             string value;
-            if (dic.TryGetValue(key, out value))
-            {
+
+            if (dic.TryGetValue(key, out value)) {
                 return value;
+            } else {
+                return null;
             }
-            return null;
         }
+        #endregion
     }
 }

@@ -1,0 +1,243 @@
+{
+    "activities": {
+        "ActivityPost": [
+            {
+                "id": "414231", 
+                "text": "hduiqwhudiqw", 
+                "imageUrl": "http://google.com", 
+                "videoUrl": "https://youtube.com", 
+                "buttonTitle": "qweqwe", 
+                "buttonAction": "hello", 
+                "commentsCount": 4, 
+                "likedByMe": true, 
+                "likesCount": 10, 
+                "feedId": "g-global", 
+                "stickyStart": 1233231025, 
+                "stickyEnd": 1239444444,
+                "createdAt": 1230444444, 
+                "postAuthor": {
+                    "id": "1222",
+                    "identities": {
+                        "custom": "hello"
+                    },
+                    "publicProperties": {
+                        "1": "2",
+                        "3": "4"
+                    },
+                    "displayName": "pofip",
+                    "avatarUrl": "http://avatars.com",
+                    "isVerified": true
+                }, 
+                "mentions": [
+                    {
+                        "startIndex": 2,
+                        "endIndex": 4,
+                        "userId": "2134",
+                        "type": "actionMe"
+                    },
+                    {
+                        "startIndex": 0,
+                        "endIndex": 0,
+                        "userId": "2134",
+                        "type": "actionMe"
+                    }
+                ]
+            },
+            {
+                "id": "123", 
+                "text": "hduiqwhudiqw", 
+                "imageUrl": "http://google.com", 
+                "videoUrl": "https://youtube.com", 
+                "buttonTitle": "qweqwe", 
+                "buttonAction": "hello", 
+                "commentsCount": 0, 
+                "likedByMe": false, 
+                "likesCount": 0, 
+                "feedId": "testfeed", 
+                "stickyStart": 0, 
+                "stickyEnd": 0,
+                "createdAt": 0, 
+                "postAuthor": {
+                    "id": "1222",
+                    "identities": {
+                    },
+                    "publicProperties": {
+                    },
+                    "displayName": "",
+                    "avatarUrl": "http://avatars.com",
+                    "isVerified": false
+                }, 
+                "mentions": [
+                ]
+            }
+        ],
+        "ActivityPostContent": [
+            {
+                "text": "hello",
+                "buttonAction": "text",
+                "buttonTitle": "lol",
+                "image": "iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAVElEQVR42u3PAQEAAAQDMJKLfg0UsDVYpzL1SAsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwtfFkdblYmF98NCAAAAAElFTkSuQmCC"
+            },
+            {
+                "text": null,
+                "buttonAction": null,
+                "buttonTitle": null,
+                "image": null
+            },
+            {
+                "text": "",
+                "buttonAction": "",
+                "buttonTitle": "",
+                "image": null
+            }
+        ],
+        "ActivitiesQuery": [
+            {
+                "activityId": "123",
+                "limit": 44,
+                "filter": "older",
+                "filteringActivityId": "4242",
+                "friendsFeed": true,
+                "tags": ["123","helolo","kitty"]
+            },
+            {
+                "feedId": "custom",
+                "limit": 13,
+                "filter": "newer",
+                "filteringActivityId": "2323",
+                "friendsFeed": false,
+                "tags": []
+            },
+            {
+
+            }
+        ]
+    },
+    "invites": {
+        "InviteChannel": [
+            {
+                "id": "facebook",
+                "name": "Facebook",
+                "displayOrder": 4,
+                "enabled": false,
+                "iconImageUrl": null
+            },
+            {
+                "id": "twitter",
+                "name": "Twitter",
+                "displayOrder": 6,
+                "enabled": true,
+                "iconImageUrl": "http://hello.png"
+            }
+        ],
+        "InviteContent": [
+            {
+                "text": null,
+                "subject": null,
+                "imageUrl": null,
+                "image": "iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAVElEQVR42u3PAQEAAAQDMJKLfg0UsDVYpzL1SAsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwtfFkdblYmF98NCAAAAAElFTkSuQmCC"
+            },
+            {
+                "text": "hello",
+                "subject": "subj",
+                "imageUrl": "http://text.png",
+                "image": null
+            },
+            {
+                "text": "",
+                "subject": "",
+                "imageUrl": "",
+                "image": null
+            },
+            {
+
+            }
+        ],
+        "InvitePackage": [
+            {
+                "subject": null,
+                "text": null,
+                "userName": null,
+                "referralDataUrl": null,
+                "image": null,
+                "imageUrl": null
+            },
+            {
+                "subject": "",
+                "text": "",
+                "userName": "",
+                "referralDataUrl": "",
+                "image": "",
+                "imageUrl": ""
+            },
+            {
+                "subject": "hello",
+                "text": "text",
+                "userName": "Developer",
+                "referralDataUrl": "https://cool-img.png",
+                "image": "iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAVElEQVR42u3PAQEAAAQDMJKLfg0UsDVYpzL1SAsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwtfFkdblYmF98NCAAAAAElFTkSuQmCC",
+                "imageUrl": "https://ololo.png"
+            }
+        ],
+        "ReferralData": [
+            {
+                "token": "token",
+                "referrerUserId": "referrer",
+                "referrerChannelId": "channel",
+                "isFirstMatch": false,
+                "isGuaranteedMatch": false,
+                "isReinstall": false,
+                "isFirstMatchLink": false,
+                "linkParams": {
+
+                },
+                "originalLinkParams": {
+
+                }
+            },
+            {
+                "token": null,
+                "referrerUserId": null,
+                "referrerChannelId": null,
+                "isFirstMatch": true,
+                "isGuaranteedMatch": true,
+                "isReinstall": true,
+                "isFirstMatchLink": true,
+                "linkParams": {
+                    "test1": "token2"
+                },
+                "originalLinkParams": {
+                    "originalLink": "smt",
+                    "originalLink2": "hello"
+                }
+            }
+        ],
+        "ReferredUser": [
+            {
+                "id": "1222",
+                "identities": {
+                    "custom": "hello"
+                },
+                "publicProperties": {
+                    "1": "2",
+                    "3": "4"
+                },
+                "displayName": "pofip",
+                "avatarUrl": "http://avatars.com",
+                "installationChannel": "facebook",
+                "installationDate": 1289444884
+            }, 
+            {
+                "id": "42",
+                "identities": {
+                },
+                "publicProperties": {
+                },
+                "displayName": null,
+                "avatarUrl": null,
+                "installationChannel": "twitter",
+                "installationDate": 1239444444
+            }
+        ]
+    }
+}

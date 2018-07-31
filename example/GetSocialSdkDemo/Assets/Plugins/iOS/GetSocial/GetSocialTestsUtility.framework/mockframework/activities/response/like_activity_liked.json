@@ -1,0 +1,19 @@
+{
+	"language": "en",
+	"content": {
+		"text": "hello world"
+	},
+	"createdAt": 1476362614,
+	"stickyStart": 1476362614,
+	"stickyEnd": 1476362614,
+	"id": "42",
+	"commentsCount": 3,
+	"likesCount": 5,
+	"likedByMe": true,
+	"author": {
+		"id": "123",
+		"displayName": "JohnDoe81",
+		"avatarUrl": "https://lh3.googleusercontent.com/-3x6PmxZdVH4/AAAAAAAAAAI/AAAAAAAAAAA/llhAy91_0Yg/photo.jpg",
+		"verified": false
+	}
+}

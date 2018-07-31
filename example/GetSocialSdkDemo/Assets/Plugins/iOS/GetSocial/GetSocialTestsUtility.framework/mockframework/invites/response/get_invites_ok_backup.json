@@ -1,0 +1,580 @@
+{
+  "apiVersion": "1.0.0",
+  "context": "client",
+  "data": {
+    "current_item_count": 1,
+    "deleted": false,
+    "items": [
+      {
+        "default_invite_content": {
+          "image_url": "https://content.testing.gramble.com/users/e/4/3/5/d/d8dfd17c9a6df3b65989012c28a/image/6dccad8a7106c703320ab379a2a2cedf21a0ee3a-14756842266799",
+          "subject": {
+            "en": "Check this out."
+          },
+          "text": {
+            "de": "Sie müssen jetzt auf den Link zu klicken [APP_INVITE_URL]",
+            "en": "Over a thousand levels of fruit matching, lizard crushing fun!\n**REMEMBER FISH ARE FRIENDS, NOT FOOD!** [APP_INVITE_URL]",
+            "es": "Tienes que hacer clic en el enlace EMPRESA [APP_INVITE_URL]",
+            "fr": "Vous devez cliquer sur le lien NOW [APP_INVITE_URL]",
+            "nl": "Je nodig hebt om te klikken op de link NU [APP_INVITE_URL]",
+            "tl": "Kailangan mong mag-click sa link NGAYON [APP_INVITE_URL]",
+            "zh-Hans": "您需要点击链接NOW [APP_INVITE_URL]",
+            "zh-Hant": "您需要點擊鏈接NOW [APP_INVITE_URL]"
+          }
+        },
+        "providers": [
+          {
+            "display_order": 5,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/email.png",
+            "invite_content": {
+              "subject": {
+                "en": "check this"
+              },
+              "text": {}
+            },
+            "name": {
+              "en": "Email"
+            },
+            "platform_id": 1,
+            "properties": {},
+            "provider_id": "email",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 5,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/email.png",
+            "invite_content": {
+              "subject": {
+                "en": "check this"
+              },
+              "text": {}
+            },
+            "name": {
+              "en": "Email"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "email",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 4,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/facebook.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Facebook"
+            },
+            "platform_id": 1,
+            "properties": {},
+            "provider_id": "facebook",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": false
+          },
+          {
+            "display_order": 4,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/facebook.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Facebook"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "facebook",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": false
+          },
+          {
+            "display_order": 4,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/facebook.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "TestProvider"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "test_provider",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": false
+          },
+          {
+            "display_order": 6,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/facebookMessenger.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Messenger"
+            },
+            "platform_id": 1,
+            "properties": {},
+            "provider_id": "facebookmessenger",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 6,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/facebookMessenger.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Messenger"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "facebookmessenger",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 10,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/googlePlus.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Google+"
+            },
+            "platform_id": 2,
+            "properties": {
+              "url_scheme": "gplus://plus.google.com/share?url=[APP_INVITE_URL]"
+            },
+            "provider_id": "googleplus",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": false
+          },
+          {
+            "display_order": 12,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/image.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Image"
+            },
+            "platform_id": 2,
+            "properties": {
+              "UTI": "public/jpeg",
+              "annotations": {
+                "en": {
+                  "InstagramCaption": "http://www.gramble.com"
+                },
+                "it": {
+                  "keyIT": "valueIT"
+                }
+              },
+              "image_extension": "jpg"
+            },
+            "provider_id": "image",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 13,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/instagram.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Instagram"
+            },
+            "platform_id": 2,
+            "properties": {
+              "UTI": "com.instagram.exclusivegram",
+              "annotations": {
+                "en": {
+                  "InstagramCaption": "[APP_INVITE_TEXT]"
+                }
+              },
+              "image_extension": "igo",
+              "url_scheme": "instagram://"
+            },
+            "provider_id": "instagram",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 3,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/kakao.png",
+            "invite_content": {
+              "subject": {},
+              "text": {
+                "en": "Custom Kakao Message [APP_INVITE_URL]"
+              }
+            },
+            "name": {
+              "en": "Kakao"
+            },
+            "platform_id": 1,
+            "properties": {
+              "action": "android.intent.action.SEND",
+              "availableFields": [
+                "EXTRA_TEXT"
+              ],
+              "contentType": "text/*",
+              "packageName": "com.kakao.talk"
+            },
+            "provider_id": "kakao",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 3,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/kakao.png",
+            "invite_content": {
+              "subject": {},
+              "text": {
+                "en": "Custom Kakao Message [APP_INVITE_URL]"
+              }
+            },
+            "name": {
+              "en": "Kakao"
+            },
+            "platform_id": 2,
+            "properties": {
+              "url_scheme": "kakaolink://sendurl?apiver=2.0&url=[APP_INVITE_URL]&msg=[APP_INVITE_TEXT]&appver=1.0&appid=[APP_PACKAGE_NAME]&appname=[APP_NAME]&type=link"
+            },
+            "provider_id": "kakao",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 1,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/kik.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Kik"
+            },
+            "platform_id": 2,
+            "properties": {
+              "url_scheme": "kik-share://kik.com/send/article?app_name=[APP_NAME]&app_pkg=[APP_PACKAGE_NAME]&text=[APP_INVITE_TEXT]&forwardable=1&native=1&url=[APP_INVITE_URL]&icon_url=[APP_ICON_URL]&referer=[APP_PACKAGE_NAME]"
+            },
+            "provider_id": "kik",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 1,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/kik.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Kik"
+            },
+            "platform_id": 1,
+            "properties": {
+              "action": "android.intent.action.VIEW",
+              "data": "kik-share://kik.com/send/article?app_name=[APP_NAME]&app_pkg=[APP_PACKAGE_NAME]&text=[APP_INVITE_TEXT]&forwardable=1&isNative=1&url=[APP_INVITE_URL]&icon_url=[APP_ICON_URL]&referer=[APP_PACKAGE_NAME]",
+              "packageName": "kik.android"
+            },
+            "provider_id": "kik",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 9,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/line.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Line"
+            },
+            "platform_id": 2,
+            "properties": {
+              "url_scheme": "line://msg/text/[APP_INVITE_TEXT]"
+            },
+            "provider_id": "line",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 9,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/line.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Line"
+            },
+            "platform_id": 1,
+            "properties": {
+              "action": "android.intent.action.VIEW",
+              "data": "line://msg/text/[APP_INVITE_TEXT]",
+              "packageName": "jp.naver.line.android"
+            },
+            "provider_id": "line",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 11,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/nativeShare.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "More"
+            },
+            "platform_id": 1,
+            "properties": {
+              "action": "android.intent.action.SEND",
+              "availableFields": [
+                "EXTRA_TEXT"
+              ],
+              "contentType": "text/*",
+              "packageName": "nativeshare"
+            },
+            "provider_id": "nativeshare",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 11,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/nativeShare.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "More"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "nativeshare",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": true,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 2,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/sms.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Message",
+              "it": "Messaggio"
+            },
+            "platform_id": 1,
+            "properties": {},
+            "provider_id": "sms",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 2,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/sms.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Message",
+              "it": "Messaggio"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "sms",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 7,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/twitter.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Twitter"
+            },
+            "platform_id": 1,
+            "properties": {
+              "action": "android.intent.action.SEND",
+              "availableFields": [
+                "EXTRA_TEXT",
+                "EXTRA_STREAM"
+              ],
+              "className": "com.twitter.android.composer.ComposerActivity",
+              "contentType": "/*",
+              "packageName": "com.twitter.android"
+            },
+            "provider_id": "twitter",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 7,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/twitter.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "Twitter"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "twitter",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 8,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/wechat.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "WeChat"
+            },
+            "platform_id": 1,
+            "properties": {},
+            "provider_id": "wechat",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 8,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/wechat.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "WeChat"
+            },
+            "platform_id": 2,
+            "properties": {},
+            "provider_id": "wechat",
+            "supports_invite_image_url": true,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 0,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/whatsapp.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "WhatsApp"
+            },
+            "platform_id": 1,
+            "properties": {
+              "action": "android.intent.action.SEND",
+              "availableFields": [
+                "EXTRA_TEXT"
+              ],
+              "contentType": "text/plain",
+              "packageName": "com.whatsapp"
+            },
+            "provider_id": "whatsapp",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          },
+          {
+            "display_order": 0,
+            "enabled": true,
+            "icon_url": "https://content.testing.gramble.com/games/providers/whatsapp.png",
+            "invite_content": {
+              "subject": {},
+              "text": {}
+            },
+            "name": {
+              "en": "WhatsApp"
+            },
+            "platform_id": 2,
+            "properties": {
+              "url_scheme": "whatsapp://send?text=[APP_INVITE_TEXT]"
+            },
+            "provider_id": "whatsapp",
+            "supports_invite_image_url": false,
+            "supports_invite_subject": false,
+            "supports_invite_text": true
+          }
+        ]
+      }
+    ]
+  },
+  "errors": [],
+  "id": "3b67ee16-1f15-4278-9f02-e6c13694d536",
+  "ip_address": "83.163.72.154",
+  "method": "read"
+}

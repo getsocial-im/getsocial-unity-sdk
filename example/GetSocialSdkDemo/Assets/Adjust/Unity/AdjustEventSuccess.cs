@@ -1,45 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace com.adjust.sdk
-{
-    public class AdjustEventSuccess
-    {
+using UnityEngine;
+
+namespace com.adjust.sdk {
+    public class AdjustEventSuccess {
+        #region Properties
         public string Adid { get; set; }
         public string Message { get; set; }
         public string Timestamp { get; set; }
         public string EventToken { get; set; }
 
         public Dictionary<string, object> JsonResponse { get; set; }
+        #endregion
 
+        #region Constructors
         public AdjustEventSuccess() {}
-
-        public AdjustEventSuccess(Dictionary<string, string> eventSuccessDataMap)
-        {
-            if (eventSuccessDataMap == null)
-            {
-                return;
-            }
-
-            Adid = AdjustUtils.TryGetValue(eventSuccessDataMap, AdjustUtils.KeyAdid);
-            Message = AdjustUtils.TryGetValue(eventSuccessDataMap, AdjustUtils.KeyMessage);
-            Timestamp = AdjustUtils.TryGetValue(eventSuccessDataMap, AdjustUtils.KeyTimestamp);
-            EventToken = AdjustUtils.TryGetValue(eventSuccessDataMap, AdjustUtils.KeyEventToken);
-
-            string jsonResponseString = AdjustUtils.TryGetValue(eventSuccessDataMap, AdjustUtils.KeyJsonResponse);
-            var jsonResponseNode = JSON.Parse(jsonResponseString);
-            if (jsonResponseNode != null && jsonResponseNode.AsObject != null)
-            {
-                JsonResponse = new Dictionary<string, object>();
-                AdjustUtils.WriteJsonResponseDictionary(jsonResponseNode.AsObject, JsonResponse);
-            }
-        }
-
-        public AdjustEventSuccess(string jsonString)
-        {
+        
+        public AdjustEventSuccess(string jsonString) {
             var jsonNode = JSON.Parse(jsonString);
-            if (jsonNode == null)
-            {
+            
+            if (jsonNode == null) {
                 return;
             }
 
@@ -47,26 +28,27 @@ namespace com.adjust.sdk
             Message = AdjustUtils.GetJsonString(jsonNode, AdjustUtils.KeyMessage);
             Timestamp = AdjustUtils.GetJsonString(jsonNode, AdjustUtils.KeyTimestamp);
             EventToken = AdjustUtils.GetJsonString(jsonNode, AdjustUtils.KeyEventToken);
-
+            
             var jsonResponseNode = jsonNode[AdjustUtils.KeyJsonResponse];
-            if (jsonResponseNode == null)
-            {
+
+            if (jsonResponseNode == null) {
                 return;
             }
-            if (jsonResponseNode.AsObject == null)
-            {
+
+            if (jsonResponseNode.AsObject == null) {
                 return;
             }
 
             JsonResponse = new Dictionary<string, object>();
             AdjustUtils.WriteJsonResponseDictionary(jsonResponseNode.AsObject, JsonResponse);
         }
+        #endregion
 
-        public void BuildJsonResponseFromString(string jsonResponseString)
-        {
+        #region Public methods
+        public void BuildJsonResponseFromString(string jsonResponseString) {
             var jsonNode = JSON.Parse(jsonResponseString);
-            if (jsonNode == null)
-            {
+
+            if (jsonNode == null) {
                 return;
             }
 
@@ -74,9 +56,9 @@ namespace com.adjust.sdk
             AdjustUtils.WriteJsonResponseDictionary(jsonNode.AsObject, JsonResponse);
         }
 
-        public string GetJsonResponse()
-        {
+        public string GetJsonResponse() {
             return AdjustUtils.GetJsonResponseCompact(JsonResponse);
         }
+        #endregion
     }
 }

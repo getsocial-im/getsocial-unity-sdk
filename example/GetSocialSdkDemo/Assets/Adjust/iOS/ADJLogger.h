@@ -79,6 +79,6 @@ typedef enum {
  *
  * @return Log level as ADJLogLevel enumeration.
  */
-+ (ADJLogLevel)logLevelFromString:(nonnull NSString *)logLevelString;
++ (ADJLogLevel)LogLevelFromString:(nonnull NSString *)logLevelString;
 
 @end

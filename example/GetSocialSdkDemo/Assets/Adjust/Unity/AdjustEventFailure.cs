@@ -1,52 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace com.adjust.sdk
-{
-    public class AdjustEventFailure
-    {
+namespace com.adjust.sdk {
+    public class AdjustEventFailure {
+        #region Properties
         public string Adid { get; set; }
         public string Message { get; set; }
         public string Timestamp { get; set; }
         public string EventToken { get; set; }
+
         public bool WillRetry { get; set; }
         public Dictionary<string, object> JsonResponse { get; set; }
+        #endregion
 
+        #region Constructors
         public AdjustEventFailure() {}
-
-        public AdjustEventFailure(Dictionary<string, string> eventFailureDataMap)
-        {
-            if (eventFailureDataMap == null)
-            {
-                return;
-            }
-
-            Adid = AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyAdid);
-            Message = AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyMessage);
-            Timestamp = AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyTimestamp);
-            EventToken = AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyEventToken);
-
-            WillRetry = bool.Parse(AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyWillRetry));
-            bool willRetry;
-            if (bool.TryParse(AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyWillRetry), out willRetry))
-            {
-                WillRetry = willRetry;
-            }
-
-            string jsonResponseString = AdjustUtils.TryGetValue(eventFailureDataMap, AdjustUtils.KeyJsonResponse);
-            var jsonResponseNode = JSON.Parse(jsonResponseString);
-            if (jsonResponseNode != null && jsonResponseNode.AsObject != null)
-            {
-                JsonResponse = new Dictionary<string, object>();
-                AdjustUtils.WriteJsonResponseDictionary(jsonResponseNode.AsObject, JsonResponse);
-            }
-        }
-
-        public AdjustEventFailure(string jsonString)
-        {
+        
+        public AdjustEventFailure(string jsonString) {
             var jsonNode = JSON.Parse(jsonString);
-            if (jsonNode == null)
-            {
+            
+            if (jsonNode == null) {
                 return;
             }
 
@@ -57,34 +30,35 @@ namespace com.adjust.sdk
             WillRetry = Convert.ToBoolean(AdjustUtils.GetJsonString(jsonNode, AdjustUtils.KeyWillRetry));
 
             var jsonResponseNode = jsonNode[AdjustUtils.KeyJsonResponse];
-            if (jsonResponseNode == null)
-            {
+
+            if (jsonResponseNode == null) {
                 return;
             }
-            if (jsonResponseNode.AsObject == null)
-            {
+
+            if (jsonResponseNode.AsObject == null) {
                 return;
             }
 
             JsonResponse = new Dictionary<string, object>();
             AdjustUtils.WriteJsonResponseDictionary(jsonResponseNode.AsObject, JsonResponse);
         }
+        #endregion
 
-        public void BuildJsonResponseFromString(string jsonResponseString)
-        {
+        #region Public methods
+        public void BuildJsonResponseFromString(string jsonResponseString) {
             var jsonNode = JSON.Parse(jsonResponseString);
-            if (jsonNode == null)
-            {
+            
+            if (jsonNode == null) {
                 return;
             }
 
             JsonResponse = new Dictionary<string, object>();
             AdjustUtils.WriteJsonResponseDictionary(jsonNode.AsObject, JsonResponse);
         }
-
-        public string GetJsonResponse()
-        {
+        
+        public string GetJsonResponse() {
             return AdjustUtils.GetJsonResponseCompact(JsonResponse);
         }
+        #endregion
     }
 }
