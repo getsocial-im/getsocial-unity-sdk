@@ -65,7 +65,7 @@ namespace GetSocialSdk.Editor
 
         public AndroidManifestHelper()
         {
-            var manifestPath = Path.Combine(Application.dataPath, MainManifestPath);
+            var manifestPath = Path.Combine(GetSocialSettings.GetPluginPath(), MainManifestPath);
             EnsureManifestExists(manifestPath);
             _manifest = new AndroidManifest(manifestPath);
         }
@@ -170,7 +170,7 @@ namespace GetSocialSdk.Editor
         {
             if(!File.Exists(manifestPath))
             {
-                var backupManifestPath = Path.Combine(Application.dataPath, "GetSocial/Editor/Android/BackupManifest/AndroidManifest.xml");
+                var backupManifestPath = Path.Combine(GetSocialSettings.GetPluginPath(), "Editor/Android/BackupManifest/AndroidManifest.xml");
 
                 var manifestDirectoryPath = Path.GetDirectoryName(manifestPath);
                 if (!Directory.Exists(manifestDirectoryPath))

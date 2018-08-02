@@ -80,7 +80,7 @@ namespace GetSocialSdk.Core
 
             foreach (var keyValuePair in dictionary)
             {
-                objHashMap.CallStr("put", keyValuePair.Key, keyValuePair.Value);
+                objHashMap.CallAJO("put", keyValuePair.Key, keyValuePair.Value);
             }
 
             return objHashMap;

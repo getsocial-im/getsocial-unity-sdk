@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.IO;
+using GetSocialSdk.Core;
+using UnityEditor;
 using UnityEngine;
 
 namespace GetSocialSdk.Editor
@@ -27,7 +29,7 @@ namespace GetSocialSdk.Editor
             // but calling JS form native is broken, so have to go around it.
             // Details: https://github.com/kimsama/Unity-WebViewEditorWindow/issues/1
             var pageToLoad = EditorGUIUtility.isProSkin ? "index_pro.html" : "index.html";
-            var pagePath = Application.dataPath + "/GetSocial/Editor/HTML/" + pageToLoad;
+            var pagePath = Path.Combine(GetSocialSettings.GetAbsolutePluginPath(), Path.Combine("Editor/HTML/", pageToLoad));
 
             CreateWebViewEditorWindow<GetSocialGetStartedWindow>("GetSocial", pagePath, 200, 400, 800, 600);
         }

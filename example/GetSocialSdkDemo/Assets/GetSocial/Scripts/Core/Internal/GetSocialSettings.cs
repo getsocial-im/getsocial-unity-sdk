@@ -13,8 +13,8 @@ namespace GetSocialSdk.Core
         public const string UnityDemoAppAppId = "LuDPp7W0J4";
         
         const string SettingsAssetName = "GetSocialSettings";
-        const string SettingsAssetPath = "Assets/GetSocial/Resources/";
-
+        const string SettingsAssetPath = "Resources/";
+        
         static GetSocialSettings _instance;
 
         [SerializeField]
@@ -70,8 +70,10 @@ namespace GetSocialSdk.Core
                     {
                         _instance = CreateInstance<GetSocialSettings>();
                         AppId = UnityDemoAppAppId;
-                        SaveAsset(SettingsAssetPath, SettingsAssetName);
+
+                        SaveAsset(Path.Combine(GetPluginPath(), SettingsAssetPath), SettingsAssetName);
                     }
+                    
                 }
                 return _instance;
             }
@@ -212,6 +214,24 @@ namespace GetSocialSdk.Core
             }
         }
 
+        public static string GetPluginPath()
+        {
+            var rootDir = new DirectoryInfo(Application.dataPath);
+            var files = rootDir.GetFiles("GetSocialSettingsEditor.cs", SearchOption.AllDirectories);
+            var editorPath = Path.GetDirectoryName(files[0].FullName.Replace("\\", "/").Replace(Application.dataPath, "Assets"));
+            // get GetSocial plugin path relative to Assets folder
+            return Path.GetDirectoryName(editorPath);
+        }
+
+        public static string GetAbsolutePluginPath()
+        {
+            var rootDir = new DirectoryInfo(Application.dataPath);
+            var files = rootDir.GetFiles("GetSocialSettingsEditor.cs", SearchOption.AllDirectories);
+
+            // get absolute path to GetSocial folder
+            return Path.GetDirectoryName(files[0].DirectoryName);
+        }
+        
         #endregion
 
         #region private methods

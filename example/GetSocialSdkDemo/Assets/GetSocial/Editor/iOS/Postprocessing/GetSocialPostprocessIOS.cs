@@ -94,7 +94,9 @@ namespace GetSocialSdk.Editor
 
         static void EmbedFrameworks(PBXProject project, string target)
         {
-            const string defaultLocationInProj = "Frameworks/GetSocial/Plugins/iOS";
+            string frameworksPath =
+                GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
+            string defaultLocationInProj = Path.Combine(Path.Combine("Frameworks", frameworksPath), "Plugins/iOS");
             const string coreFrameworkName = "GetSocial.framework";
             const string uiFrameworkName = "GetSocialUI.framework";
             var relativeCoreFrameworkPath = Path.Combine(defaultLocationInProj, coreFrameworkName);

@@ -40,14 +40,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525ece82a472e4dea837e1ef938fd15d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startManually: 0
+  startManually: 1
   eventBuffering: 0
-  printAttribution: 1
-  sendInBackground: 0
-  launchDeferredDeeplink: 1
-  appToken: suzggk2586io
+  appToken: '{Your App Token}'
   logLevel: 3
-  environment: 1
+  environment: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

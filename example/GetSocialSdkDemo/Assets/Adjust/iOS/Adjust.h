@@ -2,14 +2,30 @@
 //  Adjust.h
 //  Adjust
 //
-//  V4.11.5
-//  Created by Christian Wellenbrock on 2012-07-23.
-//  Copyright (c) 2012-2014 adjust GmbH. All rights reserved.
+//  V4.14.1
+//  Created by Christian Wellenbrock (wellle) on 23rd July 2013.
+//  Copyright © 2012-2017 Adjust GmbH. All rights reserved.
 //
 
 #import "ADJEvent.h"
 #import "ADJConfig.h"
 #import "ADJAttribution.h"
+
+@interface AdjustTestOptions : NSObject
+
+@property (nonatomic, copy, nullable) NSString *baseUrl;
+@property (nonatomic, copy, nullable) NSString *gdprUrl;
+@property (nonatomic, copy, nullable) NSString *basePath;
+@property (nonatomic, copy, nullable) NSString *gdprPath;
+@property (nonatomic, copy, nullable) NSNumber *timerIntervalInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *timerStartInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *sessionIntervalInMilliseconds;
+@property (nonatomic, copy, nullable) NSNumber *subsessionIntervalInMilliseconds;
+@property (nonatomic, assign) BOOL teardown;
+@property (nonatomic, assign) BOOL deleteState;
+@property (nonatomic, assign) BOOL noBackoffWait;
+
+@end
 
 /**
  * Constants for our supported tracking environments
@@ -89,9 +105,17 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 /**
  * @brief Set the device token used by push notifications.
  *
- * @param deviceToken Apple push notification token for iOS device.
+ * @param deviceToken Apple push notification token for iOS device as NSData.
  */
 + (void)setDeviceToken:(nonnull NSData *)deviceToken;
+
+/**
+ * @brief Set the device token used by push notifications.
+ *        This method is only used by Adjust non native SDKs. Don't use it anywhere else.
+ *
+ * @param pushToken Apple push notification token for iOS device as NSString.
+ */
++ (void)setPushToken:(nonnull NSString *)pushToken;
 
 /**
  * @brief Enable or disable offline mode. Activities won't be sent but they are saved when
@@ -193,10 +217,16 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 + (void)resetSessionPartnerParameters;
 
 /**
- * Obtain singleton Adjust object
+ * @brief Give right user to be forgotten in accordance with GDPR law.
+ */
++ (void)gdprForgetMe;
+
+/**
+ * Obtain singleton Adjust object.
  */
 + (nullable id)getInstance;
 
++ (void)setTestOptions:(nullable AdjustTestOptions *)testOptions;
 
 - (void)appDidLaunch:(nullable ADJConfig *)adjustConfig;
 
@@ -204,13 +234,15 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 
 - (void)setEnabled:(BOOL)enabled;
 
-- (void)teardown:(BOOL)deleteState;
+- (void)teardown;
 
 - (void)appWillOpenUrl:(nonnull NSURL *)url;
 
 - (void)setOfflineMode:(BOOL)enabled;
 
 - (void)setDeviceToken:(nonnull NSData *)deviceToken;
+
+- (void)setPushToken:(nonnull NSString *)pushToken;
 
 - (void)sendFirstPackages;
 
@@ -229,6 +261,8 @@ extern NSString * __nonnull const ADJEnvironmentProduction;
 - (void)addSessionPartnerParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
 
 - (void)addSessionCallbackParameter:(nonnull NSString *)key value:(nonnull NSString *)value;
+
+- (void)gdprForgetMe;
 
 - (BOOL)isEnabled;
 

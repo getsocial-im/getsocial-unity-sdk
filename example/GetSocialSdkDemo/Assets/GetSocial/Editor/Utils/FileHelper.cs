@@ -15,8 +15,8 @@ namespace GetSocialSdk.Editor
         private const string DownloadUrlAndroid = "http://s3.amazonaws.com/downloads.getsocial.im/unity/releases/{0}/getsocial-unity-android-sdk.zip"; 
         private const string DownloadUrliOS = "http://s3.amazonaws.com/downloads.getsocial.im/unity/releases/{0}/getsocial-unity-ios-sdk.zip";
 
-        private const string DestinationFolderPathAndroid = "GetSocial/Plugins/Android";
-        private const string DestinationFolderPathiOS = "GetSocial/Plugins/iOS";
+        private const string DestinationFolderPathAndroid = "Plugins/Android";
+        private const string DestinationFolderPathiOS = "Plugins/iOS";
         private const string IOSArchiveName = "getsocial-unity-ios-sdk.zip";
         private const string AndroidArchiveName = "getsocial-unity-android-sdk.zip";
         
@@ -35,16 +35,16 @@ namespace GetSocialSdk.Editor
             var iosCoreLib = new string[0];
             var iosUiLib = new string[0];
 
-            if (Directory.Exists(Path.Combine(Application.dataPath, DestinationFolderPathAndroid)) && !AndroidDownloadInProgress)
+            if (Directory.Exists(Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathAndroid)) && !AndroidDownloadInProgress)
             {
-                androidCoreLib = AssetDatabase.FindAssets(AndroidFrameworkName_Core, new [] { Path.Combine( "Assets", DestinationFolderPathAndroid) });
-                androidUiLib = AssetDatabase.FindAssets(AndroidFrameworkName_UI, new [] { Path.Combine( "Assets", DestinationFolderPathAndroid) });
+                androidCoreLib = AssetDatabase.FindAssets(AndroidFrameworkName_Core, new [] { Path.Combine( GetSocialSettings.GetPluginPath(), DestinationFolderPathAndroid) });
+                androidUiLib = AssetDatabase.FindAssets(AndroidFrameworkName_UI, new [] { Path.Combine( GetSocialSettings.GetPluginPath(), DestinationFolderPathAndroid) });
             }
 
-            if (Directory.Exists(Path.Combine(Application.dataPath, DestinationFolderPathiOS)) && !IOSDownloadInProgress)
+            if (Directory.Exists(Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathiOS)) && !IOSDownloadInProgress)
             {
-                iosCoreLib = AssetDatabase.FindAssets(IOSFrameworkName_Core, new[] { Path.Combine( "Assets", DestinationFolderPathiOS) });
-                iosUiLib = AssetDatabase.FindAssets(IOSFrameworkName_UI, new[] { Path.Combine("Assets", DestinationFolderPathiOS) });
+                iosCoreLib = AssetDatabase.FindAssets(IOSFrameworkName_Core, new[] { Path.Combine( GetSocialSettings.GetPluginPath(), DestinationFolderPathiOS) });
+                iosUiLib = AssetDatabase.FindAssets(IOSFrameworkName_UI, new[] { Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathiOS) });
             }
             
             UpdatePlatformState(iosCoreLib, BuildTarget.iOS, true);
@@ -58,7 +58,7 @@ namespace GetSocialSdk.Editor
         {
             IOSDownloadInProgress = true;
             
-            var pluginFolderPath = Path.Combine(Application.dataPath, DestinationFolderPathiOS);
+            var pluginFolderPath = Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathiOS);
             RemoveOldVersions(pluginFolderPath);
 
             var downloadFrameworkRequest = DownloadFrameworkRequest.Create(string.Format(DownloadUrliOS, BuildConfig.UnitySdkVersion),
@@ -91,7 +91,7 @@ namespace GetSocialSdk.Editor
         
         public static bool CheckiOSFramework()
         {
-            var pluginFolderPath = Path.Combine(Application.dataPath, DestinationFolderPathiOS);
+            var pluginFolderPath = Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathiOS);
             var sdkVersion = ReadSDKVersion(pluginFolderPath);
             if (DevelopmentVersion.Equals(sdkVersion))
             {
@@ -111,7 +111,7 @@ namespace GetSocialSdk.Editor
         {
             AndroidDownloadInProgress = true;
 
-            var pluginFolderPath = Path.Combine(Application.dataPath, DestinationFolderPathAndroid);
+            var pluginFolderPath = Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathAndroid);
 
             // remove old versions if any
             RemoveOldVersions(pluginFolderPath);
@@ -146,7 +146,7 @@ namespace GetSocialSdk.Editor
         
         public static bool CheckAndroidFramework()
         {
-            var pluginFolderPath = Path.Combine(Application.dataPath, DestinationFolderPathAndroid);
+            var pluginFolderPath = Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathAndroid);
             var sdkVersion = ReadSDKVersion(pluginFolderPath);
             if (DevelopmentVersion.Equals(sdkVersion))
             {
@@ -210,7 +210,7 @@ namespace GetSocialSdk.Editor
         {
             foreach (var path in filePath)
             {
-                AssetDatabase.ImportAsset(Path.Combine("Assets", path), ImportAssetOptions.ForceUpdate);
+                AssetDatabase.ImportAsset(Path.Combine(GetSocialSettings.GetPluginPath(), path), ImportAssetOptions.ForceUpdate);
             }
         }
 

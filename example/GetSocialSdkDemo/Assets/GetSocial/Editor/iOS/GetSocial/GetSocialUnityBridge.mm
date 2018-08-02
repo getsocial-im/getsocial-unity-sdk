@@ -199,7 +199,7 @@ NS_ASSUME_NONNULL_BEGIN
     void _gs_getReferredUsers(StringCallbackDelegate getReferredUsersCallback, void *onSuccessActionPtr,
                                 FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        [GetSocial referredUsersWithSuccess:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure: errorBlock(failureCallback, onSuccessActionPtr)];
+        [GetSocial referredUsersWithSuccess:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure: errorBlock(failureCallback, onFailureActionPtr)];
     }
 
     #pragma mark - Invite Callbacks

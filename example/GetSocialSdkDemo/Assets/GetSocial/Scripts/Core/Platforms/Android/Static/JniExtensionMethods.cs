@@ -10,7 +10,34 @@ namespace GetSocialSdk.Core
 
         public static string CallStaticStr(this AndroidJavaObject ajo, string methodName, params object[] args)
         {
+#if UNITY_2018_2_OR_NEWER
+            // A fix for a regression issue introduced in Unity 2018.2
+            // Details: https://issuetracker.unity3d.com/issues/android-androidjavaobject-dot-call-crashes-with-fatal-signal-11-sigsegv
+            
+            var rawClass = ajo.GetRawClass();
+            if (args == null) { args = new object[] { null }; }
+            IntPtr methodID = AndroidJNIHelper.GetMethodID<string>(rawClass, methodName, args, true);	
+            jvalue[] jniArgs = AndroidJNIHelper.CreateJNIArgArray(args); 
+
+            try 
+            { 
+                IntPtr returnValue = AndroidJNI.CallStaticObjectMethod(rawClass, methodID, jniArgs);
+                if (IntPtr.Zero != returnValue) 
+                { 
+                    var val = AndroidJNI.GetStringUTFChars(returnValue); 
+                    AndroidJNI.DeleteLocalRef(returnValue); 
+                    return val; 
+                } 
+            } 
+            finally 
+            { 
+                AndroidJNIHelper.DeleteJNIArgArray(args, jniArgs); 
+            }
+
+            return null; 
+#else 
             return CallStaticSafe<string>(ajo, methodName, args);
+#endif
         }
 
         public static bool CallStaticBool(this AndroidJavaObject ajo, string methodName, params object[] args)
@@ -78,7 +105,34 @@ namespace GetSocialSdk.Core
         public static string CallStr(this AndroidJavaObject ajo, string methodName,
             params object[] args)
         {
+#if UNITY_2018_2_OR_NEWER
+            // A fix for a regression issue introduced in Unity 2018.2
+            // Details: https://issuetracker.unity3d.com/issues/android-androidjavaobject-dot-call-crashes-with-fatal-signal-11-sigsegv
+            
+            if (args == null) { args = new object[] { null }; } 
+            IntPtr methodID = AndroidJNIHelper.GetMethodID<string>(ajo.GetRawClass(), methodName, args, false);	
+            jvalue[] jniArgs = AndroidJNIHelper.CreateJNIArgArray(args); 
+
+            try 
+            { 
+                IntPtr returnValue = AndroidJNI.CallObjectMethod(ajo.GetRawObject(), methodID, jniArgs);
+                if (IntPtr.Zero != returnValue) 
+                { 
+                    var val = AndroidJNI.GetStringUTFChars(returnValue); 
+                    AndroidJNI.DeleteLocalRef(returnValue); 
+                    return val; 
+                } 
+            } 
+            finally 
+            { 
+                AndroidJNIHelper.DeleteJNIArgArray(args, jniArgs); 
+            }
+
+            return null; 
+#else 
             return CallSafe<string>(ajo, methodName, args);
+#endif 
+            
         }
 
         public static AndroidJavaObject CallAJO(this AndroidJavaObject ajo, string methodName,
@@ -146,6 +200,7 @@ namespace GetSocialSdk.Core
         {
             // If we call method that return null from Java an exception will be thrown. So we have to ignore most part of them.
             // Related Unity issue: https://issuetracker.unity3d.com/issues/androidjavaobject-dot-call-throws-exception-instead-of-returning-null-pointer
+            // Fixed in Unity 5.6.0
             var isExceptionCausedByNullObjectReturnedFromJava =
                 typeof(T) == typeof(AndroidJavaObject)
                 && exception.Message.Contains("AndroidJavaObject with null ptr");

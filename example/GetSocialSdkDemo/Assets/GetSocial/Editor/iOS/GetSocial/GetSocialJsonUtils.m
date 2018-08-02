@@ -33,7 +33,11 @@
 #if DEBUG
     NSLog(@"JSON Input: %@", customLinkParamsJson);
 #endif
-
+    if (customLinkParamsJson == nil)
+    {
+        return nil;
+    }
+    
     NSDictionary<NSString*, id> *json = [self deserializeDictionary:customLinkParamsJson];
     id rawImage = json[@"$image"];
     if (rawImage != nil)
