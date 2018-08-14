@@ -5,8 +5,14 @@ using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
-    class GetSocialNativeBridgeMock : IGetSocialNativeBridge
+    internal partial class GetSocialNativeBridgeMock : IGetSocialNativeBridge
     {
+
+        public GetSocialFactory.AvailableRuntimes[] RuntimeImplementation
+        {
+            get { return new[] {GetSocialFactory.AvailableRuntimes.Mock}; }
+        }
+
         const string Mock = "mock";
 
         static IGetSocialNativeBridge _instance;
@@ -97,6 +103,11 @@ namespace GetSocialSdk.Core
         }
 
         public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
+        }
+
+        public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
         }
@@ -413,17 +424,6 @@ namespace GetSocialSdk.Core
         public void Reset()
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
-        }
-
-        public void SetHadesConfiguration(int hadesConfigurationType)
-        {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), hadesConfigurationType);
-        }
-
-        public int GetCurrentHadesConfiguration()
-        {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
-            return 0;
         }
 
         public void HandleOnStartUnityEvent()

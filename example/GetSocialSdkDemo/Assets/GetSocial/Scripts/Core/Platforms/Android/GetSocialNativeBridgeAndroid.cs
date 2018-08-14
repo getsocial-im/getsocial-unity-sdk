@@ -12,20 +12,20 @@ namespace GetSocialSdk.Core
         private const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
         private const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
 
+        public GetSocialFactory.AvailableRuntimes[] RuntimeImplementation
+        {
+            get { return new[] {GetSocialFactory.AvailableRuntimes.Android}; }
+        }
+
         static IGetSocialNativeBridge _instance;
 
         readonly AndroidJavaClass _getSocial;
         readonly AndroidJavaClass _user;
 
-        GetSocialNativeBridgeAndroid()
+        public GetSocialNativeBridgeAndroid()
         {
             _getSocial = new AndroidJavaClass(GetSocialClassSignature);
             _user = new AndroidJavaClass(GetSocialUserClassSignature);
-        }
-
-        public static IGetSocialNativeBridge Instance
-        {
-            get { return _instance ?? (_instance = new GetSocialNativeBridgeAndroid()); }
         }
 
         #region initialization
@@ -120,6 +120,12 @@ namespace GetSocialSdk.Core
         public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             _getSocial.CallStatic("getReferredUsers", new ListCallbackProxy<ReferredUser>(onSuccess, onFailure));
+        }
+
+        public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
+        {
+            var linkParamsAjo = linkParams == null ? null : linkParams.ToAjo();
+            _getSocial.CallStatic("createInviteLink", linkParamsAjo, new StringCallbackProxy(onSuccess, onFailure));
         }
 
         public void RegisterForPushNotifications()
@@ -457,22 +463,6 @@ namespace GetSocialSdk.Core
             {
                 Debug.LogError("Resetting user failed");
                 Debug.LogException(e);
-            }
-        }
-
-        public void SetHadesConfiguration(int hadesConfigurationType)
-        {
-            using (var accessHelperJavaClass = new AndroidJavaClass(AndroidAccessHelperClass))
-            {
-                accessHelperJavaClass.CallStatic("setHadesConfiguration", hadesConfigurationType);
-            }
-        }
-
-        public int GetCurrentHadesConfiguration()
-        {
-            using (var accessHelperJavaClass = new AndroidJavaClass(AndroidAccessHelperClass))
-            {
-                return accessHelperJavaClass.CallStaticInt("getCurrentHadesConfiguration");
             }
         }
         #endregion

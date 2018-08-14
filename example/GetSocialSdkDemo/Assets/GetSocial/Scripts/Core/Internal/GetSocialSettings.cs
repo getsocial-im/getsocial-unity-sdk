@@ -8,6 +8,7 @@ using UnityEditor;
 
 namespace GetSocialSdk.Core
 {
+
     public class GetSocialSettings : ScriptableObject
     {
         public const string UnityDemoAppAppId = "LuDPp7W0J4";
@@ -16,7 +17,7 @@ namespace GetSocialSdk.Core
         const string SettingsAssetPath = "Resources/";
         
         static GetSocialSettings _instance;
-
+        
         [SerializeField]
         string _appId = string.Empty;
 

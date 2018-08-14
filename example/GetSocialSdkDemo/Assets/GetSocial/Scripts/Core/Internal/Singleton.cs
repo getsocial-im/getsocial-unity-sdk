@@ -74,7 +74,7 @@
         ///   even after stopping playing the Application. Really bad!
         /// So, this was made to be sure we're not creating that buggy ghost object.
         /// </summary>
-        public void OnDestroy () {
+        protected virtual void OnDestroy () {
             applicationIsQuitting = true;
         }
     }

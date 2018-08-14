@@ -168,6 +168,7 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         DemoGuiUtils.DrawButton("Get Available Channels Details", PrintAvailableInviteChannelsDetails, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Available Channels", PrintAvailbleChannelsList, style: GSStyles.Button);
+        DrawCreateInviteLink();
         DrawCustomInviteParamsForm();
 
         // API calls to SendInvite
@@ -431,6 +432,16 @@ public class SmartInvitesApiSection : DemoMenuSection
                 style: GSStyles.Button);
         }
     }
+    
+    void DrawCreateInviteLink()
+    {
+
+        GUILayout.Space(20);
+        DemoGuiUtils.DrawButton("Create Invite Link",
+            () => CreateInviteLink(),
+            style: GSStyles.Button);
+    }
+    
 
     void DrawSendCustomInvites()
     {
@@ -453,6 +464,15 @@ public class SmartInvitesApiSection : DemoMenuSection
             () => _console.LogD("Successfully sent invite"),
             () => _console.LogW("Sending invite cancelled"),
             error => _console.LogE(string.Format("Failed to send invite: {0}", error.Message))
+        );
+    }
+
+    void CreateInviteLink()
+    {
+        _console.LogD("Creating invite link...");
+        GetSocial.CreateInviteLink(null, 
+            (string inviteLink) => _console.LogD("Created invite link: " + inviteLink),
+            error => _console.LogE(string.Format("Failed to create invite link: {0}", error.Message))
         );
     }
 

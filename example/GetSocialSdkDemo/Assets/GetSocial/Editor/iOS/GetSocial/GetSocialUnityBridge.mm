@@ -6,7 +6,6 @@
 #import "NSDictionary+GetSocial.h"
 #import "NSMutableDictionary+GetSocial.h"
 #include <GetSocial/GetSocial.h>
-#include <GetSocial/GetSocialAccessHelper.h>
 
 
 #pragma clang diagnostic push
@@ -200,6 +199,17 @@ NS_ASSUME_NONNULL_BEGIN
                                 FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
         [GetSocial referredUsersWithSuccess:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure: errorBlock(failureCallback, onFailureActionPtr)];
+    }
+    
+    void _gs_createInviteLink(const char *linkParamsJson,
+                              StringCallbackDelegate completeCallback, void *onCompletePtr,
+                              FailureCallbackDelegate failureCallback, void *onFailurePtr) {
+        NSString *linkParamsJsonStr = [GetSocialBridgeUtils createNSStringFrom:linkParamsJson];
+        NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:linkParamsJsonStr];
+        
+        [GetSocial createInviteLinkWithParams:linkParams success:^(NSString * _Nonnull result) {
+            completeCallback(onCompletePtr, [GetSocialBridgeUtils createCStringFrom:result]);
+        } failure: errorBlock(failureCallback, onFailurePtr)];
     }
 
     #pragma mark - Invite Callbacks
@@ -723,32 +733,19 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
         [GetSocial deleteActivity:activityIdStr
                         success:completeBlock(successCallback, onSuccessActionPtr)
-                        failure:errorBlock(failureCallback, onFailureActionPtr)];
-        }
-
-    #pragma mark - Hades Configuration
-    void _gs_setHadesConfigurationInternal(int hadesConfigurationType)
-    {
-        [GetSocialAccessHelper setHadesConfigurationInt:hadesConfigurationType];
+                        failure:errorBlock(failureCallback, onFailureActionPtr)]; 
     }
 
-    int _gs_getCurrentHadesConfigurationInternal()
-    {
-        return [GetSocialAccessHelper currentHadesConfigurationInt];
-    }
-        
+#pragma mark - Internal
     void _gs_handleOnStartUnityEvent()
     {
-        [GetSocialAccessHelper handleOnStartUnityEvent];
-    }
-    
-    
-    void _gs_resetInternal()
-    {
-        [GetSocialAccessHelper reset];
+        [GetSocial performSelector:NSSelectorFromString(@"handleOnStartUnityEvent")];
     }
 
-#pragma mark 
+    void _gs_resetInternal()
+    {
+        [GetSocial performSelector:NSSelectorFromString(@"reset")];
+    }
 NS_ASSUME_NONNULL_END
 }
 

@@ -16,11 +16,6 @@ namespace GetSocialSdk.Ui
             return false;
         }
 #endif
-
-        public void Reset()
-        {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
-        }
         
         public static GetSocialUiNativeBridgeMock Instance
         {

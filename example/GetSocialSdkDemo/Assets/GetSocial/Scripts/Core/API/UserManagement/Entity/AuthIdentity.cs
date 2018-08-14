@@ -18,16 +18,16 @@ namespace GetSocialSdk.Core
     public class AuthIdentity : IConvertableToNative
     {
 #pragma warning disable 414
-        private readonly string _providerId;
-        private readonly string _providerUserId;
-        private readonly string _accessToken;
+        internal readonly string ProviderId;
+        internal readonly string ProviderUserId;
+        internal readonly string AccessToken;
 #pragma warning restore 414
         
         private AuthIdentity(string providerName, string userId, string accessToken)
         {
-            _providerId = providerName;
-            _providerUserId = userId;
-            _accessToken = accessToken;
+            ProviderId = providerName;
+            ProviderUserId = userId;
+            AccessToken = accessToken;
         }
 
         /// <summary>
@@ -59,16 +59,16 @@ namespace GetSocialSdk.Core
         public AndroidJavaObject ToAjo()
         {
             var identityClass = new AndroidJavaClass("im.getsocial.sdk.usermanagement.AuthIdentity");
-            return identityClass.CallStaticAJO("createCustomIdentity", _providerId, _providerUserId, _accessToken);
+            return identityClass.CallStaticAJO("createCustomIdentity", ProviderId, ProviderUserId, AccessToken);
         }
 #elif UNITY_IOS
         public string ToJson()
         {
             var jsonDic = new Dictionary<string, object>
             {
-                {"ProviderId", _providerId},
-                {"ProviderUserId", _providerUserId},
-                {"AccessToken", _accessToken}
+                {"ProviderId", ProviderId},
+                {"ProviderUserId", ProviderUserId},
+                {"AccessToken", AccessToken}
             };
             return GSJson.Serialize(jsonDic);
         }

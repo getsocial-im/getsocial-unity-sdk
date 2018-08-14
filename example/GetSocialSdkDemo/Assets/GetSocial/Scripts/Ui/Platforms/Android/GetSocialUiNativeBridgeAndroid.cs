@@ -67,14 +67,6 @@ namespace GetSocialSdk.Ui
             });
         }
         #endregion
-
-        public void Reset()
-        {
-            using (var ajc = new AndroidJavaClass(AndroidUiAccessHelperClass))
-            {
-                ajc.CallStatic("reset", JniUtils.Activity);
-            }
-        }
     }
 }
 

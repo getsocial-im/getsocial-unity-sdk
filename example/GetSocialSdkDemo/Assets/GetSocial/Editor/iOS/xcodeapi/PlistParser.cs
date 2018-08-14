@@ -153,7 +153,10 @@ namespace UnityEditor.iOS.Xcode.GetSocial
         internal static XDocument ParseXmlNoDtd(string text)
         {
             XmlReaderSettings settings = new XmlReaderSettings();
+#pragma warning disable 618
             settings.ProhibitDtd = false;
+#pragma warning restore 618
+
             settings.XmlResolver = null; // prevent DTD download
 
             XmlReader xmlReader = XmlReader.Create(new StringReader(text), settings);

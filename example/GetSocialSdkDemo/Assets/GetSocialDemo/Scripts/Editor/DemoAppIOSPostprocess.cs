@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-using System.IO;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode.GetSocial;
 using GetSocialSdk.Editor;
-using UnityEngine;
 
 namespace GetSocialSdk.Editors
 {
@@ -37,9 +35,7 @@ namespace GetSocialSdk.Editors
         {
             if (BuildTarget.iOS != buildTarget) return;
     
-            Copy(Path.Combine(Application.dataPath, "../IosStreamingAssets/Raw"), Path.Combine(projectPath, "Data/Raw"));
             PBXProjectUtils.ModifyPbxProject(projectPath, DisableBitcode);
-            PBXProjectUtils.ModifyPbxProject(projectPath, AddTestingFramework);
             PBXProjectUtils.ModifyPlist(projectPath, AllowArbitraryLoads);
         }
 
@@ -47,23 +43,7 @@ namespace GetSocialSdk.Editors
         {
             project.SetBuildProperty(target, "ENABLE_BITCODE", "NO");
         }
-
-        static void AddTestingFramework(PBXProject project, string target)
-        {
-            project.AddDynamicFrameworkToProject(target, "Frameworks/Plugins/iOS/GetSocial/GetSocialTestsUtility.framework");
-        }
         
-        static void Copy(string sourceDir, string targetDir)
-        {
-            if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
-
-            foreach(var file in Directory.GetFiles(sourceDir))
-                File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)));
-
-            foreach(var directory in Directory.GetDirectories(sourceDir))
-                Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
-        }
-
         #region plist_for_ios9
 
         // Allow all HTTP communication for the test app

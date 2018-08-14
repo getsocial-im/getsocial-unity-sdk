@@ -8,7 +8,7 @@ namespace GetSocialSdk.Core
 
     public static class UserConflictCallback
     {
-        [AOT.MonoPInvokeCallback(typeof(OnUserConflictDelegate))]
+        [MonoPInvokeCallback(typeof(OnUserConflictDelegate))]
         public static void OnUserAuthConflict(IntPtr onConflictActionPtr, string conflictUserJson)
         {
             var conflictUser = new ConflictUser().ParseFromJson(conflictUserJson.ToDict());

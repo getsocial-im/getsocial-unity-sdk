@@ -18,17 +18,15 @@ namespace GetSocialSdk.Core
         public int ErrorCode { get; private set; }
         public string Message { get; private set; }
 
-        // TODO Simple constructors for creating in Unity
-        public GetSocialError(string message)
+        public GetSocialError(int errorCode, string message)
         {
+            ErrorCode = errorCode;
             Message = message;
-            ErrorCode = ErrorCodes.Unknown;
         }
 
-        public GetSocialError()
-        {
-            ErrorCode = ErrorCodes.Unknown;
-        }
+        public GetSocialError(string message) : this(ErrorCodes.Unknown, message){}
+        
+        public GetSocialError() : this(null) {}
 
         public override string ToString()
         {

@@ -61,7 +61,7 @@ namespace GetSocialSdk.Core
                 sb.Append(key);
                 sb.Append("=");
                 sb.Append(dictionary[key]);
-                sb.Append("}\n");
+                sb.Append("}, ");
             }
 
             sb.Append("}");

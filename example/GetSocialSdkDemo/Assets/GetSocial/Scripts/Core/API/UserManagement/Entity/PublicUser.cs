@@ -31,9 +31,17 @@ namespace GetSocialSdk.Core
         public string AvatarUrl { get; protected set; }
         
         /// <summary>
-        /// Gets the user auth identities.
+        /// You can add or remove identities using <see cref="GetSocial.User.AddAuthIdentity"/> and <see cref="GetSocial.User.RemoveAuthIdentity"/>.
+        /// The key(providerId) is the one you've passed as a first parameter to <see cref="AuthIdentity.CreateCustomIdentity"/>
+        /// or <see cref="AuthIdentityProvider.Facebook"/> if you've created Facebook identity with <see cref="AuthIdentity.CreateFacebookIdentity"/>.
+        /// Read more about identities in <see href="https://docs.getsocial.im/guides/user-management/android/managing-user-identities/">the documentation</see>.
+        /// The value(userId) is the second parameter in <see cref="AuthIdentity.CreateCustomIdentity"/>
+        /// or automatically obtained by GetSocial if you've used Facebook identity. 
         /// </summary>
-        /// <value>The user auth identities.</value>
+        /// <value>
+        /// All auth identities added to the user or an empty map if the sdk is in an illegal state.
+        /// When receiving an empty dictionary please check the state of the sdk to determine whether there are no identities or there was an error.
+        /// </value>
         public Dictionary<string, string> Identities { get; protected set; }
 
         /// <summary>

@@ -9,16 +9,10 @@ namespace GetSocialSdk.Core
 {
     class GetSocialNativeBridgeIOS : IGetSocialNativeBridge
     {
-        static IGetSocialNativeBridge _instance;
-
-        GetSocialNativeBridgeIOS()
+    
+        public GetSocialFactory.AvailableRuntimes[] RuntimeImplementation
         {
-            
-        }
-        
-        public static IGetSocialNativeBridge Instance
-        {
-            get { return _instance ?? (_instance = new GetSocialNativeBridgeIOS()); }
+            get { return new[] {GetSocialFactory.AvailableRuntimes.iOS}; }
         }
 
         public void Init(string appId)
@@ -129,6 +123,18 @@ namespace GetSocialSdk.Core
             _gs_getReferredUsers(Callbacks.GetReferredUsers, onSuccess.GetPointer(), 
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
+
+        public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
+        {
+            string linkParamsJson = null;
+            if (linkParams != null)
+            {
+                linkParamsJson = linkParams.ToJson();
+            }
+            
+            _gs_createInviteLink(linkParamsJson, Callbacks.StringCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        } 
 
         public void RegisterForPushNotifications()
         {
@@ -522,16 +528,6 @@ namespace GetSocialSdk.Core
            _gs_resetInternal();
         }
 
-        public void SetHadesConfiguration(int hadesConfigurationType)
-        {
-           _gs_setHadesConfigurationInternal(hadesConfigurationType);
-        }
-
-        public int GetCurrentHadesConfiguration()
-        {
-            return _gs_getCurrentHadesConfigurationInternal();
-        }
-
         public void HandleOnStartUnityEvent()
         {
             _gs_handleOnStartUnityEvent();
@@ -604,6 +600,10 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_getReferredUsers(
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_createInviteLink(string linkParamsJson, StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         // Invite Callbacks
@@ -878,12 +878,6 @@ namespace GetSocialSdk.Core
         
         [DllImport("__Internal")]
         static extern void _gs_resetInternal();
-
-        [DllImport("__Internal")]
-        static extern void _gs_setHadesConfigurationInternal(int hadesConfigurationType);
-
-        [DllImport("__Internal")]
-        static extern int _gs_getCurrentHadesConfigurationInternal();
 
         #endregion
     }

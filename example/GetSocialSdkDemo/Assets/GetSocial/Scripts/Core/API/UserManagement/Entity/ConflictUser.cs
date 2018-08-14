@@ -1,11 +1,8 @@
 using System;
+using System.Collections.Generic;
 
 #if UNITY_ANDROID
 using UnityEngine;
-#endif
-
-#if UNITY_IOS
-using System.Collections.Generic;
 #endif
 
 namespace GetSocialSdk.Core
@@ -15,6 +12,13 @@ namespace GetSocialSdk.Core
     /// </summary>
     public class ConflictUser : PublicUser, IConvertableFromNative<ConflictUser>
     {
+        internal ConflictUser()
+        {
+        }
+        
+        internal ConflictUser(Dictionary<string, string> publicProperties, string id, string displayName, string avatarUrl, Dictionary<string, string> identities) : base(publicProperties, id, displayName, avatarUrl, identities)
+        {
+        }
 #if UNITY_ANDROID
         public new ConflictUser ParseFromAJO(AndroidJavaObject ajo)
         {

@@ -89,13 +89,13 @@ namespace GetSocialSdk.Editor
         [MenuItem("GetSocial/GetSocial Dashboard", false, 1500)]
         public static void OpenGetSocialDashboard()
         {
-            Application.OpenURL("http://dashboard.getsocial.im/");
+            Application.OpenURL("http://dashboard.getsocial.im/?utm_source=unity-asset-store&utm_medium=unity-editor");
         }
 
         [MenuItem("GetSocial/Documentation", false, 1500)]
         public static void OpenGetSocialDocumentation()
         {
-            Application.OpenURL("http://docs.getsocial.im");
+            Application.OpenURL("http://docs.getsocial.im/?utm_source=unity-asset-store&utm_medium=unity-editor");
         }
         #endregion
 

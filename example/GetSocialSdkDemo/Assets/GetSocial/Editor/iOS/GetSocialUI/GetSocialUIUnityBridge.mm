@@ -248,10 +248,6 @@ void _gs_doPendingAction() {
         sPendingAction = nil;
     }
 }
-    
-void _gs_ui_reset()  {
-    [GetSocialUI load];
-}
 
 NS_ASSUME_NONNULL_END
 }

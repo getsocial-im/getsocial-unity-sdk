@@ -132,8 +132,8 @@ public class GetSocialDemoController : MonoBehaviour
         _menuSections.ForEach(section => section.Initialize(this, _console));
         ShowMainMenu();
     }
-
-    protected void Start()
+    
+    protected virtual void Start()
     {
         // Initialize FB SDK
         FB.Init(OnFacebookInited, OnHideUnity);

@@ -18,7 +18,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// The GetSocial API
     /// </summary>
-    public static class GetSocial
+    public static partial class GetSocial
     {
         static readonly Action<GetSocialError> _globalErrorListener = OnGlobalError;
 
@@ -305,6 +305,20 @@ namespace GetSocialSdk.Core
             Check.Argument.IsNotNull(onFailure, "onFailure");
             
             GetSocialImpl.GetReferredUsers(onSuccess, onFailure);
+        }
+
+        /// <summary>
+        /// Creates a Smart Link with user referral data attached used for Smart Invites.
+        /// </summary>
+        /// <param name="linkParams">Link customization parameters. More info @see <a href="https://docs.getsocial.im/guides/smart-links/parameters/">here</a></param>
+        /// <param name="onSuccess">Called when smart link was created.</param>
+        /// <param name="onFailure">Called when smart link creation failed.</param>
+        public static void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onComplete");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.CreateInviteLink(linkParams, onSuccess, onFailure);
         }
 
         #endregion
@@ -622,8 +636,12 @@ namespace GetSocialSdk.Core
             }
 
             /// <summary>
-            /// Returns all auth identities added to the user. The key is the channelId and the value is the userId
-            /// used internally by that provider for this user.
+            /// You can add or remove identities using <see cref="AddAuthIdentity"/> and <see cref="RemoveAuthIdentity"/>.
+            /// The key(providerId) is the one you've passed as a first parameter to <see cref="AuthIdentity.CreateCustomIdentity"/>
+            /// or <see cref="AuthIdentityProvider.Facebook"/> if you've created Facebook identity with <see cref="AuthIdentity.CreateFacebookIdentity"/>.
+            /// Read more about identities in <see href="https://docs.getsocial.im/guides/user-management/android/managing-user-identities/">the documentation</see>.
+            /// The value(userId) is the second parameter in <see cref="AuthIdentity.CreateCustomIdentity"/>
+            /// or automatically obtained by GetSocial if you've used Facebook identity. 
             /// </summary>
             /// <value>
             /// All auth identities added to the user or an empty map if the sdk is in an illegal state.

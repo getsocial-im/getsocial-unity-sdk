@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
-    interface IGetSocialNativeBridge
+    partial interface IGetSocialNativeBridge
     {
 
+        GetSocialFactory.AvailableRuntimes[] RuntimeImplementation { get; }
+        
         #region initialization
         
         void Init(string appId);
@@ -51,6 +53,8 @@ namespace GetSocialSdk.Core
         void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure);
 
         void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure);
+
+        void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 
@@ -194,10 +198,6 @@ namespace GetSocialSdk.Core
         #region access_helpers
 
         void Reset();
-
-        void SetHadesConfiguration(int hadesConfigurationType);
-
-        int GetCurrentHadesConfiguration();
 
         #endregion
 

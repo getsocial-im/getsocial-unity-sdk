@@ -65,7 +65,7 @@ namespace GetSocialSdk.Editor
 
         public AndroidManifestHelper()
         {
-            var manifestPath = Path.Combine(GetSocialSettings.GetPluginPath(), MainManifestPath);
+            var manifestPath = Path.Combine(Application.dataPath, MainManifestPath);
             EnsureManifestExists(manifestPath);
             _manifest = new AndroidManifest(manifestPath);
         }

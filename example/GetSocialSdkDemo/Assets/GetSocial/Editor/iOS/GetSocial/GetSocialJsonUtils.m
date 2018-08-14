@@ -37,7 +37,7 @@
     {
         return nil;
     }
-    
+
     NSDictionary<NSString*, id> *json = [self deserializeDictionary:customLinkParamsJson];
     id rawImage = json[@"$image"];
     if (rawImage != nil)
