@@ -22,8 +22,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using com.adjust.sdk;
 using Facebook.Unity;
-using TheNextFlow.UnityPlugins;
 using System.Runtime.InteropServices;
+using Assets.GetSocialDemo.Scripts.Utils;
 
 public class GetSocialDemoController : MonoBehaviour
 {
@@ -100,8 +100,8 @@ public class GetSocialDemoController : MonoBehaviour
 
                         if (referralToken != _latestReferralData)
                         {
-                            MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => {
-                            });
+                            
+                            DemoUtils.ShowPopup("Info", message);
                             _console.LogD(message);
                             _latestReferralData = referralToken;
                         }
@@ -249,7 +249,7 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GetSocial.GetUserById(userId, user =>
         {
-            MobileNativePopups.OpenAlertDialog("You have a new friend!", user.DisplayName +" is now your friend.", "OK", () => { });
+            DemoUtils.ShowPopup("You have a new friend!", user.DisplayName + " is now your friend.");
         }, error =>
         {
             _console.LogE("Failed to get user: " + error.Message + ", code: " + error.ErrorCode);
@@ -268,7 +268,7 @@ public class GetSocialDemoController : MonoBehaviour
         if (GUI.Button(new Rect(0, 0, 120, 120), string.Empty, GUIStyle.none))
         {
             FetchCurrentUserData();
-            MobileNativePopups.OpenAlertDialog("Info", _currentUserInfo.ToString(), "OK", () => { });
+            DemoUtils.ShowPopup("Info", _currentUserInfo.ToString());
             _console.LogD(_currentUserInfo.ToString());
         }
         GUIStyle fpsStyle = new GUIStyle

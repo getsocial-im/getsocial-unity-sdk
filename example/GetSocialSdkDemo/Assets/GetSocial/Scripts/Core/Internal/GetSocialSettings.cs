@@ -56,8 +56,7 @@ namespace GetSocialSdk.Core
         
         [SerializeField] 
         bool _isAppIdValid = true;
-
-
+        
         #region initialization
 
         public static GetSocialSettings Instance
@@ -232,7 +231,6 @@ namespace GetSocialSdk.Core
             // get absolute path to GetSocial folder
             return Path.GetDirectoryName(files[0].DirectoryName);
         }
-        
         #endregion
 
         #region private methods

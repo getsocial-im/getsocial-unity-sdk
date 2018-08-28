@@ -17,5 +17,13 @@ namespace Assets.GetSocialDemo.Scripts.Utils
             }
             return File.ReadAllBytes(filePath);
         }
+
+        public static void ShowPopup(string title, string message)
+        {
+            var popup = new MNPopup (title, message);
+            popup.AddAction("OK", () => {});
+            popup.Show();            
+            
+        }
     }
 }

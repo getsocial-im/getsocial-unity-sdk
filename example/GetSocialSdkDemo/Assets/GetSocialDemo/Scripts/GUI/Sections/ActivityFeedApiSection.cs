@@ -2,7 +2,6 @@
 using System.IO;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
-using TheNextFlow.UnityPlugins;
 using UnityEngine;
 
 public class ActivityFeedApiSection : DemoMenuSection
@@ -260,8 +259,12 @@ public class ActivityFeedApiSection : DemoMenuSection
 
     void ReportActivityById()
     {
-        MobileNativePopups.OpenAlertDialog("Report Activity", "What's wrong ?", "Spam", "Inappropriate Content", "Cancel", 
-            _ReportActivityById(ReportingReason.Spam), _ReportActivityById(ReportingReason.InappropriateContent), () => { });
+        
+        var popup = new MNPopup ("Report Activity", "What's wrong ?");
+        popup.AddAction("Spam", () => { _ReportActivityById(ReportingReason.Spam); });
+        popup.AddAction("Inappropriate Content", () => { _ReportActivityById(ReportingReason.InappropriateContent); });
+        popup.AddAction("Cancel", () => { });
+        popup.Show();            
     }
 
     private Action _ReportActivityById(ReportingReason reportingReason)

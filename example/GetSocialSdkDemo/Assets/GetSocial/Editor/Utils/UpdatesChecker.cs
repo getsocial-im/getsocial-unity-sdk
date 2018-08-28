@@ -35,7 +35,6 @@ namespace GetSocialSdk.Editor
         }
 
         // Check for updates
-        const string LatestReleaseApiURL = "https://s3.amazonaws.com/downloads.getsocial.im/unity/releases/latest.json";
         const string NewVersionAvailableFormat = "GetSocial plugin v{0} is now available!";
 
         static UpdatesChecker()
@@ -49,9 +48,19 @@ namespace GetSocialSdk.Editor
             CheckForUpdatesOnReleaseRepo(NewVersionCheckSource.OnUserCheckedForUpdate);
         }
 
+        private static string LatestReleaseURL()
+        {
+            const string latestReleaseApiUrl = "https://s3.amazonaws.com/downloads.getsocial.im/unity/releases/latest.json";
+            const string latestReleaseAssetStoreApiUrl = "https://s3.amazonaws.com/downloads.getsocial.im/unity/releases/latest-assets-store.json";
+
+            return AssetStoreUtils.IsAssetStorePackage() 
+                ? latestReleaseAssetStoreApiUrl 
+                : latestReleaseApiUrl;
+        }
+
         static Dictionary<string, object> GetLastReleaseInfo()
         {
-            var request = WebRequest.Create(LatestReleaseApiURL) as HttpWebRequest;
+            var request = WebRequest.Create(LatestReleaseURL()) as HttpWebRequest;
 
             request.Method = "GET";
             request.UserAgent = "Unity Editor";
@@ -61,14 +70,10 @@ namespace GetSocialSdk.Editor
 
             try
             {
-                HttpWebResponse response;
-                using (response = request.GetResponse() as HttpWebResponse)
+                using (var response = request.GetResponse() as HttpWebResponse)
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        string jsonResponse = reader.ReadToEnd();
-                        return GSJson.Deserialize(jsonResponse) as Dictionary<string, object>;
-                    }
+                    return GSJson.Deserialize(reader.ReadToEnd()) as Dictionary<string, object>;
                 }
             }
             catch (Exception)

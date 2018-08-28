@@ -44,12 +44,17 @@ namespace GetSocialSdk.Core
 #else
             nativeBridge = GetSocialNativeBridgeMock.Instance;
 #endif
-            if (nativeBridge == null)
+            if (nativeBridge != null)
             {
-                throw new Exception("Could not find native implementation.");
+                return nativeBridge;
             }
-
-            return nativeBridge;
+            
+            if (Application.isEditor)
+            {
+                return GetSocialNativeBridgeMock.Instance;
+            }
+            
+            throw new Exception("Could not find native implementation.");
         }
 
         private static IGetSocialNativeBridge FindBridgeImplementation(AvailableRuntimes currentRuntime)

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.GetSocialDemo.Scripts.Utils;
 using Facebook.Unity;
 using GetSocialSdk.Core;
-using TheNextFlow.UnityPlugins;
 using UnityEngine;
 
 #if USE_GETSOCIAL_UI
@@ -106,9 +106,7 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         if (mention == MentionShortcuts.App)
         {
-            MobileNativePopups.OpenAlertDialog("Mention", "Application mention clicked.", 
-                "OK",
-                () => { });
+            DemoUtils.ShowPopup("Mention", "Application mention clicked.");
             return;
         }
         GetSocial.GetUserById(mention, OnUserAvatarClicked, error => _console.LogE("Failed to get user details, error:" + error.Message));
@@ -127,8 +125,9 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         if (GetSocial.User.Id.Equals(publicUser.Id))
         {
-            MobileNativePopups.OpenAlertDialog("Action", "Choose Action", "Show My Feed", "Cancel", OpenMyGlobalFeed,
-                () => { });
+            var popup = new MNPopup ("Action", "Choose Action");
+            popup.AddAction("Show My Feed", OpenMyGlobalFeed);
+            popup.AddAction("Cancel", () => { });
         }
         else
         {
@@ -136,23 +135,19 @@ public class ActivityFeedUiSection : DemoMenuSection
             {
                 if (isFriend)
                 {
-                    MobileNativePopups.OpenAlertDialog("Action", "Choose Action", 
-                        "Show " + publicUser.DisplayName + " Feed",
-                        "Remove from Friends",
-                        "Cancel",
-                        () => OpenUserGlobalFeed(publicUser),
-                        () => RemoveFriend(publicUser),
-                        () => { });
+                    var popup = new MNPopup ("Action", "Choose Action");
+                    popup.AddAction("Show " + publicUser.DisplayName + " Feed", () => OpenUserGlobalFeed(publicUser));
+                    popup.AddAction("Remove from Friends", () => RemoveFriend(publicUser));
+                    popup.AddAction("Cancel", () => { });
+                    popup.Show();
                 }
                 else
                 {
-                    MobileNativePopups.OpenAlertDialog("Action", "Choose Action", 
-                        "Show " + publicUser.DisplayName + " Feed",
-                        "Add to Friends",
-                        "Cancel",
-                        () => OpenUserGlobalFeed(publicUser),
-                        () => AddFriend(publicUser),
-                        () => { });
+                    var popup = new MNPopup ("Action", "Choose Action");
+                    popup.AddAction("Show " + publicUser.DisplayName + " Feed", () => OpenUserGlobalFeed(publicUser));
+                    popup.AddAction("Add to Friends", () => AddFriend(publicUser));
+                    popup.AddAction("Cancel", () => { });
+                    popup.Show();
                 }
             }, error => _console.LogE("Failed to check if friends with " + publicUser.DisplayName + ", error:" + error.Message));
         }
@@ -163,9 +158,9 @@ public class ActivityFeedUiSection : DemoMenuSection
         GetSocial.User.AddFriend(user.Id,
             friendsCount =>
             {
-                string message = user.DisplayName + " is now your friend."; 
+                var message = user.DisplayName + " is now your friend."; 
                 _console.LogD(message);
-                MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { });
+                DemoUtils.ShowPopup("Info", message);
             },
             error => _console.LogE("Failed to add a friend " + user.DisplayName + ", error:" + error.Message));
     }
@@ -175,9 +170,9 @@ public class ActivityFeedUiSection : DemoMenuSection
         GetSocial.User.RemoveFriend(user.Id,
             friendsCount =>
             {
-                string message = user.DisplayName + " is not your friend anymore."; 
+                var message = user.DisplayName + " is not your friend anymore."; 
                 _console.LogD(message);
-                MobileNativePopups.OpenAlertDialog("Info", message, "OK",  () => { });
+                DemoUtils.ShowPopup("Info", message);
             },
             error => _console.LogE("Failed to remove a friend " + user.DisplayName + ", error:" + error.Message));
     }
@@ -217,11 +212,13 @@ public class ActivityFeedUiSection : DemoMenuSection
         };
         if (forbiddenForAnonymous.Contains(action) && GetSocial.User.IsAnonymous)
         {
-            string message = "Action " + action + " is not allowed for anonymous.";
+            var message = "Action " + action + " is not allowed for anonymous.";
 #if UNITY_ANDROID
-            MainThreadExecutor.Queue(() => MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { }));
+            MainThreadExecutor.Queue(() => {
+                DemoUtils.ShowPopup("Info", message);
+            });
 #else
-            MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { });
+            DemoUtils.ShowPopup("Info", message);
 #endif
             _console.LogD(message);
         }
@@ -233,8 +230,10 @@ public class ActivityFeedUiSection : DemoMenuSection
 
     void OnActivityActionClicked(string actionId, ActivityPost post)
     {
-        string message = string.Format("Activity feed button clicked, action type: {0}", actionId); 
-        MobileNativePopups.OpenAlertDialog("Info", message, "OK", () => { });
+        var message = string.Format("Activity feed button clicked, action type: {0}", actionId); 
+        var popup = new MNPopup ("Info", message);
+        popup.AddAction("OK", () => {});
+        popup.Show();
         _console.LogD(message);
     }
 }

@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Text;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
-using TheNextFlow.UnityPlugins;
 using UnityEngine;
 
 public class SmartInvitesApiSection : DemoMenuSection
@@ -387,7 +386,7 @@ public class SmartInvitesApiSection : DemoMenuSection
                 {
                     message = "No referred user found.";
                 }
-                MobileNativePopups.OpenAlertDialog("Referred Users", message, "OK", () => { });
+                DemoUtils.ShowPopup("Referred Users", message);
             }, 
             error => _console.LogE(string.Format("Failed to get referred users: {0}", error.Message)));
     }
