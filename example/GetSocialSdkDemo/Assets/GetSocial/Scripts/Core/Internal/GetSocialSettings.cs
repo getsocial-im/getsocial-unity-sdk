@@ -216,21 +216,38 @@ namespace GetSocialSdk.Core
 
         public static string GetPluginPath()
         {
-            var rootDir = new DirectoryInfo(Application.dataPath);
-            var files = rootDir.GetFiles("GetSocialSettingsEditor.cs", SearchOption.AllDirectories);
-            var editorPath = Path.GetDirectoryName(files[0].FullName.Replace("\\", "/").Replace(Application.dataPath, "Assets"));
             // get GetSocial plugin path relative to Assets folder
-            return Path.GetDirectoryName(editorPath);
+            return GetAbsolutePluginPath().Replace("\\", "/").Replace(Application.dataPath, "Assets");
         }
 
         public static string GetAbsolutePluginPath()
         {
-            var rootDir = new DirectoryInfo(Application.dataPath);
-            var files = rootDir.GetFiles("GetSocialSettingsEditor.cs", SearchOption.AllDirectories);
-
             // get absolute path to GetSocial folder
-            return Path.GetDirectoryName(files[0].DirectoryName);
+            return Path.GetDirectoryName(Path.GetDirectoryName( FindEditor(Application.dataPath)));
         }
+        
+        private static string FindEditor(string path)
+        {
+            foreach (var d in Directory.GetDirectories(path))
+            {
+                foreach (var f in Directory.GetFiles(d))
+                {
+                    if (f.Contains("GetSocialSettingsEditor.cs"))
+                    {
+                        return f;
+                    }
+                }
+
+                var rec = FindEditor(d);
+                if (rec != null)
+                {
+                    return rec;
+                }
+            }
+
+            return null;
+        }        
+        
         #endregion
 
         #region private methods

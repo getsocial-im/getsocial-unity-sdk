@@ -2,10 +2,11 @@
 using System.IO;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using UnityEngine;
 
 public static class ZipUtils
 {
-    public static void ExtractZipFile(string archiveFilenameIn, string outFolder)
+    public static bool ExtractZipFile(string archiveFilenameIn, string outFolder)
     {
         ZipFile zf = null;
         try
@@ -18,6 +19,7 @@ public static class ZipUtils
                 {
                     continue; // Ignore directories
                 }
+
                 String entryFileName = zipEntry.Name;
                 // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
                 // Optionally match entrynames against a selection list here to skip as desired.
@@ -40,6 +42,13 @@ public static class ZipUtils
                     StreamUtils.Copy(zipStream, streamWriter, buffer);
                 }
             }
+
+            return true;
+        }
+        catch(System.UnauthorizedAccessException uae)
+        {
+            Debug.LogError(uae);
+            return false;
         }
         finally
         {

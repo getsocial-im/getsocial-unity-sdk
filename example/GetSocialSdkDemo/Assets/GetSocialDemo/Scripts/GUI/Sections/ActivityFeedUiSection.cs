@@ -128,6 +128,7 @@ public class ActivityFeedUiSection : DemoMenuSection
             var popup = new MNPopup ("Action", "Choose Action");
             popup.AddAction("Show My Feed", OpenMyGlobalFeed);
             popup.AddAction("Cancel", () => { });
+            popup.Show();
         }
         else
         {

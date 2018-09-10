@@ -1,4 +1,6 @@
-﻿/*
+﻿#if UNITY_2017_1_OR_NEWER
+
+/*
  * Modified version of WebHook 0.7 
  * https://github.com/willnode/WebViewHook/ - MIT
  */
@@ -308,3 +310,5 @@ namespace GetSocialSdk.Editor
 
     }
 }
+
+#endif

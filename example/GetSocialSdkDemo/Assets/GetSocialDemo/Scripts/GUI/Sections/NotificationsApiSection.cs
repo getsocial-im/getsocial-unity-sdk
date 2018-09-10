@@ -1,6 +1,7 @@
 ﻿using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,7 @@ public class NotificationsApiSection : DemoMenuSection
         DemoGuiUtils.DrawButton("Load next", LoadNext, _notifications.Count > 0, GSStyles.Button);
         DemoGuiUtils.DrawButton("Toggle last read state", ToggleFirstReadState
 , true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Display Notifications", DisplayNotifications, true, GSStyles.Button);
     }
 
     void GetNotifications()
@@ -98,4 +100,18 @@ public class NotificationsApiSection : DemoMenuSection
         GetNotifications();
     }
 
+    void DisplayNotifications()
+    {
+        var query = NotificationsQuery.ReadAndUnread();
+        GetSocial.User.GetNotifications(query, notifications =>
+        {
+            _notifications = notifications;
+            var message = "";
+            notifications.ForEach(notification =>
+            {
+                message += notification.ToString() + '\n';
+            });
+            DemoUtils.ShowPopup("Notifications", message);
+        }, Debug.LogError);
+    }
 }

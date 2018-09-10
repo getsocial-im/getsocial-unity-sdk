@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GetSocialSdk.Editor
 {
-    public class FileHelper
+    public static class FileHelper
     {
         public static bool AndroidDownloadInProgress { get; private set; }
         public static bool IOSDownloadInProgress { get; private set; }
@@ -27,6 +27,31 @@ namespace GetSocialSdk.Editor
         
         private const string DevelopmentVersion = "development";
 
+        [UnityEditor.Callbacks.DidReloadScripts]
+        private static void MarkIosFiles()
+        {
+            var coreDir = Path.Combine(GetSocialSettings.GetPluginPath(), "Editor/iOS/GetSocial");
+            var uiDir = Path.Combine(GetSocialSettings.GetPluginPath(), "Editor/iOS/GetSocialUI");
+            ForEachIn(coreDir, path => UpdatePlatformState(new [] {path}, BuildTarget.iOS, true));
+            ForEachIn(uiDir, path => UpdatePlatformState(new [] {path}, BuildTarget.iOS, true));
+            var coreFrameworkPath = AssetDatabase.AssetPathToGUID(Path.Combine(GetSocialSettings.GetPluginPath(), "Plugins/iOS/GetSocial.framework"));
+            var uiFrameworkPath = AssetDatabase.AssetPathToGUID(Path.Combine(GetSocialSettings.GetPluginPath(), "Plugins/iOS/GetSocialUI.framework"));
+            UpdatePlatformState(new [] {coreFrameworkPath}, BuildTarget.iOS, true);
+            UpdatePlatformState(new [] {uiFrameworkPath}, BuildTarget.iOS, true);
+        }
+        
+        private static void ForEachIn(string path, Action<string> each)
+        {
+            Directory.GetFiles(path)
+                .Where(it => !it.EndsWith(".meta"))
+                .ToList()
+                .ConvertAll<string>(AssetDatabase.AssetPathToGUID)
+                .ForEach(each);
+            Directory.GetDirectories(path)
+                .ToList()
+                .ForEach(dir => ForEachIn(dir, each));
+        }  
+        
         public static void SetGetSocialUiEnabled(bool enabled)
         {
             var androidCoreLib = new string[0];
@@ -68,15 +93,26 @@ namespace GetSocialSdk.Editor
             downloadFrameworkRequest.Start(() =>
             {
                 IOSDownloadInProgress = false;
-                UnzipFramework(Path.Combine(pluginFolderPath, IOSArchiveName), pluginFolderPath);
-                AddFrameworksToAssets(new[]
+                if (UnzipFramework(Path.Combine(pluginFolderPath, IOSArchiveName), pluginFolderPath))
                 {
-                    Path.Combine(DestinationFolderPathiOS, IOSFrameworkName_Core),
-                    Path.Combine(DestinationFolderPathiOS, IOSFrameworkName_UI)
-                });
-                if (onSuccess != null)
+                    AddFrameworksToAssets(new[]
+                    {
+                        Path.Combine(DestinationFolderPathiOS, IOSFrameworkName_Core),
+                        Path.Combine(DestinationFolderPathiOS, IOSFrameworkName_UI)
+                    });
+                    if (onSuccess != null)
+                    {
+                        onSuccess();
+                    }
+                }
+                else
                 {
-                    onSuccess();
+                    var error = "unzip command failed";
+                    Debug.LogError(string.Format("GetSocial: Failed to download native iOS SDK, error: {0}", error));
+                    if (onFailure != null)
+                    {
+                        onFailure(error);
+                    }
                 }
             }, error =>
             {
@@ -122,17 +158,28 @@ namespace GetSocialSdk.Editor
                 
             downloadFrameworkRequest.Start(() =>
             {
-                UnzipFramework(Path.Combine(pluginFolderPath, AndroidArchiveName), pluginFolderPath);
-                AddFrameworksToAssets(new[]
-                {
-                    Path.Combine(DestinationFolderPathAndroid, AndroidFrameworkName_Core),
-                    Path.Combine(DestinationFolderPathAndroid, AndroidFrameworkName_UI)
-                });
-                if (onSuccess != null)
-                {
-                    onSuccess();
-                }
                 AndroidDownloadInProgress = false;
+                if (UnzipFramework(Path.Combine(pluginFolderPath, AndroidArchiveName), pluginFolderPath))
+                {
+                    AddFrameworksToAssets(new[]
+                    {
+                        Path.Combine(DestinationFolderPathAndroid, AndroidFrameworkName_Core),
+                        Path.Combine(DestinationFolderPathAndroid, AndroidFrameworkName_UI)
+                    });
+                    if (onSuccess != null)
+                    {
+                        onSuccess();
+                    }
+                }
+                else
+                {
+                    var error = "unzip command failed";
+                    Debug.LogError(String.Format("GetSocial: Failed to download native Android SDK, error: {0}", error));
+                    if (onFailure != null)
+                    {
+                        onFailure(error);
+                    }
+                }
             }, error =>
             {
                 AndroidDownloadInProgress = false;
@@ -198,7 +245,7 @@ namespace GetSocialSdk.Editor
             return retValue;
         }
 
-        private static void RemoveOldVersions(String directoryPath)
+        private static void RemoveOldVersions(string directoryPath)
         {
             if (Directory.Exists(directoryPath))
             {
@@ -206,7 +253,7 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        private static void AddFrameworksToAssets(String[] filePath)
+        private static void AddFrameworksToAssets(string[] filePath)
         {
             foreach (var path in filePath)
             {
@@ -225,10 +272,15 @@ namespace GetSocialSdk.Editor
             }
         }
         
-        private static void UnzipFramework(string zipFilePath, string destinationPath)
+        private static bool UnzipFramework(string zipFilePath, string destinationPath)
         {
-            ZipUtils.ExtractZipFile(zipFilePath, destinationPath);
-            File.Delete(zipFilePath);
+            var success = ZipUtils.ExtractZipFile(zipFilePath, destinationPath);
+            if (success)
+            {
+                File.Delete(zipFilePath);
+            }
+
+            return success;
         }        
     
         private static void UpdatePlatformState(string[] paths, BuildTarget platform, bool enabled)
@@ -239,6 +291,7 @@ namespace GetSocialSdk.Editor
             }
             
             var plugin = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(paths.First())) as PluginImporter;
+            if (plugin == null) return;
             ClearAllPlatforms(plugin);
             plugin.SetCompatibleWithPlatform(platform, enabled);
         }
@@ -250,7 +303,7 @@ namespace GetSocialSdk.Editor
             Enum.GetValues(typeof(BuildTarget))
                 .Cast<BuildTarget>()
                 .Where(target => !IsObsolete(target))
-                .Where(target => target != BuildTarget.NoTarget)
+                .Where(target => (int)target != -2)
                 .ToList()
                 .ForEach(target => plugin.SetCompatibleWithPlatform(target, false));
         }

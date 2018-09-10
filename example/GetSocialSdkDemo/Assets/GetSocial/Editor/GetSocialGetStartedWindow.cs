@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿#if UNITY_2017_1_OR_NEWER
+
+using System.IO;
 using GetSocialSdk.Core;
 using UnityEditor;
 using UnityEngine;
@@ -107,3 +109,5 @@ namespace GetSocialSdk.Editor
 
     }
 }
+
+#endif
