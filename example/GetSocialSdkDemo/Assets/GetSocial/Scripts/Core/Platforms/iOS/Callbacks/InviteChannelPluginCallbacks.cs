@@ -24,6 +24,7 @@ namespace GetSocialSdk.Core
             string invitePackageJson,
             IntPtr onCompletePtr, IntPtr onCancelPtr, IntPtr onFailurePtr)
         {
+            #if UNITY_IOS && !UNITY_EDITOR
             var channel = new InviteChannel().ParseFromJson(inviteChannelJson.ToDict());
             var package = new InvitePackage().ParseFromJson(invitePackageJson.ToDict());
             var onFailure = new Action<GetSocialError>(exception =>
@@ -43,6 +44,7 @@ namespace GetSocialSdk.Core
             {
                 onFailure(new GetSocialError(e.Message));
             }
+            #endif
         }
     }
 }

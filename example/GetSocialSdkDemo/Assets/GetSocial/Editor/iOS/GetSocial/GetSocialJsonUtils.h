@@ -21,6 +21,8 @@
 
 + (GetSocialActivityPostContent *)deserializeActivityContent:(NSString *)content;
 
++ (GetSocialUserUpdate *) deserializeUserUpdate:(NSString *)serializedQuery;
+
 + (GetSocialAuthIdentity *)deserializeIdentity:(NSString *)identity;
 
 + (GetSocialUsersQuery *)deserializeUsersQuery:(NSString *)query;
@@ -28,6 +30,8 @@
 + (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSString *)serializedQuery;
 
 + (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSString *)serializedQuery;
+
++ (GetSocialPurchaseData *)deserializePurchaseData:(NSString *)serializedPurchaseData;
 
 + (NSArray *)deserializeList:(NSString *)jsonList;
 

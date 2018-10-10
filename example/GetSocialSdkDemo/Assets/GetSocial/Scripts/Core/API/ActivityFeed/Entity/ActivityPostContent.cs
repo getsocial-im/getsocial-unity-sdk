@@ -72,6 +72,7 @@ namespace GetSocialSdk.Core
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
+            
             var activityPostContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
 
             if (_text != null)
@@ -92,6 +93,7 @@ namespace GetSocialSdk.Core
             }
             return activityPostContentBuilderAJO.CallAJO("build");
         }
+        
 #elif UNITY_IOS
 
         public string ToJson()

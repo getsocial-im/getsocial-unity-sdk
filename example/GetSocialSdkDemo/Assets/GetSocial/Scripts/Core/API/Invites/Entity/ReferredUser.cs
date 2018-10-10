@@ -14,13 +14,30 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <value>Date of installation.</value>
         public DateTime InstallationDate { get; private set; }
-
         
         /// <summary>
         /// One of the channels listed in <see cref="InviteChannelIds"/>.
         /// </summary>
         /// <value>Installation channel.</value>
         public string InstallationChannel { get; private set; }
+
+        /// <summary>
+        /// Which platform user used to install the app.
+        /// </summary>
+        /// <value>One of the <see cref="InvitePlatform"/> constants.</value>
+        public string InstallPlatform { get; private set; }
+        
+        /// <summary>
+        /// If that is not first install from this device.
+        /// </summary>
+        /// <value>`false` if that is the first install on this device, `true` otherwise.</value>
+        public bool Reinstall { get; private set; }
+        
+        /// <summary>
+        /// If the install was marked as suspicious.
+        /// </summary>
+        /// <value>`true` if install was marked as suspicious by fraud detection system, `false` otherwise.</value>
+        public bool InstallSuspicious { get; private set; }
 
         public ReferredUser()
         {
@@ -35,12 +52,12 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return string.Format("[ReferredUser: Id={0}, DisplayName={1}, Identities={2}, InstallationDate={3}, InstallationChannel={4}]", Id, DisplayName, Identities.ToDebugString(), InstallationDate, InstallationChannel);
+            return string.Format("{0}, InstallationDate: {1}, InstallationChannel: {2}, InstallPlatform: {3}, Reinstall: {4}, InstallSuspicious: {5}", base.ToString(), InstallationDate, InstallationChannel, InstallPlatform, Reinstall, InstallSuspicious);
         }
 
         private bool Equals(ReferredUser other)
         {
-            return base.Equals(other) && InstallationDate.Equals(other.InstallationDate) && string.Equals(InstallationChannel, other.InstallationChannel);
+            return base.Equals(other) && InstallationDate.Equals(other.InstallationDate) && string.Equals(InstallationChannel, other.InstallationChannel) && string.Equals(InstallPlatform, other.InstallPlatform) && Reinstall == other.Reinstall && InstallSuspicious == other.InstallSuspicious;
         }
 
         public override bool Equals(object obj)
@@ -57,6 +74,9 @@ namespace GetSocialSdk.Core
                 int hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ InstallationDate.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InstallationChannel != null ? InstallationChannel.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (InstallPlatform != null ? InstallPlatform.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Reinstall.GetHashCode();
+                hashCode = (hashCode * 397) ^ InstallSuspicious.GetHashCode();
                 return hashCode;
             }
         }
@@ -74,6 +94,9 @@ namespace GetSocialSdk.Core
                 base.ParseFromAJO(ajo);                 
                 InstallationDate = DateUtils.FromUnixTime(ajo.CallLong("getInstallationDate"));
                 InstallationChannel = ajo.CallStr("getInstallationChannel");
+                InstallPlatform = ajo.CallStr("getInstallPlatform");
+                Reinstall = ajo.CallBool("isReinstall");
+                InstallSuspicious = ajo.CallBool("isInstallSuspicious");
             }
             return this;
         }
@@ -83,6 +106,9 @@ namespace GetSocialSdk.Core
             base.ParseFromJson(json);
             InstallationDate = DateUtils.FromUnixTime((long) json["InstallationDate"]);
             InstallationChannel = (string) json["InstallationChannel"];
+            InstallPlatform = (string) json["InstallPlatform"];
+            Reinstall = (bool) json["Reinstall"];
+            InstallSuspicious = (bool) json["InstallSuspicious"];
             return this;
         }
 #endif

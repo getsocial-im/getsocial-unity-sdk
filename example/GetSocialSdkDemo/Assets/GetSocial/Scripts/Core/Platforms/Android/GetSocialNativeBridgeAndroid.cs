@@ -1,7 +1,8 @@
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
@@ -236,10 +237,16 @@ namespace GetSocialSdk.Core
         {
             _user.CallStaticSafe("setPublicProperty", key, value, new CompletionCallback(onSuccess, onFailure));
         }
+        
 
         public void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
         {
             _user.CallStaticSafe("setPrivateProperty", key, value, new CompletionCallback(onSuccess, onFailure));
+        }
+
+        public void SetUserDetails(UserUpdate userUpdate, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _user.CallStaticSafe("setUserDetails", userUpdate.ToAjo(), new CompletionCallback(onSuccess, onFailure));
         }
 
         public void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
@@ -434,6 +441,16 @@ namespace GetSocialSdk.Core
         {
             _getSocial.CallStatic("deleteActivity", activityId, new CompletionCallback(onSuccess, onFailure));
         }
+
+        #endregion
+
+        #region Analytics
+
+        public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        {    _getSocial.CallStatic("trackPurchaseData", purchaseData.ToAjo(), new CompletionCallback(onSuccess, onError));
+            
+        }
+
 
         #endregion
 

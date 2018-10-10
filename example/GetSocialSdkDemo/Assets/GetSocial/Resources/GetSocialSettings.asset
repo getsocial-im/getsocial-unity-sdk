@@ -28,4 +28,3 @@ MonoBehaviour:
   _isIosPushEnabled: 1
   _isAndroidPushEnabled: 1
   _isAppIdValid: 1
-  _publishTarget: unity-asset-store

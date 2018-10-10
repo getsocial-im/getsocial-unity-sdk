@@ -14,6 +14,9 @@
     NSMutableDictionary *dictionary = [super toJsonDictionary];
     dictionary[@"InstallationDate"] = @(self.installationDate);
     dictionary[@"InstallationChannel"] = self.installationChannel;
+    dictionary[@"InstallPlatform"] = self.installationPlatform;
+    dictionary[@"Reinstall"] = @(self.isReinstall);
+    dictionary[@"InstallSuspicious"] = @(self.isInstallSuspicious);
     return dictionary;
 }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
@@ -235,6 +236,11 @@ namespace GetSocialSdk.Core
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), key, value, onSuccess, onFailure);
         }
+        
+        public void SetUserDetails(UserUpdate userUpdate, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), userUpdate, onSuccess, onFailure);
+        }
 
         public void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure)
         {
@@ -422,6 +428,11 @@ namespace GetSocialSdk.Core
         }
 
         public void Reset()
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+        }
+
+        public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }

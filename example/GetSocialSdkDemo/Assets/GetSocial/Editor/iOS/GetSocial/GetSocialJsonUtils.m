@@ -82,6 +82,40 @@
     return query;
 }
 
++ (GetSocialUserUpdate *) deserializeUserUpdate:(NSString *)serializedUserUpdate
+{
+    NSDictionary *json = [self deserializeDictionary:serializedUserUpdate];
+    GetSocialUserUpdate *userUpdate = [GetSocialUserUpdate new];
+    [userUpdate setDisplayName:json[@"DisplayName"]];
+
+    if(json[@"AvatarUrl"] != nil)
+    {
+        [userUpdate setAvatarUrl:json[@"AvatarUrl"] ];
+    }
+    else if(json[@"Avatar"] != nil)
+    {
+        [userUpdate setAvatar:[GetSocialBridgeUtils decodeUIImageFrom:json[@"Avatar"]]];
+    }
+    
+    //TODO: make use and deserialize internal properties in some future or at least in parallel universe
+    //These are already implemented on the SDK side. Also in Unity at UserUpdate.cs
+    NSDictionary *privateProperies = json[@"PrivateProperties"];
+    [privateProperies enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [userUpdate setPrivatePropertyValue:obj forKey:key];
+    }];
+    NSDictionary *publicProperties = json[@"PublicProperties"];
+    [publicProperties enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [userUpdate setPublicPropertyValue:obj forKey:key];
+    }];
+    
+#if DEBUG
+    NSLog(@"JSON Input: %@", serializedUserUpdate);
+ #endif
+    
+    return userUpdate;
+    
+}
+
 + (GetSocialActivityPostContent *)deserializeActivityContent:(NSString *)content
 {
     NSDictionary *dictionary = [self deserializeDictionary:content];
@@ -153,6 +187,35 @@
     
     return query;
 }
+
++ (GetSocialPurchaseData *)deserializePurchaseData:(NSString *)serializedPurchaseData
+{
+    NSDictionary *json = [self deserializeDictionary:serializedPurchaseData];
+    GetSocialPurchaseData* purchaseData = [GetSocialPurchaseData new];
+    purchaseData.productId = json[@"ProductId"];
+    NSString* priceStr = json[@"Price"];
+    purchaseData.price = priceStr.floatValue;
+    purchaseData.priceCurrency = json[@"PriceCurrency"];
+    purchaseData.productTitle = json[@"ProductTitle"];
+    purchaseData.transactionIdentifier = json[@"PurchaseId"];
+
+    NSString* purchaseDateStr = json[@"PurchaseDate"];
+    NSDateFormatter* formatter = [NSDateFormatter new];
+    [formatter setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
+    purchaseData.purchaseDate = [formatter dateFromString:purchaseDateStr];
+    
+    NSString* productTypeStr = json[@"ProductType"];
+    if ([productTypeStr isEqualToString:@"0"]) {
+        purchaseData.productType = Item;
+    } else {
+        purchaseData.productType = Subscription;
+    }
+
+    return purchaseData;
+    
+}
+
+
 #pragma mark - Helpers
 
 + (NSDictionary *)deserializeDictionary:(NSString *)jsonDic

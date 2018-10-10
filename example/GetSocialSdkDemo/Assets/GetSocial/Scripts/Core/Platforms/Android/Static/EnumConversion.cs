@@ -1,4 +1,5 @@
 ﻿using System;
+using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 #if UNITY_ANDROID
@@ -21,12 +22,18 @@ namespace GetSocialSdk.Core
             return ToAndroidJavaObject((int) filter, "im.getsocial.sdk.pushnotifications.NotificationsQuery$Filter");
         }
 
+        public static AndroidJavaObject ToAndroidJavaObject(this PurchaseData.ProductType productType)
+        {
+            return ToAndroidJavaObject((int) productType, "im.getsocial.sdk.iap.entity.PurchaseData$ProductType");
+        }
+        
         private static AndroidJavaObject ToAndroidJavaObject<T>(T type, string javaClass) where T : IConvertible
         {
             var reasonClass = new AndroidJavaClass(javaClass);
             var values = reasonClass.CallStaticAJO("values");
             return new AndroidJavaClass("java.lang.reflect.Array").CallStaticAJO("get", values, type);
         }
+        
     }
 }
 #endif

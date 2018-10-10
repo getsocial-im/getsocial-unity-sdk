@@ -367,6 +367,15 @@ NS_ASSUME_NONNULL_BEGIN
                                         failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
 
+    void _gs_setUserDetails(const char * userUpdateJson, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
+    {
+        NSString *userUpdateJsonString = [GetSocialBridgeUtils createNSStringFrom:userUpdateJson];
+        GetSocialUserUpdate *update = [GetSocialJsonUtils deserializeUserUpdate:userUpdateJsonString];
+        [GetSocialUser updateDetails:update success:completeBlock(successCallback, onSuccessActionPtr)
+                             failure:errorBlock(failureCallback, onFailureActionPtr)];
+        
+    }
+    
     char * _gs_getPublicProperty(const char * key)
     {
         return [GetSocialBridgeUtils createCStringFrom:[GetSocialUser publicPropertyValueForKey:[GetSocialBridgeUtils createNSStringFrom:key]]];
@@ -736,6 +745,21 @@ NS_ASSUME_NONNULL_BEGIN
                         failure:errorBlock(failureCallback, onFailureActionPtr)]; 
     }
 
+#pragma mark - Analytics
+    
+    void _gs_trackPurchaseData(const char* purchaseDataJson,
+                               VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
+                               FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSString *purchaseDataStrJson = [GetSocialBridgeUtils createNSStringFrom:purchaseDataJson];
+        GetSocialPurchaseData *purchaseData = [GetSocialJsonUtils deserializePurchaseData:purchaseDataStrJson];
+        
+        [GetSocial trackPurchaseData:purchaseData
+                             success:completeBlock(successCallback, onSuccessActionPtr)
+                             failure:errorBlock(failureCallback, onFailureActionPtr)];
+
+    }
+    
 #pragma mark - Internal
     void _gs_handleOnStartUnityEvent()
     {

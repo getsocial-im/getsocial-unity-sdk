@@ -1,6 +1,7 @@
 ﻿#if UNITY_2017_1_OR_NEWER
 
 using System.IO;
+using System.Linq;
 using GetSocialSdk.Core;
 using UnityEditor;
 using UnityEngine;
@@ -29,14 +30,19 @@ namespace GetSocialSdk.Editor
         [UnityEditor.Callbacks.DidReloadScripts]
         private static void OnScriptsReloaded()
         {
-            // Open window automatically on the first launch
-            if (!PlayerPrefs.HasKey(DoNotShowGetSocialWelcomeScreenPref))
+            var arguments = System.Environment.GetCommandLineArgs();
+            if (arguments.Contains("-nographics")) 
             {
-                PlayerPrefs.SetInt(DoNotShowGetSocialWelcomeScreenPref, 1);
-                PlayerPrefs.Save();
-
-                Open();
+                Debug.Log("Don't open GetSocial Window if `nographics` param is passed");
+                return;
             }
+            // Open window automatically on the first launch
+            // Keep PlayerPrefs for the compatibility with previous version if it was already saved there
+            if (EditorPrefs.HasKey(DoNotShowGetSocialWelcomeScreenPref) || PlayerPrefs.HasKey(DoNotShowGetSocialWelcomeScreenPref)) return;
+            
+            EditorPrefs.SetInt(DoNotShowGetSocialWelcomeScreenPref, 1);
+
+            Open();
         }
         
         void OnEnable()

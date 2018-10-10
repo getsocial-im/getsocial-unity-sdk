@@ -24,6 +24,7 @@ using com.adjust.sdk;
 using Facebook.Unity;
 using System.Runtime.InteropServices;
 using Assets.GetSocialDemo.Scripts.Utils;
+using GetSocialDemo.Scripts.GUI.Sections;
 
 public class GetSocialDemoController : MonoBehaviour
 {
@@ -121,6 +122,7 @@ public class GetSocialDemoController : MonoBehaviour
             GetComponentInChildren<ActivityFeedApiSection>(),
             GetComponentInChildren<SocialGraphSection>(),
             GetComponentInChildren<NotificationsApiSection>(),
+            GetComponentInChildren<InAppPurchaseApiSection>(),
 #if USE_GETSOCIAL_UI
             GetComponentInChildren<SmartInvitesUiSection>(),
             GetComponentInChildren<ActivityFeedUiSection>(),
@@ -347,6 +349,7 @@ public class GetSocialDemoController : MonoBehaviour
         Button("User Management", () => ShowMenuSection<AuthSection>());
 		Button("Social Graph", () => ShowMenuSection<SocialGraphSection>());
 		Button("Notifications Api", () => ShowMenuSection<NotificationsApiSection>());
+        Button("InApp Purchase Api", () => ShowMenuSection<InAppPurchaseApiSection>());
 #if USE_GETSOCIAL_UI
         GUILayout.Space(30f);
         GUILayout.Label("UI", GSStyles.NormalLabelText);

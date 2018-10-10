@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
@@ -834,6 +835,19 @@ namespace GetSocialSdk.Core
                 get { return GetSocialImpl.AllPrivateProperties; }
             }
 
+
+            /// <summary>
+            /// Requests a bulk change of properties for the current user.
+            /// </summary>
+            /// <param name="userUpdate">Update parameter.</param>
+            /// <param name="onComplete">A callback to indicate if this operation was successful.</param>
+            /// <param name="onFailure">A callback to indicate if this operation failed.</param>
+            public static void SetUserDetails(UserUpdate userUpdate, Action onComplete, Action<GetSocialError> onFailure)
+            {
+                GetSocialImpl.SetUserDetails(userUpdate, onComplete, onFailure);
+            }
+            
+            
             /// <summary>
             /// Adds AuthIdentity for the specified provider.
             /// </summary>
@@ -1171,6 +1185,26 @@ namespace GetSocialSdk.Core
             #endregion
 
         }
+
+        #endregion
+
+        #region Analytics
+
+        /// <summary>
+        /// Reports in-app purchase to Dashboard. 
+        /// </summary>
+        /// <param name="purchaseData">Purchase data.</param>
+        /// <param name="onSuccess">Called if data was tracked.</param>
+        /// <param name="onError">Called if operation failed.</param>
+        public static void TrackPurchase(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        {
+            Check.Argument.IsNotNull(purchaseData, "purchaseData");
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onError, "onError");
+            
+            GetSocialImpl.TrackPurchaseData(purchaseData, onSuccess, onError);
+        }
+        
 
         #endregion
     }

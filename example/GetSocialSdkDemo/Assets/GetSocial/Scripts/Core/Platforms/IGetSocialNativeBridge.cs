@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
@@ -109,6 +110,8 @@ namespace GetSocialSdk.Core
 
         void SetPrivateProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure);
 
+        void SetUserDetails(UserUpdate userUpdate, Action onSuccess, Action<GetSocialError> onFailure);
+
         void RemovePublicProperty(string key, Action onSuccess, Action<GetSocialError> onFailure);
 
         void RemovePrivateProperty(string key, Action onSuccess, Action<GetSocialError> onFailure);
@@ -198,6 +201,12 @@ namespace GetSocialSdk.Core
         #region access_helpers
 
         void Reset();
+
+        #endregion
+
+        #region Analytics
+
+        void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError);
 
         #endregion
 

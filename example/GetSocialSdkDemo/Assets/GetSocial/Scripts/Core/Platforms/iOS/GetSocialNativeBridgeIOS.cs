@@ -1,7 +1,8 @@
-#if UNITY_IOS
+#if UNITY_IOS && !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using GetSocialSdk.Core.Analytics;
 using GetSocialSdk.MiniJSON;
 using UnityEngine;
 
@@ -314,6 +315,12 @@ namespace GetSocialSdk.Core
         {
             return _gs_hasPrivateProperty(key);
         }
+        
+        public void SetUserDetails(UserUpdate userUpdate, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_setUserDetails(userUpdate.ToJson(), Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback,
+                onFailure.GetPointer());
+        }
 
         public void AddAuthIdentity(AuthIdentity authIdentity, Action onComplete, Action<GetSocialError> onFailure, Action<ConflictUser> onConflict)
         {
@@ -534,6 +541,17 @@ namespace GetSocialSdk.Core
         }
         #endregion
 
+        #region Analytics
+
+        public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_trackPurchaseData(purchaseData.ToJson(), Callbacks.ActionCallback, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        #endregion
+
+
 
         #region external_init
 
@@ -709,6 +727,11 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
+        static extern void _gs_setUserDetails(string userUpdate, VoidCallbackDelegate successCallback,
+            IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
         static extern string _gs_getPublicProperty(string key);
 
         [DllImport("__Internal")]
@@ -761,7 +784,12 @@ namespace GetSocialSdk.Core
         static extern void _gs_findUsers(string query,
             StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
-        
+
+        [DllImport("__Internal")]
+        static extern void _gs_trackPurchaseData(string purchaseDataJson,
+            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
         #endregion
 
         #region social_graph

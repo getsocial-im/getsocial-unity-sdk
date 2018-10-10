@@ -36,5 +36,13 @@ namespace GetSocialSdk.Core
 
             return ListEquals(self.GetPixels().ToList(), other.GetPixels().ToList());
         }
+
+        public static void AddAll<TKey, TValue>(this IDictionary<TKey, TValue> container, IDictionary<TKey, TValue> items)
+        {
+            foreach (var property in items)
+            {
+                container[property.Key] = property.Value;
+            }
+        }
     }
 }
