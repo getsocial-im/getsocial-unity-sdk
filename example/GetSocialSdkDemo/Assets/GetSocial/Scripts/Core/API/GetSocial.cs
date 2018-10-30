@@ -1182,6 +1182,16 @@ namespace GetSocialSdk.Core
                 
                 GetSocialImpl.IsPushNotificationsEnabled(onSuccess, onError);
             }
+
+            public static void SendNotification(List<string> userIds, NotificationContent content, Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError) 
+            {
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                Check.Argument.IsNotNull(userIds, "userIds");
+                Check.Argument.IsNotNull(content, "content");
+
+                GetSocialImpl.SendNotification(userIds, content, onSuccess, onError);
+            }
             #endregion
 
         }

@@ -13,10 +13,8 @@
 
 #pragma mark - Deserialize - received as strings FROM Unity
 
-+ (GetSocialMutableInviteContent *)deserializeCustomInviteContent:(NSString *)customInviteContentJson
++ (GetSocialMutableInviteContent *)deserializeCustomInviteContent:(NSDictionary *)json
 {
-    NSDictionary *json = [self deserializeDictionary:customInviteContentJson];
-
     GetSocialMutableInviteContent *content = [[GetSocialMutableInviteContent alloc] init];
     content.subject = json[@"Subject"];
     content.imageUrl = json[@"ImageUrl"];
@@ -27,18 +25,17 @@
     return content;
 }
 
-+ (NSDictionary *)deserializeLinkParams:(NSString *)customLinkParamsJson
++ (NSDictionary *)deserializeLinkParams:(NSDictionary *)json
 {
 
 #if DEBUG
-    NSLog(@"JSON Input: %@", customLinkParamsJson);
+    NSLog(@"JSON Input: %@", json);
 #endif
-    if (customLinkParamsJson == nil)
+    if (json == nil)
     {
         return nil;
     }
 
-    NSDictionary<NSString*, id> *json = [self deserializeDictionary:customLinkParamsJson];
     id rawImage = json[@"$image"];
     if (rawImage != nil)
     {
@@ -51,9 +48,8 @@
     return json;
 }
 
-+ (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSString *)serializedQuery
++ (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSDictionary *)json
 {
-    NSDictionary *json = [self deserializeDictionary:serializedQuery];
     NSString *feed = json[@"Feed"];
     GetSocialActivitiesQuery *query = feed == nil
     ? [GetSocialActivitiesQuery commentsToPost:json[@"ParentActivityId"]]
@@ -82,9 +78,8 @@
     return query;
 }
 
-+ (GetSocialUserUpdate *) deserializeUserUpdate:(NSString *)serializedUserUpdate
++ (GetSocialUserUpdate *) deserializeUserUpdate:(NSDictionary *)json
 {
-    NSDictionary *json = [self deserializeDictionary:serializedUserUpdate];
     GetSocialUserUpdate *userUpdate = [GetSocialUserUpdate new];
     [userUpdate setDisplayName:json[@"DisplayName"]];
 
@@ -116,10 +111,8 @@
     
 }
 
-+ (GetSocialActivityPostContent *)deserializeActivityContent:(NSString *)content
++ (GetSocialActivityPostContent *)deserializeActivityContent:(NSDictionary *)dictionary
 {
-    NSDictionary *dictionary = [self deserializeDictionary:content];
-
     GetSocialActivityPostContent *postContent = [GetSocialActivityPostContent new];
     postContent.text = dictionary[@"Text"];
     postContent.buttonTitle = dictionary[@"ButtonTitle"];
@@ -130,27 +123,22 @@
     return postContent;
 }
 
-+ (GetSocialAuthIdentity *)deserializeIdentity:(NSString *)identity
++ (GetSocialAuthIdentity *)deserializeIdentity:(NSDictionary *)dictionary
 {
-    NSDictionary *dictionary = [self deserializeDictionary:identity];
-
     return [GetSocialAuthIdentity customIdentityForProvider:dictionary[@"ProviderId"]
                                                      userId:dictionary[@"ProviderUserId"]
                                                 accessToken:dictionary[@"AccessToken"]];
 }
 
-+ (GetSocialUsersQuery *)deserializeUsersQuery:(NSString *)query
++ (GetSocialUsersQuery *)deserializeUsersQuery:(NSDictionary *)dictionary
 {
-    NSDictionary *dictionary = [self deserializeDictionary:query];
-    
     GetSocialUsersQuery *usersQuery = [GetSocialUsersQuery usersByDisplayName:dictionary[@"Query"]];
     [usersQuery setLimit:[dictionary[@"Limit"] intValue]];
     return usersQuery;
 }
 
-+ (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSString *)serializedQuery
++ (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSDictionary *)json
 {
-    NSDictionary *json = [self deserializeDictionary:serializedQuery];
     NSNumber *isRead = json[@"IsRead"];
     
     GetSocialNotificationsQuery *query = isRead == nil
@@ -173,9 +161,8 @@
     return query;
 }
 
-+ (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSString *)serializedQuery
++ (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSDictionary *)json
 {
-    NSDictionary *json = [self deserializeDictionary:serializedQuery];
     NSNumber *isRead = json[@"IsRead"];
     GetSocialNotificationsCountQuery *query = isRead == nil
     ? [GetSocialNotificationsCountQuery readAndUnread]
@@ -188,9 +175,8 @@
     return query;
 }
 
-+ (GetSocialPurchaseData *)deserializePurchaseData:(NSString *)serializedPurchaseData
++ (GetSocialPurchaseData *)deserializePurchaseData:(NSDictionary *)json
 {
-    NSDictionary *json = [self deserializeDictionary:serializedPurchaseData];
     GetSocialPurchaseData* purchaseData = [GetSocialPurchaseData new];
     purchaseData.productId = json[@"ProductId"];
     NSString* priceStr = json[@"Price"];
@@ -212,35 +198,22 @@
     }
 
     return purchaseData;
+}
+
++ (GetSocialNotificationContent *)deserializeNotificationContent:(NSDictionary *)json
+{
+    GetSocialNotificationContent *notificationContent = [GetSocialNotificationContent withText:json[@"Text"]];
+    [notificationContent setTitle:json[@"Title"]];
     
-}
-
-
-#pragma mark - Helpers
-
-+ (NSDictionary *)deserializeDictionary:(NSString *)jsonDic
-{
-    NSError *e = nil;
-    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[jsonDic dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&e];
-    if (dictionary != nil)
-    {
-        NSMutableDictionary *prunedDict = [NSMutableDictionary dictionary];
-        [dictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
-            if (![obj isKindOfClass:[NSNull class]]) {
-                prunedDict[key] = obj;
-            }
-        }];
-        return prunedDict;
+    if (json[@"Action"] != nil)
+    { 
+        [notificationContent setActionType:(GetSocialNotificationActionType) [json[@"Action"] intValue]];
     }
-    return dictionary;
+    [notificationContent addActionData:json[@"ActionData"]];
+    
+    [notificationContent setTemplateName:json[@"Template"]];
+    [notificationContent addTemplatePlaceholders:json[@"TemplatePlaceholders"]];
+    
+    return notificationContent;
 }
-
-+ (NSArray *)deserializeList:(NSString *)jsonList
-{
-    NSError* localError = nil;
-    NSArray *array = [NSJSONSerialization JSONObjectWithData:[jsonList dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&localError];
-
-    return array;
-}
-
 @end

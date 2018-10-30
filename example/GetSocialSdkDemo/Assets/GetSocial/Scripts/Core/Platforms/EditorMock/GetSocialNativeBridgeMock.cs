@@ -149,6 +149,11 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onError);
         }
 
+        public void SendNotification(List<string> userIds, NotificationContent content, Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), userIds, content, onSuccess, onError);
+        }
+
         public bool SetOnUserChangedListener(Action listener)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);

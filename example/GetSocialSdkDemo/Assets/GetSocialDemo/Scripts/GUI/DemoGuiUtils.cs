@@ -119,4 +119,11 @@ public static class DemoGuiUtils
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
+
+    public static void DrawRow(Action draw)
+    {
+        GUILayout.BeginHorizontal();
+        draw();
+        GUILayout.EndHorizontal();
+    }
 }

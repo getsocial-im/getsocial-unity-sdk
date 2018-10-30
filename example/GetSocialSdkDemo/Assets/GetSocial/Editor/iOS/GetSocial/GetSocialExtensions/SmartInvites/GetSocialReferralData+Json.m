@@ -20,6 +20,8 @@
     [dictionary gs_setValueOrNSNull:@(self.isFirstMatchLink) forKey:@"IsFirstMatchLink"];
     [dictionary gs_setValueOrNSNull:self.linkParams forKey:@"LinkParams"];
     [dictionary gs_setValueOrNSNull:self.originalLinkParams forKey:@"OriginalLinkParams"];
+    [dictionary gs_setValueOrNSNull:self.referralLinkParams forKey:@"ReferralLinkParams"];
+    [dictionary gs_setValueOrNSNull:self.originalReferralLinkParams forKey:@"OriginalReferralLinkParams"];
     return dictionary;
 }
 

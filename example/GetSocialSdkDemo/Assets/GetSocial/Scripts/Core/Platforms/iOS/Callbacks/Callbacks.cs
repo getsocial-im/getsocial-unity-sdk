@@ -169,6 +169,12 @@ namespace GetSocialSdk.Core
             GetObjectsListCallback<Notification>(actionPtr, json);
         }
         
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void SendNotification(IntPtr actionPtr, string json)
+        {
+            GetObjectCallback<NotificationsSummary>(actionPtr, json);
+        }
+        
         static void GetObjectsDictionaryCallback<TValue>(IntPtr actionPtr, string json) where TValue : IConvertableFromNative<TValue>, new()
         {
             var result = GSJsonUtils.ParseDictionary<PublicUser>(json);

@@ -98,8 +98,8 @@ namespace GetSocialSdk.Core.Analytics
 
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
-        {        
-            var purchaseDataBuilderAjo = new AndroidJavaObject("im.getsocial.sdk.iap.entity.PurchaseData$Builder");
+        {   
+            var purchaseDataBuilderAjo = new AndroidJavaObject("im.getsocial.sdk.iap.PurchaseData$Builder");
             purchaseDataBuilderAjo.CallAJO("withProductId", _productId);
             purchaseDataBuilderAjo.CallAJO("withProductType", _productType.ToAndroidJavaObject());
             purchaseDataBuilderAjo.CallAJO("withPrice", _price);

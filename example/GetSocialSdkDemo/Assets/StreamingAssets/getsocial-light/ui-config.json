@@ -8,8 +8,8 @@
     "assets-base-path": "getsocial-light",
     "elements": {
         "window": {
-            "width": 300,
-            "height": 620,
+            "width": "fit-parent",
+            "height": "fit-parent",
             "bg-color": "0xFFFFFFFF",
             "tint-color": "0xCC000000",
             "animation-style": "scale"

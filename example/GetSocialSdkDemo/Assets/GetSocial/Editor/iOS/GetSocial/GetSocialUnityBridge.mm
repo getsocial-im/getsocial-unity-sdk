@@ -151,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
                         FailureCallbackDelegate failureCallback, void *onFailurePtr)
     {
         NSString *channelIdStr = [GetSocialBridgeUtils createNSStringFrom:channelId];
-        NSString *customInviteContentJsonStr = [GetSocialBridgeUtils createNSStringFrom:customInviteContentJson];
+        NSDictionary *customInviteContentJsonStr = [GetSocialBridgeUtils createDictionaryFromCString:customInviteContentJson];
         
         GetSocialMutableInviteContent *inviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:customInviteContentJsonStr];
         
@@ -168,8 +168,8 @@ NS_ASSUME_NONNULL_BEGIN
             FailureCallbackDelegate failureCallback, void *onFailurePtr)
     {
         NSString *channelIdStr = [GetSocialBridgeUtils createNSStringFrom:channelId];
-        NSString *customInviteContentJsonStr = [GetSocialBridgeUtils createNSStringFrom:customInviteContentJson];
-        NSString *linkParamsJsonStr = [GetSocialBridgeUtils createNSStringFrom:linkParamsJson];
+        NSDictionary *customInviteContentJsonStr = [GetSocialBridgeUtils createDictionaryFromCString:customInviteContentJson];
+        NSDictionary *linkParamsJsonStr = [GetSocialBridgeUtils createDictionaryFromCString:linkParamsJson];
 
         GetSocialMutableInviteContent *inviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:customInviteContentJsonStr];
         NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:linkParamsJsonStr];
@@ -201,11 +201,11 @@ NS_ASSUME_NONNULL_BEGIN
         [GetSocial referredUsersWithSuccess:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure: errorBlock(failureCallback, onFailureActionPtr)];
     }
     
-    void _gs_createInviteLink(const char *linkParamsJson,
+    void _gs_createInviteLink(const char *linkParamsJsonStr,
                               StringCallbackDelegate completeCallback, void *onCompletePtr,
                               FailureCallbackDelegate failureCallback, void *onFailurePtr) {
-        NSString *linkParamsJsonStr = [GetSocialBridgeUtils createNSStringFrom:linkParamsJson];
-        NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:linkParamsJsonStr];
+        NSDictionary *linkParamsJson = [GetSocialBridgeUtils createDictionaryFromCString:linkParamsJsonStr];
+        NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:linkParamsJson];
         
         [GetSocial createInviteLinkWithParams:linkParams success:^(NSString * _Nonnull result) {
             completeCallback(onCompletePtr, [GetSocialBridgeUtils createCStringFrom:result]);
@@ -266,7 +266,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     StringCallbackDelegate successCallback, void * onSuccessActionPtr,
                                     FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
     {
-        NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+        NSDictionary *queryStr = [GetSocialBridgeUtils createDictionaryFromCString:query];
         GetSocialNotificationsQuery *notificationsQuery = [GetSocialJsonUtils deserializeNotificationsQuery:queryStr];
 
         [GetSocialUser notificationsWithQuery:notificationsQuery success:objectBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
@@ -277,7 +277,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     IntCallbackDelegate successCallback, void * onSuccessActionPtr,
                                     FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
     {
-        NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+        NSDictionary *queryStr = [GetSocialBridgeUtils createDictionaryFromCString:query];
         GetSocialNotificationsCountQuery *notificationsQuery = [GetSocialJsonUtils deserializeNotificationsCountQuery:queryStr];
         
         [GetSocialUser notificationsCountWithQuery:notificationsQuery success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
@@ -287,8 +287,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     VoidCallbackDelegate successCallback, void * onSuccessActionPtr,
                                     FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
     {
-        NSString *idsStr = [GetSocialBridgeUtils createNSStringFrom:ids];
-        NSArray *notificationsIds = [GetSocialJsonUtils deserializeList:idsStr];
+        NSArray *notificationsIds = [GetSocialBridgeUtils createArrayFromCString:ids];
         
         [GetSocialUser setNotificationsRead:notificationsIds read:read success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
@@ -305,6 +304,19 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [GetSocialUser isPushNotificationsEnabledWithSuccess:boolBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
+    
+    void _gs_sendNotification(const char *userIdsStr, const char *notificationContentStr, StringCallbackDelegate successCallback, void *onSuccessActionPtr, FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSArray *userIds = [GetSocialBridgeUtils createArrayFromCString:userIdsStr];
+        NSDictionary *notificationContentJSON = [GetSocialBridgeUtils createDictionaryFromCString:notificationContentStr];
+        GetSocialNotificationContent *notificationContent = [GetSocialJsonUtils deserializeNotificationContent:notificationContentJSON];
+        
+        [GetSocialUser sendNotification:userIds
+                            withContent:notificationContent
+                                success:objectBlock(successCallback, onSuccessActionPtr)
+                                failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
+
     #pragma mark - User Management
 
     bool _gs_setOnUserChangedListener(void *listener, VoidCallbackDelegate delegate)
@@ -369,7 +381,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     void _gs_setUserDetails(const char * userUpdateJson, VoidCallbackDelegate successCallback, void * onSuccessActionPtr, FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
     {
-        NSString *userUpdateJsonString = [GetSocialBridgeUtils createNSStringFrom:userUpdateJson];
+        NSDictionary *userUpdateJsonString = [GetSocialBridgeUtils createDictionaryFromCString:userUpdateJson];
         GetSocialUserUpdate *update = [GetSocialJsonUtils deserializeUserUpdate:userUpdateJsonString];
         [GetSocialUser updateDetails:update success:completeBlock(successCallback, onSuccessActionPtr)
                              failure:errorBlock(failureCallback, onFailureActionPtr)];
@@ -449,7 +461,7 @@ NS_ASSUME_NONNULL_BEGIN
             FailureCallbackDelegate failureCallback, void *onFailureActionPtr,
             StringCallbackDelegate conflictCallBack, void *onConflictActionPtr)
     {
-        NSString *identityStr = [GetSocialBridgeUtils createNSStringFrom:identity];
+        NSDictionary *identityStr = [GetSocialBridgeUtils createDictionaryFromCString:identity];
         GetSocialAuthIdentity *gsIdentity = [GetSocialJsonUtils deserializeIdentity:identityStr];
         [GetSocialUser addAuthIdentity:gsIdentity
                             success:completeBlock(successCallback, onSuccessActionPtr)
@@ -461,7 +473,7 @@ NS_ASSUME_NONNULL_BEGIN
             VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *identityStr = [GetSocialBridgeUtils createNSStringFrom:identity];
+        NSDictionary *identityStr = [GetSocialBridgeUtils createDictionaryFromCString:identity];
         GetSocialAuthIdentity *gsIdentity = [GetSocialJsonUtils deserializeIdentity:identityStr];
         [GetSocialUser switchUserToIdentity:gsIdentity
                                     success:completeBlock(successCallback, onSuccessActionPtr)
@@ -505,8 +517,7 @@ NS_ASSUME_NONNULL_BEGIN
                                     FailureCallbackDelegate failureCallback, void *onFailureActionPtr) {
             
         NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
-        NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-        NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
+        NSArray *providerUserIds = [GetSocialBridgeUtils createArrayFromCString:providerUserIdsJson];
         
         [GetSocial usersWithIds:providerUserIds forProvider:providerIdStr success:objectBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
             
@@ -516,7 +527,7 @@ NS_ASSUME_NONNULL_BEGIN
                     StringCallbackDelegate successCallback, void *onSuccessActionPtr,
                     FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+        NSDictionary *queryStr = [GetSocialBridgeUtils createDictionaryFromCString:query];
         GetSocialUsersQuery *usersQuery = [GetSocialJsonUtils deserializeUsersQuery:queryStr];
         
         [GetSocial findUsers:usersQuery
@@ -542,8 +553,7 @@ NS_ASSUME_NONNULL_BEGIN
                                             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
         NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
-        NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-        NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
+        NSArray *providerUserIds = [GetSocialBridgeUtils createArrayFromCString:providerUserIdsJson];
         
         [GetSocialUser addFriendsWithIds:providerUserIds forProvider:providerIdStr success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
@@ -564,8 +574,7 @@ NS_ASSUME_NONNULL_BEGIN
                                         FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
         NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
-        NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-        NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
+        NSArray *providerUserIds = [GetSocialBridgeUtils createArrayFromCString:providerUserIdsJson];
             
         [GetSocialUser removeFriendsWithIds:providerUserIds forProvider:providerIdStr success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
@@ -574,8 +583,7 @@ NS_ASSUME_NONNULL_BEGIN
                         VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
                             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *userIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:userIdsJson];
-        NSArray *userIds = [GetSocialJsonUtils deserializeList:userIdsJsonStr];
+        NSArray *userIds = [GetSocialBridgeUtils createArrayFromCString:userIdsJson];
         
         [GetSocialUser setFriendsWithIds:userIds success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
@@ -585,9 +593,8 @@ NS_ASSUME_NONNULL_BEGIN
                             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
         NSString *providerIdStr = [GetSocialBridgeUtils createNSStringFrom:providerId];
-        NSString *providerUserIdsJsonStr = [GetSocialBridgeUtils createNSStringFrom:providerUserIdsJson];
-        NSArray *providerUserIds = [GetSocialJsonUtils deserializeList:providerUserIdsJsonStr];
-
+        NSArray *providerUserIds = [GetSocialBridgeUtils createArrayFromCString:providerUserIdsJson];
+        
         [GetSocialUser setFriendsWithIds:providerUserIds forProvider:providerIdStr success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
 
@@ -654,7 +661,7 @@ NS_ASSUME_NONNULL_BEGIN
             StringCallbackDelegate successCallback, void *onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *queryStr = [GetSocialBridgeUtils createNSStringFrom:query];
+        NSDictionary *queryStr = [GetSocialBridgeUtils createDictionaryFromCString:query];
         GetSocialActivitiesQuery *activitiesQuery = [GetSocialJsonUtils deserializeActivitiesQuery:queryStr];
 
         [GetSocial activitiesWithQuery:activitiesQuery
@@ -677,7 +684,7 @@ NS_ASSUME_NONNULL_BEGIN
             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
         NSString *feedIdStr = [GetSocialBridgeUtils createNSStringFrom:feedId];
-        NSString *activityContentStr = [GetSocialBridgeUtils createNSStringFrom:activityContent];
+        NSDictionary *activityContentStr = [GetSocialBridgeUtils createDictionaryFromCString:activityContent];
         GetSocialActivityPostContent *content = [GetSocialJsonUtils deserializeActivityContent:activityContentStr];
 
         [GetSocial postActivity:content
@@ -690,7 +697,7 @@ NS_ASSUME_NONNULL_BEGIN
             StringCallbackDelegate successCallback, void *onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *commentStr = [GetSocialBridgeUtils createNSStringFrom:comment];
+        NSDictionary *commentStr = [GetSocialBridgeUtils createDictionaryFromCString:comment];
         GetSocialActivityPostContent *commentContent = [GetSocialJsonUtils deserializeActivityContent:commentStr];
 
         NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
@@ -751,7 +758,7 @@ NS_ASSUME_NONNULL_BEGIN
                                VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
                                FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *purchaseDataStrJson = [GetSocialBridgeUtils createNSStringFrom:purchaseDataJson];
+        NSDictionary *purchaseDataStrJson = [GetSocialBridgeUtils createDictionaryFromCString:purchaseDataJson];
         GetSocialPurchaseData *purchaseData = [GetSocialJsonUtils deserializePurchaseData:purchaseDataStrJson];
         
         [GetSocial trackPurchaseData:purchaseData

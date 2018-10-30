@@ -123,6 +123,7 @@ public class GetSocialDemoController : MonoBehaviour
             GetComponentInChildren<SocialGraphSection>(),
             GetComponentInChildren<NotificationsApiSection>(),
             GetComponentInChildren<InAppPurchaseApiSection>(),
+            GetComponentInChildren<SendNotificationSection>(),
 #if USE_GETSOCIAL_UI
             GetComponentInChildren<SmartInvitesUiSection>(),
             GetComponentInChildren<ActivityFeedUiSection>(),
@@ -344,22 +345,23 @@ public class GetSocialDemoController : MonoBehaviour
     void DrawMainView()
     {
         GUILayout.Label("API", GSStyles.NormalLabelText);
-		Button("Smart Invites", () => ShowMenuSection<SmartInvitesApiSection>());
-		Button("Activity Feed", () => ShowMenuSection<ActivityFeedApiSection>());
-        Button("User Management", () => ShowMenuSection<AuthSection>());
-		Button("Social Graph", () => ShowMenuSection<SocialGraphSection>());
-		Button("Notifications Api", () => ShowMenuSection<NotificationsApiSection>());
-        Button("InApp Purchase Api", () => ShowMenuSection<InAppPurchaseApiSection>());
+		Button("Smart Invites", ShowMenuSection<SmartInvitesApiSection>);
+		Button("Activity Feed", ShowMenuSection<ActivityFeedApiSection>);
+        Button("User Management", ShowMenuSection<AuthSection>);
+		Button("Social Graph", ShowMenuSection<SocialGraphSection>);
+		Button("Notifications Api", ShowMenuSection<NotificationsApiSection>);
+        Button("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
+        Button("Send Notification", ShowMenuSection<SendNotificationSection>);
 #if USE_GETSOCIAL_UI
         GUILayout.Space(30f);
         GUILayout.Label("UI", GSStyles.NormalLabelText);
-        Button("Smart Invites", () => ShowMenuSection<SmartInvitesUiSection>());
-        Button("Activity Feed", () => ShowMenuSection<ActivityFeedUiSection>());
-        Button("UI Customization", () => ShowMenuSection<UiCustomizationSection>());
+        Button("Smart Invites", ShowMenuSection<SmartInvitesUiSection>);
+        Button("Activity Feed", ShowMenuSection<ActivityFeedUiSection>);
+        Button("UI Customization", ShowMenuSection<UiCustomizationSection>);
 #endif
         GUILayout.Space(30f);
         GUILayout.Label("Other", GSStyles.NormalLabelText);
-        Button("Settings", () => ShowMenuSection<SettingsSection>());
+        Button("Settings", ShowMenuSection<SettingsSection>);
     }
     #endregion
 

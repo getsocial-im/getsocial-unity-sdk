@@ -179,6 +179,12 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onError.GetPointer());
         }
 
+        public void SendNotification(List<string> userIds, NotificationContent content, Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_sendNotification(GSJson.Serialize(userIds), content.ToJson(), Callbacks.SendNotification, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
         public bool SetGlobalErrorListener(Action<GetSocialError> onError)
         {
             return _gs_setGlobalErrorListener(onError.GetPointer(), GlobalErrorCallback.OnGlobalError);
@@ -551,8 +557,6 @@ namespace GetSocialSdk.Core
 
         #endregion
 
-
-
         #region external_init
 
         [DllImport("__Internal")]
@@ -668,6 +672,11 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_isPushNotificationsEnabled( 
             BoolCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_sendNotification(string userIds, string notificationContent, 
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
         
         #endregion

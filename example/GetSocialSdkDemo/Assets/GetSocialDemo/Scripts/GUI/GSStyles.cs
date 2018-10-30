@@ -25,6 +25,7 @@ public static class GSStyles
     public static readonly GUIStyle TextField;
     public static readonly GUIStyle Toggle;
     public static readonly GUIStyle Button;
+    public static readonly GUIStyle ShortButton;
     public static readonly GUIStyle ConsoleBg;
     public static readonly GUIStyle ConsoleText;
     public static readonly GUIStyle ImageToggle;
@@ -84,6 +85,13 @@ public static class GSStyles
             stretchWidth = true,
             richText = false,
             alignment = TextAnchor.MiddleCenter
+        };
+        
+        ShortButton = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 24,
+            fixedHeight = 72,
+            richText = false,
         };
 
         ConsoleBg = new GUIStyle

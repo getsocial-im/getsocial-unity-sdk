@@ -13,26 +13,26 @@
 
 #pragma mark - Deserialize - received as strings FROM Unity
 
-+ (GetSocialMutableInviteContent *)deserializeCustomInviteContent:(NSString *)customInviteContentJson;
++ (GetSocialMutableInviteContent *)deserializeCustomInviteContent:(NSDictionary *)json;
 
-+ (NSDictionary *)deserializeLinkParams:(NSString *)customLinkParamsJson;
++ (NSDictionary *)deserializeLinkParams:(NSDictionary *)json;
 
-+ (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSString *)serializedQuery;
++ (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSDictionary *)json;
 
-+ (GetSocialActivityPostContent *)deserializeActivityContent:(NSString *)content;
++ (GetSocialActivityPostContent *)deserializeActivityContent:(NSDictionary *)json;
 
-+ (GetSocialUserUpdate *) deserializeUserUpdate:(NSString *)serializedQuery;
++ (GetSocialUserUpdate *) deserializeUserUpdate:(NSDictionary *)json;
 
-+ (GetSocialAuthIdentity *)deserializeIdentity:(NSString *)identity;
++ (GetSocialAuthIdentity *)deserializeIdentity:(NSDictionary *)json;
 
-+ (GetSocialUsersQuery *)deserializeUsersQuery:(NSString *)query;
++ (GetSocialUsersQuery *)deserializeUsersQuery:(NSDictionary *)json;
 
-+ (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSString *)serializedQuery;
++ (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSDictionary *)json;
 
-+ (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSString *)serializedQuery;
++ (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSDictionary *)json;
 
-+ (GetSocialPurchaseData *)deserializePurchaseData:(NSString *)serializedPurchaseData;
++ (GetSocialPurchaseData *)deserializePurchaseData:(NSDictionary *)json;
 
-+ (NSArray *)deserializeList:(NSString *)jsonList;
++ (GetSocialNotificationContent *)deserializeNotificationContent:(NSDictionary *)json;
 
 @end

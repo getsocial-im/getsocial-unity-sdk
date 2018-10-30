@@ -1,4 +1,4 @@
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -129,6 +129,10 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("createInviteLink", linkParamsAjo, new StringCallbackProxy(onSuccess, onFailure));
         }
 
+        #endregion
+
+        #region Push Notifications
+
         public void RegisterForPushNotifications()
         {
             _getSocial.CallStatic("registerForPushNotifications");
@@ -162,6 +166,11 @@ namespace GetSocialSdk.Core
         public void IsPushNotificationsEnabled(Action<bool> onSuccess, Action<GetSocialError> onError)
         {
             _user.CallStatic("isPushNotificationsEnabled", new BoolCallbackProxy (onSuccess, onError));
+        }
+
+        public void SendNotification(List<string> userIds, NotificationContent content, Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError)
+        {
+            _user.CallStatic("sendNotification", userIds.ToJavaList(), content.ToAjo(), new CallbackProxy<NotificationsSummary>(onSuccess, onError));
         }
 
         #endregion

@@ -75,7 +75,10 @@ namespace GetSocialSdk.Core
         void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError);
         
         void IsPushNotificationsEnabled(Action<bool> onSuccess, Action<GetSocialError> onError);
-        
+
+        void SendNotification(List<string> userIds, NotificationContent content,
+            Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError);
+
         #endregion
 
         #region user_management

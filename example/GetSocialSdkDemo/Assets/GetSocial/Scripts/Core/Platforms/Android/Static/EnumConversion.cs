@@ -24,7 +24,7 @@ namespace GetSocialSdk.Core
 
         public static AndroidJavaObject ToAndroidJavaObject(this PurchaseData.ProductType productType)
         {
-            return ToAndroidJavaObject((int) productType, "im.getsocial.sdk.iap.entity.PurchaseData$ProductType");
+            return ToAndroidJavaObject((int) productType, "im.getsocial.sdk.iap.PurchaseData$ProductType");
         }
         
         private static AndroidJavaObject ToAndroidJavaObject<T>(T type, string javaClass) where T : IConvertible

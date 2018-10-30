@@ -3,6 +3,14 @@
 
 @interface GetSocialBridgeUtils : NSObject
 
++ (NSDictionary *)createDictionaryFromNSString:(NSString *)jsonString;
+
++ (NSDictionary *)createDictionaryFromCString:(const char *)cstring;
+
++ (NSArray *)createArrayFromNSString:(NSString *)jsonList;
+
++ (NSArray *)createArrayFromCString:(const char *)cstring;
+
 + (NSString *)createNSStringFrom:(const char *)cstring;
 
 + (char *)createCStringFrom:(NSString *)string;

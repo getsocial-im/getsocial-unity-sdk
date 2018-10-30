@@ -42,13 +42,13 @@ bool _gs_showSmartInvitesView(
     }
 
     if (serializedInviteContent) {
-        NSString *serializedInviteContentStr = [GetSocialBridgeUtils createNSStringFrom:serializedInviteContent];
+        NSDictionary *serializedInviteContentStr = [GetSocialBridgeUtils createDictionaryFromCString:serializedInviteContent];
         GetSocialMutableInviteContent *customInviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:serializedInviteContentStr];
         [invitesView setCustomInviteContent:customInviteContent];
     }
 
     if (serializedLinkParams) {
-        NSString *serializedLinkParamsStr = [GetSocialBridgeUtils createNSStringFrom:serializedLinkParams];
+        NSDictionary *serializedLinkParamsStr = [GetSocialBridgeUtils createDictionaryFromCString:serializedLinkParams];
         NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:serializedLinkParamsStr];
         [invitesView setLinkParams:linkParams];
     }
@@ -165,8 +165,7 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         [view setFilterByUser:[GetSocialBridgeUtils createNSStringFrom:filterUserId]];
     }
     if (tags) {
-        NSString *tagsStr = [GetSocialBridgeUtils createNSStringFrom:tags];
-        NSArray *tagsArray = [GetSocialJsonUtils deserializeList:tagsStr];
+        NSArray *tagsArray = [GetSocialBridgeUtils createArrayFromCString:tags];
         [view setFilterByTags:tagsArray];
     }
     [view setReadOnly:readOnly];
