@@ -1,4 +1,4 @@
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -456,10 +456,9 @@ namespace GetSocialSdk.Core
         #region Analytics
 
         public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
-        {    _getSocial.CallStatic("trackPurchaseData", purchaseData.ToAjo(), new CompletionCallback(onSuccess, onError));
-            
+        {    
+            _getSocial.CallStatic("trackPurchaseData", purchaseData.ToAjo(), new CompletionCallback(onSuccess, onError));
         }
-
 
         #endregion
 
