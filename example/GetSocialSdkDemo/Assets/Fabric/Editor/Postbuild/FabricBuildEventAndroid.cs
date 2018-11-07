@@ -29,7 +29,7 @@
 			Utils.Log ("Sending build information");
 
 			if (string.IsNullOrEmpty(settings.Organization.ApiKey)) {
-				//Utils.Error ("API key not found");
+				Utils.Error ("API key not found");
 				return;
 			}
 

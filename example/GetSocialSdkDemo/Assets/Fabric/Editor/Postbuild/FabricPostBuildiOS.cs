@@ -28,7 +28,7 @@ namespace Fabric.Internal.Editor.Postbuild
 			string projPath = Path.Combine (buildPath, "Unity-iPhone.xcodeproj/project.pbxproj");
 
 			if (string.IsNullOrEmpty(settings.Organization.ApiKey) || string.IsNullOrEmpty(settings.Organization.BuildSecret)) {
-				// Utils.Error ("Unable to find API Key or Build Secret. Fabric was not added to the player.");
+				Utils.Error ("Unable to find API Key or Build Secret. Fabric was not added to the player.");
 				return;
 			}
 
