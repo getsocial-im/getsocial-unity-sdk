@@ -15,12 +15,11 @@
 
 + (GetSocialMutableInviteContent *)deserializeCustomInviteContent:(NSDictionary *)json
 {
-    GetSocialMutableInviteContent *content = [[GetSocialMutableInviteContent alloc] init];
-    content.subject = json[@"Subject"];
-    content.imageUrl = json[@"ImageUrl"];
-    content.text = json[@"Text"];
-    content.image = [GetSocialBridgeUtils decodeUIImageFrom:json[@"Image"]];
-    content.video = [GetSocialBridgeUtils decodeNSDataFrom:json[@"Video"]];
+    GetSocialMutableInviteContent *content = [GetSocialMutableInviteContent new];
+    
+    content.subject         = json[@"Subject"];
+    content.text            = json[@"Text"];
+    content.mediaAttachment = [self deserializeMediaAttachment:json[@"MediaAttachment"]];
 
     return content;
 }
@@ -51,9 +50,10 @@
 + (GetSocialActivitiesQuery *)deserializeActivitiesQuery:(NSDictionary *)json
 {
     NSString *feed = json[@"Feed"];
+    NSString *parentActivityId = json[@"ParentActivityId"];
     GetSocialActivitiesQuery *query = feed == nil
-    ? [GetSocialActivitiesQuery commentsToPost:json[@"ParentActivityId"]]
-    : [GetSocialActivitiesQuery postsForFeed:feed];
+        ? [GetSocialActivitiesQuery commentsToPost:parentActivityId]
+        : [GetSocialActivitiesQuery postsForFeed:feed];
 
     // Limit
     int limit = [json[@"Limit"] intValue];
@@ -83,11 +83,11 @@
     GetSocialUserUpdate *userUpdate = [GetSocialUserUpdate new];
     [userUpdate setDisplayName:json[@"DisplayName"]];
 
-    if(json[@"AvatarUrl"] != nil)
+    if (json[@"AvatarUrl"] != nil)
     {
         [userUpdate setAvatarUrl:json[@"AvatarUrl"] ];
     }
-    else if(json[@"Avatar"] != nil)
+    else if (json[@"Avatar"] != nil)
     {
         [userUpdate setAvatar:[GetSocialBridgeUtils decodeUIImageFrom:json[@"Avatar"]]];
     }
@@ -114,11 +114,11 @@
 + (GetSocialActivityPostContent *)deserializeActivityContent:(NSDictionary *)dictionary
 {
     GetSocialActivityPostContent *postContent = [GetSocialActivityPostContent new];
-    postContent.text = dictionary[@"Text"];
-    postContent.buttonTitle = dictionary[@"ButtonTitle"];
-    postContent.buttonAction = dictionary[@"ButtonAction"];
-    postContent.image = [GetSocialBridgeUtils decodeUIImageFrom:dictionary[@"Image"]];
-    postContent.video = [GetSocialBridgeUtils decodeNSDataFrom:dictionary[@"Video"]];
+    
+    postContent.text            = dictionary[@"Text"];
+    postContent.buttonTitle     = dictionary[@"ButtonTitle"];
+    postContent.buttonAction    = dictionary[@"ButtonAction"];
+    postContent.mediaAttachment = [self deserializeMediaAttachment:dictionary[@"MediaAttachment"]];
 
     return postContent;
 }
@@ -142,8 +142,10 @@
     NSNumber *isRead = json[@"IsRead"];
     
     GetSocialNotificationsQuery *query = isRead == nil
-    ? [GetSocialNotificationsQuery readAndUnread]
-    : [isRead boolValue] ? [GetSocialNotificationsQuery read] : [GetSocialNotificationsQuery unread];
+        ? [GetSocialNotificationsQuery readAndUnread]
+        : [isRead boolValue]
+        ? [GetSocialNotificationsQuery read]
+        : [GetSocialNotificationsQuery unread];
     
     // Limit
     int limit = [json[@"Limit"] intValue];
@@ -165,38 +167,32 @@
 {
     NSNumber *isRead = json[@"IsRead"];
     GetSocialNotificationsCountQuery *query = isRead == nil
-    ? [GetSocialNotificationsCountQuery readAndUnread]
-    : [isRead boolValue] ? [GetSocialNotificationsCountQuery read] : [GetSocialNotificationsCountQuery unread];
+        ? [GetSocialNotificationsCountQuery readAndUnread]
+        : [isRead boolValue]
+        ? [GetSocialNotificationsCountQuery read]
+        : [GetSocialNotificationsCountQuery unread];
     
-    
-    id types = json[@"Types"];
-    [query setTypes:types];
+    [query setTypes:json[@"Types"]];
     
     return query;
 }
 
 + (GetSocialPurchaseData *)deserializePurchaseData:(NSDictionary *)json
 {
-    GetSocialPurchaseData* purchaseData = [GetSocialPurchaseData new];
-    purchaseData.productId = json[@"ProductId"];
-    NSString* priceStr = json[@"Price"];
-    purchaseData.price = priceStr.floatValue;
-    purchaseData.priceCurrency = json[@"PriceCurrency"];
-    purchaseData.productTitle = json[@"ProductTitle"];
-    purchaseData.transactionIdentifier = json[@"PurchaseId"];
+    GetSocialPurchaseData *purchaseData = [GetSocialPurchaseData new];
+    
+    purchaseData.productId              = json[@"ProductId"];
+    purchaseData.price                  = [json[@"Price"] floatValue];
+    purchaseData.priceCurrency          = json[@"PriceCurrency"];
+    purchaseData.productTitle           = json[@"ProductTitle"];
+    purchaseData.transactionIdentifier  = json[@"PurchaseId"];
+    purchaseData.productType            = [@"0" isEqualToString:json[@"ProductType"]] ? Item : Subscription;
 
-    NSString* purchaseDateStr = json[@"PurchaseDate"];
-    NSDateFormatter* formatter = [NSDateFormatter new];
+    NSString *purchaseDateStr = json[@"PurchaseDate"];
+    NSDateFormatter *formatter = [NSDateFormatter new];
     [formatter setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
     purchaseData.purchaseDate = [formatter dateFromString:purchaseDateStr];
     
-    NSString* productTypeStr = json[@"ProductType"];
-    if ([productTypeStr isEqualToString:@"0"]) {
-        purchaseData.productType = Item;
-    } else {
-        purchaseData.productType = Subscription;
-    }
-
     return purchaseData;
 }
 
@@ -209,11 +205,40 @@
     { 
         [notificationContent setActionType:(GetSocialNotificationActionType) [json[@"Action"] intValue]];
     }
-    [notificationContent addActionData:json[@"ActionData"]];
     
+    [notificationContent setMediaAttachment:[self deserializeMediaAttachment:json[@"MediaAttachment"]]];
+    [notificationContent addActionData:json[@"ActionData"]];
     [notificationContent setTemplateName:json[@"Template"]];
     [notificationContent addTemplatePlaceholders:json[@"TemplatePlaceholders"]];
     
     return notificationContent;
+}
+
++ (GetSocialMediaAttachment *)deserializeMediaAttachment:(NSString *)mediaAttachmentJson
+{
+    if (mediaAttachmentJson.length == 0)
+    {
+        return nil;
+    }
+    NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromNSString:mediaAttachmentJson];
+    
+    NSString *method = json.allKeys.firstObject;
+    NSString *object = json[method];
+    
+    if ([@"imageUrl" isEqualToString:method])
+    {
+        return [GetSocialMediaAttachment imageUrl:object];
+    } else if ([@"image" isEqualToString:method])
+    {
+        return [GetSocialMediaAttachment image:[GetSocialBridgeUtils decodeUIImageFrom:object]];
+    } else if ([@"videoUrl" isEqualToString:method])
+    {
+        return [GetSocialMediaAttachment videoUrl:object];
+    } else if ([@"video" isEqualToString:method])
+    {
+        return [GetSocialMediaAttachment video:[GetSocialBridgeUtils decodeNSDataFrom:object]];
+    }
+    
+    return nil;
 }
 @end

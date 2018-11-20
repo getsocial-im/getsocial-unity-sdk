@@ -297,6 +297,12 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             AddBuildFileImpl(targetGuid, fileGuid, weak, null);
         }
 
+        /// The framework must be specified with the '.framework' extension
+        public void LinkFrameworkToProject(string targetGuid, string frameworkGuid, bool weak)
+        {
+            AddBuildFileImpl(targetGuid, frameworkGuid, weak, null);
+        }
+
         public void RemoveDynamicFramework(string frameworkPathInProject)
         {
             var fileGuid = FindFileGuidByProjectPath(frameworkPathInProject);
@@ -731,6 +737,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             config.AddProperty("PRODUCT_NAME", "$(TARGET_NAME)");
             config.AddProperty("SKIP_INSTALL", "YES");
             config.AddProperty("VALIDATE_PRODUCT", "YES");
+            config.AddProperty("ARCHS", "$(ARCHS_STANDARD)");
         }
 
         private void SetDefaultAppExtensionDebugBuildFlags(XCBuildConfigurationData config, string infoPlistPath)
@@ -771,6 +778,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             config.AddProperty("ONLY_ACTIVE_ARCH", "YES");
             config.AddProperty("PRODUCT_NAME", "$(TARGET_NAME)");
             config.AddProperty("SKIP_INSTALL", "YES");
+            config.AddProperty("ARCHS", "$(ARCHS_STANDARD)");
         }
 
         internal PBXNativeTargetData CreateNewTarget(string name, string ext, string type)
@@ -779,12 +787,20 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             var releaseBuildConfig = XCBuildConfigurationData.Create("Release");
             buildConfigs.AddEntry(releaseBuildConfig);
 
+            var releaseForRunningBuildConfig = XCBuildConfigurationData.Create("ReleaseForRunning");
+            buildConfigs.AddEntry(releaseForRunningBuildConfig);
+
+            var releaseForProfilingBuildConfig = XCBuildConfigurationData.Create("ReleaseForProfiling");
+            buildConfigs.AddEntry(releaseForProfilingBuildConfig);
+
             var debugBuildConfig = XCBuildConfigurationData.Create("Debug");
             buildConfigs.AddEntry(debugBuildConfig);
 
             var buildConfigList = XCConfigurationListData.Create();
             configs.AddEntry(buildConfigList);
             buildConfigList.buildConfigs.AddGUID(releaseBuildConfig.guid);
+            buildConfigList.buildConfigs.AddGUID(releaseForRunningBuildConfig.guid);
+            buildConfigList.buildConfigs.AddGUID(releaseForProfilingBuildConfig.guid);
             buildConfigList.buildConfigs.AddGUID(debugBuildConfig.guid);
 
             // create build file reference
@@ -804,6 +820,8 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             var newTarget = CreateNewTarget(name, ext, "com.apple.product-type.app-extension");
 
             SetDefaultAppExtensionReleaseBuildFlags(buildConfigs[BuildConfigByName(newTarget.guid, "Release")], infoPlistPath);
+            SetDefaultAppExtensionReleaseBuildFlags(buildConfigs[BuildConfigByName(newTarget.guid, "ReleaseForProfiling")], infoPlistPath);
+            SetDefaultAppExtensionReleaseBuildFlags(buildConfigs[BuildConfigByName(newTarget.guid, "ReleaseForRunning")], infoPlistPath);
             SetDefaultAppExtensionDebugBuildFlags(buildConfigs[BuildConfigByName(newTarget.guid, "Debug")], infoPlistPath);
 
             var sourcesBuildPhase = PBXSourcesBuildPhaseData.Create();

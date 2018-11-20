@@ -128,12 +128,14 @@ namespace GetSocialSdk.Core
         public long CreatedAt { get; private set; }
         public string Title { get; private set; }
         public string Text { get; private set; }
+        public string ImageUrl { get; private set; }
+        public string VideoUrl { get; private set; }
         public Dictionary<string, string> ActionData { get; private set; }
 
         public override string ToString()
         {
-            return string.Format("Id: {0}, Action: {1}, WasRead: {2}, NotificationType: {3}, CreatedAt: {4}, Title: {5}, Text: {6}, ActionData: {7}" 
-                , Id, Action, WasRead, NotificationType, CreatedAt, Title, Text, ActionData.ToDebugString());
+            return string.Format("Id: {0}, Action: {1}, WasRead: {2}, NotificationType: {3}, CreatedAt: {4}, Title: {5}, Text: {6}, ActionData: {7}, ImageUrl: {8}, VideoUrl: {9}" 
+                , Id, Action, WasRead, NotificationType, CreatedAt, Title, Text, ActionData.ToDebugString(), ImageUrl, VideoUrl);
         }
 #if UNITY_ANDROID
         public Notification ParseFromAJO(AndroidJavaObject ajo)
@@ -146,6 +148,8 @@ namespace GetSocialSdk.Core
             Title = ajo.CallStr("getTitle");
             Text = ajo.CallStr("getText");
             ActionData = ajo.CallAJO("getActionData").FromJavaHashMap();
+            ImageUrl = ajo.CallStr("getImageUrl");
+            VideoUrl = ajo.CallStr("getVideoUrl");
             return this;
         }
 
@@ -158,6 +162,8 @@ namespace GetSocialSdk.Core
             WasRead = (bool) dictionary["WasRead"];
             CreatedAt = (long) dictionary["CreatedAt"];
             Text = dictionary["Text"] as string;
+            ImageUrl = dictionary["ImageUrl"] as string;
+            VideoUrl = dictionary["VideoUrl"] as string;
             ActionData = (dictionary["Data"] as Dictionary<string, object>).ToStrStrDict();
             Action = (Type) (long) dictionary["ActionType"];
             return this;

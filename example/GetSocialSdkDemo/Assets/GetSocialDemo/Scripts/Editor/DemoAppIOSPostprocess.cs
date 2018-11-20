@@ -36,12 +36,18 @@ namespace GetSocialSdk.Editors
             if (BuildTarget.iOS != buildTarget) return;
     
             PBXProjectUtils.ModifyPbxProject(projectPath, DisableBitcode);
+            PBXProjectUtils.ModifyPbxProject(projectPath, AddProvisioningProfile);
             PBXProjectUtils.ModifyPlist(projectPath, AllowArbitraryLoads);
         }
 
         static void DisableBitcode(PBXProject project, string target)
         {
             project.SetBuildProperty(target, "ENABLE_BITCODE", "NO");
+        }
+
+        static void AddProvisioningProfile(PBXProject project, string target)
+        {
+            project.SetBuildProperty(target, "PROVISIONING_PROFILE_SPECIFIER", PlayerSettings.iOS.iOSManualProvisioningProfileID);
         }
         
         #region plist_for_ios9

@@ -42,6 +42,10 @@ namespace GetSocialSdk.Editor
         private static string previousKeystorePass;
         private static string previousKeyAlias;
 
+        private const int PLATFORM_UNIX_NEW_VALUE = 4;
+        private const int PLATFORM_MAC_OS = 6;
+        private const int PLATFORM_UNIX_OLD_VALUE = 128;
+        
         static GetSocialEditorUtils()
         {
             Initialize();
@@ -99,7 +103,7 @@ namespace GetSocialSdk.Editor
                     keyAlias = PlayerSettings.Android.keyaliasName;
                     if (!KeystorePassDefined())
                     {
-                        keystoreUtilError = "Keystore password is not set.";
+                        keystoreUtilError = "Keystore password is not set. Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
                         return "";
                     }
                 }
@@ -117,17 +121,17 @@ namespace GetSocialSdk.Editor
                     
                     if (!HasAndroidKeystoreFile(keystorePath))
                     {
-                        keystoreUtilError = "Error: Can't find Android keystore " + keystorePath;
+                        keystoreUtilError = "Error: Can't find Android keystore " + keystorePath + ". Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
                         return "";
                     }
                     if (!DoesKeytoolExist())
                     {
-                        keystoreUtilError = "Error: keytool command line utility does not exist.";
+                        keystoreUtilError = "Error: keytool command line utility does not exist. Make sure you have Java Sdk installed and path is added to environment path.";
                         return "";
                     }
                     if (!HasAndroidSdk())
                     {
-                        keystoreUtilError = "Error: Can't find Android Sdk.";
+                        keystoreUtilError = "Error: Can't find Android Sdk. Make sure it is installed and path is added to environment variabled.";
                         return "";
                     }
                     signingKeyHash = GetKeyHash(keystorePath, keystorePass, keyAlias); 
@@ -186,15 +190,15 @@ namespace GetSocialSdk.Editor
             {
                 arguments = @"""keytool -list -v -keystore {0} -storepass {1}""";
             } 
-            if (Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                proc.StartInfo.FileName = "cmd";
-                arguments = @"/C " + arguments;
-            }
-            else
+            if (IsUnix())
             {
                 proc.StartInfo.FileName = "bash";
                 arguments = @"-c " + arguments;
+            }
+            else
+            {
+                proc.StartInfo.FileName = "cmd";
+                arguments = @"/C " + arguments;
             }
 
             if (aliasName != null)
@@ -228,7 +232,7 @@ namespace GetSocialSdk.Editor
             {
                 int errorBeginIndex = response.IndexOf("Exception:") + "Exception:".Length + 1;
                 int errorEndIndex = response.IndexOf('\n', errorBeginIndex);
-                keystoreUtilError = "Error: " + response.Substring(errorBeginIndex, (errorEndIndex - errorBeginIndex)).Trim();
+                keystoreUtilError = "Error: " + response.Substring(errorBeginIndex, (errorEndIndex - errorBeginIndex)).Trim() + ". Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
                 return "";
             }
             const string sha256Literal = "SHA256:";
@@ -238,35 +242,41 @@ namespace GetSocialSdk.Editor
                 int shaEndIndex = response.IndexOf('\n', shaBeginIndex);
                 return response.Substring(shaBeginIndex, (shaEndIndex - shaBeginIndex)).Trim();
             }
-            keystoreUtilError = "Error: Can't read signature, Check Player Settings -> Android -> Publishing Settings";
+            keystoreUtilError = "Error: Can't read signature. Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
             return "";
+        }
+
+        private static bool IsUnix()
+        {
+            var platform = (int)Environment.OSVersion.Platform;
+            return (platform == PLATFORM_MAC_OS) || (platform == PLATFORM_UNIX_NEW_VALUE) || (platform == PLATFORM_UNIX_OLD_VALUE);
         }
         
         private static bool DoesKeytoolExist()
         {
             var proc = new Process();
-            if (Application.platform == RuntimePlatform.WindowsEditor)
-            {
-                proc.StartInfo.FileName = "cmd";
-                proc.StartInfo.Arguments = @"/C keytool";
-            }
-            else
+            if (IsUnix())
             {
                 proc.StartInfo.FileName = "bash";
                 proc.StartInfo.Arguments = @"-c keytool";
+            }
+            else
+            {
+                proc.StartInfo.FileName = "cmd";
+                proc.StartInfo.Arguments = @"/C keytool";
             }
 
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = true;
             proc.Start();
             proc.WaitForExit();
-            if (Application.platform == RuntimePlatform.WindowsEditor)
+            if (IsUnix())
             {
-                return proc.ExitCode == 0;
+                return proc.ExitCode != 127;
             }
             else
             {
-                return proc.ExitCode != 127;
+                return proc.ExitCode == 0;
             }
         }
 

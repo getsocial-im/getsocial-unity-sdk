@@ -33,7 +33,7 @@
     <meta-data android:name="im.getsocial.sdk.AutoInitSdk" android:value="true" />
     <meta-data android:name="im.getsocial.sdk.ShowNotificationInForeground" android:value="false" />
     <meta-data android:name="im.getsocial.sdk.AutoRegisterForPush" android:value="true" />
-    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.22.0" />
+    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.22.2" />
     <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="2018.2.2f1" />
     <meta-data android:name="im.getsocial.sdk.Runtime" android:value="UNITY" />
     <meta-data android:name="im.getsocial.sdk.AppId" android:value="LuDPp7W0J4" />

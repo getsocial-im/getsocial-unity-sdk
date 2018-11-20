@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -56,7 +57,16 @@ namespace GetSocialSdk.Core
         
         [SerializeField] 
         bool _isAppIdValid = true;
-        
+
+        [SerializeField] 
+        bool _isRichNotificationsEnabled = true;
+
+        [SerializeField] 
+        string _extensionBundleId = string.Empty;
+
+        [SerializeField] 
+        string _extensionProvisioningProfile = string.Empty;
+
         #region initialization
 
         public static GetSocialSettings Instance
@@ -210,6 +220,36 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._isAppIdValid = value;
+                MarkAssetDirty();
+            }
+        }
+        
+        public static bool IsRichPushNotificationsEnabled
+        {
+            get { return Instance._isRichNotificationsEnabled; }
+            set
+            {
+                Instance._isRichNotificationsEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+        
+        public static string ExtensionBundleId
+        {
+            get { return Instance._extensionBundleId; }
+            set
+            {
+                Instance._extensionBundleId = value;
+                MarkAssetDirty();
+            }
+        }
+
+        public static string ExtensionProvisioningProfile
+        {
+            get { return Instance._extensionProvisioningProfile; }
+            set
+            {
+                Instance._extensionProvisioningProfile = value;
                 MarkAssetDirty();
             }
         }

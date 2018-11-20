@@ -20,6 +20,7 @@ using System.IO;
 using UnityEditor.iOS.Xcode.GetSocial;
 using GetSocialSdk.Core;
 using System.Linq;
+using UnityEditor;
 
 namespace GetSocialSdk.Editor
 {
@@ -40,6 +41,10 @@ namespace GetSocialSdk.Editor
                 EmbedFrameworks(project, target);
                 AddStripFrameworksScriptBuildPhase(project, target);
                 RemoveUiPluginFiles(project, target);
+                if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
+                {
+                    AddNotificationExtension(project, projectPath);
+                }
             });
 
             PBXProjectUtils.ModifyPlist(projectPath, (plistDocument) =>
@@ -54,6 +59,63 @@ namespace GetSocialSdk.Editor
                 SetDefaultUiConfigurationFilePathTag(plistDocument);
                 DisableViewControllerBasedStatusBar(plistDocument);
             });
+        }
+
+        static void AddNotificationExtension(PBXProject project, string projectPath)
+        {
+            const string extensionName = "/GetSocialNotificationExtension";
+            if (!Directory.Exists(projectPath + extensionName))
+            {
+                Directory.CreateDirectory(projectPath + extensionName);
+            }
+            
+            PlistDocument notificationServicePlist = new PlistDocument();
+            notificationServicePlist.ReadFromFile ("Assets/GetSocial/Editor/iOS/Helpers/NotificationService/Info.plist");
+            notificationServicePlist.root.SetString ("CFBundleShortVersionString", PlayerSettings.bundleVersion);
+            notificationServicePlist.root.SetString ("CFBundleVersion", PlayerSettings.iOS.buildNumber);
+            notificationServicePlist.WriteToFile(projectPath + "/GetSocialNotificationExtension/Info.plist");
+            
+            const string extensionServiceSourceHeaderFile = "Assets/GetSocial/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.h";
+            const string extensionServiceSourceImpFile = "Assets/GetSocial/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.m";
+            const string extensionServiceTargetHeaderFile = "/GetSocialNotificationExtension/GetSocialNotificationService.h";
+            const string extensionServiceTargetImpFile = "/GetSocialNotificationExtension/GetSocialNotificationService.m";
+            
+            File.Copy(extensionServiceSourceHeaderFile, projectPath + extensionServiceTargetHeaderFile);
+            File.Copy(extensionServiceSourceImpFile, projectPath + extensionServiceTargetImpFile);
+
+            var mainTarget = project.TargetGuidByName(PBXProject.GetUnityTargetName());
+
+            var appExtensionTarget = project.AddAppExtension(mainTarget, "GetSocialNotificationExtension", projectPath + "/GetSocialNotificationExtension/Info.plist");
+                        
+            project.AddFileToBuild(appExtensionTarget, project.AddFile(projectPath + extensionServiceTargetHeaderFile, extensionServiceTargetHeaderFile));
+            project.AddFileToBuild(appExtensionTarget, project.AddFile(projectPath + extensionServiceTargetImpFile, extensionServiceTargetImpFile));
+
+            var deviceFamily = "";
+            switch (PlayerSettings.iOS.targetDevice)
+            {
+                case iOSTargetDevice.iPhoneOnly:
+                    deviceFamily = "1";
+                    break;
+                case iOSTargetDevice.iPadOnly:
+                    deviceFamily = "2";
+                    break;
+                case iOSTargetDevice.iPhoneAndiPad:
+                    deviceFamily = "1,2";
+                    break;
+            }
+            
+
+            project.SetBuildProperty(appExtensionTarget, "TARGETED_DEVICE_FAMILY", deviceFamily);
+            project.SetBuildProperty(appExtensionTarget, "IPHONEOS_DEPLOYMENT_TARGET", PlayerSettings.iOS.targetOSVersionString);
+            project.SetBuildProperty(appExtensionTarget, "DEVELOPMENT_TEAM", PlayerSettings.iOS.appleDeveloperTeamID);
+            project.SetBuildProperty(appExtensionTarget, "PRODUCT_BUNDLE_IDENTIFIER", GetSocialSettings.ExtensionBundleId);
+            project.SetBuildProperty(appExtensionTarget, "CODE_SIGN_STYLE", PlayerSettings.iOS.appleEnableAutomaticSigning ?  "Automatic" : "Manual");
+            if (!PlayerSettings.iOS.appleEnableAutomaticSigning)
+            {
+                project.SetBuildProperty(appExtensionTarget, "PROVISIONING_PROFILE", GetSocialSettings.ExtensionProvisioningProfile);
+                project.SetBuildProperty(appExtensionTarget, "PROVISIONING_PROFILE_SPECIFIER", GetSocialSettings.ExtensionProvisioningProfile);
+            }
+            project.AddFrameworkToProject(mainTarget, "UserNotifications.framework", false);
         }
 
         static void RemoveUiPluginFiles(PBXProject project, string target)

@@ -259,15 +259,14 @@ public class ActivityFeedApiSection : DemoMenuSection
 
     void ReportActivityById()
     {
-        
         var popup = new MNPopup ("Report Activity", "What's wrong ?");
-        popup.AddAction("Spam", () => { _ReportActivityById(ReportingReason.Spam); });
-        popup.AddAction("Inappropriate Content", () => { _ReportActivityById(ReportingReason.InappropriateContent); });
+        popup.AddAction("Spam", _ReportActivityById(ReportingReason.Spam));
+        popup.AddAction("Inappropriate Content", _ReportActivityById(ReportingReason.InappropriateContent));
         popup.AddAction("Cancel", () => { });
         popup.Show();            
     }
 
-    private Action _ReportActivityById(ReportingReason reportingReason)
+    private MNPopup.MNPopupAction _ReportActivityById(ReportingReason reportingReason)
     {
         return () =>
         {
@@ -311,18 +310,15 @@ public class ActivityFeedApiSection : DemoMenuSection
 
     ActivityPostContent GetPost()
     {
-        ActivityPostContent.Builder builder = ActivityPostContent.CreateBuilder();
-        builder.WithText("My awesome post");
-        builder.WithButton("Awesome Button", "action_id");
-        if (_postImage)
-        {
-            builder.WithImage(Image);
-        }
-        if (_postVideo)
-        {
-            builder.WithVideo(Video);
-        }
-        return builder.Build();
+        var mediaAttachment = _postImage ? MediaAttachment.Image(Image)
+            : _postVideo ? MediaAttachment.Video(Video)
+            : null;
+        
+        return ActivityPostContent.CreateBuilder()
+            .WithText("My awesome post")
+            .WithButton("Awesome Button", "action_id")
+            .WithMediaAttachment(mediaAttachment)
+            .Build();
     }
 
     void LikeActivity()
@@ -345,11 +341,6 @@ public class ActivityFeedApiSection : DemoMenuSection
     }
 
     #endregion
-
-    void OnActivityActionClicked(string actionId, ActivityPost post)
-    {
-        _console.LogD(string.Format("[{0}] button clicked on post: {1}", actionId, post));
-    }
 
     void OnError(GetSocialError error)
     {

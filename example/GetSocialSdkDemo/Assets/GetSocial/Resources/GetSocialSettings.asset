@@ -28,3 +28,6 @@ MonoBehaviour:
   _isIosPushEnabled: 1
   _isAndroidPushEnabled: 1
   _isAppIdValid: 1
+  _isRichNotificationsEnabled: 1
+  _extensionBundleId: im.getsocial.demo.unity.getsocialnotificationextension
+  _extensionProvisioningProfile: GetSocialNotificationExtension Unity - Development

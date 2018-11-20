@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 #if UNITY_IOS
@@ -18,18 +19,6 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
-        /// Gets the image URL.
-        /// </summary>
-        /// <value>The image URL.</value>
-        public string ImageUrl { get; private set; }
-
-        /// <summary>
-        /// Gets the image.
-        /// </summary>
-        /// <value>Invite content image.</value>
-        public Texture2D Image { get; private set; }
-
-        /// <summary>
         /// Gets the subject of ivite.
         /// </summary>
         /// <value>The subject of invite.</value>
@@ -42,26 +31,40 @@ namespace GetSocialSdk.Core
         public string Text { get; private set; }
         
         /// <summary>
-        /// Gets the gif url.
+        /// Gets the image URL.
         /// </summary>
-        /// <value>Invite content gif url.</value>
-        public string GifUrl { get; private set; }
+        /// <value>The image URL.</value>
+        [Obsolete]
+        public string ImageUrl 
+        {
+            get { return null; }
+        }
         
         /// <summary>
-        /// Gets the video url.
+        /// Gets the image.
         /// </summary>
-        /// <value>Invite content video url.</value>
-        public string VideoUrl { get; private set; }
-
+        /// <value>Invite content image.</value>
+        [Obsolete]
+        public Texture2D Image 
+        {
+            get { return null; }
+        }
+        
         /// <summary>
         /// Gets the video content.
         /// </summary>
         /// <value>Invite video content.</value>
-        public byte[] Video { get; private set; }
+        [Obsolete]
+        public byte[] Video
+        {
+            get { return null; }
+        }
+
+        private MediaAttachment _mediaAttachment;
 
         public override string ToString()
         {
-            return string.Format("[InviteContent: ImageUrl={0}, Subject={1}, Text={2}, HasImage={3}, GifUrl={4}, VideoUrl={5}]", ImageUrl, Subject, Text, Image != null, GifUrl, VideoUrl);
+            return string.Format("[InviteContent: Subject={0}, Text={1}, HasAttachment={2}]", Subject, Text, _mediaAttachment != null);
         }
 
         /// <summary>
@@ -103,10 +106,10 @@ namespace GetSocialSdk.Core
             /// </summary>
             /// <param name="imageUrl">Invite image url.</param>
             /// <returns>The builder instance.</returns>
+            [Obsolete("Use WithMediaAttachment instead")]
             public Builder WithImageUrl(string imageUrl)
             {
-                _inviteContent.ImageUrl = imageUrl;
-                return this;
+                return WithMediaAttachment(MediaAttachment.ImageUrl(imageUrl));
             }
 
             /// <summary>
@@ -114,10 +117,10 @@ namespace GetSocialSdk.Core
             /// </summary>
             /// <param name="image">Invite image</param>
             /// <returns>The builder instance.</returns>
+            [Obsolete("Use WithMediaAttachment instead")]
             public Builder WithImage(Texture2D image)
             {
-                _inviteContent.Image = image;
-                return this;
+                return WithMediaAttachment(MediaAttachment.Image(image));
             }
 
             /// <summary>
@@ -125,9 +128,20 @@ namespace GetSocialSdk.Core
             /// </summary>
             /// <param name="videoBytes">Invite video</param>
             /// <returns>The builder instance.</returns>
+            [Obsolete("Use WithMediaAttachment instead")]
             public Builder WithVideo(byte[] videoBytes)
             {
-                _inviteContent.Video = videoBytes;
+                return WithMediaAttachment(MediaAttachment.Video(videoBytes));
+            }
+
+            /// <summary>
+            /// Add media attachment.
+            /// </summary>
+            /// <param name="mediaAttachment">Media attachment.</param>
+            /// <returns>The builder instance.</returns>
+            public Builder WithMediaAttachment(MediaAttachment mediaAttachment)
+            {
+                _inviteContent._mediaAttachment = mediaAttachment;
                 return this;
             }
 
@@ -138,13 +152,9 @@ namespace GetSocialSdk.Core
             {
                 return new InviteContent
                 {
-                    ImageUrl = _inviteContent.ImageUrl,
-                    Image = _inviteContent.Image,
                     Subject = _inviteContent.Subject,
                     Text = _inviteContent.Text,
-                    GifUrl =  _inviteContent.GifUrl,
-                    VideoUrl = _inviteContent.VideoUrl,
-                    Video = _inviteContent.Video
+                    _mediaAttachment = _inviteContent._mediaAttachment
                 };
             }
         }
@@ -159,21 +169,13 @@ namespace GetSocialSdk.Core
             {
                 inviteContentBuilderAJO.CallAJO("withSubject", Subject);
             }
-            if (ImageUrl != null)
-            {
-                inviteContentBuilderAJO.CallAJO("withImageUrl", ImageUrl);
-            }
-            if (Image != null)
-            {
-                inviteContentBuilderAJO.CallAJO("withImage", Image.ToAjoBitmap());
-            }
             if (Text != null)
             {
                 inviteContentBuilderAJO.CallAJO("withText", Text);
             }
-            if (Video != null)
+            if (_mediaAttachment != null)
             {
-                inviteContentBuilderAJO.CallAJO("withVideo", Video);
+                inviteContentBuilderAJO.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
             }
             return inviteContentBuilderAJO.CallAJO("build");
         }
@@ -184,11 +186,7 @@ namespace GetSocialSdk.Core
             {
                 {"Subject", Subject},
                 {"Text", Text},
-                {"ImageUrl", ImageUrl},
-                {"Image", Image.TextureToBase64()},
-                {"GifUrl", GifUrl},
-                {"VideoUrl", VideoUrl},
-                {"Video", Video.ByteArrayToBase64()}
+                {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()}
             };
             return GSJson.Serialize(jsonDic);
         }

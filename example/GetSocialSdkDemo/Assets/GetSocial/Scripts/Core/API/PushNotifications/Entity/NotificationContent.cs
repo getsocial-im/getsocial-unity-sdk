@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-
-#if UNITY_ANDROID
 using UnityEngine;
-#endif
 
 #if UNITY_IOS
 using GetSocialSdk.MiniJSON;
@@ -19,8 +16,8 @@ namespace GetSocialSdk.Core
 
         private string _text;
         private string _title;
-
         private string _templateName;
+        private MediaAttachment _mediaAttachment;
         private readonly Dictionary<string, string> _templatePlaceholders;
 #pragma warning restore 414
 
@@ -153,6 +150,12 @@ namespace GetSocialSdk.Core
             _templatePlaceholders.AddAll(templateData);
             return this;
         }
+
+        public NotificationContent WithMediaAttachment(MediaAttachment mediaAttachment)
+        {
+            _mediaAttachment = mediaAttachment;
+            return this;
+        }
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
@@ -167,6 +170,11 @@ namespace GetSocialSdk.Core
             {
                 notificationContent.CallAJO("withAction", (int) _actionType.Value);
             }
+
+            if (_mediaAttachment != null)
+            {
+                notificationContent.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
+            }
             return notificationContent;
         }
 #elif UNITY_IOS
@@ -178,7 +186,8 @@ namespace GetSocialSdk.Core
                 {"Text", _text},
                 {"ActionData", _actionData},
                 {"Template", _templateName},
-                {"TemplatePlaceholders", _templatePlaceholders}
+                {"TemplatePlaceholders", _templatePlaceholders},
+                {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()}
             };
             if (_actionType != null) 
             {

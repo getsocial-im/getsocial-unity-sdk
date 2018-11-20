@@ -285,7 +285,35 @@ namespace GetSocialSdk.Editor
                     {
                         DrawDashboardSettingToogle("Push notifications environment",
                             "    " + GetSocialSettings.IosPushEnvironment.Capitalize());
+                        var richNotificationsEnabled = new GUIContent("Enable Rich Notifications [?]", "If it is enabled, notifications with images/videos can be displayed.");
+                        var enableRichNotifications = EditorGUILayout.ToggleLeft(richNotificationsEnabled, GetSocialSettings.IsRichPushNotificationsEnabled);
+                        SetRichNotificationsEnabled(enableRichNotifications);
+                        
+                        // extension bundle id
+                        EditorGUILayout.BeginHorizontal();
+                        var extensionBundleIdLabel = new GUIContent("Notification Extension Bundle Id [?]", "Bundle id of the extension.");
+                        EditorGUILayout.LabelField(extensionBundleIdLabel, EditorGuiUtils.OneThirdWidth);
+                        var extensionBundleId = EditorGUILayout.TextField(GetSocialSettings.ExtensionBundleId, EditorGuiUtils.OneThirdWidth);
+                        SetExtensionBundleId(extensionBundleId);
+                        if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
+                        {
+                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/social-notifications/unity/rich-notifications/#ios?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                        }
+                        EditorGUILayout.EndHorizontal();
+
+                        // extension provisioning profile
+                        EditorGUILayout.BeginHorizontal();
+                        var extensionProvisioningProfileLabel = new GUIContent("Notification Extension Provisioning Profile [?]", "Name of the provision profile used for signing the extension, or leave it empty if you use automatic signing");
+                        EditorGUILayout.LabelField(extensionProvisioningProfileLabel, EditorGuiUtils.OneThirdWidth);
+                        var extensionProvisioningProfile = EditorGUILayout.TextField(GetSocialSettings.ExtensionProvisioningProfile, EditorGuiUtils.OneThirdWidth);
+                        SetExtensionProvisioningProfile(extensionProvisioningProfile);
+                        if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
+                        {
+                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/social-notifications/unity/rich-notifications/#ios?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                        }
+                        EditorGUILayout.EndHorizontal();
                     }
+
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -378,17 +406,32 @@ namespace GetSocialSdk.Editor
                 string label = "Signing-certificate fingerprint [?]";
                 GUIContent content = new GUIContent(label,
                     "SHA-256 hash of the keystore you use to sign your application.");
-                EditorGuiUtils.SelectableLabelField(content, GetSocialEditorUtils.SigningKeyHash);
+                if (GetSocialEditorUtils.KeyStoreUtilError == null)
+                {
+                    EditorGuiUtils.SelectableLabelField(content, GetSocialEditorUtils.SigningKeyHash);
+                }
+                else
+                {
+                    EditorGUILayout.LabelField(content, EditorGuiUtils.OneThirdWidth);
+                    if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
+                    {
+                        Application.OpenURL(string.Format("https://docs.getsocial.im/knowledge-base/android-signing-key-sha256/?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                    }
+                }
             }
-            if (GetSocialEditorUtils.KeyStoreUtilError != null)
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.HelpBox(GetSocialEditorUtils.KeyStoreUtilError,
-                    MessageType.Error);
-            }
-            if (!GetSocialEditorUtils.UserDefinedKeystore())
-            {
-                EditorGUILayout.HelpBox("You are using default Android keystore to sign your application. Are you sure this is what you want?",
-                    MessageType.Warning);
+                if (GetSocialEditorUtils.KeyStoreUtilError != null)
+                {
+                    EditorGUILayout.HelpBox(GetSocialEditorUtils.KeyStoreUtilError,
+                        MessageType.Warning);
+                }
+                if (!GetSocialEditorUtils.UserDefinedKeystore())
+                {
+                    EditorGUILayout.HelpBox("You are using default Android keystore to sign your application. Are you sure this is what you want?",
+                        MessageType.Warning);
+                }
             }
         }
 
@@ -469,6 +512,30 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoInitEnabled != value)
             {
                 GetSocialSettings.IsAutoInitEnabled = value;
+            }
+        }
+
+        private void SetRichNotificationsEnabled(bool value)
+        {
+            if (GetSocialSettings.IsRichPushNotificationsEnabled != value)
+            {
+                GetSocialSettings.IsRichPushNotificationsEnabled = value;
+            }
+        }
+
+        private void SetExtensionBundleId(string value)
+        {
+            if (!GetSocialSettings.ExtensionBundleId.Equals(value))
+            {
+                GetSocialSettings.ExtensionBundleId = value;
+            }
+        }
+
+        private void SetExtensionProvisioningProfile(string value)
+        {
+            if (!GetSocialSettings.ExtensionProvisioningProfile.Equals(value))
+            {
+                GetSocialSettings.ExtensionProvisioningProfile = value;
             }
         }
 

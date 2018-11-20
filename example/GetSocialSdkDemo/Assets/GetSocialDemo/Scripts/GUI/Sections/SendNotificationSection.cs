@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace GetSocialDemo.Scripts.GUI.Sections
         };
         private string _title;
         private string _text;
+        private string _imageUrl = "";
+        private string _videoUrl = "";
 
         private Notification.Type? _action;
         private readonly List<Data> _actionData = new List<Data>();
@@ -23,7 +26,9 @@ namespace GetSocialDemo.Scripts.GUI.Sections
 
         private bool _referrer;
         private bool _referredUsers;
-        private bool _frieds;
+        private bool _friends;
+        private bool _useCustomImage;
+        private bool _useCustomVideo;
         private readonly List<UserId> _userIds = new List<UserId>();
 
         private int _selectedPlaceholder;
@@ -45,6 +50,30 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             {
                 GUILayout.Label("Notification Text: ", GSStyles.NormalLabelText);
                 _text = GUILayout.TextField(_text, GSStyles.TextField);
+            });
+            
+            DemoGuiUtils.DrawRow(() =>
+            {
+                GUILayout.Label("Image url: ", GSStyles.NormalLabelText);
+                _imageUrl = GUILayout.TextField(_imageUrl, GSStyles.TextField);
+            });
+            
+            DemoGuiUtils.DrawRow(() =>
+            {
+                GUILayout.Label("Video url: ", GSStyles.NormalLabelText);
+                _videoUrl = GUILayout.TextField(_videoUrl, GSStyles.TextField);
+            });
+            
+            DemoGuiUtils.DrawRow(() =>
+            {
+                _useCustomImage = GUILayout.Toggle(_useCustomImage, "", GSStyles.Toggle);
+                GUILayout.Label("Send Custom Image", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+            });
+            
+            DemoGuiUtils.DrawRow(() =>
+            {
+                _useCustomVideo = GUILayout.Toggle(_useCustomVideo, "", GSStyles.Toggle);
+                GUILayout.Label("Send Custom Video", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
             });
             
             DemoGuiUtils.DrawRow(() =>
@@ -99,7 +128,7 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             });
             DemoGuiUtils.DrawRow(() =>
             {
-                _frieds = GUILayout.Toggle(_frieds, "Friends", GSStyles.Toggle);
+                _friends = GUILayout.Toggle(_friends, "Friends", GSStyles.Toggle);
                 GUILayout.Label("Friends", GSStyles.NormalLabelText);
             });
             
@@ -116,16 +145,23 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 {
                     recipients.Add(SendNotificationPlaceholders.Receivers.ReferredUsers);
                 }
-                if (_frieds)
+                if (_friends)
                 {
                     recipients.Add(SendNotificationPlaceholders.Receivers.Friends);
                 }
+
+                var mediaAttachment = _imageUrl.Length > 0 ? MediaAttachment.ImageUrl(_imageUrl)
+                    : _videoUrl.Length > 0 ? MediaAttachment.VideoUrl(_videoUrl)
+                    : _useCustomImage ? MediaAttachment.Image(Resources.Load<Texture2D>("activityImage"))
+                    : _useCustomVideo ? MediaAttachment.Video(DemoUtils.LoadSampleVideoBytes())
+                    : null;
 
                 var content = NotificationContent.NotificationWithText(_text)
                     .WithTitle(_title)
                     .AddActionData(_actionData.ToDictionary(data => data.Key, data => data.Val))
                     .WithTemplateName(_templateName)
-                    .AddTemplatePlaceholders(_templatePlaceholders.ToDictionary(data => data.Key, data => data.Val));
+                    .AddTemplatePlaceholders(_templatePlaceholders.ToDictionary(data => data.Key, data => data.Val))
+                    .WithMediaAttachment(mediaAttachment);
 
                 if (_action != null)
                 {

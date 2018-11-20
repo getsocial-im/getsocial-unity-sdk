@@ -14,6 +14,8 @@
     [dictionary gs_setValueOrNSNull:self.text forKey:@"Text"];
     [dictionary gs_setValueOrNSNull:self.actionData forKey:@"Data"];
     [dictionary gs_setValueOrNSNull:self.notificationId forKey:@"Id"];
+    [dictionary gs_setValueOrNSNull:self.imageUrl forKey:@"ImageUrl"];
+    [dictionary gs_setValueOrNSNull:self.videoUrl forKey:@"VideoUrl"];
     [dictionary gs_setValueOrNSNull:@(self.type) forKey:@"Type"];;
     [dictionary gs_setValueOrNSNull:@(self.action) forKey:@"ActionType"];
     [dictionary gs_setValueOrNSNull:@(self.wasRead) forKey:@"WasRead"];

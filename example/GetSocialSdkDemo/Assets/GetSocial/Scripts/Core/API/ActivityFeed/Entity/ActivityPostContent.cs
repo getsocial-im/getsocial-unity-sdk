@@ -15,10 +15,9 @@ namespace GetSocialSdk.Core
     {
 #pragma warning disable 414
         string _text;
-        Texture2D _image;
         string _buttonTitle;
         string _buttonAction;
-        byte[] _video;
+        MediaAttachment _mediaAttachment;
         
 #pragma warning restore 414
         ActivityPostContent()
@@ -44,10 +43,10 @@ namespace GetSocialSdk.Core
                 return this;
             }
 
+            [Obsolete("Use WithMediaAttachment instead")]
             public Builder WithImage(Texture2D image)
             {
-                _content._image = image;
-                return this;
+                return WithMediaAttachment(MediaAttachment.Image(image));
             }
 
             public Builder WithButton(String title, String action)
@@ -57,9 +56,15 @@ namespace GetSocialSdk.Core
                 return this;
             }
 
+            [Obsolete("Use WithMediaAttachment instead")]
             public Builder WithVideo(byte[] video)
             {
-                _content._video = video;
+                return WithMediaAttachment(MediaAttachment.Video(video));
+            }
+
+            public Builder WithMediaAttachment(MediaAttachment mediaAttachment)
+            {
+                _content._mediaAttachment = mediaAttachment;
                 return this;
             }
 
@@ -79,17 +84,13 @@ namespace GetSocialSdk.Core
             {
                 activityPostContentBuilderAJO.CallAJO("withText", _text);
             }
-            if (_image != null)
-            {
-                activityPostContentBuilderAJO.CallAJO("withImage", _image.ToAjoBitmap());
-            }
             if (_buttonAction != null && _buttonTitle != null)
             {
                 activityPostContentBuilderAJO.CallAJO("withButton", _buttonTitle, _buttonAction);
             }
-            if (_video != null)
+            if (_mediaAttachment != null)
             {
-                activityPostContentBuilderAJO.CallAJO("withVideo", _video);
+                activityPostContentBuilderAJO.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
             }
             return activityPostContentBuilderAJO.CallAJO("build");
         }
@@ -103,8 +104,7 @@ namespace GetSocialSdk.Core
                 {"Text", _text},
                 {"ButtonTitle", _buttonTitle},
                 {"ButtonAction", _buttonAction},
-                {"Image", _image.TextureToBase64()},
-                {"Video", _video.ByteArrayToBase64()}
+                {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()}
             };
             return GSJson.Serialize(json);
         }

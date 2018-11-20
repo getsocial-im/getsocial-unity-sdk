@@ -99,7 +99,7 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         get
         {
-            LinkParams linkParams = new LinkParams
+            var linkParams = new LinkParams
             {
                 {_key1, _value1},
                 {_key2, _value2},
@@ -133,19 +133,15 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         get
         {
-            InviteContent.Builder builder = InviteContent.CreateBuilder();
-            builder.WithSubject(_customWindowTitle);
-            builder.WithText(_customText);
-            if (_sendCustomImage)
-            {
-                builder.WithImage(Image);
-            }
-            if (_sendCustomVideo)
-            {
-                builder.WithVideo(Video);
-            }
+            var mediaAttachment = _sendCustomImage ? MediaAttachment.Image(Image)
+                : _sendCustomVideo ? MediaAttachment.Video(Video)
+                : null;
 
-            return builder.Build();
+            return InviteContent.CreateBuilder()
+                .WithSubject(_customWindowTitle)
+                .WithText(_customText)
+                .WithMediaAttachment(mediaAttachment)
+                .Build();
         }
     }
 
