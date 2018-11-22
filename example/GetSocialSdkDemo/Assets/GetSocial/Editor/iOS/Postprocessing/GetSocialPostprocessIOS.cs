@@ -112,8 +112,15 @@ namespace GetSocialSdk.Editor
             project.SetBuildProperty(appExtensionTarget, "CODE_SIGN_STYLE", PlayerSettings.iOS.appleEnableAutomaticSigning ?  "Automatic" : "Manual");
             if (!PlayerSettings.iOS.appleEnableAutomaticSigning)
             {
-                project.SetBuildProperty(appExtensionTarget, "PROVISIONING_PROFILE", GetSocialSettings.ExtensionProvisioningProfile);
-                project.SetBuildProperty(appExtensionTarget, "PROVISIONING_PROFILE_SPECIFIER", GetSocialSettings.ExtensionProvisioningProfile);
+                if (GetSocialSettings.ExtensionProvisioningProfile.Length == 0)
+                {
+                    Debug.LogError("Notification Extension Provisioning Profile must be specified.");
+                }
+                else
+                {
+                    project.SetBuildProperty(appExtensionTarget, "PROVISIONING_PROFILE", GetSocialSettings.ExtensionProvisioningProfile);
+                    project.SetBuildProperty(appExtensionTarget, "PROVISIONING_PROFILE_SPECIFIER", GetSocialSettings.ExtensionProvisioningProfile);
+                }
             }
             project.AddFrameworkToProject(mainTarget, "UserNotifications.framework", false);
         }

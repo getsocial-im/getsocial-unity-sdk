@@ -294,6 +294,10 @@ namespace GetSocialSdk.Editor
                         var extensionBundleIdLabel = new GUIContent("Notification Extension Bundle Id [?]", "Bundle id of the extension.");
                         EditorGUILayout.LabelField(extensionBundleIdLabel, EditorGuiUtils.OneThirdWidth);
                         var extensionBundleId = EditorGUILayout.TextField(GetSocialSettings.ExtensionBundleId, EditorGuiUtils.OneThirdWidth);
+                        if (extensionBundleId.Length == 0)
+                        {
+                            extensionBundleId = PlayerSettings.applicationIdentifier + ".getsocialextension";
+                        }
                         SetExtensionBundleId(extensionBundleId);
                         if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
                         {
