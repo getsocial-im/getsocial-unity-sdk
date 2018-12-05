@@ -41,20 +41,8 @@ namespace GetSocialSdk.Core
             nativeBridge = FindBridgeImplementation(AvailableRuntimes.OSX);
 #elif UNITY_EDITOR
             nativeBridge = FindBridgeImplementation(AvailableRuntimes.Editor);
-#else
-            nativeBridge = GetSocialNativeBridgeMock.Instance;
 #endif
-            if (nativeBridge != null)
-            {
-                return nativeBridge;
-            }
-            
-            if (Application.isEditor)
-            {
-                return GetSocialNativeBridgeMock.Instance;
-            }
-            
-            throw new Exception("Could not find native implementation.");
+            return nativeBridge ?? GetSocialNativeBridgeMock.Instance;
         }
 
         private static IGetSocialNativeBridge FindBridgeImplementation(AvailableRuntimes currentRuntime)
