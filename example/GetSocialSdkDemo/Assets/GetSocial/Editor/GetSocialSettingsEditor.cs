@@ -296,7 +296,7 @@ namespace GetSocialSdk.Editor
                         var extensionBundleId = EditorGUILayout.TextField(GetSocialSettings.ExtensionBundleId, EditorGuiUtils.OneThirdWidth);
                         if (extensionBundleId.Length == 0)
                         {
-                            extensionBundleId = PlayerSettings.applicationIdentifier + ".getsocialextension";
+                            extensionBundleId = PlayerSettingsCompat.bundleIdentifier + ".getsocialextension";
                         }
                         SetExtensionBundleId(extensionBundleId);
                         if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))

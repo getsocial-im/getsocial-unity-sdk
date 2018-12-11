@@ -163,13 +163,15 @@ namespace GetSocialSdk.Editor
 
         static void EmbedFrameworks(PBXProject project, string target)
         {
-            string frameworksPath =
-                GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
-            string defaultLocationInProj = Path.Combine(Path.Combine("Frameworks", frameworksPath), "Plugins/iOS");
             const string coreFrameworkName = "GetSocial.framework";
             const string uiFrameworkName = "GetSocialUI.framework";
-            var relativeCoreFrameworkPath = Path.Combine(defaultLocationInProj, coreFrameworkName);
-            var relativeUiFrameworkPath = Path.Combine(defaultLocationInProj, uiFrameworkName);
+
+            var frameworksPath =
+                GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
+            
+            var defaultLocationInProj = "Frameworks/" + frameworksPath + "/Plugins/iOS/";
+            var relativeCoreFrameworkPath = defaultLocationInProj + coreFrameworkName;
+            var relativeUiFrameworkPath = defaultLocationInProj + uiFrameworkName;
             
             project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
             
@@ -375,7 +377,7 @@ namespace GetSocialSdk.Editor
             var fullPath = string.Empty;
             if (!string.IsNullOrEmpty(GetSocialSettings.UiConfigurationDefaultFilePath))
             {
-                fullPath = Path.Combine("Data/Raw/", GetSocialSettings.UiConfigurationDefaultFilePath);
+                fullPath = "Data/Raw/" + GetSocialSettings.UiConfigurationDefaultFilePath;
             }
             plistDocument.root.SetString("im.getsocial.sdk.UiConfigurationFile", fullPath);
         }
