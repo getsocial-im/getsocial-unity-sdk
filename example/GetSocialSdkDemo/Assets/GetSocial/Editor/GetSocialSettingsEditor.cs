@@ -405,23 +405,24 @@ namespace GetSocialSdk.Editor
 
         static void DrawAndroidSigningSignatureHash()
         {
-            using (new EditorGUILayout.HorizontalScope())
+            string label = "Signing-certificate fingerprint [?]";
+            GUIContent content = new GUIContent(label,
+                "SHA-256 hash of the keystore you use to sign your application.");
+
+            var hasError = GetSocialEditorUtils.KeyStoreUtilError != null;
+            if (hasError) 
             {
-                string label = "Signing-certificate fingerprint [?]";
-                GUIContent content = new GUIContent(label,
-                    "SHA-256 hash of the keystore you use to sign your application.");
-                if (GetSocialEditorUtils.KeyStoreUtilError == null)
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField(label, GUILayout.Height(16), EditorGuiUtils.OneThirdWidth);
+                if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
                 {
-                    EditorGuiUtils.SelectableLabelField(content, GetSocialEditorUtils.SigningKeyHash);
+                    Application.OpenURL(string.Format("https://docs.getsocial.im/knowledge-base/android-signing-key-sha256/?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
                 }
-                else
-                {
-                    EditorGUILayout.LabelField(content, EditorGuiUtils.OneThirdWidth);
-                    if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
-                    {
-                        Application.OpenURL(string.Format("https://docs.getsocial.im/knowledge-base/android-signing-key-sha256/?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
-                    }
-                }
+                EditorGUILayout.EndHorizontal();
+            }
+            else 
+            {
+                EditorGuiUtils.SelectableLabelField(content, GetSocialEditorUtils.SigningKeyHash);
             }
 
             using (new EditorGUILayout.HorizontalScope())

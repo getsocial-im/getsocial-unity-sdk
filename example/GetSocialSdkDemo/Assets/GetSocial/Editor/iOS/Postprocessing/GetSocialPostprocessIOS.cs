@@ -38,7 +38,10 @@ namespace GetSocialSdk.Editor
             {
                 AddOtherLinkerFlags(project, target);
                 SetupDeepLinking(project, projectPath, target);
-                EmbedFrameworks(project, target);
+#if !UNITY_2018_3_OR_NEWER 
+                    EmbedFrameworks(project, target);
+#endif
+
                 AddStripFrameworksScriptBuildPhase(project, target);
                 RemoveUiPluginFiles(project, target);
                 if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)

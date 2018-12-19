@@ -283,17 +283,25 @@ namespace GetSocialSdk.Editor
             return success;
         }        
     
-        private static void UpdatePlatformState(string[] paths, BuildTarget platform, bool enabled)
+        internal static void UpdatePlatformState(string[] paths, BuildTarget platform, bool enabled)
         {
             if (paths.Length == 0)
             {
                 return;
             }
-            
-            var plugin = AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(paths.First())) as PluginImporter;
+
+            var filePath = AssetDatabase.GUIDToAssetPath(paths.First());
+            var plugin = AssetImporter.GetAtPath(filePath) as PluginImporter;
             if (plugin == null) return;
             ClearAllPlatforms(plugin);
             plugin.SetCompatibleWithPlatform(platform, enabled);
+
+#if UNITY_2018_3_OR_NEWER
+            if (platform == BuildTarget.iOS && filePath.EndsWith("framework"))
+            {
+                plugin.SetPlatformData(platform, "AddToEmbeddedBinaries", "true");
+            }
+#endif
         }
 
         private static void ClearAllPlatforms(PluginImporter plugin)

@@ -92,6 +92,7 @@ namespace GetSocialSdk.Editor
         {
             get
             {
+                keystoreUtilError = null;
                 string keystorePath = DebugKeyStorePath;
                 string keystorePass = "android";
                 string keyAlias = "androiddebugkey";
@@ -181,38 +182,23 @@ namespace GetSocialSdk.Editor
         private static string GetKeyHash(string keystoreName, string keystorePassword, string aliasName)
         {
             var proc = new Process();
-            string arguments;
-            if (aliasName != null)
-            {
-                arguments = @"""keytool -list -v -keystore {0} -storepass {1} -alias {2}"""; 
-            }
-            else
-            {
-                arguments = @"""keytool -list -v -keystore {0} -storepass {1}""";
-            } 
-            if (IsUnix())
-            {
-                proc.StartInfo.FileName = "bash";
-                arguments = @"-c " + arguments;
-            }
-            else
-            {
-                proc.StartInfo.FileName = "cmd";
-                arguments = @"/C " + arguments;
-            }
+            var hasAlias = !string.IsNullOrEmpty(aliasName);
+            var arguments = hasAlias
+                ? @"{1} ""keytool -list -v -keystore {0}{2}{0} -storepass {0}{3}{0} -alias {0}{4}{0}""" 
+                : @"{1} ""keytool -list -v -keystore {0}{2}{0} -storepass {0}{3}{0}""";
 
-            if (aliasName != null)
-            {
-                proc.StartInfo.Arguments = string.Format(arguments, keystoreName, keystorePassword, aliasName);
-            }
-            else
-            {
-                proc.StartInfo.Arguments = string.Format(arguments, keystoreName, keystorePassword);
-            }
-
+            proc.StartInfo.FileName = IsUnix() ? "bash" : "cmd";
+            var prefix = IsUnix() ? "-c" : "/C";
+            var quotes = IsUnix() ? "'" : @"""";
+            
+            proc.StartInfo.Arguments = hasAlias
+                ? string.Format(arguments, quotes, prefix, keystoreName, keystorePassword, aliasName) 
+                : string.Format(arguments, quotes, prefix, keystoreName, keystorePassword);
+            
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.RedirectStandardOutput = true;
+
             proc.Start();
             var keyHash = new StringBuilder();
             while (!proc.HasExited)
@@ -226,7 +212,6 @@ namespace GetSocialSdk.Editor
             }
 
             string response = keyHash.ToString();
-
             const string errorLiteral = "keytool error:";
             if (response.Contains(errorLiteral))
             {
