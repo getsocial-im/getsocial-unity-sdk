@@ -283,13 +283,14 @@ NS_ASSUME_NONNULL_BEGIN
         [GetSocialUser notificationsCountWithQuery:notificationsQuery success:intBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
 
-    void _gs_setNotificationsRead(const char* ids, bool read,
+    void _gs_setNotificationsStatus(const char* ids, const char* status,
                                     VoidCallbackDelegate successCallback, void * onSuccessActionPtr,
                                     FailureCallbackDelegate failureCallback, void * onFailureActionPtr)
     {
         NSArray *notificationsIds = [GetSocialBridgeUtils createArrayFromCString:ids];
+        NSString *statusStr = [GetSocialBridgeUtils createNSStringFrom:status];
         
-        [GetSocialUser setNotificationsRead:notificationsIds read:read success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+        [GetSocialUser setNotificationsStatus:notificationsIds status:statusStr success:completeBlock(successCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
         
     void _gs_setPushNotificationsEnabled(bool isEnabled,
@@ -754,19 +755,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Analytics
     
-    void _gs_trackPurchaseData(const char* purchaseDataJson,
-                               VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
-                               FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    BOOL _gs_trackPurchaseEvent(const char* purchaseDataJson)
     {
         NSDictionary *purchaseDataStrJson = [GetSocialBridgeUtils createDictionaryFromCString:purchaseDataJson];
         GetSocialPurchaseData *purchaseData = [GetSocialJsonUtils deserializePurchaseData:purchaseDataStrJson];
         
-        [GetSocial trackPurchaseData:purchaseData
-                             success:completeBlock(successCallback, onSuccessActionPtr)
-                             failure:errorBlock(failureCallback, onFailureActionPtr)];
-
+        return [GetSocial trackPurchaseEvent:purchaseData];
     }
     
+    BOOL _gs_trackCustomEvent(const char* eventName, const char* eventPropertiesJson)
+    {
+        NSString *eventNameStr = [GetSocialBridgeUtils createNSStringFrom:eventName];
+        NSDictionary *eventProperties = eventPropertiesJson != nil ? [GetSocialBridgeUtils createDictionaryFromCString:eventPropertiesJson] : nil;
+        
+        return [GetSocial trackCustomEventWithName:eventNameStr eventProperties:eventProperties];
+    }
+    
+#pragma mark - Actions
+    void _gs_processAction(const char * actionJson)
+    {
+        NSDictionary *action = [GetSocialBridgeUtils createDictionaryFromCString:actionJson];
+        GetSocialActionBuilder *builder = [[GetSocialActionBuilder alloc] initWithType:action[@"Type"]];
+        [builder addActionData:action[@"Data"]];
+        [GetSocial processAction:[builder build] ];
+    }
+
 #pragma mark - Internal
     void _gs_handleOnStartUnityEvent()
     {

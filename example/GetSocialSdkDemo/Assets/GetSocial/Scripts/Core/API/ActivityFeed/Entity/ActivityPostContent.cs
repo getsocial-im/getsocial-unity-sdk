@@ -13,13 +13,15 @@ namespace GetSocialSdk.Core
     /// </summary>
     public sealed class ActivityPostContent : IConvertableToNative
     {
+        
 #pragma warning disable 414
         string _text;
         string _buttonTitle;
         string _buttonAction;
         MediaAttachment _mediaAttachment;
-        
+        GetSocialAction _action;
 #pragma warning restore 414
+        
         ActivityPostContent()
         {
         }
@@ -49,7 +51,8 @@ namespace GetSocialSdk.Core
                 return WithMediaAttachment(MediaAttachment.Image(image));
             }
 
-            public Builder WithButton(String title, String action)
+            [Obsolete("Use WithButton(string, GetSocialAction) instead")]
+            public Builder WithButton(string title, string action)
             {
                 _content._buttonTitle = title;
                 _content._buttonAction = action;
@@ -68,31 +71,51 @@ namespace GetSocialSdk.Core
                 return this;
             }
 
+            public Builder WithButton(string title, GetSocialAction action)
+            {
+                _content._buttonTitle = title;
+                _content._action = action;
+                return this;
+            }
+
             public ActivityPostContent Build()
             {
-                return _content;
+                return new ActivityPostContent
+                {
+                    _buttonAction = _content._buttonAction,
+                    _buttonTitle = _content._buttonTitle,
+                    _action = _content._action,
+                    _text = _content._text,
+                    _mediaAttachment = _content._mediaAttachment
+                };
             }
         }
 
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
-            
-            var activityPostContentBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
+            var activityPostContentBuilderAjo = new AndroidJavaObject("im.getsocial.sdk.activities.ActivityPostContent$Builder");
 
             if (_text != null)
             {
-                activityPostContentBuilderAJO.CallAJO("withText", _text);
+                activityPostContentBuilderAjo.CallAJO("withText", _text);
             }
-            if (_buttonAction != null && _buttonTitle != null)
+            if (_buttonTitle != null)
             {
-                activityPostContentBuilderAJO.CallAJO("withButton", _buttonTitle, _buttonAction);
+                if (_buttonAction != null)
+                {
+                    activityPostContentBuilderAjo.CallAJO("withButton", _buttonTitle, _buttonAction);
+                }
+                if (_action != null)
+                {
+                    activityPostContentBuilderAjo.CallAJO("withButton", _buttonTitle, _action.ToAjo());
+                }
             }
             if (_mediaAttachment != null)
             {
-                activityPostContentBuilderAJO.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
+                activityPostContentBuilderAjo.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
             }
-            return activityPostContentBuilderAJO.CallAJO("build");
+            return activityPostContentBuilderAjo.CallAJO("build");
         }
         
 #elif UNITY_IOS
@@ -104,6 +127,7 @@ namespace GetSocialSdk.Core
                 {"Text", _text},
                 {"ButtonTitle", _buttonTitle},
                 {"ButtonAction", _buttonAction},
+                {"Action", _action == null ? "" : _action.ToJson()},
                 {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()}
             };
             return GSJson.Serialize(json);

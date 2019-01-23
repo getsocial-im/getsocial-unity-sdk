@@ -29,34 +29,48 @@ namespace GetSocialSdk.Core
             Newer
         }
         
-        private static readonly Notification.NotificationTypes[] AllTypes = new Notification.NotificationTypes[0];
-        
+        private static readonly string[] AllTypes = new string[0];
+
 #pragma warning disable 414        
-        private readonly bool? _isRead;
-        private Notification.NotificationTypes[] _types = AllTypes;
+        private readonly string[] _statuses;
+        private string[] _types = AllTypes;  
         private Filter _filter = Filter.NoFilter;
         private string _notificationId;
         private int _limit;
+        private string[] _actions = new string[0];
 #pragma warning restore 414
-
-        private NotificationsQuery(bool? isRead)
+        
+        private NotificationsQuery(params string[] statuses)
         {
-            _isRead = isRead;
+            _statuses = statuses;
         }
 
+        [Obsolete("Use WithStatuses()")]
         public static NotificationsQuery ReadAndUnread() 
         {
-            return new NotificationsQuery(null);
+            return new NotificationsQuery(NotificationStatus.Read, NotificationStatus.Unread);
         }
 
+        [Obsolete("Use WithStatuses()")]
         public static NotificationsQuery Read() 
         {
-            return new NotificationsQuery(true);
+            return new NotificationsQuery(NotificationStatus.Read);
         }
 
+        [Obsolete("Use WithStatuses()")]
         public static NotificationsQuery Unread() 
         {
-            return new NotificationsQuery(false);
+            return new NotificationsQuery(NotificationStatus.Unread);
+        }
+
+        public static NotificationsQuery WithStatuses(params string[] statuses)
+        {
+            return new NotificationsQuery(statuses);
+        }
+
+        public static NotificationsQuery WithAllStatuses()
+        {
+            return new NotificationsQuery();
         }
 
         public NotificationsQuery OfAllTypes() {
@@ -64,7 +78,7 @@ namespace GetSocialSdk.Core
             return this;
         }
 
-        public NotificationsQuery OfTypes(params Notification.NotificationTypes[] types)
+        public NotificationsQuery OfTypes(params string[] types)
         {
             _types = types;
             return this;
@@ -83,26 +97,35 @@ namespace GetSocialSdk.Core
             return this;
         }
 
+        public NotificationsQuery WithActions(params string[] actions)
+        {
+            _actions = actions;
+            return this;
+        }
+        
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
-            var queryClass =
-                new AndroidJavaClass("im.getsocial.sdk.pushnotifications.NotificationsQuery");
-            var query = _isRead.HasValue
-                ? queryClass.CallStaticAJO(_isRead.Value ? "read" : "unread")
-                : queryClass.CallStaticAJO("readAndUnread");
+            var query = new AndroidJavaClass("im.getsocial.sdk.pushnotifications.NotificationsQuery")
+                .CallStaticAJO("withStatuses", _statuses.ToList().ToJavaStringArray());
+            
             query.CallAJO("withLimit", _limit);
             
             if (_types.Length > 0)
             {
-                var types = Array.ConvertAll(_types, type => (int) type);
-                query.CallAJO("ofTypes", types);    
+                query.CallAJO("ofTypes", _types.ToList().ToJavaStringArray() );    
             }
             
             if (_filter != Filter.NoFilter)
             {
                 query.CallAJO("withFilter", _filter.ToAndroidJavaObject(), _notificationId);
             }
+            
+            if (_actions.Length > 0)
+            {
+                query.CallAJO("withActions", _actions.ToList().ToJavaStringArray() );    
+            }
+            
             return query;
         }
     
@@ -111,11 +134,12 @@ namespace GetSocialSdk.Core
         {
             var json = new Dictionary<string, object>
             {
-                {"IsRead", _isRead},
-                {"Types", Array.ConvertAll(_types, type => (int) type)},
+                {"Statuses", _statuses},
+                {"Types", _types},
                 {"Limit", _limit},
                 {"Filter", (int)_filter},
-                {"FilteringNotificationId", _notificationId}
+                {"FilteringNotificationId", _notificationId},
+                {"Actions", _actions}
             };
             return GSJson.Serialize(json);
         }

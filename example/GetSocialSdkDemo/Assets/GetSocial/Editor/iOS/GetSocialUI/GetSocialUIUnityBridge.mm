@@ -17,6 +17,8 @@ typedef void(AvatarClickListenerDelegate)(void *listenerPtr, const char *seriali
 
 typedef void(MentionClickListenerDelegate)(void *listenerPtr, const char *userId);
 
+typedef BOOL(ActionListenerDelegate)(void *listenerPtr, const char *actionJson);
+
 static GetSocialUIPendingAction sPendingAction = nil;
 
 #pragma clang diagnostic push
@@ -113,7 +115,8 @@ bool _gs_showActivityFeedView(const char *windowTitle,
         UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
         AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
         AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
-        AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr) {
+        AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr,
+        ActionListenerDelegate actionListener, void *actionListenerPtr) {
     NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
 
     GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
@@ -126,6 +129,12 @@ bool _gs_showActivityFeedView(const char *windowTitle,
     if (onButtonClickPtr) {
         [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
             callback(onButtonClickPtr, action.UTF8String, post.toJsonCString);
+        }];
+    }
+    
+    if (actionListenerPtr) {
+        [view setActionHandler:^BOOL(GetSocialAction * _Nonnull action) {
+            return actionListener(actionListenerPtr, [action toJsonCString]);
         }];
     }
     
@@ -182,7 +191,8 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
                               UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
                               AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
                               AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
-                              AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr) {
+                                 AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr,
+                                 ActionListenerDelegate actionListener, void *actionListenerPtr) {
     NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
     
     GetSocialUIActivityDetailsView *view = [GetSocialUI createActivityDetailsView:activityIdStr];
@@ -207,6 +217,12 @@ BOOL _gs_showActivityDetailsView(const char *windowTitle,
         [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
             sPendingAction = pendingAction;
             uiActionListener(uiActionListenerPtr, (int) actionType);
+        }];
+    }
+    
+    if (actionListenerPtr) {
+        [view setActionHandler:^BOOL(GetSocialAction * _Nonnull action) {
+            return actionListener(actionListenerPtr, [action toJsonCString]);
         }];
     }
     

@@ -16,6 +16,12 @@ namespace GetSocialSdk.Core
     /// </summary>
     public sealed class ActivitiesQuery : IConvertableToNative
     {
+        
+        private enum Type
+        {
+            Comment, Post
+        }
+        
         /// <summary>
         /// Set of filtering options for <see cref="WithFilter(Filter, string)"/> method
         /// </summary>
@@ -41,7 +47,7 @@ namespace GetSocialSdk.Core
         public const int DefaultLimit = 10;
 
 #pragma warning disable 414        
-        readonly ActivityPost.Type _type;
+        readonly Type _type;
         readonly string _feed;
         readonly string _parentActivityId;
 
@@ -52,7 +58,7 @@ namespace GetSocialSdk.Core
         bool _isFriendsFeed;
         string[] _tags = {};
 #pragma warning restore 414
-        ActivitiesQuery(ActivityPost.Type type, string feed, string parentActivityId)
+        ActivitiesQuery(Type type, string feed, string parentActivityId)
         {
             _type = type;
             _feed = feed;
@@ -61,17 +67,17 @@ namespace GetSocialSdk.Core
 
         public static ActivitiesQuery PostsForFeed(string feed)
         {
-            return new ActivitiesQuery(ActivityPost.Type.Post, feed, null);
+            return new ActivitiesQuery(Type.Post, feed, null);
         }
 
         public static ActivitiesQuery PostsForGlobalFeed()
         {
-            return new ActivitiesQuery(ActivityPost.Type.Post, GlobalFeed, null);
+            return new ActivitiesQuery(Type.Post, GlobalFeed, null);
         }
 
         public static ActivitiesQuery CommentsToPost(string activityId)
         {
-            return new ActivitiesQuery(ActivityPost.Type.Comment, null, activityId);
+            return new ActivitiesQuery(Type.Comment, null, activityId);
         }
 
         public ActivitiesQuery WithLimit(int limit)
@@ -109,7 +115,7 @@ namespace GetSocialSdk.Core
         public AndroidJavaObject ToAjo()
         {
             var activitiesQueryClass = new AndroidJavaClass("im.getsocial.sdk.activities.ActivitiesQuery");
-            var activitiesQuery = _type == ActivityPost.Type.Post
+            var activitiesQuery = _type == Type.Post
                 ? activitiesQueryClass.CallStaticAJO("postsForFeed", _feed)
                 : activitiesQueryClass.CallStaticAJO("commentsToPost", _parentActivityId);
 

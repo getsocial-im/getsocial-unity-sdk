@@ -44,5 +44,13 @@ namespace GetSocialSdk.Core
                 container[property.Key] = property.Value;
             }
         }
+
+        public static void AddAll<T>(this ICollection<T> container, IEnumerable<T> items)
+        {
+            foreach (var property in items)
+            {
+                container.Add(property);
+            }
+        }
     }
 }

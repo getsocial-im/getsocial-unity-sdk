@@ -345,7 +345,7 @@ namespace GetSocialSdk.Core
         {
             Check.Argument.IsNotNull(listener, "Notification Action Listener");
 
-            GetSocialImpl.SetNotificationListener((notification, wasClicked) => listener(notification, wasClicked));
+            GetSocialImpl.SetNotificationListener(listener);
         }
 
         #endregion
@@ -1142,8 +1142,10 @@ namespace GetSocialSdk.Core
             /// Set notifications read or unread.
             /// </summary>
             /// <param name="notificationsIds">List of notifications IDs to change the read status.</param>
+            /// <param name="isRead">read or unread</param>
             /// <param name="onSuccess">Called if operation succeeded.</param>
             /// <param name="onError">Called if operation failed.</param>
+            [Obsolete("Use SetNotificationsStatus")]
             public static void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
                 Action<GetSocialError> onError)
             {
@@ -1151,7 +1153,24 @@ namespace GetSocialSdk.Core
                 Check.Argument.IsNotNull(onSuccess, "onSuccess");
                 Check.Argument.IsNotNull(onError, "onError");
                 
-                GetSocialImpl.SetNotificationsRead(notificationsIds, isRead, onSuccess, onError);
+                GetSocialImpl.SetNotificationsStatus(notificationsIds, NotificationStatus.Read, onSuccess, onError);
+            }
+
+            /// <summary>
+            /// Set notifications status.
+            /// </summary>
+            /// <param name="notificationsIds">List of notifications IDs to change the read status.</param>
+            /// <param name="status">One of <see cref="NotificationStatus"/></param>
+            /// <param name="onSuccess">Called if operation succeeded.</param>
+            /// <param name="onError">Called if operation failed.</param>
+            public static void SetNotificationsStatus(List<string> notificationsIds, string status, Action onSuccess,
+                Action<GetSocialError> onError)
+            {
+                Check.Argument.IsNotNull(notificationsIds, "notificationsIds");
+                Check.Argument.IsNotNull(onSuccess, "onSuccess");
+                Check.Argument.IsNotNull(onError, "onError");
+                
+                GetSocialImpl.SetNotificationsStatus(notificationsIds, status, onSuccess, onError);
             }
 
             /// <summary>
@@ -1199,22 +1218,44 @@ namespace GetSocialSdk.Core
         #endregion
 
         #region Analytics
-
+        
         /// <summary>
         /// Reports in-app purchase to Dashboard. 
         /// </summary>
         /// <param name="purchaseData">Purchase data.</param>
-        /// <param name="onSuccess">Called if data was tracked.</param>
-        /// <param name="onError">Called if operation failed.</param>
-        public static void TrackPurchase(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        /// <returns>true if operation was successful, otherwise false</returns>
+        public static bool TrackPurchaseEvent(PurchaseData purchaseData)
         {
             Check.Argument.IsNotNull(purchaseData, "purchaseData");
-            Check.Argument.IsNotNull(onSuccess, "onSuccess");
-            Check.Argument.IsNotNull(onError, "onError");
             
-            GetSocialImpl.TrackPurchaseData(purchaseData, onSuccess, onError);
+            return GetSocialImpl.TrackPurchaseEvent(purchaseData);
         }
+
+        /// <summary>
+        /// Reports custom event to Dashboard. 
+        /// </summary>
+        /// <param name="eventName">Name of custom event.</param>
+        /// <param name="eventProperties">Event properties.</param>
+        /// <returns>true if operation was successful, otherwise false</returns>
+        public static bool TrackCustomEvent(string eventName, Dictionary<string, string> eventProperties)
+        {
+            Check.Argument.IsNotNull(eventName, "eventName");
+            
+            return GetSocialImpl.TrackCustomEvent(eventName, eventProperties);
+        }
+
+        #endregion
+
+        #region Actions
         
+        /// <summary>
+        /// Process action by GetSocial SDK.
+        /// </summary>
+        /// <param name="notificationAction">Action to be processed</param>
+        public static void ProcessAction(GetSocialAction notificationAction)
+        {
+            GetSocialImpl.ProcessAction(notificationAction);
+        }
 
         #endregion
     }

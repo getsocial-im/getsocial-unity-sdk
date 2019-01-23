@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using com.adjust.sdk;
 using Facebook.Unity;
-using System.Runtime.InteropServices;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialDemo.Scripts.GUI.Sections;
 
@@ -124,6 +123,7 @@ public class GetSocialDemoController : MonoBehaviour
             GetComponentInChildren<NotificationsApiSection>(),
             GetComponentInChildren<InAppPurchaseApiSection>(),
             GetComponentInChildren<SendNotificationSection>(),
+            GetComponentInChildren<CustomAnalyticsEventSection>(),
 #if USE_GETSOCIAL_UI
             GetComponentInChildren<SmartInvitesUiSection>(),
             GetComponentInChildren<ActivityFeedUiSection>(),
@@ -146,6 +146,18 @@ public class GetSocialDemoController : MonoBehaviour
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         HandleAndroidBackButton();
+        if (_notification != null)
+        {
+            var notification = _notification;
+            _notification = null;
+            var popup = new MNPopup(notification.Title, notification.Text);
+            notification.ActionButtons.ForEach(button =>
+            {
+                popup.AddAction(button.Title, () => { ProcessAction(button.Id, notification); });
+            });
+            popup.AddAction("Dismiss", () => { });
+            popup.Show();
+        }
     }
 
     void HandleAndroidBackButton()
@@ -195,17 +207,18 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GetSocial.SetNotificationListener((notification, wasClicked) =>
         {
+            if (notification.NotificationAction.Type.Equals("custom_add_friend"))
+            {
+                ShowPopup(notification);
+                return true;
+            }
             _console.LogD(string.Format("Notification(wasClicked : {0}): {1}", wasClicked, notification));
             if (!wasClicked)
             {
                 return false;
             }
-            if (notification.Action == Notification.Type.OpenProfile)
-            {
-                newFriend(notification.ActionData[Notification.Key.OpenProfile.UserId]);
-                return true;
-            }
-            return false;
+
+            return HandleAction(notification.NotificationAction);
         });
 
         // Set custom listener for global errors
@@ -226,6 +239,46 @@ public class GetSocialDemoController : MonoBehaviour
             GetSocial.User.IsPushNotificationsEnabled(isEnabled => ((SettingsSection) _menuSections.Find(section => section is SettingsSection)).PnEnabled = isEnabled, error => Debug.LogError("Failed to get PN status " + error));
             FetchCurrentUserData();
         });
+    }
+
+    private void ShowPopup(Notification notification)
+    {
+        _notification = notification;
+    }
+
+    public static void ProcessAction(string actionButtonId, Notification notification)
+    {
+        if (actionButtonId.Equals(ActionButton.ConsumeAction))
+        {
+            GetSocial.User.SetNotificationsStatus(new List<string> { notification.Id }, NotificationStatus.Consumed, () => { }, Debug.LogError);
+            if (notification.NotificationAction.Type.Equals("custom_add_friend"))
+            {
+                GetSocial.User.AddFriend(notification.NotificationAction.Data["user_id"], i =>
+                {
+                    GetSocial.User.SendNotification(new List<string> { notification.NotificationAction.Data["user_id"] }, 
+                        NotificationContent.NotificationWithText(SendNotificationPlaceholders.CustomText.SenderDisplayName + " is now your friend"),
+                        count => { },
+                        Debug.LogError);
+                }, Debug.LogError);                
+            }
+            else
+            {
+                GetSocial.ProcessAction(notification.NotificationAction);
+            }
+        } else if (actionButtonId.Equals(ActionButton.IgnoreAction))
+        {
+            GetSocial.User.SetNotificationsStatus(new List<string> { notification.Id }, NotificationStatus.Ignored, () => { }, Debug.LogError);
+        }
+    }
+
+    public bool HandleAction(GetSocialAction action)
+    {
+        if (action.Type == GetSocialActionType.OpenProfile)
+        {
+            newFriend(action.Data[GetSocialActionKeys.OpenProfile.UserId]);
+            return true;
+        }
+        return false;
     }
 
     void RegisterInvitePlugins()
@@ -327,6 +380,7 @@ public class GetSocialDemoController : MonoBehaviour
     }
 
     float deltaTime = 0.0f;
+    private Notification _notification;
 
     protected virtual string GetFPS()
     {
@@ -352,6 +406,7 @@ public class GetSocialDemoController : MonoBehaviour
 		Button("Notifications Api", ShowMenuSection<NotificationsApiSection>);
         Button("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
         Button("Send Notification", ShowMenuSection<SendNotificationSection>);
+        Button("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
 #if USE_GETSOCIAL_UI
         GUILayout.Space(30f);
         GUILayout.Label("UI", GSStyles.NormalLabelText);
@@ -409,6 +464,7 @@ public class GetSocialDemoController : MonoBehaviour
         return _currentUserInfo.Identities.ContainsKey(provider);
     }
 
+#pragma warning disable 0618
     private IEnumerator DownloadAvatar(string url)
     {
         Debug.Log("Downloading avatar: " + url);
@@ -420,6 +476,7 @@ public class GetSocialDemoController : MonoBehaviour
         }
         _avatar = www.texture;
     }
+#pragma warning restore 0618
 
     static void Button(string text, Action onClickCallback, bool isEnabled = true)
     {

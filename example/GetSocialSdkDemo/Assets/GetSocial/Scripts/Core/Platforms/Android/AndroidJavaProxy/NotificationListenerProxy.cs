@@ -8,12 +8,12 @@ namespace GetSocialSdk.Core
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     internal class NotificationListenerProxy : JavaInterfaceProxy
     {
-        readonly Func<Notification, bool, bool> _onNotification;
+        readonly NotificationListener _onNotification;
 
-        public NotificationListenerProxy(Func<Notification, bool, bool> onNotification)
+        public NotificationListenerProxy(NotificationListener listener)
             : base("im.getsocial.sdk.pushnotifications.NotificationListener")
         {
-            _onNotification = onNotification;
+            _onNotification = listener;
         }
 
         bool onNotificationReceived(AndroidJavaObject ajo, bool wasClicked)

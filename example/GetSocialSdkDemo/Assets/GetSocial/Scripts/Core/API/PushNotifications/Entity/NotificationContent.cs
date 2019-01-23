@@ -11,27 +11,26 @@ namespace GetSocialSdk.Core
     {
         
 #pragma warning disable 414      
-        private Notification.Type? _actionType;
-        private readonly Dictionary<string, string> _actionData;
-
         private string _text;
         private string _title;
         private string _templateName;
         private MediaAttachment _mediaAttachment;
         private readonly Dictionary<string, string> _templatePlaceholders;
+        private GetSocialAction _action;
+        private readonly List<ActionButton> _actionButtons;
 #pragma warning restore 414
 
         private NotificationContent()
         {
-            _actionData = new Dictionary<string, string>();
             _templatePlaceholders = new Dictionary<string, string>();
+            _actionButtons = new List<ActionButton>();
         }
 
         public override string ToString()
         {
             return string.Format(
-                "Title: {0}, Text: {1}, Action: {2}, ActionData: {3}, Template: {4}, TemplatePlaceholders: {5}"
-                , _title, _text, _actionType, _actionData.ToDebugString(), _templateName,
+                "Title: {0}, Text: {1}, Action: {2}, Template: {4}, TemplatePlaceholders: {5}"
+                , _title, _text, _action, _templateName,
                 _templatePlaceholders.ToDebugString());
         }
 
@@ -53,42 +52,6 @@ namespace GetSocialSdk.Core
         public static NotificationContent NotificationFromTemplate(string templateName)
         {
             return new NotificationContent().WithTemplateName(templateName);
-        }
-
-        /// <summary>
-        /// Set notification action to be performed on click. One of <see cref="Notification.Type"/>.
-        /// Default is <see cref="Notification.Type.Custom"/>
-        /// </summary>
-        /// <param name="actionType">what should be done when user clicks on notification.</param>
-        /// <returns>content for methods chaining</returns>
-        public NotificationContent WithAction(Notification.Type actionType)
-        {
-            _actionType = actionType;
-            return this;
-        }
-
-        /// <summary>
-        /// Add action data you could retrieve on the receiver side. Also you could specify some additional data for default actions.
-        /// Use one of <see cref="Notification.Key"/> for default actions or pass your custom data.
-        /// </summary>
-        /// <param name="key">action key.</param>
-        /// <param name="value">action value</param>
-        /// <returns>notification content for methods chaining</returns>
-        public NotificationContent AddActionData(string key, string value)
-        {
-            _actionData[key] = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Add all keys and values from map to action data.
-        /// </summary>
-        /// <param name="actionData">map of action keys and values</param>
-        /// <returns>notification content for methods chaining</returns>
-        public NotificationContent AddActionData(Dictionary<string, string> actionData)
-        {
-            _actionData.AddAll(actionData);
-            return this;
         }
 
         /// <summary>
@@ -156,6 +119,25 @@ namespace GetSocialSdk.Core
             _mediaAttachment = mediaAttachment;
             return this;
         }
+
+        public NotificationContent WithAction(GetSocialAction action)
+        {
+            _action = action;
+            return this;
+        }
+
+        public NotificationContent AddActionButton(ActionButton actionButton)
+        {
+            _actionButtons.Add(actionButton);
+            return this;
+        }
+
+        public NotificationContent AddActionButtons(IEnumerable<ActionButton> actionButton)
+        {
+            _actionButtons.AddAll(actionButton);
+            return this;
+        }
+        
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
@@ -164,17 +146,19 @@ namespace GetSocialSdk.Core
             var notificationContent = notificationContentClass.CallStaticAJO("notificationWithText", _text)
                 .CallAJO("withTitle", _title)
                 .CallAJO("withTemplateName", _templateName)
-                .CallAJO("addActionData", _actionData.ToJavaHashMap())
-                .CallAJO("addTemplatePlaceholders", _templatePlaceholders.ToJavaHashMap());
-            if (_actionType != null) 
+                .CallAJO("addTemplatePlaceholders", _templatePlaceholders.ToJavaHashMap())
+                .CallAJO("addActionButtons", _actionButtons.ConvertAll(item => item.ToAjo()).ToJavaList());
+            
+            if (_action != null) 
             {
-                notificationContent.CallAJO("withAction", (int) _actionType.Value);
+                notificationContent.CallAJO("withAction", _action.ToAjo());
             }
 
             if (_mediaAttachment != null)
             {
                 notificationContent.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
             }
+            
             return notificationContent;
         }
 #elif UNITY_IOS
@@ -184,15 +168,12 @@ namespace GetSocialSdk.Core
             {
                 {"Title", _title},
                 {"Text", _text},
-                {"ActionData", _actionData},
+                {"Action", _action == null ? "" : _action.ToJson()},
                 {"Template", _templateName},
                 {"TemplatePlaceholders", _templatePlaceholders},
-                {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()}
+                {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()},
+                {"ActionButtons", _actionButtons.ConvertAll(item => item.ToJson())}
             };
-            if (_actionType != null) 
-            {
-                json["Action"] = (int) _actionType.Value;
-            }
             return GSJson.Serialize(json);
         }
 #endif

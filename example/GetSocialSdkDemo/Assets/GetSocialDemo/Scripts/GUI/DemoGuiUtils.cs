@@ -25,6 +25,11 @@ public static class DemoGuiUtils
 
     public const int Offset = 10;
 
+    public static void DrawLine()
+    {
+        GUILayout.Label("", GUI.skin.horizontalSlider);
+    }
+    
     public static void DrawHeaderWrapper(Action drawHeaderAction)
     {
         GUILayout.BeginArea(new Rect(0, 0, Screen.width, HeaderHeight), new GUIStyle("box"));
@@ -125,5 +130,32 @@ public static class DemoGuiUtils
         GUILayout.BeginHorizontal();
         draw();
         GUILayout.EndHorizontal();
+    }
+        
+    public static void DynamicRowFor<T>(List<T> list, string sectionName) where T:IDrawableRow, new() 
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label(sectionName, GSStyles.NormalLabelText);
+        if (GUILayout.Button("Add", GSStyles.Button))
+        {
+            list.Add(new T());
+        }
+        GUILayout.EndHorizontal();
+            
+        list.ForEach(data =>
+        {
+            GUILayout.BeginHorizontal();
+            data.Draw();
+            if (GUILayout.Button("Remove", GSStyles.Button))
+            {
+                list.Remove(data);
+            }
+            GUILayout.EndHorizontal();
+        });
+    }
+        
+    public interface IDrawableRow
+    {
+        void Draw();
     }
 }

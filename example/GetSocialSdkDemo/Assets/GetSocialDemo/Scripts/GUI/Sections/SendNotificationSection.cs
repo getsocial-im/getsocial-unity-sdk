@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace GetSocialDemo.Scripts.GUI.Sections
@@ -18,8 +19,9 @@ namespace GetSocialDemo.Scripts.GUI.Sections
         private string _imageUrl = "";
         private string _videoUrl = "";
 
-        private Notification.Type? _action;
+        private string _action;
         private readonly List<Data> _actionData = new List<Data>();
+        private readonly List<Data> _actionButtons = new List<Data>();
         
         private string _templateName;
         private readonly List<Data> _templatePlaceholders = new List<Data>();
@@ -27,12 +29,13 @@ namespace GetSocialDemo.Scripts.GUI.Sections
         private bool _referrer;
         private bool _referredUsers;
         private bool _friends;
+        private bool _me;
         private bool _useCustomImage;
         private bool _useCustomVideo;
         private readonly List<UserId> _userIds = new List<UserId>();
 
         private int _selectedPlaceholder;
-        
+
         protected override string GetTitle()
         {
             return "Send Notification";
@@ -87,24 +90,26 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 });
             });
             
-            GUILayout.Label("Action: " + (_action == null ? "Default" : _action.Value.ToString()) , GSStyles.NormalLabelText);
+            GUILayout.Label("Action: " + (_action ?? "Default") , GSStyles.NormalLabelText);
             DemoGuiUtils.DrawRow(() =>
             {
                 if (GUILayout.Button("Default", GSStyles.ShortButton))
                 {
                     _action = null;
                 }
-                var actions = Enum.GetValues(typeof(Notification.Type)).Cast<Notification.Type>();
+
+                var actions = new[] { GetSocialActionType.Custom, GetSocialActionType.OpenProfile, GetSocialActionType.OpenActivity, GetSocialActionType.OpenInvites, GetSocialActionType.OpenUrl, "custom_add_friend" };
                 actions.ToList().ForEach(action =>
                 {
-                    if (GUILayout.Button(action.ToString(), GSStyles.ShortButton))
+                    if (GUILayout.Button(action, GSStyles.ShortButton))
                     {
                         _action = action;
                     }
                 });
             });
             
-            DynamicRowFor(_actionData, "Action Data");
+            DemoGuiUtils.DynamicRowFor(_actionData, "Action Data");
+            DemoGuiUtils.DynamicRowFor(_actionButtons, "Action Buttons");
 
             DemoGuiUtils.DrawRow(() =>
             {
@@ -112,7 +117,7 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 _templateName = GUILayout.TextField(_templateName, GSStyles.TextField);
             });
 
-            DynamicRowFor(_templatePlaceholders, "Template Placeholders");
+            DemoGuiUtils.DynamicRowFor(_templatePlaceholders, "Template Placeholders");
             
             GUILayout.Label("Recipients:", GSStyles.NormalLabelText);
             
@@ -131,8 +136,13 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 _friends = GUILayout.Toggle(_friends, "Friends", GSStyles.Toggle);
                 GUILayout.Label("Friends", GSStyles.NormalLabelText);
             });
+            DemoGuiUtils.DrawRow(() =>
+            {
+                _me = GUILayout.Toggle(_me, "Me", GSStyles.Toggle);
+                GUILayout.Label("Me", GSStyles.NormalLabelText);
+            });
             
-            DynamicRowFor(_userIds, "Custom Users ID");
+            DemoGuiUtils.DynamicRowFor(_userIds, "Custom Users ID");
             
             if (GUILayout.Button("Send", GSStyles.Button))
             {
@@ -149,7 +159,31 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 {
                     recipients.Add(SendNotificationPlaceholders.Receivers.Friends);
                 }
+                if (_me)
+                {
+                    recipients.Add(GetSocial.User.Id);
+                }
 
+                if ("custom_add_friend".Equals(_action) && string.IsNullOrEmpty(_text) && string.IsNullOrEmpty(_templateName))
+                {
+                    var addFriend = NotificationContent.NotificationWithText(
+                            SendNotificationPlaceholders.CustomText.SenderDisplayName + " wants to become friends.")
+                        .WithTitle("Friend request")
+                        .AddActionButton(ActionButton.Create("Accept", ActionButton.ConsumeAction))
+                        .AddActionButton(ActionButton.Create("Ignore", ActionButton.IgnoreAction))
+                        .WithAction(GetSocialAction.CreateBuilder(_action)
+                            .AddActionData("user_id", GetSocial.User.Id)
+                            .AddActionData("user_name", GetSocial.User.DisplayName)
+                            .Build());
+                
+               
+                    GetSocial.User.SendNotification(recipients, 
+                        addFriend, 
+                        summary => _console.LogD("Sent " + summary.SuccessfullySentCount + " notifications"), 
+                        error => _console.LogE("Error: " + error.Message)
+                    );
+                    return;
+                }
                 var mediaAttachment = _imageUrl.Length > 0 ? MediaAttachment.ImageUrl(_imageUrl)
                     : _videoUrl.Length > 0 ? MediaAttachment.VideoUrl(_videoUrl)
                     : _useCustomImage ? MediaAttachment.Image(Resources.Load<Texture2D>("activityImage"))
@@ -158,14 +192,17 @@ namespace GetSocialDemo.Scripts.GUI.Sections
 
                 var content = NotificationContent.NotificationWithText(_text)
                     .WithTitle(_title)
-                    .AddActionData(_actionData.ToDictionary(data => data.Key, data => data.Val))
                     .WithTemplateName(_templateName)
                     .AddTemplatePlaceholders(_templatePlaceholders.ToDictionary(data => data.Key, data => data.Val))
-                    .WithMediaAttachment(mediaAttachment);
-
+                    .WithMediaAttachment(mediaAttachment)
+                    .AddActionButtons(_actionButtons.ConvertAll(item => ActionButton.Create(item.Key, item.Val)));
+                
                 if (_action != null)
                 {
-                    content.WithAction(_action.Value);
+                    var action = GetSocialAction.CreateBuilder(_action)
+                        .AddActionData(_actionData.ToDictionary(data => data.Key, data => data.Val))
+                        .Build();
+                    content.WithAction(action);
                 }
                 
                 GetSocial.User.SendNotification(recipients, 
@@ -176,29 +213,7 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             }
         }
 
-        private static void DynamicRowFor<T>(List<T> list, string sectionName) where T:IDrawableRow, new() 
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(sectionName, GSStyles.NormalLabelText);
-            if (GUILayout.Button("Add", GSStyles.Button))
-            {
-                list.Add(new T());
-            }
-            GUILayout.EndHorizontal();
-            
-            list.ForEach(data =>
-            {
-                GUILayout.BeginHorizontal();
-                data.Draw();
-                if (GUILayout.Button("Remove", GSStyles.Button))
-                {
-                    list.Remove(data);
-                }
-                GUILayout.EndHorizontal();
-            });
-        }
-
-        private class Data : IDrawableRow
+        private class Data : DemoGuiUtils.IDrawableRow
         {
             public string Key = "";
             public string Val = "";
@@ -210,7 +225,7 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             }
         }
 
-        private class UserId : IDrawableRow
+        private class UserId : DemoGuiUtils.IDrawableRow
         {
             public string UserIdString = "";
 
@@ -218,11 +233,6 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             {
                 UserIdString = GUILayout.TextField(UserIdString, GSStyles.TextField);
             }
-        }
-        
-        private interface IDrawableRow
-        {
-            void Draw();
         }
     }
 }

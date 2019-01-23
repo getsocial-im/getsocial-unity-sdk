@@ -142,7 +142,7 @@ namespace GetSocialSdk.Core
            _gs_registerForPushNotifications();
         }
 
-        public void SetNotificationListener(Func<Notification, bool, bool> listener)
+        public void SetNotificationListener(NotificationListener listener)
         {
             _gs_setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationListener);
         }
@@ -159,10 +159,10 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onError.GetPointer());
         }
 
-        public void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+        public void SetNotificationsStatus(List<string> notificationsIds, string status, Action onSuccess,
             Action<GetSocialError> onError)
         {
-            _gs_setNotificationsRead(GSJson.Serialize(notificationsIds), isRead, Callbacks.ActionCallback,
+            _gs_setNotificationsStatus(GSJson.Serialize(notificationsIds), status, Callbacks.ActionCallback,
                 onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onError.GetPointer());
         }
@@ -549,10 +549,20 @@ namespace GetSocialSdk.Core
 
         #region Analytics
 
-        public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        public bool TrackPurchaseEvent(PurchaseData purchaseData)
         {
-            _gs_trackPurchaseData(purchaseData.ToJson(), Callbacks.ActionCallback, onSuccess.GetPointer(),
-                Callbacks.FailureCallback, onError.GetPointer());
+            return _gs_trackPurchaseEvent(purchaseData.ToJson());
+        }
+
+        public bool TrackCustomEvent(string eventName, Dictionary<string, string> eventProperties)
+        {
+            var eventPropertiesJson = eventProperties != null ? GSJson.Serialize(eventProperties) : null;
+            return _gs_trackCustomEvent(eventName, eventPropertiesJson);
+        }
+
+        public void ProcessAction(GetSocialAction notificationAction)
+        {
+            _gs_processAction(notificationAction.ToJson());
         }
 
         #endregion
@@ -660,7 +670,7 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
         
         [DllImport("__Internal")]
-        static extern void _gs_setNotificationsRead(string ids, bool read, 
+        static extern void _gs_setNotificationsStatus(string ids, string status, 
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
         
@@ -795,9 +805,10 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _gs_trackPurchaseData(string purchaseDataJson,
-            VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
-            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        static extern bool _gs_trackPurchaseEvent(string purchaseDataJson);
+
+        [DllImport("__Internal")]
+        static extern bool _gs_trackCustomEvent(string eventName, string eventPropertiesJson);
 
         #endregion
 
@@ -915,6 +926,13 @@ namespace GetSocialSdk.Core
         
         [DllImport("__Internal")]
         static extern void _gs_resetInternal();
+
+        #endregion
+
+        #region Actions
+
+        [DllImport("__Internal")]
+        static extern void _gs_processAction(string actionJson);
 
         #endregion
     }

@@ -11,7 +11,7 @@ namespace GetSocialSdk.Editor
      
         public bool IsInProgress { get; private set; }
         
-        private WWW _downloadRequest;
+        private Request _downloadRequest;
 
         private readonly string _url;
         private readonly string _destinationFolderPath;
@@ -63,19 +63,19 @@ namespace GetSocialSdk.Editor
 
         private IEnumerator StartRequest(Action onSuccess, Action<string> onFailure)
         {
-            _downloadRequest = new WWW(_url);
-            while (!_downloadRequest.isDone)
+            _downloadRequest = RequestHelper.CreateDownloadRequest(_url);
+            while (!_downloadRequest.IsDone())
             {
                 yield return null;
             }
             IsInProgress = false;
-            if (_downloadRequest.error != null)
+            if (_downloadRequest.GetErrorMessage() != null)
             {
                 onFailure("Can not download GetSocial frameworks, check your internet connection");
             }
             else
             {
-                File.WriteAllBytes(_archiveFilePath, _downloadRequest.bytes);
+                File.WriteAllBytes(_archiveFilePath, _downloadRequest.GetBytes());
                 onSuccess();
             }
         }

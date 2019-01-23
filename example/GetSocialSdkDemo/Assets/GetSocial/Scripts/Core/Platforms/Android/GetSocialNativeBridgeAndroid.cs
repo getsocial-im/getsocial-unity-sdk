@@ -138,7 +138,7 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("registerForPushNotifications");
         }
 
-        public void SetNotificationListener(Func<Notification, bool, bool> listener)
+        public void SetNotificationListener(NotificationListener listener)
         {
             _getSocial.CallStatic("setNotificationListener", new NotificationListenerProxy(listener));
         }
@@ -153,9 +153,9 @@ namespace GetSocialSdk.Core
             _user.CallStatic("getNotificationsCount", query.ToAjo(), new IntCallbackProxy(onSuccess, onError));
         }
 
-        public void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess, Action<GetSocialError> onError)
+        public void SetNotificationsStatus(List<string> notificationsIds, string status, Action onSuccess, Action<GetSocialError> onError)
         {
-            _user.CallStatic("setNotificationsRead", notificationsIds.ToJavaList(), isRead, new CompletionCallback(onSuccess, onError));
+            _user.CallStatic("setNotificationsStatus", notificationsIds.ToJavaList(), status, new CompletionCallback(onSuccess, onError));
         }
 
         public void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError)
@@ -455,9 +455,14 @@ namespace GetSocialSdk.Core
 
         #region Analytics
 
-        public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        public bool TrackPurchaseEvent(PurchaseData purchaseData)
         {    
-            _getSocial.CallStatic("trackPurchaseData", purchaseData.ToAjo(), new CompletionCallback(onSuccess, onError));
+            return _getSocial.CallStaticBool("trackPurchaseEvent", purchaseData.ToAjo());
+        }
+
+        public bool TrackCustomEvent(string customEvent, Dictionary<string, string> eventProperties)
+        {
+            return _getSocial.CallStaticBool("trackCustomEvent",customEvent, eventProperties.ToJavaHashMap());
         }
 
         #endregion
@@ -490,6 +495,15 @@ namespace GetSocialSdk.Core
                 Debug.LogException(e);
             }
         }
+        #endregion
+
+        #region Actions
+
+        public void ProcessAction(GetSocialAction notificationAction)
+        {
+            _getSocial.CallStatic("processAction", notificationAction.ToAjo());
+        }
+
         #endregion
     }
 }

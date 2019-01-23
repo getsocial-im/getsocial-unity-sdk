@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 #if UNITY_ANDROID
 using UnityEngine;
 #endif
@@ -16,6 +15,8 @@ namespace GetSocialSdk.Core
         /// <summary>
         /// Enumeration that allows you to have convenient switch for your action.
         /// </summary>
+        /// 
+        [Obsolete("Use GetSocialActionType")]
         public enum Type
         {
             /// <summary>
@@ -44,69 +45,75 @@ namespace GetSocialSdk.Core
             OpenUrl = 4,
         }
 
-        public enum NotificationTypes
+        public static class NotificationTypes
         {
-            
+
             /// <summary>
             /// Someone commented on your activity.
             /// <summary>
-            Comment = 0,
-    
+            public const string Comment = "comment";
+
             /// <summary>
             /// Someone liked your activity.
             /// <summary>
-            LikeActivity = 1,
-    
+            public const string LikeActivity = "activity_like";
+
             /// <summary>
             /// Someone liked your comment.
             /// <summary>
-            LikeComment = 2,
-    
+            public const string LikeComment = "comment_like";
+
             /// <summary>
             /// Someone commented on the activity where you've commented before.
             /// <summary>
-            CommentedInSameThread = 5,
-    
+            public const string CommentedInSameThread = "related_comment";
+
             /// <summary>
             /// You became friends with another user.
             /// <summary>
-            NewFriendship = 6,
-    
+            public const string NewFriendship = "friends_add";
+
             /// <summary>
             /// Someone accepted your invite.
             /// <summary>
-            InviteAccepted = 7,
-    
+            public const string InviteAccepted = "invite_accept";
+
             /// <summary>
             /// Someone mentioned you in comment.
             /// <summary>
-            MentionInComment = 8,
-    
+            public const string MentionInComment = "comment_mention";
+
             /// <summary>
             /// Someone mentioned you in activity.
             /// <summary>
-            MentionInActivity = 9,
-    
+            public const string MentionInActivity = "activity_mention";
+
             /// <summary>
             /// Someone replied to your comment.
             /// <summary>
-            ReplyToComment = 10,
+            public const string ReplyToComment = "comment_reply";
             //endregion
-    
+
             /// <summary>
             /// Smart targeting Push Notifications.
             /// <summary>
-            Targeting = 11,
-    
+            public const string Targeting = "targeting";
+
             /// <summary>
             /// Notifications sent from the Dashboard when using "Test Push Notifications".
             /// <summary>
-            Direct = 12
+            public const string Direct = "direct";
+            
+            /// <summary>
+            /// Notification sent from SDK.
+            /// <summary>
+            public const string Sdk = "custom";
         }
 
         /// <summary>
         /// Contains all predefined keys for <see cref="ActionData"/> dictionary.
         /// </summary>
+        [Obsolete("Use GetSocialActionKeys instead")]
         public static class Key
         {
             public static class OpenActivity
@@ -122,32 +129,59 @@ namespace GetSocialSdk.Core
         }
         
         public string Id { get; private set; }
+        public GetSocialAction NotificationAction { get; private set; }
+        public List<ActionButton> ActionButtons { get; private set; } 
+
+#pragma warning disable 0618
+        [Obsolete("Use NotificationAction")]
         public Type Action { get; private set; }
-        public bool WasRead { get; private set; }
-        public NotificationTypes NotificationType { get; private set; }
+#pragma warning restore 0618
+
+        [Obsolete("Use NotificationAction")]
+        public Dictionary<string, string> ActionData
+        {
+            get { return NotificationAction.Data; }
+        }
+
+        [Obsolete("Use Status")]
+        public bool WasRead
+        {
+            get { return !Status.Equals(NotificationStatus.Unread); }
+        }
+
+        public string Status { get; private set; }
+        public string NotificationType { get; private set; }
         public long CreatedAt { get; private set; }
         public string Title { get; private set; }
         public string Text { get; private set; }
         public string ImageUrl { get; private set; }
         public string VideoUrl { get; private set; }
-        public Dictionary<string, string> ActionData { get; private set; }
 
         public override string ToString()
         {
-            return string.Format("Id: {0}, Action: {1}, WasRead: {2}, NotificationType: {3}, CreatedAt: {4}, Title: {5}, Text: {6}, ActionData: {7}, ImageUrl: {8}, VideoUrl: {9}" 
-                , Id, Action, WasRead, NotificationType, CreatedAt, Title, Text, ActionData.ToDebugString(), ImageUrl, VideoUrl);
+            return string.Format("Id: {0}, Action: {1}, ActionButtons: {2}, Status: {3}, NotificationType: {4}, CreatedAt: {5}, Title: {6}, Text: {7}, ImageUrl: {8}, VideoUrl: {9}" 
+                , Id, NotificationAction, ActionButtons.ToDebugString(), Status, NotificationType, CreatedAt, Title, Text, ImageUrl, VideoUrl);
         }
 #if UNITY_ANDROID
         public Notification ParseFromAJO(AndroidJavaObject ajo)
         {
             Id = ajo.CallStr("getId");
+            Status = ajo.CallStr("getStatus");
+            NotificationType = ajo.CallStr("getType");
+#pragma warning disable 618
             Action = (Type) ajo.CallInt("getActionType");
-            WasRead = ajo.CallBool("wasRead");
-            NotificationType = (NotificationTypes) ajo.CallInt("getType");
+#pragma warning restore 618
             CreatedAt = ajo.CallLong("getCreatedAt");
             Title = ajo.CallStr("getTitle");
             Text = ajo.CallStr("getText");
-            ActionData = ajo.CallAJO("getActionData").FromJavaHashMap();
+            NotificationAction = new GetSocialAction().ParseFromAJO(ajo.CallAJO("getAction"));
+            ActionButtons = ajo.CallAJO("getActionButtons").FromJavaList().ConvertAll(item =>
+            {
+                using (item)
+                {
+                    return new ActionButton().ParseFromAJO(item);
+                }
+            });
             ImageUrl = ajo.CallStr("getImageUrl");
             VideoUrl = ajo.CallStr("getVideoUrl");
             return this;
@@ -158,14 +192,19 @@ namespace GetSocialSdk.Core
         {
             Title = dictionary["Title"] as string;
             Id = dictionary["Id"] as string;
-            NotificationType = (NotificationTypes) (long) dictionary["Type"];
-            WasRead = (bool) dictionary["WasRead"];
+            Status = dictionary["Status"] as string;
             CreatedAt = (long) dictionary["CreatedAt"];
             Text = dictionary["Text"] as string;
             ImageUrl = dictionary["ImageUrl"] as string;
             VideoUrl = dictionary["VideoUrl"] as string;
-            ActionData = (dictionary["Data"] as Dictionary<string, object>).ToStrStrDict();
-            Action = (Type) (long) dictionary["ActionType"];
+            NotificationAction =
+                new GetSocialAction().ParseFromJson(dictionary["Action"] as Dictionary<string, object>);
+            ActionButtons = ((List<object>) dictionary["ActionButtons"]).ConvertAll(item =>
+                new ActionButton().ParseFromJson((Dictionary<string, object>) item));
+            NotificationType = dictionary["Type"] as string;
+#pragma warning disable 618
+            Action = (Type) (long) dictionary["OldAction"];
+#pragma warning restore 618
             return this;
         }
 #endif

@@ -66,6 +66,7 @@ namespace GetSocialSdk.Editor
 
         static void AddNotificationExtension(PBXProject project, string projectPath)
         {
+#if UNITY_2018_1_OR_NEWER            
             const string extensionName = "/GetSocialNotificationExtension";
             if (!Directory.Exists(projectPath + extensionName))
             {
@@ -80,18 +81,18 @@ namespace GetSocialSdk.Editor
             
             const string extensionServiceSourceHeaderFile = "Assets/GetSocial/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.h";
             const string extensionServiceSourceImpFile = "Assets/GetSocial/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.m";
-            const string extensionServiceTargetHeaderFile = "/GetSocialNotificationExtension/GetSocialNotificationService.h";
-            const string extensionServiceTargetImpFile = "/GetSocialNotificationExtension/GetSocialNotificationService.m";
+            const string extensionServiceTargetHeaderFile = "GetSocialNotificationExtension/GetSocialNotificationService.h";
+            const string extensionServiceTargetImpFile = "GetSocialNotificationExtension/GetSocialNotificationService.m";
             
-            File.Copy(extensionServiceSourceHeaderFile, projectPath + extensionServiceTargetHeaderFile);
-            File.Copy(extensionServiceSourceImpFile, projectPath + extensionServiceTargetImpFile);
+            File.Copy(extensionServiceSourceHeaderFile, projectPath + "/" + extensionServiceTargetHeaderFile);
+            File.Copy(extensionServiceSourceImpFile, projectPath + "/" + extensionServiceTargetImpFile);
 
             var mainTarget = project.TargetGuidByName(PBXProject.GetUnityTargetName());
 
             var appExtensionTarget = project.AddAppExtension(mainTarget, "GetSocialNotificationExtension", projectPath + "/GetSocialNotificationExtension/Info.plist");
                         
-            project.AddFileToBuild(appExtensionTarget, project.AddFile(projectPath + extensionServiceTargetHeaderFile, extensionServiceTargetHeaderFile));
-            project.AddFileToBuild(appExtensionTarget, project.AddFile(projectPath + extensionServiceTargetImpFile, extensionServiceTargetImpFile));
+            project.AddFileToBuild(appExtensionTarget, project.AddFile(extensionServiceTargetHeaderFile, extensionServiceTargetHeaderFile));
+            project.AddFileToBuild(appExtensionTarget, project.AddFile(extensionServiceTargetImpFile, extensionServiceTargetImpFile));
 
             var deviceFamily = "";
             switch (PlayerSettings.iOS.targetDevice)
@@ -109,7 +110,8 @@ namespace GetSocialSdk.Editor
             
 
             project.SetBuildProperty(appExtensionTarget, "TARGETED_DEVICE_FAMILY", deviceFamily);
-            project.SetBuildProperty(appExtensionTarget, "IPHONEOS_DEPLOYMENT_TARGET", PlayerSettings.iOS.targetOSVersionString);
+            var osVersion = Convert.ToInt32(double.Parse(PlayerSettings.iOS.targetOSVersionString));
+            project.SetBuildProperty(appExtensionTarget, "IPHONEOS_DEPLOYMENT_TARGET", Math.Min(10, osVersion).ToString());
             project.SetBuildProperty(appExtensionTarget, "DEVELOPMENT_TEAM", PlayerSettings.iOS.appleDeveloperTeamID);
             project.SetBuildProperty(appExtensionTarget, "PRODUCT_BUNDLE_IDENTIFIER", GetSocialSettings.ExtensionBundleId);
             project.SetBuildProperty(appExtensionTarget, "CODE_SIGN_STYLE", PlayerSettings.iOS.appleEnableAutomaticSigning ?  "Automatic" : "Manual");
@@ -126,6 +128,7 @@ namespace GetSocialSdk.Editor
                 }
             }
             project.AddFrameworkToProject(mainTarget, "UserNotifications.framework", false);
+#endif            
         }
 
         static void RemoveUiPluginFiles(PBXProject project, string target)
@@ -346,7 +349,9 @@ namespace GetSocialSdk.Editor
                 "line",
                 "whatsapp",
                 "viber",
-                "tg"
+                "tg",
+                "instagram-stories",
+                "facebook-stories"
             };
 
             var appsArray = plistInfoFile.root.CreateArray(LSApplicationQueriesSchemes);

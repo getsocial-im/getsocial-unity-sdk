@@ -1,5 +1,6 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 using UnityEngine;
@@ -17,14 +18,7 @@ public class ActivityFeedApiSection : DemoMenuSection
 
     private byte[] Video
     {
-        get
-        {
-            if (_video == null)
-            {
-                _video = DemoUtils.LoadSampleVideoBytes();
-            }
-            return _video;
-        }
+        get { return _video ?? (_video = DemoUtils.LoadSampleVideoBytes()); }
     }
 
     private bool _postImage;
@@ -33,6 +27,9 @@ public class ActivityFeedApiSection : DemoMenuSection
     string _feed = ActivitiesQuery.GlobalFeed;
     string _activityId = "123";
     bool _isLiked;
+    
+    private string _action;
+    private readonly List<Data> _actionData = new List<Data>();
 
     protected override string GetTitle()
     {
@@ -127,8 +124,27 @@ public class ActivityFeedApiSection : DemoMenuSection
             _postImage = false;
             _postVideo = false;
         }
-        
         GUILayout.EndHorizontal();
+        
+        GUILayout.Label("Action: " + (_action ?? "Default") , GSStyles.NormalLabelText);
+
+        DemoGuiUtils.DrawRow(() =>
+        {
+            if (GUILayout.Button("Default", GSStyles.ShortButton))
+            {
+                _action = null;
+            }
+            var actions = new[] { GetSocialActionType.Custom, GetSocialActionType.OpenProfile, GetSocialActionType.OpenActivity, GetSocialActionType.OpenInvites, GetSocialActionType.OpenUrl };
+            actions.ToList().ForEach(action =>
+            {
+                if (GUILayout.Button(action, GSStyles.ShortButton))
+                {
+                    _action = action;
+                }
+            });
+        });
+            
+        DemoGuiUtils.DynamicRowFor(_actionData, "Action Data");
         
         GUILayout.EndVertical();
 
@@ -313,12 +329,25 @@ public class ActivityFeedApiSection : DemoMenuSection
         var mediaAttachment = _postImage ? MediaAttachment.Image(Image)
             : _postVideo ? MediaAttachment.Video(Video)
             : null;
-        
-        return ActivityPostContent.CreateBuilder()
+
+        var content = ActivityPostContent.CreateBuilder()
             .WithText("My awesome post")
+#pragma warning disable 0618
             .WithButton("Awesome Button", "action_id")
-            .WithMediaAttachment(mediaAttachment)
-            .Build();
+#pragma warning restore 0618
+            .WithMediaAttachment(mediaAttachment);
+        
+        
+        if (_action != null)
+        {
+            var action = GetSocialAction.CreateBuilder(_action)
+                .AddActionData(_actionData.ToDictionary(data => data.Key, data => data.Val))
+                .Build();
+
+            content.WithButton("Awesome Button", action);
+        }
+
+        return content.Build();
     }
 
     void LikeActivity()
@@ -345,5 +374,17 @@ public class ActivityFeedApiSection : DemoMenuSection
     void OnError(GetSocialError error)
     {
         _console.LogE("Error: " + error.Message);
+    }
+
+    private class Data : DemoGuiUtils.IDrawableRow
+    {
+        public string Key = "";
+        public string Val = "";
+            
+        public void Draw()
+        {
+            Key = GUILayout.TextField(Key, GSStyles.TextField);
+            Val = GUILayout.TextField(Val, GSStyles.TextField);
+        }
     }
 }

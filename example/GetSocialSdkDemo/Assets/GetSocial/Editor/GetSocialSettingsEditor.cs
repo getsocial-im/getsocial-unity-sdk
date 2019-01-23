@@ -285,11 +285,12 @@ namespace GetSocialSdk.Editor
                     {
                         DrawDashboardSettingToogle("Push notifications environment",
                             "    " + GetSocialSettings.IosPushEnvironment.Capitalize());
+#if UNITY_2018_1_OR_NEWER                        
                         var richNotificationsEnabled = new GUIContent("Enable Rich Notifications [?]", "If it is enabled, notifications with images/videos can be displayed.");
                         var enableRichNotifications = EditorGUILayout.ToggleLeft(richNotificationsEnabled, GetSocialSettings.IsRichPushNotificationsEnabled);
                         SetRichNotificationsEnabled(enableRichNotifications);
                         
-                        // extension bundle id
+                        // extension bundle id, only if UNITY_2018_1_OR_NEWER
                         EditorGUILayout.BeginHorizontal();
                         var extensionBundleIdLabel = new GUIContent("Notification Extension Bundle Id [?]", "Bundle id of the extension.");
                         EditorGUILayout.LabelField(extensionBundleIdLabel, EditorGuiUtils.OneThirdWidth);
@@ -316,6 +317,7 @@ namespace GetSocialSdk.Editor
                             Application.OpenURL(string.Format("https://docs.getsocial.im/guides/social-notifications/unity/rich-notifications/#ios?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
                         }
                         EditorGUILayout.EndHorizontal();
+#endif                        
                     }
 
                 }
@@ -427,14 +429,13 @@ namespace GetSocialSdk.Editor
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GetSocialEditorUtils.KeyStoreUtilError != null)
-                {
-                    EditorGUILayout.HelpBox(GetSocialEditorUtils.KeyStoreUtilError,
-                        MessageType.Warning);
-                }
                 if (!GetSocialEditorUtils.UserDefinedKeystore())
                 {
                     EditorGUILayout.HelpBox("You are using default Android keystore to sign your application. Are you sure this is what you want?",
+                        MessageType.Warning);
+                } else if (GetSocialEditorUtils.KeyStoreUtilError != null)
+                {
+                    EditorGUILayout.HelpBox(GetSocialEditorUtils.KeyStoreUtilError,
                         MessageType.Warning);
                 }
             }

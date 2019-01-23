@@ -18,5 +18,7 @@
         public const string Viber = "viber";
         public const string VK = "vk";
         public const string WhatsApp = "whatsapp";
+        public const string InstagramStories = "instagramstories";
+        public const string FacebookStories = "facebookstories";
     }
 }

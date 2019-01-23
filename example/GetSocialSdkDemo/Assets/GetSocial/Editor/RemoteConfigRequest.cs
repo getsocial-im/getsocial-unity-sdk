@@ -14,7 +14,7 @@ namespace GetSocialSdk.Editor
         public bool IsInProgress { get; private set; }
         
         private EditorCoroutine _requestCoroutine;
-        private WWW _unityWebRequest;
+        private Request _request;
 
         public static RemoteConfigRequest ForAppId(string appId)
         { 
@@ -35,24 +35,24 @@ namespace GetSocialSdk.Editor
 
         IEnumerator StartRequest(Action<RemoteConfig> onSuccess, Action<string> onFailure)
         {
-            _unityWebRequest = new WWW(string.Format(ConfigRequestUrlPattern, AppId));
+            _request = RequestHelper.CreateDownloadRequest(string.Format(ConfigRequestUrlPattern, AppId));
 
-            while (!_unityWebRequest.isDone)
+            while (!_request.IsDone())
             {
                 yield return null;
             }
             
-            if(_unityWebRequest.error != null)
+            if(_request.GetErrorMessage() != null)
             {
                 IsInProgress = false;
-                onFailure(GetErrorMessage(_unityWebRequest.error));
+                onFailure(GetErrorMessage(_request.GetErrorMessage()));
             }
             else
             {
                 try
                 {
                     var remoteConfig = RemoteConfig.FromDict(
-                        GSJson.Deserialize(_unityWebRequest.text) as Dictionary<string, object>);
+                        GSJson.Deserialize(_request.GetString()) as Dictionary<string, object>);
 
                     IsInProgress = false;
                     onSuccess(remoteConfig);                        
@@ -70,10 +70,6 @@ namespace GetSocialSdk.Editor
             if (_requestCoroutine != null)
             {
                 _requestCoroutine.Stop();
-                if (_unityWebRequest != null)
-                {
-                    _unityWebRequest.Dispose();
-                }
             }
         }
         

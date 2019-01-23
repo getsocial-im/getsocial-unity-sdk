@@ -95,7 +95,7 @@ namespace GetSocialSdk.Core
             var notificationEntity = new Notification().ParseFromJson(notificationDictionary);
             if (funcPtr != IntPtr.Zero)
             {
-                return funcPtr.Cast<Func<Notification, bool, bool>>().Invoke(notificationEntity, wasClicked);
+                return funcPtr.Cast<NotificationListener>().Invoke(notificationEntity, wasClicked);
             }
             return false;
         }

@@ -14,21 +14,6 @@ namespace GetSocialSdk.Core
     public sealed class ActivityPost : IConvertableFromNative<ActivityPost>
     {
         /// <summary>
-        /// Type of Activity Feed content
-        /// </summary>
-        public enum Type
-        {
-            /// <summary>
-            /// Activity Feed Post
-            /// </summary>
-            Post = 0,
-            /// <summary>
-            /// Activity Feed Comment
-            /// </summary>
-            Comment = 1
-        }
-
-        /// <summary>
         /// Gets the activity identifier.
         /// </summary>
         /// <value>The activity identifier.</value>
@@ -80,7 +65,14 @@ namespace GetSocialSdk.Core
         /// Gets the button action id.
         /// </summary>
         /// <value>The button action id or <c>null</c> if post has no button.</value>
+        [Obsolete("Use Action instead")]
         public string ButtonAction { get; private set; }
+
+        /// <summary>
+        /// Get the button action.
+        /// </summary>
+        /// <value>The button action or <c>null</c> if post has no button.</value>
+        public GetSocialAction Action { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether activity has button.
@@ -149,10 +141,13 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
+            
+#pragma warning disable 0618
             return string.Format(
-                "Id: {0}, Text: {1}, HasText: {2}, ImageUrl: {3}, HasImage: {4}, CreatedAt: {5}, ButtonTitle: {6}, ButtonAction: {7}, HasButton: {8}, Author: {9}, CommentsCount: {10}, LikesCount: {11}, IsLikedByMe: {12}, StickyStart: {13}, StickyEnd: {14}, FeedId: {15}, Mentions: {16}",
-                Id, Text, HasText, ImageUrl, HasImage, CreatedAt, ButtonTitle, ButtonAction, HasButton, Author,
+                "Id: {0}, Text: {1}, HasText: {2}, ImageUrl: {3}, HasImage: {4}, CreatedAt: {5}, ButtonTitle: {6}, ButtonAction: {7}, Action: {8}, HasButton: {9}, Author: {10}, CommentsCount: {11}, LikesCount: {12}, IsLikedByMe: {13}, StickyStart: {14}, StickyEnd: {15}, FeedId: {16}, Mentions: {17}",
+                Id, Text, HasText, ImageUrl, HasImage, CreatedAt, ButtonTitle, ButtonAction, Action, HasButton, Author,
                 CommentsCount, LikesCount, IsLikedByMe, StickyStart, StickyEnd, FeedId, Mentions.ToDebugString());
+#pragma warning restore 0618
         }
 
         public ActivityPost()
@@ -167,7 +162,9 @@ namespace GetSocialSdk.Core
             ImageUrl = imageUrl;
             CreatedAt = createdAt;
             ButtonTitle = buttonTitle;
+#pragma warning disable 0618
             ButtonAction = buttonAction;
+#pragma warning restore 0618
             Author = author;
             CommentsCount = commentsCount;
             LikesCount = likesCount;
@@ -180,7 +177,12 @@ namespace GetSocialSdk.Core
 
         private bool Equals(ActivityPost other)
         {
-            return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(ImageUrl, other.ImageUrl) && CreatedAt.Equals(other.CreatedAt) && string.Equals(ButtonTitle, other.ButtonTitle) && string.Equals(ButtonAction, other.ButtonAction) && Equals(Author, other.Author) && CommentsCount == other.CommentsCount && LikesCount == other.LikesCount && IsLikedByMe == other.IsLikedByMe && StickyStart.Equals(other.StickyStart) && StickyEnd.Equals(other.StickyEnd) && Mentions.ListEquals(other.Mentions) && string.Equals(FeedId, other.FeedId);
+#pragma warning disable 0618
+            return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(ImageUrl, other.ImageUrl) && CreatedAt.Equals(other.CreatedAt) 
+            && string.Equals(ButtonTitle, other.ButtonTitle) && string.Equals(ButtonAction, other.ButtonAction) && Equals(Action, other.Action) && Equals(Author, other.Author) 
+            && CommentsCount == other.CommentsCount && LikesCount == other.LikesCount && IsLikedByMe == other.IsLikedByMe && StickyStart.Equals(other.StickyStart) 
+            && StickyEnd.Equals(other.StickyEnd) && Mentions.ListEquals(other.Mentions) && string.Equals(FeedId, other.FeedId);
+#pragma warning restore 0618
         }
 
         public override bool Equals(object obj)
@@ -199,7 +201,10 @@ namespace GetSocialSdk.Core
                 hashCode = (hashCode * 397) ^ (ImageUrl != null ? ImageUrl.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ CreatedAt.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ButtonTitle != null ? ButtonTitle.GetHashCode() : 0);
+#pragma warning disable 0618
                 hashCode = (hashCode * 397) ^ (ButtonAction != null ? ButtonAction.GetHashCode() : 0);
+#pragma warning restore 0618
+                hashCode = (hashCode * 397) ^ (Action != null ? Action.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Author != null ? Author.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ CommentsCount;
                 hashCode = (hashCode * 397) ^ LikesCount;
@@ -222,7 +227,14 @@ namespace GetSocialSdk.Core
                 Text = ajo.CallStr("getText");
                 ImageUrl = ajo.CallStr("getImageUrl");
                 ButtonTitle = ajo.CallStr("getButtonTitle");
+#pragma warning disable 0618
                 ButtonAction = ajo.CallStr("getButtonAction");
+#pragma warning restore 0618
+                var action = ajo.CallAJO("getAction");
+                if (action != null)
+                {
+                    Action = new GetSocialAction().ParseFromAJO(action);
+                }
                 CreatedAt = DateUtils.FromUnixTime(ajo.CallLong("getCreatedAt"));
                 Author = new PostAuthor().ParseFromAJO(ajo.CallAJO("getAuthor"));
                 CommentsCount = ajo.CallInt("getCommentsCount");
@@ -251,7 +263,14 @@ namespace GetSocialSdk.Core
 
             ImageUrl = json["ImageUrl"] as string;
             ButtonTitle = json["ButtonTitle"] as string;
+#pragma warning disable 0618
             ButtonAction = json["ButtonAction"] as string;
+#pragma warning restore 0618
+            var action = json["Action"] as Dictionary<string, object>;
+            if (action != null)
+            {
+                Action = new GetSocialAction().ParseFromJson(action);
+            }
             CreatedAt = DateUtils.FromUnixTime((long) json["CreatedAt"]);
 
             var authorDic = json["Author"] as Dictionary<string, object>;

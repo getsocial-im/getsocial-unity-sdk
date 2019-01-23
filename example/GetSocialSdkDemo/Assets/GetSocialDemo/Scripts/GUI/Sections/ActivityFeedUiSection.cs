@@ -47,7 +47,10 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.CreateActivityFeedView(_feed)
                     .SetWindowTitle("My Custom Feed")
+#pragma warning disable 0618
                     .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+                    .SetActionListener(OnAction)
                     .SetFilterByUser(GetSocial.User.Id)
                     .Show();
     }
@@ -56,7 +59,10 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("My Friends Feed")
+#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+            .SetActionListener(OnAction)
             .SetShowFriendsFeed(true)
             .Show();
     }
@@ -75,7 +81,10 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle(title)
+#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+            .SetActionListener(OnAction)
             .SetFilterByUser(userId)
             .SetReadOnly(true)
             .Show();
@@ -85,7 +94,10 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.CreateActivityFeedView(_feed)
             .SetWindowTitle(_feed + " Feed")
+#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+            .SetActionListener(OnAction)
             .Show();
     }
 
@@ -94,7 +106,10 @@ public class ActivityFeedUiSection : DemoMenuSection
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("Unity Global")
             .SetViewStateCallbacks(() => _console.LogD("Global feed opened"), () => _console.LogD("Global feed closed"))
+#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+            .SetActionListener(OnAction)
             .SetMentionClickListener(OnMentionClicked)
             .SetAvatarClickListener(OnUserAvatarClicked)
             .SetTagClickListener(OnTagClicked)
@@ -116,6 +131,10 @@ public class ActivityFeedUiSection : DemoMenuSection
     {
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("Search #" + tag)
+#pragma warning disable 0618
+            .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+            .SetActionListener(OnAction)
             .SetReadOnly(true)
             .SetFilterByTags(tag)
             .Show();
@@ -193,7 +212,10 @@ public class ActivityFeedUiSection : DemoMenuSection
                     .SetWindowTitle("Unity Global")
                     .SetViewStateCallbacks(() => _console.LogD("Activity details opened"),
                         () => _console.LogD("Activity details closed"))
+#pragma warning disable 0618
                     .SetButtonActionListener(OnActivityActionClicked)
+#pragma warning restore 0618
+                    .SetActionListener(OnAction)
                     .SetShowActivityFeedView(showFeed)
                     .SetUiActionListener((action, pendingAction) =>
                     {
@@ -207,7 +229,7 @@ public class ActivityFeedUiSection : DemoMenuSection
 
     private void OnUiAction(UiAction action, Action pendingAction)
     {
-        List<UiAction> forbiddenForAnonymous = new List<UiAction>()
+        var forbiddenForAnonymous = new List<UiAction>()
         {
             UiAction.LikeActivity, UiAction.LikeComment, UiAction.PostActivity, UiAction.PostComment
         };
@@ -236,6 +258,11 @@ public class ActivityFeedUiSection : DemoMenuSection
         popup.AddAction("OK", () => {});
         popup.Show();
         _console.LogD(message);
+    }
+
+    bool OnAction(GetSocialAction action)
+    {
+        return demoController.HandleAction(action);
     }
 }
 

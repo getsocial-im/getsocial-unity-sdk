@@ -23,6 +23,10 @@
 
 + (NSDictionary *)createDictionaryFromNSString:(NSString *)jsonString
 {
+    if (jsonString == nil)
+    {
+        return nil;
+    }
     NSError *e = nil;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&e];
     if (dictionary != nil)

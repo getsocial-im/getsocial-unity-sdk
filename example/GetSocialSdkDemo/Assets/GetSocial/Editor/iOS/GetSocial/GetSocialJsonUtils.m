@@ -118,6 +118,7 @@
     postContent.text            = dictionary[@"Text"];
     postContent.buttonTitle     = dictionary[@"ButtonTitle"];
     postContent.buttonAction    = dictionary[@"ButtonAction"];
+    postContent.action          = [self deserializeAction:dictionary[@"Action"]];
     postContent.mediaAttachment = [self deserializeMediaAttachment:dictionary[@"MediaAttachment"]];
 
     return postContent;
@@ -139,13 +140,8 @@
 
 + (GetSocialNotificationsQuery *)deserializeNotificationsQuery:(NSDictionary *)json
 {
-    NSNumber *isRead = json[@"IsRead"];
-    
-    GetSocialNotificationsQuery *query = isRead == nil
-        ? [GetSocialNotificationsQuery readAndUnread]
-        : [isRead boolValue]
-        ? [GetSocialNotificationsQuery read]
-        : [GetSocialNotificationsQuery unread];
+    GetSocialNotificationsQuery *query = [GetSocialNotificationsQuery withStatuses:json[@"Statuses"]];
+    [query setActions:json[@"Actions"]];
     
     // Limit
     int limit = [json[@"Limit"] intValue];
@@ -165,13 +161,8 @@
 
 + (GetSocialNotificationsCountQuery *)deserializeNotificationsCountQuery:(NSDictionary *)json
 {
-    NSNumber *isRead = json[@"IsRead"];
-    GetSocialNotificationsCountQuery *query = isRead == nil
-        ? [GetSocialNotificationsCountQuery readAndUnread]
-        : [isRead boolValue]
-        ? [GetSocialNotificationsCountQuery read]
-        : [GetSocialNotificationsCountQuery unread];
-    
+    GetSocialNotificationsCountQuery *query = [GetSocialNotificationsCountQuery withStatuses:json[@"Statuses"]];
+    [query setActions:json[@"Actions"]];
     [query setTypes:json[@"Types"]];
     
     return query;
@@ -200,18 +191,26 @@
 {
     GetSocialNotificationContent *notificationContent = [GetSocialNotificationContent withText:json[@"Text"]];
     [notificationContent setTitle:json[@"Title"]];
-    
-    if (json[@"Action"] != nil)
-    { 
-        [notificationContent setActionType:(GetSocialNotificationActionType) [json[@"Action"] intValue]];
-    }
-    
+    [notificationContent setAction:[self deserializeAction:json[@"Action"]]];
     [notificationContent setMediaAttachment:[self deserializeMediaAttachment:json[@"MediaAttachment"]]];
-    [notificationContent addActionData:json[@"ActionData"]];
     [notificationContent setTemplateName:json[@"Template"]];
     [notificationContent addTemplatePlaceholders:json[@"TemplatePlaceholders"]];
     
+    NSArray *actionButtons = json[@"ActionButtons"];
+    for (NSString *actionButton in actionButtons)
+    {
+        [notificationContent addActionButton:[self deserializeActionButton:actionButton] ];
+    }
+    
     return notificationContent;
+}
+
++ (GetSocialActionButton *)deserializeActionButton:(NSString *)actionButtonJson
+{
+    NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromNSString:actionButtonJson];
+    
+    return [GetSocialActionButton createWithTitle:json[@"Title"]
+                                      andActionId:json[@"Id"]];
 }
 
 + (GetSocialMediaAttachment *)deserializeMediaAttachment:(NSString *)mediaAttachmentJson
@@ -241,4 +240,24 @@
     
     return nil;
 }
+
++ (GetSocialAction *)deserializeAction:(NSString *)actionJson
+{
+    if (actionJson.length == 0)
+    {
+        return nil;
+    }
+    NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromNSString:actionJson];
+    
+    if (json[@"Type"] == nil)
+    {
+        return nil;
+    }
+    
+    GetSocialActionBuilder *actionBuilder = [[GetSocialActionBuilder alloc] initWithType:json[@"Type"] ];
+    [actionBuilder addActionData:json[@"Data"]];
+
+    return [actionBuilder build];
+}
+
 @end

@@ -26,6 +26,7 @@ namespace GetSocialSdk.Ui
         private bool _readOnly;
 
         Action<string, ActivityPost> _onButtonClicked;
+        ActionListener _actionListener;
         Action<PublicUser> _onAvatarClickListener;
         Action<string> _onMentionClickListener;
         Action<string> _tagClickListener;
@@ -42,7 +43,7 @@ namespace GetSocialSdk.Ui
         /// set it to false.
         /// </summary>
         /// <param name="showFeedView">true to have activity feed view in history, false otherwise</param>
-        /// <returns><see cref="ActivityDetailsViewBuilder" instance./></returns>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance</returns>
         public ActivityDetailsViewBuilder SetShowActivityFeedView(bool showFeedView)
         {
             _showActivityFeedView = showFeedView;
@@ -55,11 +56,24 @@ namespace GetSocialSdk.Ui
         /// Register callback to listen when activity action button was clicked.
         /// </summary>
         /// <param name="onButtonClicked">Called when activity action button was clicked.</param>
-        /// <returns><see cref="ActivityDetailsViewBuilder" instance./></returns>
+        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance</returns>
+        [Obsolete("Use setActionListener instead")]
         public ActivityDetailsViewBuilder SetButtonActionListener(Action<string, ActivityPost> onButtonClicked)
         {
             _onButtonClicked = onButtonClicked;
 
+            return this;
+        }
+        
+        /// <summary>
+        /// Register a callback to listen to activity action button click events.
+        /// </summary>
+        /// <param name="listener">Called when action button is clicked</param>
+        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
+        public ActivityDetailsViewBuilder SetActionListener(ActionListener listener)
+        {
+            _actionListener = listener;
+            
             return this;
         }
 
@@ -138,7 +152,9 @@ namespace GetSocialSdk.Ui
                 MentionClickListenerCallback.OnMentionClicled,
                 _onMentionClickListener.GetPointer(),
                 TagClickListenerCallback.OnTagClicked,
-                _tagClickListener.GetPointer());
+                _tagClickListener.GetPointer(),
+                ActionListenerCallback.OnAction,
+                _actionListener.GetPointer());
 #else
             return false;
 #endif
@@ -156,6 +172,11 @@ namespace GetSocialSdk.Ui
             {
                 activityDetailsBuilderAJO.CallAJO("setButtonActionListener",
                     new ActionButtonListenerProxy(_onButtonClicked));
+            }
+            if (_actionListener != null)
+            {
+                activityDetailsBuilderAJO.CallAJO("setActionListener",
+                    new ActionListenerProxy(_actionListener));
             }
             if (_onAvatarClickListener != null)
             {
@@ -190,8 +211,8 @@ namespace GetSocialSdk.Ui
             Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
             Action<IntPtr, string> avatarClickListener, IntPtr avatarClickListenerPtr,
             Action<IntPtr, string> mentionClickListener, IntPtr mentionClickListenerPtr,
-            Action<IntPtr, string> tagClickListener, IntPtr tagClickListenerPtr);
-
+            Action<IntPtr, string> tagClickListener, IntPtr tagClickListenerPtr,
+            ActionListenerDelegate actionListener, IntPtr actionListenerPtr);
 #endif
     }
 }

@@ -60,7 +60,7 @@ namespace GetSocialSdk.Editor
 
         static Dictionary<string, object> GetLastReleaseInfo()
         {
-            var request = WebRequest.Create(LatestReleaseURL()) as HttpWebRequest;
+            var request = System.Net.WebRequest.Create(LatestReleaseURL()) as HttpWebRequest;
 
             request.Method = "GET";
             request.UserAgent = "Unity Editor";

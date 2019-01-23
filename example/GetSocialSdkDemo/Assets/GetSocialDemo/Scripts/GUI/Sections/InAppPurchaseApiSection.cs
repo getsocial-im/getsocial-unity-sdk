@@ -73,13 +73,13 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             builder.WithPurchaseDate(DateTime.Now);
             builder.WithPurchaseId(System.Guid.NewGuid().ToString());
             
-            GetSocial.TrackPurchase(builder.Build(), () =>
+            if (GetSocial.TrackPurchaseEvent(builder.Build()))
             {
-                _console.LogD("Purchase was tracked");
-            }, error =>
+                _console.LogD("Purchase was tracked.");
+            } else 
             {
-                _console.LogD("Purchase tracking failed, error: " + error);
-            });
+                _console.LogD("Purchase tracking failed.");
+            };
             
         }
     }

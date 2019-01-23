@@ -118,7 +118,7 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }
 
-        public void SetNotificationListener(Func<Notification, bool, bool> listener)
+        public void SetNotificationListener(NotificationListener listener)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
         }
@@ -133,10 +133,10 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), query, onSuccess, onError);
         }
 
-        public void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+        public void SetNotificationsStatus(List<string> notificationsIds, string status, Action onSuccess,
             Action<GetSocialError> onError)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), notificationsIds, isRead, onSuccess, onError);
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), notificationsIds, status, onSuccess, onError);
         }
 
         public void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError)
@@ -437,9 +437,21 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }
 
-        public void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError)
+        public bool TrackPurchaseEvent(PurchaseData purchaseData)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+            return false;
+        }
+
+        public bool TrackCustomEvent(string customEvent, Dictionary<string, string> eventProperties)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+            return false;
+        }
+
+        public void ProcessAction(GetSocialAction notificationAction)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), notificationAction);
         }
 
         public void HandleOnStartUnityEvent()

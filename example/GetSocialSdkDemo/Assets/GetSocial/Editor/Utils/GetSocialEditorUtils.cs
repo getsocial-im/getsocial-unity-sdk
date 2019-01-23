@@ -187,18 +187,21 @@ namespace GetSocialSdk.Editor
                 ? @"{1} ""keytool -list -v -keystore {0}{2}{0} -storepass {0}{3}{0} -alias {0}{4}{0}""" 
                 : @"{1} ""keytool -list -v -keystore {0}{2}{0} -storepass {0}{3}{0}""";
 
+            proc.StartInfo.Arguments = !String.IsNullOrEmpty(aliasName) 
+                ? string.Format(arguments, keystoreName, keystorePassword, aliasName) 
+                : string.Format(arguments, keystoreName, keystorePassword);
+
             proc.StartInfo.FileName = IsUnix() ? "bash" : "cmd";
             var prefix = IsUnix() ? "-c" : "/C";
             var quotes = IsUnix() ? "'" : @"""";
-            
+             
             proc.StartInfo.Arguments = hasAlias
                 ? string.Format(arguments, quotes, prefix, keystoreName, keystorePassword, aliasName) 
                 : string.Format(arguments, quotes, prefix, keystoreName, keystorePassword);
-            
+
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.RedirectStandardOutput = true;
-
             proc.Start();
             var keyHash = new StringBuilder();
             while (!proc.HasExited)
@@ -211,7 +214,8 @@ namespace GetSocialSdk.Editor
                 return "";
             }
 
-            string response = keyHash.ToString();
+            var response = keyHash.ToString();
+
             const string errorLiteral = "keytool error:";
             if (response.Contains(errorLiteral))
             {

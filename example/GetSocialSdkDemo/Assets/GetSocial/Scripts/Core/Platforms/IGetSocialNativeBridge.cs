@@ -63,13 +63,13 @@ namespace GetSocialSdk.Core
 
         void RegisterForPushNotifications();
 
-        void SetNotificationListener(Func<Notification, bool, bool> listener);
+        void SetNotificationListener(NotificationListener listener);
 
         void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError);
 
         void GetNotificationsCount(NotificationsCountQuery query, Action<int> onSuccess, Action<GetSocialError> onError);
         
-        void SetNotificationsRead(List<string> notificationsIds, bool isRead, Action onSuccess,
+        void SetNotificationsStatus(List<string> notificationsIds, string status, Action onSuccess,
             Action<GetSocialError> onError);
         
         void SetPushNotificationsEnabled(bool isEnabled, Action onSuccess, Action<GetSocialError> onError);
@@ -202,17 +202,21 @@ namespace GetSocialSdk.Core
 
 
         #region access_helpers
-
+        void HandleOnStartUnityEvent();
         void Reset();
 
         #endregion
 
         #region Analytics
 
-        void TrackPurchaseData(PurchaseData purchaseData, Action onSuccess, Action<GetSocialError> onError);
+        bool TrackPurchaseEvent(PurchaseData purchaseData);
+
+        bool TrackCustomEvent(string customEvent, Dictionary<string, string> eventProperties);
 
         #endregion
 
-        void HandleOnStartUnityEvent();
+        #region Actions
+        void ProcessAction(GetSocialAction notificationAction);
+        #endregion
     }
 }

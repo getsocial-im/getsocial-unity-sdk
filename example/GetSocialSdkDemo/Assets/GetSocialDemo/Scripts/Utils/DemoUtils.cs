@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Assets.GetSocialDemo.Scripts.Utils
 {
-    public class DemoUtils
+#pragma warning disable 0618
+    public static class DemoUtils
     {
         public static byte[] LoadSampleVideoBytes()
         {
@@ -22,8 +24,8 @@ namespace Assets.GetSocialDemo.Scripts.Utils
         {
             var popup = new MNPopup (title, message);
             popup.AddAction("OK", () => {});
-            popup.Show();            
-            
+            popup.Show();               
         }
     }
+#pragma warning restore 0618
 }
