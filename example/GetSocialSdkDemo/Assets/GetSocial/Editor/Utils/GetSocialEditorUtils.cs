@@ -186,11 +186,7 @@ namespace GetSocialSdk.Editor
             var arguments = hasAlias
                 ? @"{1} ""keytool -list -v -keystore {0}{2}{0} -storepass {0}{3}{0} -alias {0}{4}{0}""" 
                 : @"{1} ""keytool -list -v -keystore {0}{2}{0} -storepass {0}{3}{0}""";
-
-            proc.StartInfo.Arguments = !String.IsNullOrEmpty(aliasName) 
-                ? string.Format(arguments, keystoreName, keystorePassword, aliasName) 
-                : string.Format(arguments, keystoreName, keystorePassword);
-
+            
             proc.StartInfo.FileName = IsUnix() ? "bash" : "cmd";
             var prefix = IsUnix() ? "-c" : "/C";
             var quotes = IsUnix() ? "'" : @"""";
