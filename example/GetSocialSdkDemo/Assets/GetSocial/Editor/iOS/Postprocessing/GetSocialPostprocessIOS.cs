@@ -58,6 +58,7 @@ namespace GetSocialSdk.Editor
                 SetAutoRegisterForPushTag(plistDocument);
                 SetForegroundNotifications(plistDocument);
                 SetAutoInitSdk(plistDocument);
+                SetDisableFacebookReferralCheck(plistDocument);
                 SetUiBackgroundModes(plistDocument);
                 SetDefaultUiConfigurationFilePathTag(plistDocument);
                 DisableViewControllerBasedStatusBar(plistDocument);
@@ -72,17 +73,18 @@ namespace GetSocialSdk.Editor
             {
                 Directory.CreateDirectory(projectPath + extensionName);
             }
-            
+
+            var pluginDir = GetSocialSettings.GetPluginPath();
             PlistDocument notificationServicePlist = new PlistDocument();
-            notificationServicePlist.ReadFromFile ("Assets/GetSocial/Editor/iOS/Helpers/NotificationService/Info.plist");
+            notificationServicePlist.ReadFromFile (pluginDir + "/Editor/iOS/Helpers/NotificationService/Info.plist");
             notificationServicePlist.root.SetString ("CFBundleShortVersionString", PlayerSettings.bundleVersion);
             notificationServicePlist.root.SetString ("CFBundleVersion", PlayerSettings.iOS.buildNumber);
             notificationServicePlist.WriteToFile(projectPath + "/GetSocialNotificationExtension/Info.plist");
             
-            const string extensionServiceSourceHeaderFile = "Assets/GetSocial/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.h";
-            const string extensionServiceSourceImpFile = "Assets/GetSocial/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.m";
-            const string extensionServiceTargetHeaderFile = "GetSocialNotificationExtension/GetSocialNotificationService.h";
-            const string extensionServiceTargetImpFile = "GetSocialNotificationExtension/GetSocialNotificationService.m";
+            var extensionServiceSourceHeaderFile = pluginDir + "/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.h";
+            var extensionServiceSourceImpFile = pluginDir + "/Editor/iOS/Helpers/NotificationService/GetSocialNotificationService.m";
+            var extensionServiceTargetHeaderFile = "GetSocialNotificationExtension/GetSocialNotificationService.h";
+            var extensionServiceTargetImpFile = "GetSocialNotificationExtension/GetSocialNotificationService.m";
             
             File.Copy(extensionServiceSourceHeaderFile, projectPath + "/" + extensionServiceTargetHeaderFile);
             File.Copy(extensionServiceSourceImpFile, projectPath + "/" + extensionServiceTargetImpFile);
@@ -372,6 +374,11 @@ namespace GetSocialSdk.Editor
         private static void SetAutoInitSdk(PlistDocument plistDocument)
         {
             plistDocument.root.SetBoolean("im.getsocial.sdk.AutoInitSdk", GetSocialSettings.IsAutoInitEnabled);
+        }
+
+        private static void SetDisableFacebookReferralCheck(PlistDocument plistDocument)
+        {
+            plistDocument.root.SetBoolean("im.getsocial.sdk.DisableFacebookReferralCheck", GetSocialSettings.IsFacebookReferralCheckDisabled);
         }
 
         private static void SetUiBackgroundModes(PlistDocument plistDocument)

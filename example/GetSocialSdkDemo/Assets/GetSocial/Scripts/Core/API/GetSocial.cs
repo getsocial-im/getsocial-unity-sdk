@@ -296,6 +296,14 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
+        /// Clears referral data.
+        /// </summary>
+        public static void ClearReferralData()
+        {
+            GetSocialImpl.ClearReferralData();
+        }
+
+        /// <summary>
         /// Get list of users who installed the app by accepting invite of current user. 
         /// </summary>
         /// <param name="onSuccess">Called when invocation was successfull.</param>

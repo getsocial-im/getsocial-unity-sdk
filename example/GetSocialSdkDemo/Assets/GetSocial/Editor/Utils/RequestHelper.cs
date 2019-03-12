@@ -31,6 +31,8 @@ namespace GetSocialSdk.Editor
 
         #endregion
 
+#if UNITY_2018_1_OR_NEWER
+        
         #region WebRequest methods
 
         private static WebRequest CreateDownloadRequestUsingWebRequest(string requestURL)
@@ -39,6 +41,8 @@ namespace GetSocialSdk.Editor
         }
 
         #endregion
+        
+#endif
         
     }
     
@@ -74,6 +78,8 @@ namespace GetSocialSdk.Editor
     }
 #pragma warning restore 0618
 
+#if UNITY_2018_1_OR_NEWER
+    
     public class WebRequest : Request
     {
         private UnityWebRequest _webRequest;
@@ -105,4 +111,6 @@ namespace GetSocialSdk.Editor
         }
     }
 
+#endif
+    
 }

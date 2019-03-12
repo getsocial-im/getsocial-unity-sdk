@@ -143,6 +143,12 @@ namespace GetSocialSdk.Editor
             var shouldAutoInitSdk = EditorGUILayout.ToggleLeft(autoInitSdkEnabled, GetSocialSettings.IsAutoInitEnabled);
             
             SetAutoInitEnabled(shouldAutoInitSdk);
+            
+            var facebookReferralCheckDisabled = new GUIContent("Disable Facebook Referral Check [?]", "If this setting is checked, GetSocial won't use Facebook SDK to check referral data.");
+            var shouldDisableFaceReferralCheck = EditorGUILayout.ToggleLeft(facebookReferralCheckDisabled, GetSocialSettings.IsFacebookReferralCheckDisabled);
+
+            SetDisableFacebookReferralCheck(shouldDisableFaceReferralCheck);
+
         }
         
         static bool IsDemoAppPackage()
@@ -518,6 +524,14 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsAutoInitEnabled != value)
             {
                 GetSocialSettings.IsAutoInitEnabled = value;
+            }
+        }
+
+        private void SetDisableFacebookReferralCheck(bool value)
+        {
+            if (GetSocialSettings.IsFacebookReferralCheckDisabled != value)
+            {
+                GetSocialSettings.IsFacebookReferralCheckDisabled = value;
             }
         }
 

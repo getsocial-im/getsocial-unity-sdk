@@ -12,7 +12,7 @@
 - (NSMutableDictionary *)toJsonDictionary
 {
     NSMutableDictionary *dictionary = [@{} mutableCopy];
-    [dictionary gs_setValueOrNSNull:self.userId forKey:@"UserId"];
+    [dictionary gs_setValueOrNSNull:self.userId forKey:@"Id"];
     [dictionary gs_setValueOrNSNull:self.displayName forKey:@"DisplayName"];
     [dictionary gs_setValueOrNSNull:self.avatarUrl forKey:@"AvatarUrl"];
     return dictionary;

@@ -53,6 +53,8 @@ namespace GetSocialSdk.Core
 
         void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure);
 
+        void ClearReferralData();
+
         void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure);
 
         void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure);

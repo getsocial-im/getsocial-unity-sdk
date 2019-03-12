@@ -52,7 +52,7 @@ namespace GetSocialSdk.Core
         {
             return new AndroidJavaClass("im.getsocial.sdk.usermanagement.UsersQuery")
                 .CallStaticAJO("usersByDisplayName", _query)
-                .CallStaticAJO("withLimit", _limit);
+                .CallAJO("withLimit", _limit);
         }
 #endif
     }

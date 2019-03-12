@@ -109,7 +109,6 @@ namespace GetSocialSdk.Core
                 InviteChannelPluginCallbacks.PresentChannelInterface);
         }
         
-        #endregion
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
         {
@@ -119,11 +118,17 @@ namespace GetSocialSdk.Core
             );
         }
 
+        public void ClearReferralData()
+        {
+            _gs_clearReferralData();
+        }
+
         public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             _gs_getReferredUsers(Callbacks.GetReferredUsers, onSuccess.GetPointer(), 
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
+
 
         public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
         {
@@ -136,6 +141,8 @@ namespace GetSocialSdk.Core
             _gs_createInviteLink(linkParamsJson, Callbacks.StringCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
         } 
+
+        #endregion
 
         public void RegisterForPushNotifications()
         {
@@ -628,6 +635,9 @@ namespace GetSocialSdk.Core
         static extern void _gs_getReferralData(
             FetchReferralDataCallbackDelegate fetchReferralDataCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_clearReferralData();
 
         [DllImport("__Internal")]
         static extern void _gs_getReferredUsers(

@@ -32,6 +32,9 @@ namespace GetSocialSdk.Core
         bool _autoInitEnabled = true;
 
         [SerializeField]
+        bool _disableFacebookReferralCheck = false;
+        
+        [SerializeField]
         bool _useGetSocialUi = true;
 
         [SerializeField]
@@ -140,6 +143,16 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._autoInitEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+
+        public static bool IsFacebookReferralCheckDisabled
+        {
+            get { return Instance._disableFacebookReferralCheck; }
+            set
+            {
+                Instance._disableFacebookReferralCheck = value;
                 MarkAssetDirty();
             }
         }

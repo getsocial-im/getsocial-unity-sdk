@@ -118,6 +118,11 @@ namespace GetSocialSdk.Core
                 new FetchReferralDataCallbackProxy(onSuccess, onFailure));
         }
 
+        public void ClearReferralData()
+        {
+            _getSocial.CallStatic("clearReferralData");
+        }
+
         public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             _getSocial.CallStatic("getReferredUsers", new ListCallbackProxy<ReferredUser>(onSuccess, onFailure));

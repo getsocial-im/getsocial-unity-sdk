@@ -103,6 +103,11 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
         }
 
+        public void ClearReferralData()
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+        }
+
         public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
@@ -445,7 +450,7 @@ namespace GetSocialSdk.Core
 
         public bool TrackCustomEvent(string customEvent, Dictionary<string, string> eventProperties)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+            DebugUtils.LogMethodCall (MethodBase.GetCurrentMethod (), customEvent, eventProperties);
             return false;
         }
 
