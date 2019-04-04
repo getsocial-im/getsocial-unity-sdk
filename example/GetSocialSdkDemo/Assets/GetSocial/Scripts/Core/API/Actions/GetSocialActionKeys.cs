@@ -23,5 +23,11 @@
         {
             public const string Url = "$url";
         }
+        
+        public static class AddFriend
+        {
+            public const string UserId = "$user_id";
+        }
+
     }
 }

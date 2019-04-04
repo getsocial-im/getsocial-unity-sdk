@@ -21,6 +21,8 @@ public static class GSStyles
     public static readonly GUIStyle BigLabelText;
     public static readonly GUIStyle NormalLabelText;
     public static readonly GUIStyle NormalLabelTextRed;
+    public static readonly GUIStyle LeftAlignedChatText;
+    public static readonly GUIStyle RightAlignedChatText;
 
     public static readonly GUIStyle TextField;
     public static readonly GUIStyle Toggle;
@@ -62,6 +64,22 @@ public static class GSStyles
             stretchWidth = true,
             wordWrap = true,
             richText = false
+        };
+
+        RightAlignedChatText = new GUIStyle(NormalLabelText)
+        {
+            margin = new RectOffset(4, 4, 4, 4),
+            alignment = TextAnchor.UpperRight,
+            normal = { textColor = Color.red },
+            fontSize = 36,
+        };
+
+        LeftAlignedChatText = new GUIStyle(NormalLabelText)
+        {
+            margin = new RectOffset(4, 4, 4, 4),
+            alignment = TextAnchor.UpperLeft,
+            normal = { textColor = Color.blue },
+            fontSize = 36,
         };
 
         Toggle = new GUIStyle(GUI.skin.toggle)

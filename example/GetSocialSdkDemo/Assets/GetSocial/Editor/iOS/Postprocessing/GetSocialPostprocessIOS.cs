@@ -27,13 +27,15 @@ namespace GetSocialSdk.Editor
     public static class GetSocialPostprocessIOS
     {
         private const int MinimumIosVersionRequirnment = 8;
-        
+
         public static void UpdateXcodeProject(string projectPath)
         {
             CheckIosVersion();
             
+#if !UNITY_CLOUD_BUILD
             Debug.Log(string.Format("GetSocial: Xcode postprocessing started for project '{0}'", projectPath));
-
+#endif
+            
             PBXProjectUtils.ModifyPbxProject(projectPath, (project, target) =>
             {
                 AddOtherLinkerFlags(project, target);
@@ -140,13 +142,17 @@ namespace GetSocialSdk.Editor
                 return;
             }
 
+#if !UNITY_CLOUD_BUILD
             Debug.Log("GetSocial: Removing GetSocial UI files from build as Native UI is disabled");
+#endif
             var uiBridgeGuid =
                 project.FindFileGuidByProjectPath(
                     "Libraries/GetSocial/Editor/iOS/GetSocialUI/GetSocialUIUnityBridge.mm");
             if (uiBridgeGuid == null)
             {
+#if !UNITY_CLOUD_BUILD
                 Debug.Log("GetSocial: GetSocialUIUnityBridge.mm not found in the project.");
+#endif                
                 return;
             }
 
@@ -191,16 +197,19 @@ namespace GetSocialSdk.Editor
             {
                 project.RemoveDynamicFramework(relativeUiFrameworkPath);
             }
+#if !UNITY_CLOUD_BUILD
             Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
+#endif            
         }
 
         #region deep_linking
 
         static void SetupDeepLinking(PBXProject project, string projectPath, string target)
         {
-            Debug.LogWarning(
-                "GetSocial: Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-links/receive-smart-links/unity/");
-
+#if !UNITY_CLOUD_BUILD
+            Debug.Log(
+                "[GetSocial] Setting up deep linking...\n\tFor universal links setup please refer to https://docs.getsocial.im/guides/smart-links/receive-smart-links/unity/");
+#endif
             // URL Schemes (iOS <= 8)
             AddGetSocialUrlScheme(projectPath);
 
@@ -210,7 +219,9 @@ namespace GetSocialSdk.Editor
 
         static void AddGetSocialUrlScheme(string projectPath)
         {
-            Debug.Log(string.Format("GetSocial: Setting up GetSocial deep linking for iOS <= 8 for '{0}'", projectPath));
+#if !UNITY_CLOUD_BUILD
+            Debug.Log(string.Format("[GetSocial] Setting up GetSocial deep linking for iOS <= 8 for '{0}'", projectPath));
+#endif            
             PBXProjectUtils.ModifyPlist(projectPath, AddGetSocialUrlSchemeToPlist,
                 "Failed to set up GetSocial deep linking for iOS <= 8.");
         }
@@ -294,7 +305,7 @@ namespace GetSocialSdk.Editor
             if (currentPushSettings != null && !GetSocialSettings.IosPushEnvironment.Equals(currentPushSettings))
             {
                 // show warning
-                Debug.LogWarning("GetSocial: Push notification settings are different, check the settings in the GetSocial Dashboard at http://dashboard.getsocial.im .");
+                Debug.LogWarning("[GetSocial] Push notification settings are different, check the settings in the GetSocial Dashboard at http://dashboard.getsocial.im .");
             }
             if (currentPushSettings == null)
             {
@@ -407,7 +418,7 @@ namespace GetSocialSdk.Editor
                 if (int.Parse(iosMajorVersionString) < MinimumIosVersionRequirnment)
                 {
                     Debug.LogWarning(string.Format(
-                        "GetSocial: target iOS version {0} is not supported. GetSocial SDK requires iOS {1}+",
+                        "GetSocial: Target iOS version {0} is not supported. GetSocial SDK requires iOS {1}+",
                         targetIosVersion, MinimumIosVersionRequirnment));
                 }
             }

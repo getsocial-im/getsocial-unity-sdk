@@ -26,5 +26,11 @@
         /// Open URL.
         /// </summary>
         public const string OpenUrl = "open_url";
+        
+        /// <summary>
+        /// Add friend.
+        /// </summary>
+        public const string AddFriend = "add_friend";
+        
     }
 }

@@ -57,6 +57,15 @@ namespace GetSocialSdk.Ui
         }
 
         /// <summary>
+        /// Returns a builder to specify parameters you want on the Notification Center view.
+        /// </summary>
+        /// <returns><see cref="NotificationCenterViewBuilder"/> instance.</returns>
+        public static NotificationCenterViewBuilder CreateNotificationCenterView()
+        {
+            return new NotificationCenterViewBuilder();
+        }
+
+        /// <summary>
         /// Show GetSocial view
         /// </summary>
         /// <param name="viewBuilder">View to open</param>

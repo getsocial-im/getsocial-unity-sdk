@@ -19,252 +19,289 @@ typedef void(MentionClickListenerDelegate)(void *listenerPtr, const char *userId
 
 typedef BOOL(ActionListenerDelegate)(void *listenerPtr, const char *actionJson);
 
+typedef BOOL(NotificationClickDelegate)(void *listenerPtr, const char *notificationJson);
+
+typedef BOOL(NotificationActionButtonClickDelegate)(void *listenerPtr, const char* actionButtonJson, const char *notificationJson);
+
 static GetSocialUIPendingAction sPendingAction = nil;
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 extern "C" {
-NS_ASSUME_NONNULL_BEGIN
-
-bool _gs_showSmartInvitesView(
-        const char *title,
-        const char *serializedInviteContent,
-        const char *serializedLinkParams,
-        StringCallbackDelegate stringCallback /* with providerId */, void *onInviteCompletePtr, void *onInviteCancelPtr,
-        FailureWithDataCallbackDelegate failureCallback, void *onFailurePtr,
-        VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
-        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
-        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr) {
-
-    GetSocialUIInvitesView *invitesView = [GetSocialUI createInvitesView];
-
-    if (title) {
-        NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:title];
-        invitesView.windowTitle = titleStr;
-    }
-
-    if (serializedInviteContent) {
-        NSDictionary *serializedInviteContentStr = [GetSocialBridgeUtils createDictionaryFromCString:serializedInviteContent];
-        GetSocialMutableInviteContent *customInviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:serializedInviteContentStr];
-        [invitesView setCustomInviteContent:customInviteContent];
-    }
-
-    if (serializedLinkParams) {
-        NSDictionary *serializedLinkParamsStr = [GetSocialBridgeUtils createDictionaryFromCString:serializedLinkParams];
-        NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:serializedLinkParamsStr];
-        [invitesView setLinkParams:linkParams];
+    NS_ASSUME_NONNULL_BEGIN
+    
+    bool _gs_showSmartInvitesView(
+                                  const char *title,
+                                  const char *serializedInviteContent,
+                                  const char *serializedLinkParams,
+                                  StringCallbackDelegate stringCallback /* with providerId */, void *onInviteCompletePtr, void *onInviteCancelPtr,
+                                  FailureWithDataCallbackDelegate failureCallback, void *onFailurePtr,
+                                  VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+                                  VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+                                  UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr) {
+        
+        GetSocialUIInvitesView *invitesView = [GetSocialUI createInvitesView];
+        
+        if (title) {
+            NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:title];
+            invitesView.windowTitle = titleStr;
+        }
+        
+        if (serializedInviteContent) {
+            NSDictionary *serializedInviteContentStr = [GetSocialBridgeUtils createDictionaryFromCString:serializedInviteContent];
+            GetSocialMutableInviteContent *customInviteContent = [GetSocialJsonUtils deserializeCustomInviteContent:serializedInviteContentStr];
+            [invitesView setCustomInviteContent:customInviteContent];
+        }
+        
+        if (serializedLinkParams) {
+            NSDictionary *serializedLinkParamsStr = [GetSocialBridgeUtils createDictionaryFromCString:serializedLinkParams];
+            NSDictionary *linkParams = [GetSocialJsonUtils deserializeLinkParams:serializedLinkParamsStr];
+            [invitesView setLinkParams:linkParams];
+        }
+        
+        if (uiActionListenerPtr) {
+            [invitesView setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+                sPendingAction = pendingAction;
+                uiActionListener(uiActionListenerPtr, (int) actionType);
+            }];
+        }
+        
+        if (onInviteCompletePtr) {
+            [invitesView setHandlerForInvitesSent:^(NSString *_Nonnull providerId) {
+                stringCallback(onInviteCompletePtr, providerId.UTF8String);
+                
+            }                              cancel:^(NSString *_Nonnull providerId) {
+                stringCallback(onInviteCancelPtr, providerId.UTF8String);
+            }                             failure:^(NSString *_Nonnull providerId, NSError *_Nonnull error) {
+                failureCallback(onFailurePtr, providerId.UTF8String, [error toJsonCString]);
+            }];
+        }
+        
+        if (onOpenActionPtr || onCloseActionPtr) {
+            [invitesView setHandlerForViewOpen:^{
+                onOpenAction(onOpenActionPtr);
+            } close:^{
+                onCloseAction(onCloseActionPtr);
+            }];
+        }
+        
+        return [invitesView show];
     }
     
-    if (uiActionListenerPtr) {
-        [invitesView setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
-            sPendingAction = pendingAction;
-            uiActionListener(uiActionListenerPtr, (int) actionType);
-        }];
-    }
-    
-    if (onInviteCompletePtr) {
-        [invitesView setHandlerForInvitesSent:^(NSString *_Nonnull providerId) {
-            stringCallback(onInviteCompletePtr, providerId.UTF8String);
-
-        }                              cancel:^(NSString *_Nonnull providerId) {
-            stringCallback(onInviteCancelPtr, providerId.UTF8String);
-        }                             failure:^(NSString *_Nonnull providerId, NSError *_Nonnull error) {
-            failureCallback(onFailurePtr, providerId.UTF8String, [error toJsonCString]);
-        }];
-    }
-    
-    if (onOpenActionPtr || onCloseActionPtr) {
-        [invitesView setHandlerForViewOpen:^{
-            onOpenAction(onOpenActionPtr);
-        } close:^{
-            onCloseAction(onCloseActionPtr);
-        }];
-    }
-
-    return [invitesView show];
-}
-
 #pragma mark UI Configuration
-
-bool _gs_loadConfiguration(const char *filePath) {
-    NSString *filePathStr = [GetSocialBridgeUtils createNSStringFrom:filePath];
-    return [GetSocialUI loadConfiguration:filePathStr];
-}
-
-bool _gs_loadDefaultConfiguration(const char *filePath) {
-    return [GetSocialUI loadDefaultConfiguration];
-}
-
+    
+    bool _gs_loadConfiguration(const char *filePath) {
+        NSString *filePathStr = [GetSocialBridgeUtils createNSStringFrom:filePath];
+        return [GetSocialUI loadConfiguration:filePathStr];
+    }
+    
+    bool _gs_loadDefaultConfiguration(const char *filePath) {
+        return [GetSocialUI loadDefaultConfiguration];
+    }
+    
 #pragma mark Close-Open
-
-bool _gs_closeView(bool saveViewState) {
-    return [GetSocialUI closeView:saveViewState];
-}
-
-bool _gs_restoreView() {
-    return [GetSocialUI restoreView];
-}
+    
+    bool _gs_closeView(bool saveViewState) {
+        return [GetSocialUI closeView:saveViewState];
+    }
+    
+    bool _gs_restoreView() {
+        return [GetSocialUI restoreView];
+    }
     
 #pragma mark - Activity Feed
-
-bool _gs_showActivityFeedView(const char *windowTitle,
-        const char *feed, const char *filterUserId, BOOL readOnly, BOOL friendsFeed, const char *tags,
-        ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
-        VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
-        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
-        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
-        AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
-        AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
-        AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr,
-        ActionListenerDelegate actionListener, void *actionListenerPtr) {
-    NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
-
-    GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
     
-    if (windowTitle) {
-        NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
-        view.windowTitle = titleStr;
-    }
-
-    if (onButtonClickPtr) {
-        [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
-            callback(onButtonClickPtr, action.UTF8String, post.toJsonCString);
-        }];
-    }
-    
-    if (actionListenerPtr) {
-        [view setActionHandler:^BOOL(GetSocialAction * _Nonnull action) {
-            return actionListener(actionListenerPtr, [action toJsonCString]);
-        }];
-    }
-    
-    if (uiActionListenerPtr) {
-        [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
-            sPendingAction = pendingAction;
-            uiActionListener(uiActionListenerPtr, (int) actionType);
-        }];
-    }
-    
-    if (avatarClickListener) {
-        [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
-            avatarClickListener(avatarClickListenerPtr, user.toJsonCString);
-        }];
-    }
-    
-    if (mentionClickListener) {
-        [view setMentionClickHandler:^(GetSocialId userId) {
-            mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
-        }];
-    }
-
-    if (tagClickListener) {
-        [view setTagClickHandler:^(NSString *tag) {
-            tagClickListener(tagClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:tag]);
-        }];
-    }
-    
-    if (onOpenActionPtr || onCloseActionPtr) {
-        [view setHandlerForViewOpen:^{
-            onOpenAction(onOpenActionPtr);
-        } close:^{
-            onCloseAction(onCloseActionPtr);
-        }];
-    }
-    if (filterUserId) {
-        [view setFilterByUser:[GetSocialBridgeUtils createNSStringFrom:filterUserId]];
-    }
-    if (tags) {
-        NSArray *tagsArray = [GetSocialBridgeUtils createArrayFromCString:tags];
-        [view setFilterByTags:tagsArray];
-    }
-    [view setReadOnly:readOnly];
-    [view setShowFriendsFeed:friendsFeed];
-    return [view show];
-}
-    
-BOOL _gs_showActivityDetailsView(const char *windowTitle,
-                              const char *activityId,
-                              BOOL showFeedView, BOOL readOnly, const char *commentId,
-                              ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
-                              VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
-                              VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
-                              UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
-                              AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
-                              AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
-                                 AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr,
-                                 ActionListenerDelegate actionListener, void *actionListenerPtr) {
-    NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
-    
-    GetSocialUIActivityDetailsView *view = [GetSocialUI createActivityDetailsView:activityIdStr];
-    
-    if (windowTitle) {
-        NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
-        view.windowTitle = titleStr;
+    bool _gs_showActivityFeedView(const char *windowTitle,
+                                  const char *feed, const char *filterUserId, BOOL readOnly, BOOL friendsFeed, const char *tags,
+                                  ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
+                                  VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+                                  VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+                                  UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
+                                  AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
+                                  AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
+                                  AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr,
+                                  ActionListenerDelegate actionListener, void *actionListenerPtr) {
+        NSString *feedStr = [GetSocialBridgeUtils createNSStringFrom:feed];
+        
+        GetSocialUIActivityFeedView *view = [GetSocialUI createActivityFeedView:feedStr];
+        
+        if (windowTitle) {
+            NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
+            view.windowTitle = titleStr;
+        }
+        
+        if (onButtonClickPtr) {
+            [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
+                callback(onButtonClickPtr, action.UTF8String, post.toJsonCString);
+            }];
+        }
+        
+        if (actionListenerPtr) {
+            [view setActionHandler:^BOOL(GetSocialAction * _Nonnull action) {
+                return actionListener(actionListenerPtr, [action toJsonCString]);
+            }];
+        }
+        
+        if (uiActionListenerPtr) {
+            [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+                sPendingAction = pendingAction;
+                uiActionListener(uiActionListenerPtr, (int) actionType);
+            }];
+        }
+        
+        if (avatarClickListener) {
+            [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
+                avatarClickListener(avatarClickListenerPtr, user.toJsonCString);
+            }];
+        }
+        
+        if (mentionClickListener) {
+            [view setMentionClickHandler:^(GetSocialId userId) {
+                mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
+            }];
+        }
+        
+        if (tagClickListener) {
+            [view setTagClickHandler:^(NSString *tag) {
+                tagClickListener(tagClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:tag]);
+            }];
+        }
+        
+        if (onOpenActionPtr || onCloseActionPtr) {
+            [view setHandlerForViewOpen:^{
+                onOpenAction(onOpenActionPtr);
+            } close:^{
+                onCloseAction(onCloseActionPtr);
+            }];
+        }
+        if (filterUserId) {
+            [view setFilterByUser:[GetSocialBridgeUtils createNSStringFrom:filterUserId]];
+        }
+        if (tags) {
+            NSArray *tagsArray = [GetSocialBridgeUtils createArrayFromCString:tags];
+            [view setFilterByTags:tagsArray];
+        }
+        [view setReadOnly:readOnly];
+        [view setShowFriendsFeed:friendsFeed];
+        return [view show];
     }
     
-    NSString *commentIdStr = [GetSocialBridgeUtils createNSStringFrom:commentId];
-    if (commentIdStr.length) {
-        [view setCommentId:commentIdStr];
+    BOOL _gs_showActivityDetailsView(const char *windowTitle,
+                                     const char *activityId,
+                                     BOOL showFeedView, BOOL readOnly, const char *commentId,
+                                     ActivityActionButtonClickedDelegate callback, void *onButtonClickPtr,
+                                     VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+                                     VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+                                     UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr,
+                                     AvatarClickListenerDelegate avatarClickListener, void *avatarClickListenerPtr,
+                                     AvatarClickListenerDelegate mentionClickListener, void *mentionClickListenerPtr,
+                                     AvatarClickListenerDelegate tagClickListener, void *tagClickListenerPtr,
+                                     ActionListenerDelegate actionListener, void *actionListenerPtr) {
+        NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
+        
+        GetSocialUIActivityDetailsView *view = [GetSocialUI createActivityDetailsView:activityIdStr];
+        
+        if (windowTitle) {
+            NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
+            view.windowTitle = titleStr;
+        }
+        
+        NSString *commentIdStr = [GetSocialBridgeUtils createNSStringFrom:commentId];
+        if (commentIdStr.length) {
+            [view setCommentId:commentIdStr];
+        }
+        
+        if (onButtonClickPtr) {
+            [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
+                callback(onButtonClickPtr, action.UTF8String, [post toJsonCString]);
+            }];
+        }
+        
+        if (uiActionListenerPtr) {
+            [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+                sPendingAction = pendingAction;
+                uiActionListener(uiActionListenerPtr, (int) actionType);
+            }];
+        }
+        
+        if (actionListenerPtr) {
+            [view setActionHandler:^BOOL(GetSocialAction * _Nonnull action) {
+                return actionListener(actionListenerPtr, [action toJsonCString]);
+            }];
+        }
+        
+        if (onOpenActionPtr || onCloseActionPtr) {
+            [view setHandlerForViewOpen:^{
+                onOpenAction(onOpenActionPtr);
+            } close:^{
+                onCloseAction(onCloseActionPtr);
+            }];
+        }
+        if (avatarClickListener) {
+            [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
+                avatarClickListener(avatarClickListenerPtr, user.toJsonCString );
+            }];
+        }
+        
+        if (mentionClickListener) {
+            [view setMentionClickHandler:^(GetSocialId userId) {
+                mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
+            }];
+        }
+        
+        if (tagClickListener) {
+            [view setTagClickHandler:^(NSString *tag) {
+                tagClickListener(tagClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:tag]);
+            }];
+        }
+        
+        [view setReadOnly:readOnly];
+        
+        [view setShowActivityFeedView:showFeedView];
+        return [view show];
     }
     
-    if (onButtonClickPtr) {
-        [view setActionButtonHandler:^(NSString *action, GetSocialActivityPost *post) {
-            callback(onButtonClickPtr, action.UTF8String, [post toJsonCString]);
-        }];
+#pragma mark - Notification Center
+    
+    void _gs_showNotificationCenterView(const char *windowTitle, const char *notificationTypes, const char *actionTypes,
+                                        NotificationClickDelegate notificationClickDelegate, void *onNotificationClickPtr,
+                                        NotificationActionButtonClickDelegate actionButtonClickDelegate, void *onActionButtonClickPtr) {
+        
+        GetSocialUINotificationCenterView* notificationCenterView = [GetSocialUI createNotificationCenterView];
+        
+        if (windowTitle) {
+            NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
+            notificationCenterView.windowTitle = titleStr;
+        }
+        if (notificationTypes) {
+            NSArray* notificationTypesArray = [GetSocialBridgeUtils createArrayFromCString:notificationTypes];
+            notificationCenterView.filterTypes = notificationTypesArray;
+        }
+        if (actionTypes) {
+            NSArray* actionTypesArray = [GetSocialBridgeUtils createArrayFromCString:actionTypes];
+            notificationCenterView.filterActions = actionTypesArray;
+        }
+        if (notificationClickDelegate) {
+            notificationCenterView.clickHandler = ^BOOL(GetSocialNotification *notification) {
+                return notificationClickDelegate(onNotificationClickPtr, notification.toJsonCString);
+            };
+        }
+        if (actionButtonClickDelegate) {
+            notificationCenterView.actionButtonHandler = ^BOOL(GetSocialNotification *notification, GetSocialActionButton *actionButton) {
+                return actionButtonClickDelegate(onActionButtonClickPtr, actionButton.toJsonCString, notification.toJsonCString);
+            };
+        }
+        [notificationCenterView show];
     }
     
-    if (uiActionListenerPtr) {
-        [view setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
-            sPendingAction = pendingAction;
-            uiActionListener(uiActionListenerPtr, (int) actionType);
-        }];
+    void _gs_doPendingAction() {
+        if (sPendingAction) {
+            sPendingAction();
+            sPendingAction = nil;
+        }
     }
     
-    if (actionListenerPtr) {
-        [view setActionHandler:^BOOL(GetSocialAction * _Nonnull action) {
-            return actionListener(actionListenerPtr, [action toJsonCString]);
-        }];
-    }
-    
-    if (onOpenActionPtr || onCloseActionPtr) {
-        [view setHandlerForViewOpen:^{
-            onOpenAction(onOpenActionPtr);
-        } close:^{
-            onCloseAction(onCloseActionPtr);
-        }];
-    }
-    if (avatarClickListener) {
-        [view setAvatarClickHandler:^(GetSocialPublicUser *user) {
-            avatarClickListener(avatarClickListenerPtr, user.toJsonCString );
-        }];
-    }
-    
-    if (mentionClickListener) {
-        [view setMentionClickHandler:^(GetSocialId userId) {
-            mentionClickListener(mentionClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:userId]);
-        }];
-    }
-
-    if (tagClickListener) {
-        [view setTagClickHandler:^(NSString *tag) {
-            tagClickListener(tagClickListenerPtr, [GetSocialBridgeUtils createCStringFrom:tag]);
-        }];
-    }
-    
-    [view setReadOnly:readOnly];
-    
-    [view setShowActivityFeedView:showFeedView];
-    return [view show];
-}
-    
-void _gs_doPendingAction() {
-    if (sPendingAction) {
-        sPendingAction();
-        sPendingAction = nil;
-    }
-}
-
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END
 }
 
 #pragma clang diagnostic pop

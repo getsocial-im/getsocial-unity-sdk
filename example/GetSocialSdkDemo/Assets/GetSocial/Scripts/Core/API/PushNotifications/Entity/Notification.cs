@@ -156,11 +156,12 @@ namespace GetSocialSdk.Core
         public string Text { get; private set; }
         public string ImageUrl { get; private set; }
         public string VideoUrl { get; private set; }
+        public UserReference Sender { get; private set; }
 
         public override string ToString()
         {
-            return string.Format("Id: {0}, Action: {1}, ActionButtons: {2}, Status: {3}, NotificationType: {4}, CreatedAt: {5}, Title: {6}, Text: {7}, ImageUrl: {8}, VideoUrl: {9}" 
-                , Id, NotificationAction, ActionButtons.ToDebugString(), Status, NotificationType, CreatedAt, Title, Text, ImageUrl, VideoUrl);
+            return string.Format("Id: {0}, Action: {1}, ActionButtons: {2}, Status: {3}, NotificationType: {4}, CreatedAt: {5}, Title: {6}, Text: {7}, ImageUrl: {8}, VideoUrl: {9}, Sender: {10}" 
+                , Id, NotificationAction, ActionButtons.ToDebugString(), Status, NotificationType, CreatedAt, Title, Text, ImageUrl, VideoUrl, Sender);
         }
 #if UNITY_ANDROID
         public Notification ParseFromAJO(AndroidJavaObject ajo)
@@ -184,6 +185,7 @@ namespace GetSocialSdk.Core
             });
             ImageUrl = ajo.CallStr("getImageUrl");
             VideoUrl = ajo.CallStr("getVideoUrl");
+            Sender = new UserReference().ParseFromAJO(ajo.CallAJO("getSender"));
             return this;
         }
 
@@ -205,6 +207,7 @@ namespace GetSocialSdk.Core
 #pragma warning disable 618
             Action = (Type) (long) dictionary["OldAction"];
 #pragma warning restore 618
+            Sender = new UserReference().ParseFromJson(dictionary["Sender"] as Dictionary<string, object>);
             return this;
         }
 #endif

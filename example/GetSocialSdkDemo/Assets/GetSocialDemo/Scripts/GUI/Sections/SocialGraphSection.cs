@@ -1,11 +1,21 @@
-﻿using Assets.GetSocialDemo.Scripts.Utils;
+﻿using System.Collections.Generic;
+using Assets.GetSocialDemo.Scripts.Utils;
 using UnityEngine;
 
 using GetSocialSdk.Core;
+using UnityEditor;
 
 public class SocialGraphSection : DemoMenuSection
 {
     string _userId = "123";
+    private MessageView _messageView;
+    private List<PublicUser> _existingFriends;
+
+    protected override void InitGuiElements()
+    {
+        _messageView = GetComponentInChildren<MessageView>();
+        _messageView.enabled = false;
+    }
 
     protected override string GetTitle()
     {
@@ -23,9 +33,24 @@ public class SocialGraphSection : DemoMenuSection
         DemoGuiUtils.DrawButton("Remove Friend", RemoveFriend, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Check If Friends", CheckIfFriends, true,
             GSStyles.Button);
+        DemoGuiUtils.DrawButton("Message Friend", MessageFriend, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Friends Count", GetFriendsCount, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Friends", GetFriends, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Suggested Friends", GetSuggestedFriends, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Load Friends for Chat", LoadFriendsForChat, true, GSStyles.Button);
+        DemoGuiUtils.Space();
+        // show existing friends
+        if (_existingFriends != null)
+        {
+            foreach (var friend in _existingFriends)
+            {
+                var friendId = friend.Id;
+                DemoGuiUtils.DrawButton(friend.DisplayName, () =>
+                {
+                    MessageFriend(friendId);
+                }, true, GSStyles.Button);
+            }
+        }
     }
 
     void GetSuggestedFriends()
@@ -50,6 +75,27 @@ public class SocialGraphSection : DemoMenuSection
             {
                 _console.LogD (string.Format ("Friend is removed, friends cound {0}", friendsCount));
             }, OnError);
+    }
+
+    void MessageFriend()
+    {
+        GetSocial.GetUserById(_userId, user =>
+        {
+            // show message view
+            enabled = false;
+            _messageView.Receiver = user;
+            _messageView.enabled = true;
+            _messageView.LoadMessages();
+        }, error =>
+        {
+            _console.LogE("Could not get user: " + error);
+        });
+    }
+
+    public void MessageFriend(string friendId)
+    {
+        _userId = friendId;
+        MessageFriend();
     }
 
     void CheckIfFriends()
@@ -80,4 +126,11 @@ public class SocialGraphSection : DemoMenuSection
     {
         _console.LogE("Error: " + error.Message);
     }
+
+    void LoadFriendsForChat()
+    {
+        
+        GetSocial.User.GetFriends(0, 1000, friends => { _existingFriends = friends; }, OnError);
+    }
+    
 }

@@ -42,6 +42,7 @@ public class GetSocialDemoController : MonoBehaviour
 
     public string CurrentViewTitle { set; get; }
     private string _latestReferralData;
+    private string _latestChatId;
 
     // store user info to avoid constant calls to native
     CurrentUserInfo _currentUserInfo = new CurrentUserInfo();
@@ -84,30 +85,40 @@ public class GetSocialDemoController : MonoBehaviour
         {
             GetSocial.WhenInitialized(() =>
             {
-                GetSocial.GetReferralData(
-                    data =>
-                    {
-                        string referralToken = "";
-                        string message = "Referral data: " + data;
-                        if (data == null)
+                if (_latestChatId != null)
+                {
+                    ShowChat();
+                }
+                else
+                {
+                    GetSocial.GetReferralData(
+                        data =>
                         {
-                            message = "No referral data";
-                        }
-                        else
-                        {
-                            referralToken = data.Token;
-                        }
+                            var referralToken = "";
+                            var message = "Referral data: " + data;
+                            if (data == null)
+                            {
+                                message = "No referral data";
+                            }
+                            else
+                            {
+                                referralToken = data.Token;
+                            }
 
-                        if (referralToken != _latestReferralData)
-                        {
-                            
-                            DemoUtils.ShowPopup("Info", message);
-                            _console.LogD(message);
-                            _latestReferralData = referralToken;
-                        }
-                    },
-                    error => _console.LogE("Failed to get referral data: " + error.Message)
-                );
+                            if (!referralToken.Equals(_latestReferralData))
+                            {
+                                // show popup only if chat is not shown
+                                if (_latestChatId == null)
+                                {
+                                    DemoUtils.ShowPopup("Info", message);
+                                }
+                                _console.LogD(message);
+                                _latestReferralData = referralToken;
+                            }
+                        },
+                        error => _console.LogE("Failed to get referral data: " + error.Message)
+                    );
+                }
             });
         }
     }
@@ -127,6 +138,7 @@ public class GetSocialDemoController : MonoBehaviour
 #if USE_GETSOCIAL_UI
             GetComponentInChildren<SmartInvitesUiSection>(),
             GetComponentInChildren<ActivityFeedUiSection>(),
+            GetComponentInChildren<NotificationUiSection>(),
             GetComponentInChildren<UiCustomizationSection>(),
 #endif
             GetComponentInChildren<SettingsSection>()
@@ -207,7 +219,17 @@ public class GetSocialDemoController : MonoBehaviour
     {
         GetSocial.SetNotificationListener((notification, wasClicked) =>
         {
-            if (notification.NotificationAction.Type.Equals("custom_add_friend"))
+            // handle chat message
+            if (notification.NotificationAction.Type.Equals("open_chat_message"))
+            {
+                _latestChatId = notification.NotificationAction.Data["open_messages_for_id"];
+                if (GetSocial.IsInitialized)
+                {
+                    ShowChat();
+                }
+                return true;
+            }
+            if (notification.NotificationAction.Type.Equals(GetSocialActionType.AddFriend))
             {
                 ShowPopup(notification);
                 return true;
@@ -241,6 +263,26 @@ public class GetSocialDemoController : MonoBehaviour
         });
     }
 
+    private void ShowChat()
+    {
+        MainThreadExecutor.Queue(() =>
+        {
+            ShowMenuSection<SocialGraphSection>();
+            _menuSections.ForEach(section =>
+            {
+                if (section is SocialGraphSection)
+                {
+                    ((SocialGraphSection)section).MessageFriend(_latestChatId);
+                    _latestChatId = null;
+                }
+            });
+            if (_console.IsVisible)
+            {
+                _console.Toggle();
+            }
+        });
+    }
+
     private void ShowPopup(Notification notification)
     {
         _notification = notification;
@@ -251,20 +293,7 @@ public class GetSocialDemoController : MonoBehaviour
         if (actionButtonId.Equals(ActionButton.ConsumeAction))
         {
             GetSocial.User.SetNotificationsStatus(new List<string> { notification.Id }, NotificationStatus.Consumed, () => { }, Debug.LogError);
-            if (notification.NotificationAction.Type.Equals("custom_add_friend"))
-            {
-                GetSocial.User.AddFriend(notification.NotificationAction.Data["user_id"], i =>
-                {
-                    GetSocial.User.SendNotification(new List<string> { notification.NotificationAction.Data["user_id"] }, 
-                        NotificationContent.NotificationWithText(SendNotificationPlaceholders.CustomText.SenderDisplayName + " is now your friend"),
-                        count => { },
-                        Debug.LogError);
-                }, Debug.LogError);                
-            }
-            else
-            {
-                GetSocial.ProcessAction(notification.NotificationAction);
-            }
+            GetSocial.ProcessAction(notification.NotificationAction);
         } else if (actionButtonId.Equals(ActionButton.IgnoreAction))
         {
             GetSocial.User.SetNotificationsStatus(new List<string> { notification.Id }, NotificationStatus.Ignored, () => { }, Debug.LogError);
@@ -412,6 +441,7 @@ public class GetSocialDemoController : MonoBehaviour
         GUILayout.Label("UI", GSStyles.NormalLabelText);
         Button("Smart Invites", ShowMenuSection<SmartInvitesUiSection>);
         Button("Activity Feed", ShowMenuSection<ActivityFeedUiSection>);
+        Button("Notification Center", ShowMenuSection<NotificationUiSection>);
         Button("UI Customization", ShowMenuSection<UiCustomizationSection>);
 #endif
         GUILayout.Space(30f);
@@ -429,7 +459,7 @@ public class GetSocialDemoController : MonoBehaviour
         CurrentViewTitle = MainMenuTitle;
     }
 
-    void ShowMenuSection<Menu>() where Menu : DemoMenuSection
+    public void ShowMenuSection<Menu>() where Menu : DemoMenuSection
     {  
         _isInMainMenu = false;
         _menuSections.ForEach(section => section.gameObject.SetActive(section is Menu));

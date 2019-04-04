@@ -98,7 +98,7 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                     _action = null;
                 }
 
-                var actions = new[] { GetSocialActionType.Custom, GetSocialActionType.OpenProfile, GetSocialActionType.OpenActivity, GetSocialActionType.OpenInvites, GetSocialActionType.OpenUrl, "custom_add_friend" };
+                var actions = new[] { GetSocialActionType.Custom, GetSocialActionType.OpenProfile, GetSocialActionType.OpenActivity, GetSocialActionType.OpenInvites, GetSocialActionType.OpenUrl,GetSocialActionType.AddFriend };
                 actions.ToList().ForEach(action =>
                 {
                     if (GUILayout.Button(action, GSStyles.ShortButton))
@@ -164,15 +164,13 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                     recipients.Add(GetSocial.User.Id);
                 }
 
-                if ("custom_add_friend".Equals(_action) && string.IsNullOrEmpty(_text) && string.IsNullOrEmpty(_templateName))
+                if (GetSocialActionType.AddFriend.Equals(_action) && string.IsNullOrEmpty(_text) && string.IsNullOrEmpty(_templateName))
                 {
                     var addFriend = NotificationContent.NotificationWithText(
                             SendNotificationPlaceholders.CustomText.SenderDisplayName + " wants to become friends.")
                         .WithTitle("Friend request")
-                        .AddActionButton(ActionButton.Create("Accept", ActionButton.ConsumeAction))
-                        .AddActionButton(ActionButton.Create("Ignore", ActionButton.IgnoreAction))
                         .WithAction(GetSocialAction.CreateBuilder(_action)
-                            .AddActionData("user_id", GetSocial.User.Id)
+                            .AddActionData(GetSocialActionKeys.AddFriend.UserId, GetSocial.User.Id)
                             .AddActionData("user_name", GetSocial.User.DisplayName)
                             .Build());
                 

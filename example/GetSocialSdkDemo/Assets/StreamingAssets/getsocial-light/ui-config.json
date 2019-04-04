@@ -10,6 +10,8 @@
         "window": {
             "width": "fit-parent",
             "height": "fit-parent",
+            "margin-top": 40,
+            "margin-bottom": 20,
             "bg-color": "0xFFFFFFFF",
             "tint-color": "0xCC000000",
             "animation-style": "scale"
@@ -51,12 +53,6 @@
         },
         "timestamp": {
             "text-style": "timestamp"
-        },
-        "badge": {
-            "text-style": "badge",
-            "bg-image": "badge.bg-image.png",
-            "bg-image-insets": "32 32 32 32",
-            "text-insets": "0 4 0 4"
         },
         "link": {
             "text-style": "link"
@@ -110,7 +106,7 @@
         "avatar": {
             "border-size": 0,
             "border-color": "0x00000000",
-            "radius": 3,
+            "radius": 20,
             "default-image": "avatar.default-image.png"
         },
         "like-button": {
@@ -141,23 +137,8 @@
             "bg-image-normal": "post-button.bg-image-normal.png",
             "bg-image-pressed": "post-button.bg-image-pressed.png"
         },
-        "segment-bar": {
-            "text-style-normal": "segment",
-            "text-style-selected": "segment",
-            "border-color": "0xCC000000",
-            "border-size": 0,
-            "border-radius": 3,
-            "bg-color-normal": "0xFF488EE7",
-            "bg-color-selected": "0xFF4180CF"
-        },
         "loading-indicator": {
             "bg-image": "loading-indicator.bg-image.png"
-        },
-        "notification-icon-comment": {
-            "bg-image": "notification-icon-comment.bg-image.png"
-        },
-        "notification-icon-like": {
-            "bg-image": "notification-icon-like.bg-image.png"
         },
         "no-network-placeholder": {
             "bg-image": "no-network-placeholder.bg-image.png"
@@ -172,10 +153,6 @@
             "bg-color-odd": "0xFFFFFFFF",
             "bg-color-even": "0xFFFFFFFF"
         },
-        "notification-list-item": {
-            "bg-color-read": "0xFFFFFFFF",
-            "bg-color-unread": "0xFFD7E2F2"
-        },
         "activity-image": {
             "aspect-ratio": "16:9",
             "radius": 3,
@@ -184,6 +161,47 @@
         },
         "activity-not-found-placeholder": {
             "bg-image": "activity-not-found.bg-image.png"
+        },
+        "expanded-media-toolbar" : {
+            "bg-color": "0xFFFFFFFF"
+        },
+        "notifications-list-item": {
+            "bg-color-read": "0xFFFFFFFF",
+            "bg-color-unread": "0xFFE1E4E7"
+        },
+        "notifications-section": {
+            "bg-color": "0xFFC4C9D0",
+            "text-style": "notifications-section-title"
+        },
+        "notifications-consume-button": {
+            "text-style": "call-to-action",
+            "bg-image-normal": "notifications-consume-button.bg-image-normal.png",
+            "bg-image-normal-insets": "12 12 12 12",
+            "bg-image-pressed": "notifications-consume-button.bg-image-pressed.png",
+            "bg-image-pressed-insets": "12 12 12 12",
+            "text-y-offset-normal": 0,
+            "text-y-offset-pressed": 0
+        },
+        "notifications-ignore-button": {
+            "text-style": "call-to-negative-action",
+            "bg-image-normal": "notifications-ignore-button.bg-image-normal.png",
+            "bg-image-normal-insets": "12 12 12 12",
+            "bg-image-pressed": "notifications-ignore-button.bg-image-pressed.png",
+            "bg-image-pressed-insets": "12 12 12 12",
+            "text-y-offset-normal": 0,
+            "text-y-offset-pressed": 0
+        },
+        "notifications-button": {
+            "text-style": "call-to-action",
+            "bg-image-normal": "notifications-button.bg-image-normal.png",
+            "bg-image-normal-insets": "12 12 12 12",
+            "bg-image-pressed": "notifications-button.bg-image-pressed.png",
+            "bg-image-pressed-insets": "12 12 12 12",
+            "text-y-offset-normal": 0,
+            "text-y-offset-pressed": 0
+        },
+        "notifications-placeholder": {
+            "bg-image": "no-notifications-placeholder.bg-image.png"
         }
     },
     "text-styles": {
@@ -210,11 +228,6 @@
         "segment": {
             "font": "HelveticaNeue-Bold",
             "font-size": 15,
-            "font-color": "0xFFFFFFFF"
-        },
-        "badge": {
-            "font": "HelveticaNeue-Bold",
-            "font-size": 10,
             "font-color": "0xFFFFFFFF"
         },
         "link": {
@@ -245,6 +258,16 @@
         "call-to-action": {
             "font": "Lato-Bold.ttf",
             "font-size": 16,
+            "font-color": "0xFFFFFFFF"
+        },
+        "call-to-negative-action": {
+            "font": "Lato-Bold.ttf",
+            "font-size": 16,
+            "font-color": "0xFF000000"
+        },
+        "notifications-section-title" : {
+            "font": "Lato-Bold.ttf",
+            "font-size": 15,
             "font-color": "0xFFFFFFFF"
         }
     }
