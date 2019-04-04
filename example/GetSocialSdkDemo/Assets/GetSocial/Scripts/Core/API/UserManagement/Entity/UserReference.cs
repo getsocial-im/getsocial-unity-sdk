@@ -32,6 +32,7 @@ namespace GetSocialSdk.Core
 #if UNITY_IOS
         public UserReference ParseFromJson(Dictionary<string, object> json)
         {
+            if (json == null) return null;
             Id = (string) json["Id"];
             DisplayName = (string) json["DisplayName"];
             AvatarUrl = (string) json["AvatarUrl"];
@@ -40,6 +41,7 @@ namespace GetSocialSdk.Core
 #elif UNITY_ANDROID
         public UserReference ParseFromAJO(AndroidJavaObject ajo)
         {
+            if (ajo == null) return null;
             Id = ajo.CallStr("getId");
             DisplayName = ajo.CallStr("getDisplayName");
             AvatarUrl = ajo.CallStr("getAvatarUrl");
