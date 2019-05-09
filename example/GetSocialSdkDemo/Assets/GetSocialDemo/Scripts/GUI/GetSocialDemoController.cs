@@ -24,6 +24,7 @@ using com.adjust.sdk;
 using Facebook.Unity;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialDemo.Scripts.GUI.Sections;
+using GetSocialSdk.Ui;
 
 public class GetSocialDemoController : MonoBehaviour
 {
@@ -120,6 +121,10 @@ public class GetSocialDemoController : MonoBehaviour
                     );
                 }
             });
+        }
+        else
+        {
+            GetSocialUi.CloseView(false);
         }
     }
 

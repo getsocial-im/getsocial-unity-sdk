@@ -21,7 +21,9 @@ using GetSocialSdk.Ui;
 
 public class SmartInvitesUiSection : DemoMenuSection
 {
+#pragma warning disable 0649
     [SerializeField] SmartInvitesApiSection _smartInvitesApiSection;
+#pragma warning restore 0649
 
     #region implemented abstract members of DemoMenuSection
 

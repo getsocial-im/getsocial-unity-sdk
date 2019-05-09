@@ -86,12 +86,14 @@ public class MessageView : DemoMenuSection
         var feedId = GenerateChatId(new[] {GetSocial.User.Id, Receiver.Id});
         var messageContentBuilder = ActivityPostContent.CreateBuilder()
             .WithText(message);
+        MNP.ShowPreloader("Sending message", "Please wait...");
         GetSocial.PostActivityToFeed(feedId, messageContentBuilder.Build(), post =>
         {
             SendNotification(message, Receiver.Id);
             LoadMessages();
         }, error =>
         {
+            MNP.HidePreloader();
             _console.LogE("Failed to send message, error: " + error);
         });
     }
@@ -108,6 +110,12 @@ public class MessageView : DemoMenuSection
             .WithAction(builder.Build());
 
         var recepients = new List<string> {recepientId};
-        GetSocial.User.SendNotification(recepients, notificationContent, summary => { }, error => { });
+        GetSocial.User.SendNotification(recepients, notificationContent, summary =>
+        {
+            MNP.HidePreloader();
+        }, error =>
+        {
+            MNP.HidePreloader();
+        });
     }
 }

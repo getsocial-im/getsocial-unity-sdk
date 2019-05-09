@@ -41,9 +41,8 @@ namespace GetSocialSdk.Editor
                 AddOtherLinkerFlags(project, target);
                 SetupDeepLinking(project, projectPath, target);
 #if !UNITY_2018_3_OR_NEWER 
-                    EmbedFrameworks(project, target);
+                EmbedFrameworks(project, target);
 #endif
-
                 AddStripFrameworksScriptBuildPhase(project, target);
                 RemoveUiPluginFiles(project, target);
                 if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
@@ -171,8 +170,19 @@ namespace GetSocialSdk.Editor
 
         static void AddStripFrameworksScriptBuildPhase(PBXProject project, string target)
         {
-            project.AddShellScript(target,
-                @"bash ""$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/GetSocial.framework/strip_frameworks.sh""");
+           
+            var scriptPath = 
+                @"bash ""$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/GetSocial.framework/strip_frameworks.sh""";
+#if UNITY_2018_3_OR_NEWER
+            var frameworksPath =
+                GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
+            
+            var defaultLocationInProj = "./Frameworks/" + frameworksPath + "/Plugins/iOS/";
+            var relativeCoreFrameworkPath = defaultLocationInProj + "GetSocial.framework/strip_frameworks.sh";
+            scriptPath = relativeCoreFrameworkPath;
+#endif
+                
+            project.AddShellScript(target, scriptPath);
         }
 
         static void EmbedFrameworks(PBXProject project, string target)

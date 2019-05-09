@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+#pragma warning disable 0649
+
 public class MNP_EditorUIController : MonoBehaviour {
 
 	[SerializeField]
@@ -79,3 +81,5 @@ public class MNP_EditorUIController : MonoBehaviour {
 	}
 
 }
+
+#pragma warning restore 0649

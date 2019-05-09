@@ -330,14 +330,13 @@ public class ActivityFeedApiSection : DemoMenuSection
             : _postVideo ? MediaAttachment.Video(Video)
             : null;
 
+#pragma warning disable 0618
         var content = ActivityPostContent.CreateBuilder()
             .WithText("My awesome post")
-#pragma warning disable 0618
             .WithButton("Awesome Button", "action_id")
-#pragma warning restore 0618
             .WithMediaAttachment(mediaAttachment);
-        
-        
+#pragma warning restore 0618
+                
         if (_action != null)
         {
             var action = GetSocialAction.CreateBuilder(_action)

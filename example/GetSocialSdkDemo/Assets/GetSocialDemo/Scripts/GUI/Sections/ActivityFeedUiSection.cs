@@ -45,26 +45,27 @@ public class ActivityFeedUiSection : DemoMenuSection
 
     private void OpenMyCustomFeed()
     {
+#pragma warning disable 0618
         GetSocialUi.CreateActivityFeedView(_feed)
                     .SetWindowTitle("My Custom Feed")
-#pragma warning disable 0618
                     .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
                     .SetActionListener(OnAction)
                     .SetFilterByUser(GetSocial.User.Id)
                     .Show();
+#pragma warning restore 0618
+        
     }
 
     private void OpenMyFriendsGlobalFeed()
     {
+#pragma warning disable 0618
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("My Friends Feed")
-#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
             .SetActionListener(OnAction)
             .SetShowFriendsFeed(true)
             .Show();
+#pragma warning restore 0618
     }
 
     private void OpenMyGlobalFeed()
@@ -79,42 +80,42 @@ public class ActivityFeedUiSection : DemoMenuSection
     
     private void OpenFiteredGlobalFeedAction(string title, string userId)
     {
+#pragma warning disable 0618
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle(title)
-#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
             .SetActionListener(OnAction)
             .SetFilterByUser(userId)
             .SetReadOnly(true)
             .Show();
+#pragma warning restore 0618
     }
 
     private void OpenFeedWithId()
     {
+#pragma warning disable 0618
         GetSocialUi.CreateActivityFeedView(_feed)
             .SetWindowTitle(_feed + " Feed")
-#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
             .SetActionListener(OnAction)
             .Show();
+#pragma warning restore 0618
     }
 
     private void OpenGlobalFeed()
     {
+#pragma warning disable 0618
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("Unity Global")
             .SetViewStateCallbacks(() => _console.LogD("Global feed opened"), () => _console.LogD("Global feed closed"))
-#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
             .SetActionListener(OnAction)
             .SetMentionClickListener(OnMentionClicked)
             .SetAvatarClickListener(OnUserAvatarClicked)
             .SetTagClickListener(OnTagClicked)
             .SetUiActionListener(OnUiAction)
             .Show();
+#pragma warning restore 0618
     }
 
     private void OnMentionClicked(string mention)
@@ -129,15 +130,15 @@ public class ActivityFeedUiSection : DemoMenuSection
 
     private void OnTagClicked(string tag) 
     {
+#pragma warning disable 0618
         GetSocialUi.CreateGlobalActivityFeedView()
             .SetWindowTitle("Search #" + tag)
-#pragma warning disable 0618
             .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
             .SetActionListener(OnAction)
             .SetReadOnly(true)
             .SetFilterByTags(tag)
             .Show();
+#pragma warning restore 0618
     }
 
     private void OnUserAvatarClicked(PublicUser publicUser)
@@ -208,13 +209,12 @@ public class ActivityFeedUiSection : DemoMenuSection
                     _console.LogW("No activities, post something to global feed!");
                     return;
                 }
+#pragma warning disable 0618
                 GetSocialUi.CreateActivityDetailsView(posts.First().Id)
                     .SetWindowTitle("Unity Global")
                     .SetViewStateCallbacks(() => _console.LogD("Activity details opened"),
                         () => _console.LogD("Activity details closed"))
-#pragma warning disable 0618
                     .SetButtonActionListener(OnActivityActionClicked)
-#pragma warning restore 0618
                     .SetActionListener(OnAction)
                     .SetShowActivityFeedView(showFeed)
                     .SetUiActionListener((action, pendingAction) =>
@@ -223,6 +223,7 @@ public class ActivityFeedUiSection : DemoMenuSection
                         pendingAction();
                     })
                     .Show();
+#pragma warning restore 0618
             }, (error) => _console.LogE("Failed to get activities, error: " + error.Message));
         };
     }
