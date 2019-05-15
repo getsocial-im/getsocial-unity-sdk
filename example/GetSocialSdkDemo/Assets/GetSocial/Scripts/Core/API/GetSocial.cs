@@ -1210,6 +1210,13 @@ namespace GetSocialSdk.Core
                 GetSocialImpl.IsPushNotificationsEnabled(onSuccess, onError);
             }
 
+            /// <summary>
+            /// Send notification to users.
+            /// </summary>
+            /// <param name="userIds">List of IDs of users who should receive the notication. Also could be one of <see cref="SendNotificationPlaceholders.Receivers"/> </param>
+            /// <param name="content">Notification content.</param>
+            /// <param name="onSuccess">Called if operation succeeded.</param>
+            /// <param name="onError">Called if operation failed.</param>
             public static void SendNotification(List<string> userIds, NotificationContent content, Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError) 
             {
                 Check.Argument.IsNotNull(onSuccess, "onSuccess");
@@ -1223,6 +1230,53 @@ namespace GetSocialSdk.Core
 
         }
 
+        #endregion
+
+        #region PromoCodes
+        /// <summary>
+        /// Create a promo code.
+        /// </summary>
+        /// <param name="promoCodeBuilder">Promo code data.</param>
+        /// <param name="onSuccess">Called if promo code was created.</param>
+        /// <param name="onError">Called if some of input data was incorrect.</param>
+        public static void CreatePromoCode(PromoCodeBuilder promoCodeBuilder, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onError, "onError");
+            Check.Argument.IsNotNull(promoCodeBuilder, "promoCodeBuilder");
+            
+            GetSocialImpl.CreatePromoCode(promoCodeBuilder, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Get the promo code entity by its code.
+        /// </summary>
+        /// <param name="code">Promo code.</param>
+        /// <param name="onSuccess">Called with promo code.</param>
+        /// <param name="onError">Called if promo code doesn't exist or operation failed.</param>
+        public static void GetPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onError, "onError");
+            Check.Argument.IsNotNull(code, "promoCode");
+            
+            GetSocialImpl.GetPromoCode(code, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Claim promo code. Will return an error if promo code is not valid, expired or already claimed.
+        /// </summary>
+        /// <param name="code">Promo code.</param>
+        /// <param name="onSuccess">Called if promo code was successfully claimed.</param>
+        /// <param name="onError">Called if promo code is not valid, expired or already claimed.</param>
+        public static void ClaimPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onError, "onError");
+            Check.Argument.IsNotNull(code, "promoCode");
+            
+            GetSocialImpl.ClaimPromoCode(code, onSuccess, onError);
+        }
         #endregion
 
         #region Analytics
@@ -1264,7 +1318,6 @@ namespace GetSocialSdk.Core
         {
             GetSocialImpl.ProcessAction(notificationAction);
         }
-
         #endregion
     }
 }

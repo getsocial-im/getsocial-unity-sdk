@@ -17,6 +17,7 @@ namespace GetSocialSdk.Core
         public const string KeyCustomDescription = "$description";
         public const string KeyCustomImage = "$image";
         public const string KeyCustomYouTubeVideo = "$youtube_video";
+        public const string KeyPromoCode = "$promo_code";
 
         public LinkParams()
         {

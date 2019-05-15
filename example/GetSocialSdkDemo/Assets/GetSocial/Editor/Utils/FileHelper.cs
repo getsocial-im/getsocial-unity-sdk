@@ -28,7 +28,7 @@ namespace GetSocialSdk.Editor
         private const string DevelopmentVersion = "development";
 
         [UnityEditor.Callbacks.DidReloadScripts]
-        private static void MarkIosFiles()
+        internal static void MarkIosFiles()
         {
             var coreDir = Path.Combine(GetSocialSettings.GetPluginPath(), "Editor/iOS/GetSocial");
             var uiDir = Path.Combine(GetSocialSettings.GetPluginPath(), "Editor/iOS/GetSocialUI");

@@ -32,5 +32,10 @@
         /// </summary>
         public const string AddFriend = "add_friend";
         
+        /// <summary>
+        /// Claim Promo Code.
+        /// </summary>
+        public const string ClaimPromoCode = "claim_promo_code";
+        
     }
 }

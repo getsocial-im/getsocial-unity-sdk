@@ -35,4 +35,6 @@
 
 + (GetSocialNotificationContent *)deserializeNotificationContent:(NSDictionary *)json;
 
++ (GetSocialPromoCodeBuilder *)deserializePromoCodeBuilder:(NSDictionary *)json;
+
 @end

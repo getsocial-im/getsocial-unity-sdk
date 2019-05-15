@@ -757,6 +757,42 @@ extern "C" {
                           success:completeBlock(successCallback, onSuccessActionPtr)
                           failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
+#pragma mark - Promo Codes
+    
+    
+    void _gs_createPromoCode(const char *promoCodeBuilder,
+                          StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                          FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromCString:promoCodeBuilder];
+        GetSocialPromoCodeBuilder *builder = [GetSocialJsonUtils deserializePromoCodeBuilder:json];
+        [GetSocial createPromoCode:builder
+                           success:objectBlock(successCallback, onSuccessActionPtr)
+                           failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
+    
+    void _gs_getPromoCode(const char *code,
+                          StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                          FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSString *promoCode = [GetSocialBridgeUtils createNSStringFrom:code];
+        
+        [GetSocial getPromoCode:promoCode
+                        success:objectBlock(successCallback, onSuccessActionPtr)
+                        failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
+    
+    void _gs_claimPromoCode(const char *code,
+                          StringCallbackDelegate successCallback, void *onSuccessActionPtr,
+                          FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSString *promoCode = [GetSocialBridgeUtils createNSStringFrom:code];
+        
+        [GetSocial claimPromoCode:promoCode
+                          success:objectBlock(successCallback, onSuccessActionPtr)
+                          failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
+    
     
 #pragma mark - Analytics
     

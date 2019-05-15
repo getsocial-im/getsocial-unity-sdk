@@ -29,12 +29,13 @@
     </activity>
     <provider android:name="im.getsocial.sdk.invites.ImageContentProvider" android:authorities="im.getsocial.demo.unity.smartinvite.images.provider" android:exported="true" android:enabled="true" />
     <provider android:name="im.getsocial.sdk.AutoInitSdkContentProvider" android:authorities="im.getsocial.demo.unity.AutoInitSdkContentProvider" android:exported="false" android:enabled="true" />
+    <meta-data android:name="im.getsocial.sdk.DisableFacebookReferralCheck" android:value="false" />
     <meta-data android:name="im.getsocial.sdk.UiConfigurationFile" android:value="" />
     <meta-data android:name="im.getsocial.sdk.AutoInitSdk" android:value="true" />
     <meta-data android:name="im.getsocial.sdk.ShowNotificationInForeground" android:value="false" />
     <meta-data android:name="im.getsocial.sdk.AutoRegisterForPush" android:value="true" />
-    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.23.3" />
-    <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="2018.3.0f2" />
+    <meta-data android:name="im.getsocial.sdk.WrapperVersion" android:value="6.25.2" />
+    <meta-data android:name="im.getsocial.sdk.RuntimeVersion" android:value="2018.3.2f1" />
     <meta-data android:name="im.getsocial.sdk.Runtime" android:value="UNITY" />
     <meta-data android:name="im.getsocial.sdk.AppId" android:value="LuDPp7W0J4" />
     <activity android:label="@string/app_name" android:name="com.unity3d.player.UnityPlayerActivity" android:screenOrientation="fullSensor" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">

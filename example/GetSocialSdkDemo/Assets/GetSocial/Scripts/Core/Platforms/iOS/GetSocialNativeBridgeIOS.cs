@@ -540,6 +540,31 @@ namespace GetSocialSdk.Core
 
         #endregion
 
+        #region 
+
+        public void CreatePromoCode(PromoCodeBuilder promoCodeBuilder, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_createPromoCode(promoCodeBuilder.ToJson(), 
+                Callbacks.PromoCode, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        public void GetPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_getPromoCode(code, 
+                Callbacks.PromoCode, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        public void ClaimPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            _gs_claimPromoCode(code, 
+                Callbacks.PromoCode, onSuccess.GetPointer(),
+                Callbacks.FailureCallback, onError.GetPointer());
+        }
+
+        #endregion
+
 
         #region Access Helpers
 
@@ -925,6 +950,25 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_deleteActivity(string id, 
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        #endregion
+
+        #region 
+        
+        [DllImport("__Internal")]
+        static extern void _gs_createPromoCode(string builder, 
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_claimPromoCode(string code, 
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+        
+        [DllImport("__Internal")]
+        static extern void _gs_getPromoCode(string code, 
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         #endregion

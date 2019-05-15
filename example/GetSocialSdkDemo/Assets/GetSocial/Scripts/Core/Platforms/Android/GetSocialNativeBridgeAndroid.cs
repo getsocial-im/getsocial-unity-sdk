@@ -1,4 +1,4 @@
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID// && !UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -456,6 +456,24 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("deleteActivity", activityId, new CompletionCallback(onSuccess, onFailure));
         }
 
+        #endregion
+
+        #region PromoCodes
+
+        public void CreatePromoCode(PromoCodeBuilder promoCodeBuilder, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            _getSocial.CallStatic("createPromoCode", promoCodeBuilder.ToAjo(), new CallbackProxy<PromoCode>(onSuccess, onError));
+        }
+
+        public void GetPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            _getSocial.CallStatic("getPromoCode", code, new CallbackProxy<PromoCode>(onSuccess, onError));
+        }
+
+        public void ClaimPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            _getSocial.CallStatic("claimPromoCode", code, new CallbackProxy<PromoCode>(onSuccess, onError));
+        }
         #endregion
 
         #region Analytics

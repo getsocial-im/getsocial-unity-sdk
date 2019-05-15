@@ -114,6 +114,12 @@ namespace GetSocialSdk.Core
         {
             GetObjectCallback<ActivityPost>(actionPtr, json);
         }
+
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void PromoCode(IntPtr actionPtr, string json)
+        {
+            GetObjectCallback<PromoCode>(actionPtr, json);
+        }
         
         [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetPublicUser(IntPtr actionPtr, string json)

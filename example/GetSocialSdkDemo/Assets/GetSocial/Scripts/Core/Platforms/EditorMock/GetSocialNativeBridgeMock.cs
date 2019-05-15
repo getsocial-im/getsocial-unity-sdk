@@ -463,5 +463,20 @@ namespace GetSocialSdk.Core
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
         }
+
+        public void CreatePromoCode(PromoCodeBuilder promoCodeBuilder, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), promoCodeBuilder,onSuccess, onError);
+        }
+
+        public void GetPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), code, onSuccess, onError);
+        }
+
+        public void ClaimPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), code, onSuccess, onError);
+        }
     }
 }

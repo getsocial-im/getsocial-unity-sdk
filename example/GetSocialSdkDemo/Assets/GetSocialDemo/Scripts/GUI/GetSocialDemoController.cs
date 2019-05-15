@@ -97,12 +97,14 @@ public class GetSocialDemoController : MonoBehaviour
                         {
                             var referralToken = "";
                             var message = "Referral data: " + data;
+                            string promoCode = null;
                             if (data == null)
                             {
                                 message = "No referral data";
                             }
                             else
                             {
+                                promoCode = data.ReferralLinkParams.ContainsKey(LinkParams.KeyPromoCode) ? data.ReferralLinkParams[LinkParams.KeyPromoCode] : null;
                                 referralToken = data.Token;
                             }
 
@@ -111,7 +113,15 @@ public class GetSocialDemoController : MonoBehaviour
                                 // show popup only if chat is not shown
                                 if (_latestChatId == null)
                                 {
-                                    DemoUtils.ShowPopup("Info", message);
+                                    if (promoCode != null) {
+                                        message += "\n\nPROMO CODE: " + promoCode;
+                                    }
+                                    var popup = new MNPopup ("Referral Data", message);
+                                    popup.AddAction("OK", () => {});
+                                    if (promoCode != null) {
+                                        popup.AddAction("Claim Promo Code", () => PromoCodesSection.ClaimPromoCode(promoCode));
+                                    }
+                                    popup.Show();     
                                 }
                                 _console.LogD(message);
                                 _latestReferralData = referralToken;
@@ -139,6 +149,7 @@ public class GetSocialDemoController : MonoBehaviour
             GetComponentInChildren<NotificationsApiSection>(),
             GetComponentInChildren<InAppPurchaseApiSection>(),
             GetComponentInChildren<SendNotificationSection>(),
+            GetComponentInChildren<PromoCodesSection>(),
             GetComponentInChildren<CustomAnalyticsEventSection>(),
 #if USE_GETSOCIAL_UI
             GetComponentInChildren<SmartInvitesUiSection>(),
@@ -440,6 +451,7 @@ public class GetSocialDemoController : MonoBehaviour
 		Button("Notifications Api", ShowMenuSection<NotificationsApiSection>);
         Button("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
         Button("Send Notification", ShowMenuSection<SendNotificationSection>);
+        Button("Promo Codes", ShowMenuSection<PromoCodesSection>);
         Button("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
 #if USE_GETSOCIAL_UI
         GUILayout.Space(30f);

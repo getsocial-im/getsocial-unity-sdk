@@ -29,5 +29,11 @@
             public const string UserId = "$user_id";
         }
 
+        
+        public static class ClaimPromoCode
+        {
+            public const string PromoCode = "$promo_code";
+        }
+
     }
 }

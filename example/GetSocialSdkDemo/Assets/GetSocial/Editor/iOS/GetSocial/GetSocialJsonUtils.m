@@ -260,4 +260,27 @@
     return [actionBuilder build];
 }
 
++ (GetSocialPromoCodeBuilder *)deserializePromoCodeBuilder:(NSDictionary *)json
+{
+    GetSocialPromoCodeBuilder *builder = json[@"Code"] == nil
+        ? [GetSocialPromoCodeBuilder withRandomCode]
+        : [GetSocialPromoCodeBuilder withCode:json[@"Code"]];
+    
+    [builder setMaxClaimCount:[json[@"MaxClaimCount"] unsignedIntValue]];
+    [builder addData:json[@"Data"]];
+    [builder setTimeLimitWithStartDate:[self dateFromString:json[@"StartDate"]] endDate:[self dateFromString:json[@"EndDate"]]];
+    return builder;
+}
+
++ (NSDate *)dateFromString:(NSString *)timestamp
+{
+    if (timestamp == nil) {
+        return nil;
+    }
+    
+    NSDateFormatter *dateformat = [NSDateFormatter new];
+    [dateformat setDateFormat:@"dd/MM/yyyy hh:mm:ss"];
+    return [dateformat dateFromString: timestamp];
+}
+
 @end

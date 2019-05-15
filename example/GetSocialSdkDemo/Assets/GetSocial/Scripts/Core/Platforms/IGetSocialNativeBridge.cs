@@ -202,6 +202,13 @@ namespace GetSocialSdk.Core
 
         #endregion
 
+        #region Promo Codes
+        void CreatePromoCode(PromoCodeBuilder promoCodeBuilder, Action<PromoCode> onSuccess, Action<GetSocialError> onError);
+
+        void GetPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError);
+
+        void ClaimPromoCode(string code, Action<PromoCode> onSuccess, Action<GetSocialError> onError);
+        #endregion
 
         #region access_helpers
         void HandleOnStartUnityEvent();

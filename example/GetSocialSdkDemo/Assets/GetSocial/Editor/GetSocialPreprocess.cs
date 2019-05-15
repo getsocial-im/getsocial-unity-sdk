@@ -33,6 +33,9 @@ namespace GetSocialSdk.Editor
                 if (!FileHelper.CheckiOSFramework())
                 {
                     Debug.LogError("GetSocial: Native libraries for GetSocial SDK are missing. Download it before building the project");
+                } else
+                {
+                    FileHelper.MarkIosFiles();
                 }
             }
             
