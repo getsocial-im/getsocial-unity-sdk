@@ -61,7 +61,7 @@ namespace GetSocialSdk.Editor
                 SetAutoInitSdk(plistDocument);
                 SetDisableFacebookReferralCheck(plistDocument);
                 SetUiBackgroundModes(plistDocument);
-                SetDefaultUiConfigurationFilePathTag(plistDocument);
+                SetCustomUiConfigurationFilePathTag(plistDocument);
                 DisableViewControllerBasedStatusBar(plistDocument);
             });
         }
@@ -170,19 +170,17 @@ namespace GetSocialSdk.Editor
 
         static void AddStripFrameworksScriptBuildPhase(PBXProject project, string target)
         {
-           
-            var scriptPath = 
-                @"bash ""$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/GetSocial.framework/strip_frameworks.sh""";
-#if UNITY_2018_3_OR_NEWER
+
+            var script =
+                @"bash ";
             var frameworksPath =
                 GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
-            
             var defaultLocationInProj = "./Frameworks/" + frameworksPath + "/Plugins/iOS/";
             var relativeCoreFrameworkPath = defaultLocationInProj + "GetSocial.framework/strip_frameworks.sh";
-            scriptPath = relativeCoreFrameworkPath;
-#endif
-                
-            project.AddShellScript(target, scriptPath);
+            script += "\"" + relativeCoreFrameworkPath + "\""; 
+            var frameworkPathInBuildFolder = "\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/GetSocial.framework/strip_frameworks.sh\"";
+            script += "\nrm -rf " + frameworkPathInBuildFolder;
+            project.AddShellScript(target, script);
         }
 
         static void EmbedFrameworks(PBXProject project, string target)
@@ -408,12 +406,12 @@ namespace GetSocialSdk.Editor
             backgroundModesArray.AddString("remote-notification");
         }
 
-        private static void SetDefaultUiConfigurationFilePathTag(PlistDocument plistDocument)
+        private static void SetCustomUiConfigurationFilePathTag(PlistDocument plistDocument)
         {
             var fullPath = string.Empty;
-            if (!string.IsNullOrEmpty(GetSocialSettings.UiConfigurationDefaultFilePath))
+            if (!string.IsNullOrEmpty(GetSocialSettings.UiConfigurationCustomFilePath))
             {
-                fullPath = "Data/Raw/" + GetSocialSettings.UiConfigurationDefaultFilePath;
+                fullPath = "Data/Raw/" + GetSocialSettings.UiConfigurationCustomFilePath;
             }
             plistDocument.root.SetString("im.getsocial.sdk.UiConfigurationFile", fullPath);
         }

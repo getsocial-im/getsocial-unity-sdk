@@ -50,7 +50,7 @@ namespace GetSocialSdk.Editor
 
         private static RemoteConfigRequest _remoteConfigRequest;
         private static string _remoteRequestStatusLabel;
-        private static bool _isUiConfigurationFileCorrect = true;
+        private static Tuple<bool, string> _uiConfigurationValidationResult = Tuple.Create(true, "");
 
         #region lifecycle
         
@@ -383,13 +383,14 @@ namespace GetSocialSdk.Editor
                 var uiConfigurationLabel = new GUIContent("UI Configuration File Path [?]", "Path to the UI configuration json relative to StreamingAssets/ folder. \nLeave empty to use default UI configuration.");
                 using (new FixedWidthLabel(uiConfigurationLabel))
                 {
-                    var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationDefaultFilePath);
-                    SetUiConfigDefaultFilePath(filePath);
+                    var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationCustomFilePath);
+                    SetUiConfigCustomFilePath(filePath);
                 }
-                
-                if (!_isUiConfigurationFileCorrect)
+
+                var (result, message) = _uiConfigurationValidationResult;
+                if (!result)
                 {
-                    EditorGUILayout.HelpBox("UI configuration file not found in the StreamingAssets folder. Note that file name should contain .json extension.", MessageType.Error);
+                    EditorGUILayout.HelpBox(message, MessageType.Error);
                 }
             }
             EditorGUI.EndDisabledGroup();
@@ -494,11 +495,11 @@ namespace GetSocialSdk.Editor
         }
 
 
-        void SetUiConfigDefaultFilePath(string value)
+        void SetUiConfigCustomFilePath(string value)
         {
-            if (!value.Equals(GetSocialSettings.UiConfigurationDefaultFilePath))
+            if (!value.Equals(GetSocialSettings.UiConfigurationCustomFilePath))
             {
-                GetSocialSettings.UiConfigurationDefaultFilePath = value;
+                GetSocialSettings.UiConfigurationCustomFilePath = value;
                 UpdateUiConfigFileCheck();
             }
         }
@@ -647,13 +648,10 @@ namespace GetSocialSdk.Editor
             return deeplinks;
         }
         
-        private void UpdateUiConfigFileCheck()
+        private static void UpdateUiConfigFileCheck()
         {
-            _isUiConfigurationFileCorrect = string.IsNullOrEmpty(GetSocialSettings.UiConfigurationDefaultFilePath)
-                                            || File.Exists(Path.Combine(Application.streamingAssetsPath,
-                                                GetSocialSettings.UiConfigurationDefaultFilePath));
+            _uiConfigurationValidationResult = GetSocialEditorUtils.CheckCustomUiConfig();
         }
-
         
         #endregion
     }

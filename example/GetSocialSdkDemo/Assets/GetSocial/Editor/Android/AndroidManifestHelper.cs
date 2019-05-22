@@ -34,7 +34,7 @@ namespace GetSocialSdk.Editor
             new MetaData("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled.ToString().ToLower()),
             new MetaData("im.getsocial.sdk.ShowNotificationInForeground", GetSocialSettings.IsForegroundNotificationsEnabled.ToString().ToLower()),
             new MetaData("im.getsocial.sdk.AutoInitSdk", GetSocialSettings.IsAutoInitEnabled.ToString().ToLower()),
-            new MetaData("im.getsocial.sdk.UiConfigurationFile", GetSocialSettings.UiConfigurationDefaultFilePath),
+            new MetaData("im.getsocial.sdk.UiConfigurationFile", GetSocialSettings.UiConfigurationCustomFilePath),
             new MetaData("im.getsocial.sdk.DisableFacebookReferralCheck", GetSocialSettings.IsFacebookReferralCheckDisabled.ToString().ToLower()),
             
             new Provider("im.getsocial.sdk.AutoInitSdkContentProvider", string.Format("{0}.AutoInitSdkContentProvider", PlayerSettingsCompat.bundleIdentifier), false),

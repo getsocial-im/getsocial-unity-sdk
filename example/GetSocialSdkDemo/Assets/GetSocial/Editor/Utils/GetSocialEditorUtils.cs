@@ -20,7 +20,11 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using GetSocialSdk.Core;
+using Debug = UnityEngine.Debug;
+using Object = System.Object;
 
 namespace GetSocialSdk.Editor
 {
@@ -54,6 +58,8 @@ namespace GetSocialSdk.Editor
             SettingsIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(_editorGuiPath + "/settings.png", typeof(Texture2D));
             InfoIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(_editorGuiPath + "/icon_info.png", typeof(Texture2D));
             GetSocialIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(_editorGuiPath + "/getsocial.png", typeof(Texture2D));
+            BuildPlayerWindow.RegisterBuildPlayerHandler(ValidateCustomUiConfig);
+
         }
 
         static void Initialize()
@@ -284,7 +290,58 @@ namespace GetSocialSdk.Editor
                 
             }
         }
-        
+
+        private static void ValidateCustomUiConfig(BuildPlayerOptions options)
+        {
+            var (result, message) = CheckCustomUiConfig();
+            if (!result)
+            {
+                Debug.LogError(message);
+            }
+            else
+            {
+                BuildPipeline.BuildPlayer(options);
+            }
+        }
+
+        public static Tuple<bool, string> CheckCustomUiConfig()
+        {
+            if (string.IsNullOrEmpty(GetSocialSettings.UiConfigurationCustomFilePath))
+            {
+                return Tuple.Create(true, "");
+            }
+
+            var completePath = Path.Combine(Application.streamingAssetsPath,
+                GetSocialSettings.UiConfigurationCustomFilePath);
+            if (File.Exists(completePath))
+            {
+                return ValidateCustomUiConfigContent(completePath);
+            }
+            if (!Directory.Exists(completePath)) return Tuple.Create(false, "GetSocial: Custom UI Configuration file not found at " + completePath + ". Make sure the file exists and it has .json extension");
+            var jsonFileCounter = Directory.GetFiles(completePath).Count(file => file.EndsWith(".json"));
+            if (jsonFileCounter != 1)
+            {
+                return Tuple.Create(false, "GetSocial: Custom UI Configuration directory at " + completePath + " contains multiple JSON files.");
+            }
+
+            var filePath = Directory.GetFiles(completePath).Single(file => file.EndsWith(".json"));
+            return ValidateCustomUiConfigContent(filePath);
+        }
+
+        private static Tuple<bool, string> ValidateCustomUiConfigContent(string path)
+        {
+            try
+            {
+                JsonUtility.FromJson<object>(File.ReadAllText(path));
+            }
+            catch (Exception exception)
+            {
+                Debug.LogError("GetSocial: Could not parse custom UI configuration file, error: " + exception.Message);
+                return Tuple.Create(false, "GetSocial: Custom UI Configuration file (" + path + ") is not a valid JSON file.");
+            }
+
+            return Tuple.Create(true, "");
+        }
 
     }
 }
