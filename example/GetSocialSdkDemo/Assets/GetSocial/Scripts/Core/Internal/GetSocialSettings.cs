@@ -40,6 +40,9 @@ namespace GetSocialSdk.Core
         [SerializeField]
         string _getSocialCustomConfigurationFilePath = string.Empty;
 
+        [SerializeField]
+        string _getSocialDefaultConfigurationFilePath = string.Empty;
+
         [SerializeField] 
         string _iosPushEnvironment = string.Empty;
 
@@ -199,7 +202,17 @@ namespace GetSocialSdk.Core
         
         public static string UiConfigurationCustomFilePath
         {
-            get { return Instance._getSocialCustomConfigurationFilePath; }
+            get 
+            {
+                if (string.IsNullOrEmpty(Instance._getSocialCustomConfigurationFilePath) 
+                    && !string.IsNullOrEmpty(Instance._getSocialDefaultConfigurationFilePath)) 
+                {
+                    Instance._getSocialCustomConfigurationFilePath = Instance._getSocialDefaultConfigurationFilePath;
+                    Instance._getSocialDefaultConfigurationFilePath = string.Empty;
+                    MarkAssetDirty();
+                }
+                return Instance._getSocialCustomConfigurationFilePath; 
+            } 
             set
             {
                 Instance._getSocialCustomConfigurationFilePath = value;
