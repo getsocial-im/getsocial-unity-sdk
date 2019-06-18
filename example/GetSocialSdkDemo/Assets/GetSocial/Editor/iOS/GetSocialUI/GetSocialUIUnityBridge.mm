@@ -265,7 +265,10 @@ extern "C" {
     
     void _gs_showNotificationCenterView(const char *windowTitle, const char *notificationTypes, const char *actionTypes,
                                         NotificationClickDelegate notificationClickDelegate, void *onNotificationClickPtr,
-                                        NotificationActionButtonClickDelegate actionButtonClickDelegate, void *onActionButtonClickPtr) {
+                                        NotificationActionButtonClickDelegate actionButtonClickDelegate, void *onActionButtonClickPtr,
+                                        VoidCallbackDelegate onOpenAction, void *onOpenActionPtr,
+                                        VoidCallbackDelegate onCloseAction, void *onCloseActionPtr,
+                                        UiActionListenerDelegate uiActionListener, void *uiActionListenerPtr) {
         
         GetSocialUINotificationCenterView* notificationCenterView = [GetSocialUI createNotificationCenterView];
         
@@ -273,6 +276,20 @@ extern "C" {
             NSString *titleStr = [GetSocialBridgeUtils createNSStringFrom:windowTitle];
             notificationCenterView.windowTitle = titleStr;
         }
+        if (uiActionListenerPtr) {
+            [notificationCenterView setUiActionHandler:^(GetSocialUIActionType actionType, GetSocialUIPendingAction pendingAction) {
+                uiActionListener(uiActionListenerPtr, (int) actionType);
+                sPendingAction = pendingAction;
+            }];
+        }
+        if (onOpenActionPtr || onCloseActionPtr) {
+            [notificationCenterView setHandlerForViewOpen:^{
+                onOpenAction(onOpenActionPtr);
+            } close:^{
+                onCloseAction(onCloseActionPtr);
+            }];
+        }
+        
         if (notificationTypes) {
             NSArray* notificationTypesArray = [GetSocialBridgeUtils createArrayFromCString:notificationTypes];
             notificationCenterView.filterTypes = notificationTypesArray;

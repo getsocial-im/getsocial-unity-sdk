@@ -47,6 +47,7 @@ public class NotificationUiSection : DemoMenuSection
                 _console.LogD("Action button listener invoked: " + actionButton.Id + " - " + notification.Id);
                 return false;
             })
+            .SetViewStateCallbacks(() => _console.LogD("Notifications view opened"), () => _console.LogD("Notifications view closed"))
             .Show();
     }
  

@@ -96,7 +96,10 @@ namespace GetSocialSdk.Ui
                 NotificationClickDelegate.OnNotificationClick,
                 _notificationClickListener.GetPointer(),
                 NotificationActionButtonClickDelegate.OnActionButtonClick,
-                _actionButtonClickListener.GetPointer());
+                _actionButtonClickListener.GetPointer(),
+                Callbacks.ActionCallback, _onOpen.GetPointer(),
+                Callbacks.ActionCallback, _onClose.GetPointer(),
+                UiActionListenerCallback.OnUiAction, _uiActionListener.GetPointer());
 #else
             return false;
 #endif
@@ -140,7 +143,10 @@ namespace GetSocialSdk.Ui
         static extern bool _gs_showNotificationCenterView(string customWindowTitle, string notificationTypes,
          string actionTypes, 
             OnNotificationClick onNotificationClick, IntPtr onNotificationClickPtr,
-            OnNotificationActionButtonClick onActionButtonClick, IntPtr onActionButtonClickPtr);
+            OnNotificationActionButtonClick onActionButtonClick, IntPtr onActionButtonClickPtr,
+            Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
+            Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
+            Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr);
 #endif
     }
 }
