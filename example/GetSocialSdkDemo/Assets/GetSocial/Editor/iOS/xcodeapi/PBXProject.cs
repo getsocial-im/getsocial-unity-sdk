@@ -404,6 +404,22 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             return null;
         }
 
+        public void RemoveShellScript(string targetGuid, string scriptContent)
+        {
+            PBXNativeTargetData target = nativeTargets[targetGuid];
+            var scripts = shellScripts.GetEntries();
+            foreach (var existingScript in scripts)
+            {
+                // check if script already there
+                if (existingScript.Value.Script.Contains(scriptContent))
+                {
+                    Debug.Log("Remove script: " + existingScript.Value.Script);
+                    shellScripts.RemoveEntry(existingScript.Value.guid);
+                    target.phases.RemoveGUID(existingScript.Value.guid);
+                }
+            }
+        }
+        
         public void AddShellScript(string targetGuid, string script)
         {
             PBXNativeTargetData target = nativeTargets[targetGuid];

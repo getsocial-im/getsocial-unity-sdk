@@ -43,7 +43,7 @@ namespace GetSocialSdk.Editor
 #if !UNITY_2018_3_OR_NEWER 
                 EmbedFrameworks(project, target);
 #endif
-                AddStripFrameworksScriptBuildPhase(project, target);
+                AddStripFrameworksScriptBuildPhase(project, projectPath, target);
                 RemoveUiPluginFiles(project, target);
                 if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
                 {
@@ -87,8 +87,8 @@ namespace GetSocialSdk.Editor
             var extensionServiceTargetHeaderFile = "GetSocialNotificationExtension/GetSocialNotificationService.h";
             var extensionServiceTargetImpFile = "GetSocialNotificationExtension/GetSocialNotificationService.m";
             
-            File.Copy(extensionServiceSourceHeaderFile, projectPath + "/" + extensionServiceTargetHeaderFile);
-            File.Copy(extensionServiceSourceImpFile, projectPath + "/" + extensionServiceTargetImpFile);
+            File.Copy(extensionServiceSourceHeaderFile, projectPath + "/" + extensionServiceTargetHeaderFile, true);
+            File.Copy(extensionServiceSourceImpFile, projectPath + "/" + extensionServiceTargetImpFile, true);
 
             var mainTarget = project.TargetGuidByName(PBXProject.GetUnityTargetName());
 
@@ -168,18 +168,15 @@ namespace GetSocialSdk.Editor
             }, new string[] { });
         }
 
-        static void AddStripFrameworksScriptBuildPhase(PBXProject project, string target)
+        static void AddStripFrameworksScriptBuildPhase(PBXProject project, string projectPath, string target)
         {
-
-            var script =
-                @"bash ";
-            var frameworksPath =
-                GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
-            var defaultLocationInProj = "./Frameworks/" + frameworksPath + "/Plugins/iOS/";
-            var relativeCoreFrameworkPath = defaultLocationInProj + "GetSocial.framework/strip_frameworks.sh";
-            script += "\"" + relativeCoreFrameworkPath + "\""; 
-            var frameworkPathInBuildFolder = "\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/GetSocial.framework/strip_frameworks.sh\"";
-            script += "\nrm -rf " + frameworkPathInBuildFolder;
+            // remove previous script versions
+            project.RemoveShellScript(target, "GetSocial.framework/strip_frameworks.sh");
+            
+            const string script = "bash ./strip_frameworks.sh";
+            var pluginDir = GetSocialSettings.GetPluginPath();  
+            var scriptFilePath = Path.Combine(pluginDir, "Editor", "iOS", "Postprocessing", "strip_frameworks.sh");
+            File.Copy(scriptFilePath, Path.Combine(projectPath, "strip_frameworks.sh"), true);
             project.AddShellScript(target, script);
         }
 
