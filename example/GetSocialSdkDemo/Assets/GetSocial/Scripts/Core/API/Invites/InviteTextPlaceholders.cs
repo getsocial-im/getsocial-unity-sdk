@@ -10,10 +10,14 @@ namespace GetSocialSdk.Core
         /// </summary>
         public const string PlaceholderAppInviteUrl = "[APP_INVITE_URL]";
 
-        // TODO: add in the next release
-//        /// <summary>
-//        /// If the user is logged in tag will be replaced with the user name. Otherwise with empty string.
-//        /// </summary>
-//        public const string PlaceholderUserDisplayName = "[USER_NAME]";
+        /// <summary>
+        /// Tag is replaced with current user name.
+        /// </summary>
+        public static string PlaceholderUserName = "[USER_NAME]";
+
+        /// <summary>
+        /// Tag is replaced with promo code from LinkParams if any present.
+        /// </summary>
+        public static string PlaceholderPromoCode = "[PROMO_CODE]";
     }
 }

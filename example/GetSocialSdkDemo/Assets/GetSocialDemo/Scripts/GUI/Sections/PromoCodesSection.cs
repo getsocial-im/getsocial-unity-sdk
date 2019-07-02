@@ -203,7 +203,7 @@ creator={8}
                 {LinkParams.KeyPromoCode, promoCode}
             })
             .SetCustomInviteContent(InviteContent.CreateBuilder()
-                .WithText("Use my Promo Code to get a personal discount: " + promoCode + " . " + InviteTextPlaceholders.PlaceholderAppInviteUrl)
+                .WithText("Use my Promo Code to get a personal discount: " + InviteTextPlaceholders.PlaceholderPromoCode + " . " + InviteTextPlaceholders.PlaceholderAppInviteUrl)
                 .Build())
             .Show();
     }
