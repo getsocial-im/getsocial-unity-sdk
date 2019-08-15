@@ -15,11 +15,11 @@ namespace GetSocialSdk.Core
     {
         
 #pragma warning disable 414
-        string _text;
-        string _buttonTitle;
-        string _buttonAction;
-        MediaAttachment _mediaAttachment;
-        GetSocialAction _action;
+        internal string _text;
+        internal string _buttonTitle;
+        internal string _buttonAction;
+        internal MediaAttachment _mediaAttachment;
+        internal GetSocialAction _action;
 #pragma warning restore 414
         
         ActivityPostContent()

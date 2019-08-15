@@ -17,9 +17,15 @@ namespace GetSocialSdk.Core
     public delegate bool NotificationListener(Notification notification, bool wasClicked);
 
     /// <summary>
+    /// Called when GetSocial get the Push Notification device token.
+    /// </summary>
+    /// <param name="pushToken">Push Notification device token.</param>
+    public delegate void PushTokenListener(string pushToken);
+
+    /// <summary>
     /// The GetSocial API
     /// </summary>
-    public static partial class GetSocial
+    public static class GetSocial
     {
         static readonly Action<GetSocialError> _globalErrorListener = OnGlobalError;
 
@@ -351,11 +357,22 @@ namespace GetSocialSdk.Core
         /// <param name="listener">Called with received action.</param>
         public static void SetNotificationListener(NotificationListener listener)
         {
-            Check.Argument.IsNotNull(listener, "Notification Action Listener");
+            Check.Argument.IsNotNull(listener, "Notification Listener");
 
             GetSocialImpl.SetNotificationListener(listener);
         }
+        
+        /// <summary>
+        /// Set a listener to be called when Push Notifications token obtained by GetSocial.
+        /// </summary>
+        /// <param name="listener">An object that will be notified with push token.</param>
+        public static void SetPushNotificationTokenListener(PushTokenListener listener) {
+            
+            Check.Argument.IsNotNull(listener, "Push Token Listener");
 
+            GetSocialImpl.SetPushTokenListener(listener);
+        }
+        
         #endregion
 
         #region activity_feed

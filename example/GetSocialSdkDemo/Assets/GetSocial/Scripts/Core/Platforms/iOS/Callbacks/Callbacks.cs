@@ -20,6 +20,8 @@ namespace GetSocialSdk.Core
 
     delegate bool NotificationListenerDelegate(IntPtr funcPtr, string notificationDataJson);
 
+    delegate bool PushTokenListenerDelegate(IntPtr funcPtr, string pushToken);
+
     public static class Callbacks
     {
 
@@ -98,6 +100,17 @@ namespace GetSocialSdk.Core
                 return funcPtr.Cast<NotificationListener>().Invoke(notificationEntity, wasClicked);
             }
             return false;
+        }
+
+
+        [AOT.MonoPInvokeCallback(typeof(PushTokenListenerDelegate))]
+        public static void PushTokenListener(IntPtr actionPtr, string dataStr)
+        {
+            GetSocialDebugLogger.D("PushToken: " + dataStr);
+            if (actionPtr != IntPtr.Zero) 
+            {
+                actionPtr.Cast<PushTokenListener>().Invoke(dataStr);
+            }
         }
         
         static void GetObjectCallback<T>(IntPtr actionPtr, string json) where T : IConvertableFromNative<T>, new()

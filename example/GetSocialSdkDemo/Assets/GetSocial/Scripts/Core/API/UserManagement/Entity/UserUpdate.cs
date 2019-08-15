@@ -9,14 +9,14 @@ namespace GetSocialSdk.Core
     {
         private const string RemoveValue = "";
 
-        private string _displayName;
-        private string _avatarUrl;
-        private Texture2D _avatar;
+        internal string _displayName;
+        internal string _avatarUrl;
+        internal Texture2D _avatar;
 
-        private readonly Dictionary<string, string> _publicProperties = new Dictionary<string, string>();
-        private readonly Dictionary<string, string> _privateProperties = new Dictionary<string, string>();
-        private readonly Dictionary<string, string> _publicInternalProperties = new Dictionary<string, string>();
-        private readonly Dictionary<string, string> _privateInternalProperties = new Dictionary<string, string>();
+        internal readonly Dictionary<string, string> _publicProperties = new Dictionary<string, string>();
+        internal readonly Dictionary<string, string> _privateProperties = new Dictionary<string, string>();
+        internal readonly Dictionary<string, string> _publicInternalProperties = new Dictionary<string, string>();
+        internal readonly Dictionary<string, string> _privateInternalProperties = new Dictionary<string, string>();
 
         public static Builder CreateBuilder()
         {

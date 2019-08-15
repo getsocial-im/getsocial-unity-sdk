@@ -16,7 +16,9 @@ MonoBehaviour:
   _isAutoRegisrationForPushesEnabled: 1
   _isForegroundNotificationsEnabled: 0
   _autoInitEnabled: 1
+  _disableFacebookReferralCheck: 0
   _useGetSocialUi: 1
+  _getSocialCustomConfigurationFilePath: 
   _getSocialDefaultConfigurationFilePath: 
   _iosPushEnvironment: development
   _deeplinkingDomains:

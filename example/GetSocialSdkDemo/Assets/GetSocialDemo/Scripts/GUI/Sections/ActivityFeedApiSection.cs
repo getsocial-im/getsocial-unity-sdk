@@ -320,7 +320,7 @@ public class ActivityFeedApiSection : DemoMenuSection
     void PostComment()
     {
         GetSocial.PostCommentToActivity(_activityId, GetPost(),
-            activity => { _console.LogD(string.Format("Posted to [{0}] content: {1}", _feed, activity.ToString())); },
+            activity => { _console.LogD(string.Format("Posted comment to [{0}] content: {1}", _activityId, activity.ToString())); },
             OnError);
     }
 

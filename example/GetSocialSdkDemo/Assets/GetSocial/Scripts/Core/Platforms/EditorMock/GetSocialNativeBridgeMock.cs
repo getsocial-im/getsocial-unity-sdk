@@ -128,6 +128,11 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
         }
 
+        public void SetPushTokenListener(PushTokenListener listener)
+        {
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
+        }
+
         public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
         {
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), query, onSuccess, onError);

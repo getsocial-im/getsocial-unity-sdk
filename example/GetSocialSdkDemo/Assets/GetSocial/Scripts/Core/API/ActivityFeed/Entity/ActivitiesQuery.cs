@@ -17,7 +17,7 @@ namespace GetSocialSdk.Core
     public sealed class ActivitiesQuery : IConvertableToNative
     {
         
-        private enum Type
+        internal enum Type
         {
             Comment, Post
         }
@@ -47,16 +47,16 @@ namespace GetSocialSdk.Core
         public const int DefaultLimit = 10;
 
 #pragma warning disable 414        
-        readonly Type _type;
-        readonly string _feed;
-        readonly string _parentActivityId;
+        internal readonly Type _type;
+        internal readonly string _feed;
+        internal readonly string _parentActivityId;
 
-        int _limit = DefaultLimit;
-        Filter _filter = Filter.NoFilter;
-        string _filteringActivityId;
-        string _filterUserId;
-        bool _isFriendsFeed;
-        string[] _tags = {};
+        internal int _limit = DefaultLimit;
+        internal Filter _filter = Filter.NoFilter;
+        internal string _filteringActivityId;
+        internal string _filterUserId;
+        internal bool _isFriendsFeed;
+        internal string[] _tags = {};
 #pragma warning restore 414
         ActivitiesQuery(Type type, string feed, string parentActivityId)
         {

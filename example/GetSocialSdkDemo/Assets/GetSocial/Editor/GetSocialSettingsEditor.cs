@@ -427,6 +427,12 @@ namespace GetSocialSdk.Editor
                 {
                     Application.OpenURL(string.Format("https://docs.getsocial.im/knowledge-base/android-signing-key-sha256/?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
                 }
+                if (GUILayout.Button("Refresh", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
+                {
+                    AssetDatabase.ImportAsset(GetSocialSettings.GetPluginPath() + Path.DirectorySeparatorChar + 
+                                              "Editor" + Path.DirectorySeparatorChar + 
+                                              "GetSocialSettingsEditor.cs");
+                }
                 EditorGUILayout.EndHorizontal();
             }
             else 

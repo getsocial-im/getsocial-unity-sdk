@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace GetSocialSdk.Core {
     public class PromoCode : IConvertableFromNative<PromoCode> {
-        
+
         /// <summary>
         /// Promo code.
         /// </summary>
@@ -45,6 +45,17 @@ namespace GetSocialSdk.Core {
         public bool Claimable { get; private set; }
         public PromoCode () { }
 
+        internal PromoCode (string code, Dictionary<string, string> data, uint maxClaimCount, DateTime startDate, DateTime? endDate, UserReference creator, uint claimCount, bool enabled, bool claimable) {
+            this.Code = code;
+            this.MaxClaimCount = maxClaimCount;
+            this.StartDate = startDate;
+            this.Creator = creator;
+            this.ClaimCount = claimCount;
+            this.Enabled = enabled;
+            this.Claimable = claimable;
+            this.Data = data;
+            this.EndDate = endDate;
+        }
 #if UNITY_IOS
         public PromoCode ParseFromJson (Dictionary<string, object> json) {
             Code = json["Code"] as string;
@@ -85,7 +96,7 @@ namespace GetSocialSdk.Core {
         }
 
         private static DateTime? DateFromAjo (AndroidJavaObject ajo) {
-            if (ajo.IsJavaNull()) {
+            if (ajo.IsJavaNull ()) {
                 return null;
             }
             return new DateTime (1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)

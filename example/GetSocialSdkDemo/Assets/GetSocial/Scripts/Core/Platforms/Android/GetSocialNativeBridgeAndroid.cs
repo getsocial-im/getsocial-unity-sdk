@@ -148,6 +148,11 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("setNotificationListener", new NotificationListenerProxy(listener));
         }
 
+        public void SetPushTokenListener(PushTokenListener listener)
+        {
+            _getSocial.CallStatic("setPushNotificationTokenListener", new PushTokenListenerProxy(listener));
+        }
+
         public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
         {
             _user.CallStatic("getNotifications", query.ToAjo(), new ListCallbackProxy<Notification>(onSuccess, onError));

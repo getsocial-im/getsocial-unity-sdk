@@ -12,6 +12,14 @@ namespace GetSocialSdk.Core
     {
         public int SuccessfullySentCount { get; private set; }
 
+        public NotificationsSummary()
+        {
+        }
+        internal NotificationsSummary(int successfullySentCount)
+        {
+            SuccessfullySentCount = successfullySentCount;
+        }
+
 #if UNITY_ANDROID
         public NotificationsSummary ParseFromAJO(AndroidJavaObject ajo)
         {

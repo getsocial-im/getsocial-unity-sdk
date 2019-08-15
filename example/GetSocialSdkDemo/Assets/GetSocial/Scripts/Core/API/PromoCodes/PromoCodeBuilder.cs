@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace GetSocialSdk.Core {
     public class PromoCodeBuilder : IConvertableToNative {
-        private string _code;
-        private readonly Dictionary<string, string> _data;
-        private uint _maxClaimCount = 0;
-        private DateTime? _startDate, _endDate;
+        internal string _code;
+        internal readonly Dictionary<string, string> _data;
+        internal uint _maxClaimCount = 0;
+        internal DateTime? _startDate, _endDate;
 
         public PromoCodeBuilder (string code) {
             _code = code;

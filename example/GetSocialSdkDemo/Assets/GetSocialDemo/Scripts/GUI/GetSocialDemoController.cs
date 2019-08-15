@@ -233,6 +233,10 @@ public class GetSocialDemoController : MonoBehaviour
 
     public void SetupGetSocial()
     {
+        GetSocial.SetPushNotificationTokenListener(deviceToken => 
+        {
+            _console.LogD(string.Format("DeviceToken: {0}", deviceToken), false);
+        });
         GetSocial.SetNotificationListener((notification, wasClicked) =>
         {
             // handle chat message

@@ -30,8 +30,9 @@ namespace GetSocialSdk.Editor {
             if (EditorPrefs.HasKey (DoNotShowGetSocialWelcomeScreenPref) || PlayerPrefs.HasKey (DoNotShowGetSocialWelcomeScreenPref)) return;
 
             EditorPrefs.SetInt (DoNotShowGetSocialWelcomeScreenPref, 1);
-
+#if !UNITY_CLOUD_BUILD
             Open ();
+#endif           
         }
 
         void OnEnable () {

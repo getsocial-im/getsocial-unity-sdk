@@ -267,6 +267,13 @@ extern "C" {
         }];
     }
     
+    void _gs_setPushTokenListener(void *listener, StringCallbackDelegate delegate)
+    {
+        [GetSocial setPushNotificationTokenHandler:^(NSString *_Nonnull deviceToken) {
+            delegate(listener, [GetSocialBridgeUtils createCStringFrom:deviceToken]);
+        }];
+    }
+    
     void _gs_getNotifications(const char* query,
                               StringCallbackDelegate successCallback, void * onSuccessActionPtr,
                               FailureCallbackDelegate failureCallback, void * onFailureActionPtr)

@@ -4,9 +4,7 @@ using System;
 using UnityEngine;
 #endif
 
-#if UNITY_IOS
 using System.Collections.Generic;
-#endif
 
 namespace GetSocialSdk.Core
 {
@@ -24,6 +22,12 @@ namespace GetSocialSdk.Core
             return string.Format("[SuggestedFriend: Id={0}, DisplayName={1}, Identities={2}, MutualFriendsCount={3}]", Id, DisplayName, Identities.ToDebugString(), MutualFriendsCount);
         }
 
+        public SuggestedFriend() {}
+
+        internal SuggestedFriend(Dictionary<string, string> publicProperties, string id, string displayName, string avatarUrl, Dictionary<string, string> identities, int mutualFriendsCount) : base(publicProperties, id, displayName, avatarUrl, identities)
+        {
+            MutualFriendsCount = mutualFriendsCount;
+        }
 #if UNITY_ANDROID
         public new SuggestedFriend ParseFromAJO(AndroidJavaObject ajo)
         {

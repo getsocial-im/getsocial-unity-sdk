@@ -110,7 +110,10 @@ namespace GetSocialSdk.Editor
                     keyAlias = PlayerSettings.Android.keyaliasName;
                     if (!KeystorePassDefined())
                     {
-                        keystoreUtilError = "Keystore password is not set. Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
+                        keystoreUtilError =
+                            "Keystore password is not set. Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.\n" + 
+                            "If you entered the password press Refresh to try to read signature again.\n" + 
+                            "You can ignore this warning and get SHA key signature manually. Click on the 'More Info' button to get the detailed guide.";
                         return "";
                     }
                 }
@@ -217,13 +220,12 @@ namespace GetSocialSdk.Editor
             }
 
             var response = keyHash.ToString();
-
             const string errorLiteral = "keytool error:";
             if (response.Contains(errorLiteral))
             {
                 int errorBeginIndex = response.IndexOf("Exception:") + "Exception:".Length + 1;
                 int errorEndIndex = response.IndexOf('\n', errorBeginIndex);
-                keystoreUtilError = "Error: " + response.Substring(errorBeginIndex, (errorEndIndex - errorBeginIndex)).Trim() + ". Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
+                keystoreUtilError = "Warning: " + response.Substring(errorBeginIndex, (errorEndIndex - errorBeginIndex)).Trim() + ". Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.\nYou can ignore this warning and get SHA key signature manually. Click on the 'More Info' button to get the detailed guide.";
                 return "";
             }
             const string sha256Literal = "SHA256:";
@@ -233,7 +235,10 @@ namespace GetSocialSdk.Editor
                 int shaEndIndex = response.IndexOf('\n', shaBeginIndex);
                 return response.Substring(shaBeginIndex, (shaEndIndex - shaBeginIndex)).Trim();
             }
-            keystoreUtilError = "Error: Can't read signature. Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings.";
+
+            keystoreUtilError =
+                "Warning: Can't read signature. Make sure Keystore is properly configured in Player Settings -> Android -> Publishing settings." +
+                "\nYou can ignore this warning and get SHA key signature manually. Click on the 'More Info' button to get the detailed guide.";
             return "";
         }
 

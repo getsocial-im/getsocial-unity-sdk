@@ -66,6 +66,7 @@ namespace GetSocialSdk.Core
         void RegisterForPushNotifications();
 
         void SetNotificationListener(NotificationListener listener);
+        void SetPushTokenListener(PushTokenListener listener);
 
         void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError);
 
@@ -226,6 +227,7 @@ namespace GetSocialSdk.Core
 
         #region Actions
         void ProcessAction(GetSocialAction notificationAction);
+        
         #endregion
     }
 }

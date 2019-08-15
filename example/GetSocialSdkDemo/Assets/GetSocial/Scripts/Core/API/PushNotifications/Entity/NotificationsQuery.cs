@@ -32,12 +32,12 @@ namespace GetSocialSdk.Core
         private static readonly string[] AllTypes = new string[0];
 
 #pragma warning disable 414        
-        private readonly string[] _statuses;
-        private string[] _types = AllTypes;  
-        private Filter _filter = Filter.NoFilter;
-        private string _notificationId;
-        private int _limit;
-        private string[] _actions = new string[0];
+        internal readonly string[] _statuses;
+        internal string[] _types = AllTypes;  
+        internal Filter _filter = Filter.NoFilter;
+        internal string _notificationId;
+        internal int _limit;
+        internal string[] _actions = new string[0];
 #pragma warning restore 414
         
         private NotificationsQuery(params string[] statuses)

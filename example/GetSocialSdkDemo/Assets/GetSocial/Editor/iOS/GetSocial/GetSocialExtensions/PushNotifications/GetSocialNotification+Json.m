@@ -7,6 +7,7 @@
 #import "GetSocialAction+Json.h"
 #import "NSArray+GetSocial.h"
 #import "GetSocialUserReference+Json.h"
+#import "GetSocialNotificationCustomization+Json.h"
 
 @implementation GetSocialNotification (Json)
 
@@ -28,6 +29,7 @@
     [dictionary gs_setValueOrNSNull:actionButtons forKey:@"ActionButtons"];
     [dictionary gs_setValueOrNSNull:@(self.createdAt) forKey:@"CreatedAt"];
     [dictionary gs_setValueOrNSNull:[self.sender toJsonDictionary] forKey:@"Sender"];
+    [dictionary gs_setValueOrNSNull:[self.customization toJsonDictionary] forKey:@"Customization"];
     return dictionary;
 }
 

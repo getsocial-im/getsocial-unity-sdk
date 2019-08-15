@@ -18,6 +18,9 @@ namespace GetSocialDemo.Scripts.GUI.Sections
         private string _text;
         private string _imageUrl = "";
         private string _videoUrl = "";
+        private string _backgroundImageConfiguration = "";
+        private string _titleColor = "";
+        private string _textColor = "";
 
         private string _action;
         private readonly List<Data> _actionData = new List<Data>();
@@ -58,12 +61,18 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             DemoGuiUtils.DrawRow(() =>
             {
                 GUILayout.Label("Image url: ", GSStyles.NormalLabelText);
+            });
+            DemoGuiUtils.DrawRow(() =>
+            {
                 _imageUrl = GUILayout.TextField(_imageUrl, GSStyles.TextField);
             });
             
             DemoGuiUtils.DrawRow(() =>
             {
                 GUILayout.Label("Video url: ", GSStyles.NormalLabelText);
+            });
+            DemoGuiUtils.DrawRow(() =>
+            {
                 _videoUrl = GUILayout.TextField(_videoUrl, GSStyles.TextField);
             });
             
@@ -78,7 +87,28 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 _useCustomVideo = GUILayout.Toggle(_useCustomVideo, "", GSStyles.Toggle);
                 GUILayout.Label("Send Custom Video", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
             });
-            
+
+            DemoGuiUtils.DrawRow(() =>
+            {
+                GUILayout.Label("Background image: ", GSStyles.NormalLabelText);
+            });
+            DemoGuiUtils.DrawRow(() =>
+            {
+                _backgroundImageConfiguration = GUILayout.TextField(_backgroundImageConfiguration, GSStyles.TextField);
+            });
+
+            DemoGuiUtils.DrawRow(() =>
+            {
+                GUILayout.Label("Title color: ", GSStyles.NormalLabelText);
+                _titleColor = GUILayout.TextField(_titleColor, GSStyles.TextField);
+            });
+
+            DemoGuiUtils.DrawRow(() =>
+            {
+                GUILayout.Label("Text color: ", GSStyles.NormalLabelText);
+                _textColor = GUILayout.TextField(_textColor, GSStyles.TextField);
+            });
+
             DemoGuiUtils.DrawRow(() =>
             {
                 Placeholders.Keys.ToList().ForEach(key =>
@@ -188,12 +218,19 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                     : _useCustomVideo ? MediaAttachment.Video(DemoUtils.LoadSampleVideoBytes())
                     : null;
 
+                var customization = NotificationCustomization
+                    .WithBackgroundImageConfiguration(_backgroundImageConfiguration)
+                    .WithTitleColor(_titleColor)
+                    .WithTextColor(_textColor);
                 var content = NotificationContent.NotificationWithText(_text)
                     .WithTitle(_title)
                     .WithTemplateName(_templateName)
                     .AddTemplatePlaceholders(_templatePlaceholders.ToDictionary(data => data.Key, data => data.Val))
                     .WithMediaAttachment(mediaAttachment)
-                    .AddActionButtons(_actionButtons.ConvertAll(item => ActionButton.Create(item.Key, item.Val)));
+                    .WithCustomization(customization)
+                    .AddActionButtons(_actionButtons.ConvertAll(item => ActionButton.Create(item.Key, item.Val))
+                       
+                 );
                 
                 if (_action != null)
                 {

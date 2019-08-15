@@ -12,9 +12,9 @@ namespace GetSocialSdk.Core
         private static readonly string[] AllTypes = new string[0];
 
 #pragma warning disable 414        
-        private readonly string[] _statuses;
-        private string[] _types = AllTypes;
-        private string[] _actions = new string[0];
+        internal readonly string[] _statuses;
+        internal string[] _types = AllTypes;
+        internal string[] _actions = new string[0];
 #pragma warning restore 414
         private NotificationsCountQuery(params string[] statuses)
         {

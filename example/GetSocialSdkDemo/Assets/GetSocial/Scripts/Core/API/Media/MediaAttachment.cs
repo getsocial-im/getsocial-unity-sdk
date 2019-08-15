@@ -10,8 +10,8 @@ namespace GetSocialSdk.Core
     public sealed class MediaAttachment : IConvertableToNative
     {       
 #pragma warning disable 414   
-        private readonly string _method;
-        private readonly object _object;
+        internal  readonly string _method;
+        internal  readonly object _object;
 #pragma warning restore 414
 
         private MediaAttachment(string method, object obj)

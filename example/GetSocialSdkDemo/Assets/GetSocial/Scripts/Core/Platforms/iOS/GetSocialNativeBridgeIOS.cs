@@ -154,6 +154,11 @@ namespace GetSocialSdk.Core
             _gs_setNotificationActionListener(listener.GetPointer(), Callbacks.NotificationListener);
         }
 
+        public void SetPushTokenListener(PushTokenListener listener)
+        {
+            _gs_setPushTokenListener(listener.GetPointer(), Callbacks.PushTokenListener);
+        }
+
         public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
         {
             _gs_getNotifications(query.ToJson(), Callbacks.GetNotificationsCallback, onSuccess.GetPointer(),
@@ -693,6 +698,10 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern bool _gs_setNotificationActionListener(IntPtr listenerPointer,
             NotificationListenerDelegate listener);
+
+        [DllImport("__Internal")]
+        static extern bool _gs_setPushTokenListener(IntPtr listenerPointer,
+            StringCallbackDelegate listener);
 
         [DllImport("__Internal")]
         static extern void _gs_getNotifications(string query,

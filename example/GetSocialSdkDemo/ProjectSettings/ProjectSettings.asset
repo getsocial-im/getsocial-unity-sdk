@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 6.27.0
+  bundleVersion: 6.28.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -234,7 +234,7 @@ PlayerSettings:
   metalEditorSupport: 0
   metalAPIValidation: 0
   iOSRenderExtraFrameOnPause: 1
-  appleDeveloperTeamID: MPDNQL6523
+  appleDeveloperTeamID: S2TQ8J2C2B
   iOSManualSigningProvisioningProfileID: im.getsocial.demo.unity - Development
   tvOSManualSigningProvisioningProfileID: 
   iOSManualSigningProvisioningProfileType: 0
@@ -660,12 +660,12 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: USE_GETSOCIAL_UI
+    1: USE_GETSOCIAL_UI;GETSOCIAL_DEBUG
     2: USE_GETSOCIAL_UI
     4: USE_GETSOCIAL_UI
     5: USE_GETSOCIAL_UI
     6: USE_GETSOCIAL_UI
-    7: USE_GETSOCIAL_UI
+    7: USE_GETSOCIAL_UI;GETSOCIAL_DEBUG
     13: USE_GETSOCIAL_UI
     14: USE_GETSOCIAL_UI
     17: USE_GETSOCIAL_UI

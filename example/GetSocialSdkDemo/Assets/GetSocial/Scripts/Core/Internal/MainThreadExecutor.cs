@@ -24,6 +24,8 @@ namespace GetSocialSdk.Core
                 return;
             }
 
+            if (Instance == null || Instance._queueLock == null) return;
+
             lock (Instance._queueLock)
             {
                 Instance._queuedActions.Add(action);

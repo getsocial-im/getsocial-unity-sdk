@@ -11,13 +11,14 @@ namespace GetSocialSdk.Core
     {
         
 #pragma warning disable 414      
-        private string _text;
-        private string _title;
-        private string _templateName;
-        private MediaAttachment _mediaAttachment;
-        private readonly Dictionary<string, string> _templatePlaceholders;
-        private GetSocialAction _action;
-        private readonly List<ActionButton> _actionButtons;
+        internal string _text;
+        internal string _title;
+        internal string _templateName;
+        internal MediaAttachment _mediaAttachment;
+        internal readonly Dictionary<string, string> _templatePlaceholders;
+        internal GetSocialAction _action;
+        internal readonly List<ActionButton> _actionButtons;
+        internal NotificationCustomization _customization;
 #pragma warning restore 414
 
         private NotificationContent()
@@ -29,9 +30,10 @@ namespace GetSocialSdk.Core
         public override string ToString()
         {
             return string.Format(
-                "Title: {0}, Text: {1}, Action: {2}, Template: {4}, TemplatePlaceholders: {5}"
+                "Title: {0}, Text: {1}, Action: {2}, Template: {3}, TemplatePlaceholders: {4}, Customization: {5}"
                 , _title, _text, _action, _templateName,
-                _templatePlaceholders.ToDebugString());
+                _templatePlaceholders.ToDebugString(),
+                _customization);
         }
 
         /// <summary>
@@ -137,7 +139,19 @@ namespace GetSocialSdk.Core
             _actionButtons.AddAll(actionButton);
             return this;
         }
-        
+
+        /// <summary>
+        /// Customize notification, like change background image, title and text color.
+        /// Supported only on Android.
+        /// </summary>
+        /// <param name="customization">customization parameters.</param>
+        /// <returns>notification content for methods chaining</returns>
+        public NotificationContent WithCustomization(NotificationCustomization customization)
+        {
+            _customization = customization;
+            return this;
+        }
+
 #if UNITY_ANDROID
         public AndroidJavaObject ToAjo()
         {
@@ -158,6 +172,8 @@ namespace GetSocialSdk.Core
             {
                 notificationContent.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
             }
+
+            notificationContent.CallAJO("withCustomization", _customization.ToAjo());
             
             return notificationContent;
         }
@@ -172,7 +188,8 @@ namespace GetSocialSdk.Core
                 {"Template", _templateName},
                 {"TemplatePlaceholders", _templatePlaceholders},
                 {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()},
-                {"ActionButtons", _actionButtons.ConvertAll(item => item.ToJson())}
+                {"ActionButtons", _actionButtons.ConvertAll(item => item.ToJson())},
+                {"Customization", _customization.ToJson()}
             };
             return GSJson.Serialize(json);
         }

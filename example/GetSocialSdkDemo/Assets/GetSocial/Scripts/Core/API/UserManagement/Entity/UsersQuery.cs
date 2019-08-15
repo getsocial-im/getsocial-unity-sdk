@@ -16,8 +16,8 @@ namespace GetSocialSdk.Core
         private const int DefaultLimit = 20;
         
 #pragma warning disable 414  
-        private readonly string _query;
-        private int _limit;
+        internal readonly string _query;
+        internal int _limit;
 #pragma warning restore 414
 
         private UsersQuery(string query)

@@ -201,8 +201,18 @@
     {
         [notificationContent addActionButton:[self deserializeActionButton:actionButton] ];
     }
+    [notificationContent setCustomization:[self deserializeCustomization:json[@"Customization"]]];
     
     return notificationContent;
+}
+
++ (GetSocialNotificationCustomization*)deserializeCustomization:(NSString*)customizationJson {
+    NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromNSString:customizationJson];
+    GetSocialNotificationCustomization* customization = [GetSocialNotificationCustomization new];
+    customization.backgroundImageConfiguration = json[@"BackgroundImageConfiguration"];
+    customization.titleColor = json[@"TitleColor"];
+    customization.textColor = json[@"TextColor"];
+    return customization;
 }
 
 + (GetSocialActionButton *)deserializeActionButton:(NSString *)actionButtonJson

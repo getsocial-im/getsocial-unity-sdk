@@ -155,7 +155,7 @@ namespace GetSocialSdk.Core
             
         }
 
-        internal ActivityPost(string id, string text, string imageUrl, DateTime createdAt, string buttonTitle, string buttonAction, PostAuthor author, int commentsCount, int likesCount, bool isLikedByMe, DateTime stickyStart, DateTime stickyEnd, List<Mention> mentions, string feedId)
+        internal ActivityPost(string id, string text, string imageUrl, DateTime createdAt, string buttonTitle, string buttonAction, GetSocialAction action, PostAuthor author, int commentsCount, int likesCount, bool isLikedByMe, DateTime stickyStart, DateTime stickyEnd, List<Mention> mentions, string feedId)
         {
             Id = id;
             Text = text;
@@ -165,6 +165,7 @@ namespace GetSocialSdk.Core
 #pragma warning disable 0618
             ButtonAction = buttonAction;
 #pragma warning restore 0618
+            Action = action;
             Author = author;
             CommentsCount = commentsCount;
             LikesCount = likesCount;

@@ -29,6 +29,22 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <value>The user avatar URL.</value>
         public string AvatarUrl { get; protected set; }
+        public UserReference()
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[UserReference: Id={0}, DisplayName={1}, AvatarUrl={2}]", Id, DisplayName, AvatarUrl);
+        }
+
+        internal UserReference(string id, string displayName, string avatarUrl)
+        {
+            Id = id;
+            DisplayName = displayName;
+            AvatarUrl = avatarUrl;
+        }
 #if UNITY_IOS
         public UserReference ParseFromJson(Dictionary<string, object> json)
         {
