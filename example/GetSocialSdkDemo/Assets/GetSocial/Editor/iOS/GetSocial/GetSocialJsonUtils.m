@@ -207,6 +207,9 @@
 }
 
 + (GetSocialNotificationCustomization*)deserializeCustomization:(NSString*)customizationJson {
+    if (customizationJson.length == 0) {
+        return nil;
+    }
     NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromNSString:customizationJson];
     GetSocialNotificationCustomization* customization = [GetSocialNotificationCustomization new];
     customization.backgroundImageConfiguration = json[@"BackgroundImageConfiguration"];

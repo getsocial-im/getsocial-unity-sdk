@@ -551,13 +551,27 @@ namespace GetSocialSdk.Core
         /// <param name="onSuccess">Called when activity was successfully deleted</param>
         /// <param name="onFailure">Called when deleting activity failed</param>
         ///
+        /// Deprecated, use <see cref="RemoveActivities(List{string}, Action, Action{GetSocialError})"/> instead.
+        [Obsolete("Deprecated, please use RemoveActivities(List{string}, Action, Action{GetSocialError})")]
         public static void DeleteActivity(string activityId, Action onSuccess,
             Action<GetSocialError> onFailure)
+        {
+            RemoveActivities(new List<string>() { activityId }, onSuccess, onFailure);
+        }
+
+
+        /**
+        * Remove your activities. Attempt to remove other user activities will result in failure.
+        *
+        * @param activityIds Ids of your activities you want to remove.
+        * @param callback    Completion callback.
+        */
+        public static void RemoveActivities(List<string> activityIds, Action onSuccess, Action<GetSocialError> onFailure) 
         {
             Check.Argument.IsNotNull(onSuccess, "onSuccess");
             Check.Argument.IsNotNull(onFailure, "onFailure");
             
-            GetSocialImpl.DeleteActivity(activityId, onSuccess, onFailure);
+            GetSocialImpl.RemoveActivities(activityIds, onSuccess, onFailure);
         }
 
         #endregion

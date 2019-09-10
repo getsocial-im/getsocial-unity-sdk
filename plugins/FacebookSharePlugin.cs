@@ -18,6 +18,9 @@ using System;
 using GetSocialSdk.Core;
 using UnityEngine;
 using Facebook.Unity;
+#if UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
 
 #if USE_GETSOCIAL_UI
 using GetSocialSdk.Ui;
@@ -54,7 +57,7 @@ public class FacebookSharePlugin : InviteChannelPlugin
                            Action<GetSocialError> errorCallback)
     {
         GetSocialDebugLogger.D("Sharing link on Facebook : " + referralDataUrl);
-        FB.Mobile.ShareDialogMode = ShareDialogMode.WEB;
+        FB.Mobile.ShareDialogMode = IsFBAppInstalled() ? ShareDialogMode.NATIVE : ShareDialogMode.WEB; 
         FB.ShareLink(new Uri(referralDataUrl), callback: result => 
         {
 
@@ -80,4 +83,34 @@ public class FacebookSharePlugin : InviteChannelPlugin
             completeCallback();
         });
     }
+
+    private static bool IsFBAppInstalled()
+    {
+#if UNITY_ANDROID
+        var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        var currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        var packageManager = currentActivity.Call<AndroidJavaObject>("getPackageManager");
+        try
+        {
+            var arguments = new object[]{"com.facebook.katana", 1};
+            packageManager.Call<AndroidJavaObject>("getPackageInfo", arguments);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            GetSocialDebugLogger.D("Facebook app is not installed, open web view, exception: " + exception.Message);
+            return false;
+        }
+#elif UNITY_IOS
+        return _gs_checkIfFBAppInstalled();
+#else
+        return false;
+#endif
+    }
+    
+#if UNITY_IOS
+        [DllImport("__Internal")]
+        static extern bool _gs_checkIfFBAppInstalled();
+#endif
+    
 }

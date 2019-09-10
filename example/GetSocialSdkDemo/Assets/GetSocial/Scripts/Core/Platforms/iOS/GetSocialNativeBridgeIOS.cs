@@ -536,9 +536,9 @@ namespace GetSocialSdk.Core
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 
-        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        public void RemoveActivities(List<string> activityIds, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _gs_deleteActivity(activityId, 
+            _gs_removeActivities(GSJson.Serialize(activityIds), 
                 Callbacks.ActionCallback, onSuccess.GetPointer(), 
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
@@ -957,7 +957,7 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
-        static extern void _gs_deleteActivity(string id, 
+        static extern void _gs_removeActivities(string ids, 
             VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 

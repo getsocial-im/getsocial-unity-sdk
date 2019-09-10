@@ -54,7 +54,7 @@ public partial class Hades {
     THActivityPost postComment(string sessionId, string activityId, THActivityPostContent activityPostContent);
     THActivityPost likeActivity(string sessionId, string activityId, bool isLiked);
     List<THPostAuthor> getActivityLikers(string sessionId, string activityId, int offset, int limit);
-    bool deleteActivity(string sessionId, string activityId);
+    bool removeActivities(string sessionId, List<string> activityIds);
     bool reportActivity(string sessionId, string activityId, THReportingReason reportingReason);
     bool trackAnalyticsEvents(string sessionId, THSuperProperties commonProperties, List<THAnalyticsBaseEvent> events);
     bool registerPushTarget(string sessionId, THPushTarget pushTargetData);
@@ -1501,24 +1501,24 @@ public partial class Hades {
     }
 
     
-    public bool deleteActivity(string sessionId, string activityId)
+    public bool removeActivities(string sessionId, List<string> activityIds)
     {
-      send_deleteActivity(sessionId, activityId);
-      return recv_deleteActivity();
+      send_removeActivities(sessionId, activityIds);
+      return recv_removeActivities();
 
     }
-    public void send_deleteActivity(string sessionId, string activityId)
+    public void send_removeActivities(string sessionId, List<string> activityIds)
     {
-      oprot_.WriteMessageBegin(new TMessage("deleteActivity", TMessageType.Call, seqid_));
-      deleteActivity_args args = new deleteActivity_args();
+      oprot_.WriteMessageBegin(new TMessage("removeActivities", TMessageType.Call, seqid_));
+      removeActivities_args args = new removeActivities_args();
       args.SessionId = sessionId;
-      args.ActivityId = activityId;
+      args.ActivityIds = activityIds;
       args.Write(oprot_);
       oprot_.WriteMessageEnd();
       oprot_.Transport.Flush();
     }
 
-    public bool recv_deleteActivity()
+    public bool recv_removeActivities()
     {
       TMessage msg = iprot_.ReadMessageBegin();
       if (msg.Type == TMessageType.Exception) {
@@ -1526,7 +1526,7 @@ public partial class Hades {
         iprot_.ReadMessageEnd();
         throw x;
       }
-      deleteActivity_result result = new deleteActivity_result();
+      removeActivities_result result = new removeActivities_result();
       result.Read(iprot_);
       iprot_.ReadMessageEnd();
       if (result.__isset.success) {
@@ -1535,7 +1535,7 @@ public partial class Hades {
       if (result.__isset.errors) {
         throw result.Errors;
       }
-      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "deleteActivity failed: unknown result");
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "removeActivities failed: unknown result");
     }
 
     
@@ -2078,7 +2078,7 @@ public partial class Hades {
       processMap_["postComment"] = postComment_Process;
       processMap_["likeActivity"] = likeActivity_Process;
       processMap_["getActivityLikers"] = getActivityLikers_Process;
-      processMap_["deleteActivity"] = deleteActivity_Process;
+      processMap_["removeActivities"] = removeActivities_Process;
       processMap_["reportActivity"] = reportActivity_Process;
       processMap_["trackAnalyticsEvents"] = trackAnalyticsEvents_Process;
       processMap_["registerPushTarget"] = registerPushTarget_Process;
@@ -3377,23 +3377,23 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
-    public void deleteActivity_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    public void removeActivities_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
-      deleteActivity_args args = new deleteActivity_args();
+      removeActivities_args args = new removeActivities_args();
       args.Read(iprot);
       iprot.ReadMessageEnd();
-      deleteActivity_result result = new deleteActivity_result();
+      removeActivities_result result = new removeActivities_result();
       try
       {
         try
         {
-          result.Success = iface_.deleteActivity(args.SessionId, args.ActivityId);
+          result.Success = iface_.removeActivities(args.SessionId, args.ActivityIds);
         }
         catch (THErrors errors)
         {
           result.Errors = errors;
         }
-        oprot.WriteMessageBegin(new TMessage("deleteActivity", TMessageType.Reply, seqid)); 
+        oprot.WriteMessageBegin(new TMessage("removeActivities", TMessageType.Reply, seqid)); 
         result.Write(oprot);
       }
       catch (TTransportException)
@@ -3405,7 +3405,7 @@ public partial class Hades {
         Console.Error.WriteLine("Error occurred in processor:");
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
-        oprot.WriteMessageBegin(new TMessage("deleteActivity", TMessageType.Exception, seqid));
+        oprot.WriteMessageBegin(new TMessage("removeActivities", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -14895,10 +14895,10 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class deleteActivity_args : TBase
+  public partial class removeActivities_args : TBase
   {
     private string _sessionId;
-    private string _activityId;
+    private List<string> _activityIds;
 
     public string SessionId
     {
@@ -14913,16 +14913,16 @@ public partial class Hades {
       }
     }
 
-    public string ActivityId
+    public List<string> ActivityIds
     {
       get
       {
-        return _activityId;
+        return _activityIds;
       }
       set
       {
-        __isset.activityId = true;
-        this._activityId = value;
+        __isset.activityIds = true;
+        this._activityIds = value;
       }
     }
 
@@ -14933,10 +14933,10 @@ public partial class Hades {
     #endif
     public struct Isset {
       public bool sessionId;
-      public bool activityId;
+      public bool activityIds;
     }
 
-    public deleteActivity_args() {
+    public removeActivities_args() {
     }
 
     public void Read (TProtocol iprot)
@@ -14962,8 +14962,18 @@ public partial class Hades {
               }
               break;
             case 2:
-              if (field.Type == TType.String) {
-                ActivityId = iprot.ReadString();
+              if (field.Type == TType.List) {
+                {
+                  ActivityIds = new List<string>();
+                  TList _list65 = iprot.ReadListBegin();
+                  for( int _i66 = 0; _i66 < _list65.Count; ++_i66)
+                  {
+                    string _elem67;
+                    _elem67 = iprot.ReadString();
+                    ActivityIds.Add(_elem67);
+                  }
+                  iprot.ReadListEnd();
+                }
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -14986,7 +14996,7 @@ public partial class Hades {
       oprot.IncrementRecursionDepth();
       try
       {
-        TStruct struc = new TStruct("deleteActivity_args");
+        TStruct struc = new TStruct("removeActivities_args");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
         if (SessionId != null && __isset.sessionId) {
@@ -14997,12 +15007,19 @@ public partial class Hades {
           oprot.WriteString(SessionId);
           oprot.WriteFieldEnd();
         }
-        if (ActivityId != null && __isset.activityId) {
-          field.Name = "activityId";
-          field.Type = TType.String;
+        if (ActivityIds != null && __isset.activityIds) {
+          field.Name = "activityIds";
+          field.Type = TType.List;
           field.ID = 2;
           oprot.WriteFieldBegin(field);
-          oprot.WriteString(ActivityId);
+          {
+            oprot.WriteListBegin(new TList(TType.String, ActivityIds.Count));
+            foreach (string _iter68 in ActivityIds)
+            {
+              oprot.WriteString(_iter68);
+            }
+            oprot.WriteListEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -15015,7 +15032,7 @@ public partial class Hades {
     }
 
     public override string ToString() {
-      StringBuilder __sb = new StringBuilder("deleteActivity_args(");
+      StringBuilder __sb = new StringBuilder("removeActivities_args(");
       bool __first = true;
       if (SessionId != null && __isset.sessionId) {
         if(!__first) { __sb.Append(", "); }
@@ -15023,11 +15040,11 @@ public partial class Hades {
         __sb.Append("SessionId: ");
         __sb.Append(SessionId);
       }
-      if (ActivityId != null && __isset.activityId) {
+      if (ActivityIds != null && __isset.activityIds) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("ActivityId: ");
-        __sb.Append(ActivityId);
+        __sb.Append("ActivityIds: ");
+        __sb.Append(ActivityIds);
       }
       __sb.Append(")");
       return __sb.ToString();
@@ -15039,7 +15056,7 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class deleteActivity_result : TBase
+  public partial class removeActivities_result : TBase
   {
     private bool _success;
     private THErrors _errors;
@@ -15080,7 +15097,7 @@ public partial class Hades {
       public bool errors;
     }
 
-    public deleteActivity_result() {
+    public removeActivities_result() {
     }
 
     public void Read (TProtocol iprot)
@@ -15131,7 +15148,7 @@ public partial class Hades {
       oprot.IncrementRecursionDepth();
       try
       {
-        TStruct struc = new TStruct("deleteActivity_result");
+        TStruct struc = new TStruct("removeActivities_result");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
 
@@ -15162,7 +15179,7 @@ public partial class Hades {
     }
 
     public override string ToString() {
-      StringBuilder __sb = new StringBuilder("deleteActivity_result(");
+      StringBuilder __sb = new StringBuilder("removeActivities_result(");
       bool __first = true;
       if (__isset.success) {
         if(!__first) { __sb.Append(", "); }
@@ -15610,13 +15627,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Events = new List<THAnalyticsBaseEvent>();
-                  TList _list65 = iprot.ReadListBegin();
-                  for( int _i66 = 0; _i66 < _list65.Count; ++_i66)
+                  TList _list69 = iprot.ReadListBegin();
+                  for( int _i70 = 0; _i70 < _list69.Count; ++_i70)
                   {
-                    THAnalyticsBaseEvent _elem67;
-                    _elem67 = new THAnalyticsBaseEvent();
-                    _elem67.Read(iprot);
-                    Events.Add(_elem67);
+                    THAnalyticsBaseEvent _elem71;
+                    _elem71 = new THAnalyticsBaseEvent();
+                    _elem71.Read(iprot);
+                    Events.Add(_elem71);
                   }
                   iprot.ReadListEnd();
                 }
@@ -15668,9 +15685,9 @@ public partial class Hades {
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Events.Count));
-            foreach (THAnalyticsBaseEvent _iter68 in Events)
+            foreach (THAnalyticsBaseEvent _iter72 in Events)
             {
-              _iter68.Write(oprot);
+              _iter72.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -17204,13 +17221,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<THNotification>();
-                  TList _list69 = iprot.ReadListBegin();
-                  for( int _i70 = 0; _i70 < _list69.Count; ++_i70)
+                  TList _list73 = iprot.ReadListBegin();
+                  for( int _i74 = 0; _i74 < _list73.Count; ++_i74)
                   {
-                    THNotification _elem71;
-                    _elem71 = new THNotification();
-                    _elem71.Read(iprot);
-                    Success.Add(_elem71);
+                    THNotification _elem75;
+                    _elem75 = new THNotification();
+                    _elem75.Read(iprot);
+                    Success.Add(_elem75);
                   }
                   iprot.ReadListEnd();
                 }
@@ -17256,9 +17273,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
-              foreach (THNotification _iter72 in Success)
+              foreach (THNotification _iter76 in Success)
               {
-                _iter72.Write(oprot);
+                _iter76.Write(oprot);
               }
               oprot.WriteListEnd();
             }

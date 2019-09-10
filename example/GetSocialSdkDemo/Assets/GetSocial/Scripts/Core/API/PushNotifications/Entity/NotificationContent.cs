@@ -173,7 +173,10 @@ namespace GetSocialSdk.Core
                 notificationContent.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
             }
 
-            notificationContent.CallAJO("withCustomization", _customization.ToAjo());
+            if (_customization != null) 
+            {
+                notificationContent.CallAJO("withCustomization", _customization.ToAjo());
+            }
             
             return notificationContent;
         }
@@ -189,7 +192,7 @@ namespace GetSocialSdk.Core
                 {"TemplatePlaceholders", _templatePlaceholders},
                 {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()},
                 {"ActionButtons", _actionButtons.ConvertAll(item => item.ToJson())},
-                {"Customization", _customization.ToJson()}
+                {"Customization", _customization == null ? "" : _customization.ToJson()}
             };
             return GSJson.Serialize(json);
         }

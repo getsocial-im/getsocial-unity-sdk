@@ -199,7 +199,7 @@ namespace GetSocialSdk.Core
         void ReportActivity(string activityId, ReportingReason reportingReason, Action onSuccess,
             Action<GetSocialError> onFailure);
 
-        void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure);
+        void RemoveActivities(List<string> activityId, Action onSuccess, Action<GetSocialError> onFailure);
 
         #endregion
 

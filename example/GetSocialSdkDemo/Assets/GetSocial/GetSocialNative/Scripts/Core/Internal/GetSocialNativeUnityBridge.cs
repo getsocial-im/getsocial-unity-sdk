@@ -973,15 +973,15 @@ namespace GetSocialSdk.Core
             }, onFailure);
         }
 
-        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        public void RemoveActivities(List<string> activityIds, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            LogRequest("deleteActivity", activityId);
+            LogRequest("removeActivities", activityIds.ToDebugString());
             WithHadesClient(client =>
             {
-                var response = client.deleteActivity(SessionId, activityId);
+                var response = client.removeActivities(SessionId, activityIds);
                 Ui(() =>
                 {
-                    LogResponse("deleteActivity", response);
+                    LogResponse("removeActivities", response);
                     onSuccess.SafeCall();
                 });
             }, onFailure);

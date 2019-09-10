@@ -755,14 +755,15 @@ extern "C" {
                           failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
     
-    void _gs_deleteActivity(const char *activityId,
+    void _gs_removeActivities(const char *ids,
                             VoidCallbackDelegate successCallback, void *onSuccessActionPtr,
                             FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
     {
-        NSString *activityIdStr = [GetSocialBridgeUtils createNSStringFrom:activityId];
-        [GetSocial deleteActivity:activityIdStr
-                          success:completeBlock(successCallback, onSuccessActionPtr)
-                          failure:errorBlock(failureCallback, onFailureActionPtr)];
+        NSArray *activityIds = [GetSocialBridgeUtils createArrayFromCString:ids];
+        
+        [GetSocial removeActivities:activityIds
+                            success:completeBlock(successCallback, onSuccessActionPtr)
+                            failure:errorBlock(failureCallback, onFailureActionPtr)];
     }
 #pragma mark - Promo Codes
     
@@ -839,6 +840,11 @@ extern "C" {
         [GetSocial performSelector:NSSelectorFromString(@"reset")];
     }
     NS_ASSUME_NONNULL_END
+
+    BOOL _gs_checkIfFBAppInstalled() {
+        // check if FB app is installed on the device
+        return [UIApplication.sharedApplication canOpenURL:[NSURL URLWithString:@"fbauth2://"]];
+    }
 }
 
 #pragma clang diagnostic pop

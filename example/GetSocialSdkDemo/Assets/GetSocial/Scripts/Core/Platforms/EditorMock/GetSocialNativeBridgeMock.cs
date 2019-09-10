@@ -437,9 +437,9 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), activityId, reportingReason, onSuccess, onFailure);
         }
 
-        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        public void RemoveActivities(List<string> activityIds, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), activityId, onSuccess, onFailure);
+            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), activityIds, onSuccess, onFailure);
         }
 
         public void Reset()

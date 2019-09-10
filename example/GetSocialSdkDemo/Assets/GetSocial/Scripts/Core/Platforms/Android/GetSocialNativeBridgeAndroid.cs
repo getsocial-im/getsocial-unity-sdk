@@ -456,9 +456,9 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("reportActivity", activityId, reportingReason.ToAndroidJavaObject(), new CompletionCallback(onSuccess, onFailure));
         }
 
-        public void DeleteActivity(string activityId, Action onSuccess, Action<GetSocialError> onFailure)
+        public void RemoveActivities(List<string> activityIds, Action onSuccess, Action<GetSocialError> onFailure)
         {
-            _getSocial.CallStatic("deleteActivity", activityId, new CompletionCallback(onSuccess, onFailure));
+            _getSocial.CallStatic("removeActivities", activityIds.ToJavaList(), new CompletionCallback(onSuccess, onFailure));
         }
 
         #endregion
