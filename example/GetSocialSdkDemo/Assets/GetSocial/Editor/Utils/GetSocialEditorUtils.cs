@@ -28,6 +28,18 @@ using Object = System.Object;
 
 namespace GetSocialSdk.Editor
 {
+
+    public class UiConfigValidationResult
+    {
+        public bool Result { get; private set; }
+        public string Message { get; private set; }
+        internal UiConfigValidationResult(bool result, string message)
+        {
+            Result = result;
+            Message = message;
+        }
+    }
+    
     [InitializeOnLoad]
     public static class GetSocialEditorUtils
     {
@@ -298,10 +310,10 @@ namespace GetSocialSdk.Editor
 
         private static void ValidateCustomUiConfig(BuildPlayerOptions options)
         {
-            var (result, message) = CheckCustomUiConfig();
-            if (!result)
+            var validationResult = CheckCustomUiConfig();
+            if (!validationResult.Result)
             {
-                Debug.LogError(message);
+                Debug.LogError(validationResult.Message);
             }
             else
             {
@@ -309,11 +321,11 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        public static Tuple<bool, string> CheckCustomUiConfig()
+        public static UiConfigValidationResult CheckCustomUiConfig()
         {
             if (string.IsNullOrEmpty(GetSocialSettings.UiConfigurationCustomFilePath))
             {
-                return Tuple.Create(true, "");
+                return new UiConfigValidationResult(true, "");
             }
 
             var completePath = Path.Combine(Application.streamingAssetsPath,
@@ -322,18 +334,18 @@ namespace GetSocialSdk.Editor
             {
                 return ValidateCustomUiConfigContent(completePath);
             }
-            if (!Directory.Exists(completePath)) return Tuple.Create(false, "GetSocial: Custom UI Configuration file not found at " + completePath + ". Make sure the file exists and it has .json extension");
+            if (!Directory.Exists(completePath)) return new UiConfigValidationResult(false, "GetSocial: Custom UI Configuration file not found at " + completePath + ". Make sure the file exists and it has .json extension");
             var jsonFileCounter = Directory.GetFiles(completePath).Count(file => file.EndsWith(".json"));
             if (jsonFileCounter != 1)
             {
-                return Tuple.Create(false, "GetSocial: Custom UI Configuration directory at " + completePath + " contains multiple JSON files.");
+                return new UiConfigValidationResult(false, "GetSocial: Custom UI Configuration directory at " + completePath + " contains multiple JSON files.");
             }
 
             var filePath = Directory.GetFiles(completePath).Single(file => file.EndsWith(".json"));
             return ValidateCustomUiConfigContent(filePath);
         }
 
-        private static Tuple<bool, string> ValidateCustomUiConfigContent(string path)
+        private static UiConfigValidationResult ValidateCustomUiConfigContent(string path)
         {
             try
             {
@@ -342,10 +354,10 @@ namespace GetSocialSdk.Editor
             catch (Exception exception)
             {
                 Debug.LogError("GetSocial: Could not parse custom UI configuration file, error: " + exception.Message);
-                return Tuple.Create(false, "GetSocial: Custom UI Configuration file (" + path + ") is not a valid JSON file.");
+                return new UiConfigValidationResult(false, "GetSocial: Custom UI Configuration file (" + path + ") is not a valid JSON file.");
             }
 
-            return Tuple.Create(true, "");
+            return new UiConfigValidationResult(true, "");
         }
 
     }

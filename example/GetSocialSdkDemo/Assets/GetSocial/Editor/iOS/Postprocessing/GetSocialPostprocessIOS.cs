@@ -174,8 +174,11 @@ namespace GetSocialSdk.Editor
             project.RemoveShellScript(target, "GetSocial.framework/strip_frameworks.sh");
             
             const string script = "bash ./strip_frameworks.sh";
-            var pluginDir = GetSocialSettings.GetPluginPath();  
-            var scriptFilePath = Path.Combine(pluginDir, "Editor", "iOS", "Postprocessing", "strip_frameworks.sh");
+            var pluginDir = GetSocialSettings.GetPluginPath();
+            var scriptFilePath = Path.Combine(pluginDir, "Editor");
+            scriptFilePath = Path.Combine(scriptFilePath, "iOS");
+            scriptFilePath = Path.Combine(scriptFilePath, "Postprocessing");
+            scriptFilePath = Path.Combine(scriptFilePath, "strip_frameworks.sh");
             File.Copy(scriptFilePath, Path.Combine(projectPath, "strip_frameworks.sh"), true);
             project.AddShellScript(target, script);
         }

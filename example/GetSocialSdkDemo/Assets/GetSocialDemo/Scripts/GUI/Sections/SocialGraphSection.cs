@@ -3,7 +3,6 @@ using Assets.GetSocialDemo.Scripts.Utils;
 using UnityEngine;
 
 using GetSocialSdk.Core;
-using UnityEditor;
 
 public class SocialGraphSection : DemoMenuSection
 {

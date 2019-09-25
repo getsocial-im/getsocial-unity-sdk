@@ -50,7 +50,7 @@ namespace GetSocialSdk.Editor
 
         private static RemoteConfigRequest _remoteConfigRequest;
         private static string _remoteRequestStatusLabel;
-        private static Tuple<bool, string> _uiConfigurationValidationResult = Tuple.Create(true, "");
+        private static UiConfigValidationResult _uiConfigurationValidationResult = new UiConfigValidationResult(true, "");
 
         #region lifecycle
         
@@ -387,10 +387,10 @@ namespace GetSocialSdk.Editor
                     SetUiConfigCustomFilePath(filePath);
                 }
 
-                var (result, message) = _uiConfigurationValidationResult;
-                if (!result)
+                var configCheckResult = _uiConfigurationValidationResult;
+                if (!configCheckResult.Result)
                 {
-                    EditorGUILayout.HelpBox(message, MessageType.Error);
+                    EditorGUILayout.HelpBox(configCheckResult.Message, MessageType.Error);
                 }
             }
             EditorGUI.EndDisabledGroup();
