@@ -68,6 +68,9 @@ namespace GetSocialSdk.Core
         bool _isRichNotificationsEnabled = true;
 
         [SerializeField] 
+        bool _shouldWaitForListener = false;
+
+        [SerializeField] 
         string _extensionBundleId = string.Empty;
 
         [SerializeField] 
@@ -135,6 +138,16 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._isForegroundNotificationsEnabled = value;
+                MarkAssetDirty();
+            }
+        }
+
+        public static bool ShouldWaitForPushListener
+        {
+            get { return Instance._shouldWaitForListener; }
+            set
+            {
+                Instance._shouldWaitForListener = value;
                 MarkAssetDirty();
             }
         }

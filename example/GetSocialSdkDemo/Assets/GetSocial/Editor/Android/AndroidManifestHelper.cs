@@ -33,6 +33,7 @@ namespace GetSocialSdk.Editor
             new MetaData("im.getsocial.sdk.WrapperVersion", BuildConfig.UnitySdkVersion),
             new MetaData("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled.ToString().ToLower()),
             new MetaData("im.getsocial.sdk.ShowNotificationInForeground", GetSocialSettings.IsForegroundNotificationsEnabled.ToString().ToLower()),
+            new MetaData("im.getsocial.sdk.ShouldWaitForPushNotificationListener", GetSocialSettings.ShouldWaitForPushListener.ToString().ToLower()),
             new MetaData("im.getsocial.sdk.AutoInitSdk", GetSocialSettings.IsAutoInitEnabled.ToString().ToLower()),
             new MetaData("im.getsocial.sdk.UiConfigurationFile", GetSocialSettings.UiConfigurationCustomFilePath),
             new MetaData("im.getsocial.sdk.DisableFacebookReferralCheck", GetSocialSettings.IsFacebookReferralCheckDisabled.ToString().ToLower()),

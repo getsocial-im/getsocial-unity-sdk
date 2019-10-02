@@ -58,6 +58,7 @@ namespace GetSocialSdk.Editor
                 WhitelistApps(plistDocument);
                 SetAutoRegisterForPushTag(plistDocument);
                 SetForegroundNotifications(plistDocument);
+                SetShouldWaitForPushListener(plistDocument);
                 SetAutoInitSdk(plistDocument);
                 SetDisableFacebookReferralCheck(plistDocument);
                 SetUiBackgroundModes(plistDocument);
@@ -388,6 +389,11 @@ namespace GetSocialSdk.Editor
         private static void SetForegroundNotifications(PlistDocument plistDocument)
         {
             plistDocument.root.SetBoolean("im.getsocial.sdk.ShowNotificationInForeground", GetSocialSettings.IsForegroundNotificationsEnabled);
+        }
+
+        private static void SetShouldWaitForPushListener(PlistDocument plistDocument)
+        {
+            plistDocument.root.SetBoolean("im.getsocial.sdk.ShouldWaitForPushNotificationListener", GetSocialSettings.ShouldWaitForPushListener);
         }
 
         private static void SetAutoInitSdk(PlistDocument plistDocument)

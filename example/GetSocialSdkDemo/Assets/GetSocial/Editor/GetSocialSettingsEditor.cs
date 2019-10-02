@@ -170,9 +170,13 @@ namespace GetSocialSdk.Editor
             
             var enableForegroundNotifications = new GUIContent("Show Notification In Foreground [?]", "If this setting is checked, all GetSocial push notifications will be shown when app is in foreground. Otherwise, the notification will be delegated to NotificationListener.");
             var isForegroundNotificationEnabled = EditorGUILayout.ToggleLeft(enableForegroundNotifications, GetSocialSettings.IsForegroundNotificationsEnabled);
+
+            var waitForPushListener = new GUIContent("Should Wait For Push Notification Listener[?]", "If this setting is checked, GetSocial will wait for `GetSocial.SetNotificationListener` to be called before process any Push Notification, so you can be sure it won't be called before you set the listener. [!] If you don't set the listener having this setting enabled, Push Notifications will never be processed.");
+            var shouldWaitForListener = EditorGUILayout.ToggleLeft(waitForPushListener, GetSocialSettings.ShouldWaitForPushListener);
             
             SetAutoRegisterPushEnabled(isAutoRegisrationForPushesEnabled);
             SetForegroundNotificationsEnabled(isForegroundNotificationEnabled);
+            SetShouldWaitForPushListener(shouldWaitForListener);
         }
 
         void DrawAndroidSettings()
@@ -523,6 +527,14 @@ namespace GetSocialSdk.Editor
             if (GetSocialSettings.IsForegroundNotificationsEnabled != value)
             {
                 GetSocialSettings.IsForegroundNotificationsEnabled = value;
+            }
+        }
+
+        private void SetShouldWaitForPushListener(bool value)
+        {
+            if (GetSocialSettings.ShouldWaitForPushListener != value)
+            {
+                GetSocialSettings.ShouldWaitForPushListener = value;
             }
         }
 
