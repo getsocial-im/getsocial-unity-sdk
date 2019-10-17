@@ -18,11 +18,11 @@
     [dictionary gs_setValueOrNSNull:self.text forKey:@"Text"];
     [dictionary gs_setValueOrNSNull:self.type forKey:@"Type"];
     [dictionary gs_setValueOrNSNull:[self.notificationAction toJsonDictionary] forKey:@"Action"];
-    [dictionary gs_setValueOrNSNull:@(self.action) forKey:@"OldAction"];
     [dictionary gs_setValueOrNSNull:self.notificationId forKey:@"Id"];
     [dictionary gs_setValueOrNSNull:self.imageUrl forKey:@"ImageUrl"];
     [dictionary gs_setValueOrNSNull:self.videoUrl forKey:@"VideoUrl"];
     [dictionary gs_setValueOrNSNull:self.status forKey:@"Status"];
+    [dictionary gs_setValueOrNSNull:@(self.action) forKey:@"OldAction"];
     NSArray *actionButtons = [self.actionButtons gs_map:^id(GetSocialActionButton *it) {
         return @{@"Title": it.title ?: [NSNull null], @"Id": it.actionId ?: [NSNull null]};
     }];

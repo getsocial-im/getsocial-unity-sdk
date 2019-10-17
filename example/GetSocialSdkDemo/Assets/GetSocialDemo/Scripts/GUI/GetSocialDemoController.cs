@@ -60,6 +60,9 @@ public class GetSocialDemoController : MonoBehaviour
         SetupAppsFlyer();
         SetupGetSocial();
         SetupMenuSections();
+#if UNITY_IOS
+        OnApplicationPause(false);
+#endif
     }
 
     void SetupAppsFlyer()

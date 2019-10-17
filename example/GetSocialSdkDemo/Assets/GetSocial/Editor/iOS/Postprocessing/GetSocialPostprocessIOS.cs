@@ -167,6 +167,7 @@ namespace GetSocialSdk.Editor
                 "-ObjC",
                 "-licucore"
             }, new string[] { });
+            project.SetBuildProperty(target, "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES", "YES");
         }
 
         static void AddStripFrameworksScriptBuildPhase(PBXProject project, string projectPath, string target)

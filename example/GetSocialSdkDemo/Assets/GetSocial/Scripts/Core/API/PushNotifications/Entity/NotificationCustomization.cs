@@ -68,6 +68,10 @@ namespace GetSocialSdk.Core
 
 #elif UNITY_IOS
         public NotificationCustomization ParseFromJson (Dictionary<string, object> dictionary) {
+            if (dictionary == null) 
+            {
+                return null;
+            }
             BackgroundImageConfiguration = dictionary["BackgroundImageConfiguration"] as string;
             TitleColor = dictionary["TitleColor"] as string;
             TextColor = dictionary["TextColor"] as string;
