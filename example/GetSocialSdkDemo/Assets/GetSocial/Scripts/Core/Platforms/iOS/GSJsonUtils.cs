@@ -79,11 +79,10 @@ namespace GetSocialSdk.Core
             return json.ToDictionary(entry => entry.Key, entry => entry.Value as string);
         }
 
-        public static Dictionary<string, TValue> ParseDictionary<TValue>(string json)
-            where TValue : IConvertableFromNative<TValue>, new()
+        public static Dictionary<string, T> ParseDictionary<T>(string json)
+            where T : IConvertableFromNative<T>, new()
         {
-            var result = new Dictionary<string, TValue>();
-
+            var result = new Dictionary<string, T>();
             if (string.IsNullOrEmpty(json))
             {
                 // return immediately in case of unexpected empty/null json
@@ -91,10 +90,11 @@ namespace GetSocialSdk.Core
                 return result;
             }
 
-            var stringDict = ParseDictionary(json);
-            foreach (var keyValuePairs in stringDict)
+            var objectDict = ToDict(json);
+            foreach (var keyValuePairs in objectDict)
             {
-                result.Add(keyValuePairs.Key, Parse<TValue>(keyValuePairs.Value));
+                T value = new T();
+                result.Add(keyValuePairs.Key, value.ParseFromJson((Dictionary<string, object>)keyValuePairs.Value));
             }
             return result;
         }

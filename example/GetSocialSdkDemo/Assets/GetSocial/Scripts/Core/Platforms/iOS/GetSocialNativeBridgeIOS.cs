@@ -379,7 +379,7 @@ namespace GetSocialSdk.Core
         public void GetUsersByAuthIdentities(string providerId, List<string> providerUserIds, Action<Dictionary<string, PublicUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             _gs_getUsersByAuthIdentities(providerId, GSJson.Serialize(providerUserIds), 
-                Callbacks.GetPublicUser, onSuccess.GetPointer(), 
+                Callbacks.GetPublicUsersDictionary, onSuccess.GetPointer(), 
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
 

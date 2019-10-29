@@ -80,7 +80,9 @@ public class AuthSection : DemoMenuSection
         DrawAddRemoveCustomProvider();
         DrawAddRemoveProperty();
         DrawBatchUpdateSection();
-        
+
+        DrawGetUsersByAuthIdentitiesSection();
+
         DemoGuiUtils.DrawButton("Log Out", () =>
         {
             GetSocial.User.Reset(() =>
@@ -110,6 +112,23 @@ public class AuthSection : DemoMenuSection
                 demoController.FetchCurrentUserData();
             }, error => { _console.LogE("Failed to update user SetUserDetails: " + error); }), true, GSStyles.Button);
         
+        GUILayout.EndVertical();
+    }
+
+    private void DrawGetUsersByAuthIdentitiesSection()
+    {
+        DemoGuiUtils.Space();
+        GUILayout.BeginVertical("Box");
+
+        var providerUserIds = new List<string>();
+        providerUserIds.Add(_customUserId);
+        DemoGuiUtils.DrawButton("Get Users By Auth Identities", () => {
+            GetSocial.GetUsersByAuthIdentities(CustomProviderId, providerUserIds, users => {
+                _console.LogD("GetUsersByAuthIdentities result: " + users.ToDebugString());
+            }, error => {
+                _console.LogE("Failed to get users by auth identities: " + error);
+            });
+        });
         GUILayout.EndVertical();
     }
 
