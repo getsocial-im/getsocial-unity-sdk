@@ -44,6 +44,9 @@ public partial class Hades {
     THInviteProviders getInviteProviders(string sessionId);
     THTokenInfo processAppOpen(string sessionId, THProcessAppOpenRequest request);
     List<THPublicUser> getReferredUsers(string sessionId);
+    List<THReferralUser> getReferredUsersV2(string sessionId, string @event, int offset, int limit);
+    List<THReferralUser> getReferrerUsers(string sessionId, string @event, int offset, int limit);
+    bool setReferrer(string sessionId, string referrerId, string @event, Dictionary<string, string> customData);
     string processCrossPromoClick(string sessionId, string link);
     List<THActivityPost> getActivities(string sessionId, string feed, THActivitiesQuery query);
     List<THActivityPost> getStickyActivities(string sessionId, string feed);
@@ -1114,6 +1117,126 @@ public partial class Hades {
     }
 
     
+    public List<THReferralUser> getReferredUsersV2(string sessionId, string @event, int offset, int limit)
+    {
+      send_getReferredUsersV2(sessionId, @event, offset, limit);
+      return recv_getReferredUsersV2();
+
+    }
+    public void send_getReferredUsersV2(string sessionId, string @event, int offset, int limit)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getReferredUsersV2", TMessageType.Call, seqid_));
+      getReferredUsersV2_args args = new getReferredUsersV2_args();
+      args.SessionId = sessionId;
+      args.Event = @event;
+      args.Offset = offset;
+      args.Limit = limit;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public List<THReferralUser> recv_getReferredUsersV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getReferredUsersV2_result result = new getReferredUsersV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getReferredUsersV2 failed: unknown result");
+    }
+
+    
+    public List<THReferralUser> getReferrerUsers(string sessionId, string @event, int offset, int limit)
+    {
+      send_getReferrerUsers(sessionId, @event, offset, limit);
+      return recv_getReferrerUsers();
+
+    }
+    public void send_getReferrerUsers(string sessionId, string @event, int offset, int limit)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getReferrerUsers", TMessageType.Call, seqid_));
+      getReferrerUsers_args args = new getReferrerUsers_args();
+      args.SessionId = sessionId;
+      args.Event = @event;
+      args.Offset = offset;
+      args.Limit = limit;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public List<THReferralUser> recv_getReferrerUsers()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getReferrerUsers_result result = new getReferrerUsers_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getReferrerUsers failed: unknown result");
+    }
+
+    
+    public bool setReferrer(string sessionId, string referrerId, string @event, Dictionary<string, string> customData)
+    {
+      send_setReferrer(sessionId, referrerId, @event, customData);
+      return recv_setReferrer();
+
+    }
+    public void send_setReferrer(string sessionId, string referrerId, string @event, Dictionary<string, string> customData)
+    {
+      oprot_.WriteMessageBegin(new TMessage("setReferrer", TMessageType.Call, seqid_));
+      setReferrer_args args = new setReferrer_args();
+      args.SessionId = sessionId;
+      args.ReferrerId = referrerId;
+      args.Event = @event;
+      args.CustomData = customData;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public bool recv_setReferrer()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      setReferrer_result result = new setReferrer_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "setReferrer failed: unknown result");
+    }
+
+    
     public string processCrossPromoClick(string sessionId, string link)
     {
       send_processCrossPromoClick(sessionId, link);
@@ -2068,6 +2191,9 @@ public partial class Hades {
       processMap_["getInviteProviders"] = getInviteProviders_Process;
       processMap_["processAppOpen"] = processAppOpen_Process;
       processMap_["getReferredUsers"] = getReferredUsers_Process;
+      processMap_["getReferredUsersV2"] = getReferredUsersV2_Process;
+      processMap_["getReferrerUsers"] = getReferrerUsers_Process;
+      processMap_["setReferrer"] = setReferrer_Process;
       processMap_["processCrossPromoClick"] = processCrossPromoClick_Process;
       processMap_["getActivities"] = getActivities_Process;
       processMap_["getStickyActivities"] = getStickyActivities_Process;
@@ -3021,6 +3147,111 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("getReferredUsers", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getReferredUsersV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getReferredUsersV2_args args = new getReferredUsersV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getReferredUsersV2_result result = new getReferredUsersV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getReferredUsersV2(args.SessionId, args.Event, args.Offset, args.Limit);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getReferredUsersV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getReferredUsersV2", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getReferrerUsers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getReferrerUsers_args args = new getReferrerUsers_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getReferrerUsers_result result = new getReferrerUsers_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getReferrerUsers(args.SessionId, args.Event, args.Offset, args.Limit);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getReferrerUsers", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getReferrerUsers", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void setReferrer_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      setReferrer_args args = new setReferrer_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      setReferrer_result result = new setReferrer_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.setReferrer(args.SessionId, args.ReferrerId, args.Event, args.CustomData);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("setReferrer", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("setReferrer", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -11615,6 +11846,1155 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class getReferredUsersV2_args : TBase
+  {
+    private string _sessionId;
+    private string _event;
+    private int _offset;
+    private int _limit;
+
+    public string SessionId
+    {
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public string Event
+    {
+      get
+      {
+        return _event;
+      }
+      set
+      {
+        __isset.@event = true;
+        this._event = value;
+      }
+    }
+
+    public int Offset
+    {
+      get
+      {
+        return _offset;
+      }
+      set
+      {
+        __isset.offset = true;
+        this._offset = value;
+      }
+    }
+
+    public int Limit
+    {
+      get
+      {
+        return _limit;
+      }
+      set
+      {
+        __isset.limit = true;
+        this._limit = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool @event;
+      public bool offset;
+      public bool limit;
+    }
+
+    public getReferredUsersV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Event = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I32) {
+                Offset = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I32) {
+                Limit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getReferredUsersV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (Event != null && __isset.@event) {
+          field.Name = "event";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Event);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.offset) {
+          field.Name = "offset";
+          field.Type = TType.I32;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Offset);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.limit) {
+          field.Name = "limit";
+          field.Type = TType.I32;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Limit);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getReferredUsersV2_args(");
+      bool __first = true;
+      if (SessionId != null && __isset.sessionId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
+      }
+      if (Event != null && __isset.@event) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Event: ");
+        __sb.Append(Event);
+      }
+      if (__isset.offset) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Offset: ");
+        __sb.Append(Offset);
+      }
+      if (__isset.limit) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Limit: ");
+        __sb.Append(Limit);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getReferredUsersV2_result : TBase
+  {
+    private List<THReferralUser> _success;
+    private THErrors _errors;
+
+    public List<THReferralUser> Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getReferredUsersV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.List) {
+                {
+                  Success = new List<THReferralUser>();
+                  TList _list45 = iprot.ReadListBegin();
+                  for( int _i46 = 0; _i46 < _list45.Count; ++_i46)
+                  {
+                    THReferralUser _elem47;
+                    _elem47 = new THReferralUser();
+                    _elem47.Read(iprot);
+                    Success.Add(_elem47);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getReferredUsersV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.List;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            {
+              oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
+              foreach (THReferralUser _iter48 in Success)
+              {
+                _iter48.Write(oprot);
+              }
+              oprot.WriteListEnd();
+            }
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getReferredUsersV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getReferrerUsers_args : TBase
+  {
+    private string _sessionId;
+    private string _event;
+    private int _offset;
+    private int _limit;
+
+    public string SessionId
+    {
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public string Event
+    {
+      get
+      {
+        return _event;
+      }
+      set
+      {
+        __isset.@event = true;
+        this._event = value;
+      }
+    }
+
+    public int Offset
+    {
+      get
+      {
+        return _offset;
+      }
+      set
+      {
+        __isset.offset = true;
+        this._offset = value;
+      }
+    }
+
+    public int Limit
+    {
+      get
+      {
+        return _limit;
+      }
+      set
+      {
+        __isset.limit = true;
+        this._limit = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool @event;
+      public bool offset;
+      public bool limit;
+    }
+
+    public getReferrerUsers_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Event = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I32) {
+                Offset = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I32) {
+                Limit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getReferrerUsers_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (Event != null && __isset.@event) {
+          field.Name = "event";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Event);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.offset) {
+          field.Name = "offset";
+          field.Type = TType.I32;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Offset);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.limit) {
+          field.Name = "limit";
+          field.Type = TType.I32;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Limit);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getReferrerUsers_args(");
+      bool __first = true;
+      if (SessionId != null && __isset.sessionId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
+      }
+      if (Event != null && __isset.@event) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Event: ");
+        __sb.Append(Event);
+      }
+      if (__isset.offset) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Offset: ");
+        __sb.Append(Offset);
+      }
+      if (__isset.limit) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Limit: ");
+        __sb.Append(Limit);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getReferrerUsers_result : TBase
+  {
+    private List<THReferralUser> _success;
+    private THErrors _errors;
+
+    public List<THReferralUser> Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getReferrerUsers_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.List) {
+                {
+                  Success = new List<THReferralUser>();
+                  TList _list49 = iprot.ReadListBegin();
+                  for( int _i50 = 0; _i50 < _list49.Count; ++_i50)
+                  {
+                    THReferralUser _elem51;
+                    _elem51 = new THReferralUser();
+                    _elem51.Read(iprot);
+                    Success.Add(_elem51);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getReferrerUsers_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.List;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            {
+              oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
+              foreach (THReferralUser _iter52 in Success)
+              {
+                _iter52.Write(oprot);
+              }
+              oprot.WriteListEnd();
+            }
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getReferrerUsers_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class setReferrer_args : TBase
+  {
+    private string _sessionId;
+    private string _referrerId;
+    private string _event;
+    private Dictionary<string, string> _customData;
+
+    public string SessionId
+    {
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public string ReferrerId
+    {
+      get
+      {
+        return _referrerId;
+      }
+      set
+      {
+        __isset.referrerId = true;
+        this._referrerId = value;
+      }
+    }
+
+    public string Event
+    {
+      get
+      {
+        return _event;
+      }
+      set
+      {
+        __isset.@event = true;
+        this._event = value;
+      }
+    }
+
+    public Dictionary<string, string> CustomData
+    {
+      get
+      {
+        return _customData;
+      }
+      set
+      {
+        __isset.customData = true;
+        this._customData = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool referrerId;
+      public bool @event;
+      public bool customData;
+    }
+
+    public setReferrer_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                ReferrerId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                Event = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.Map) {
+                {
+                  CustomData = new Dictionary<string, string>();
+                  TMap _map53 = iprot.ReadMapBegin();
+                  for( int _i54 = 0; _i54 < _map53.Count; ++_i54)
+                  {
+                    string _key55;
+                    string _val56;
+                    _key55 = iprot.ReadString();
+                    _val56 = iprot.ReadString();
+                    CustomData[_key55] = _val56;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("setReferrer_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (ReferrerId != null && __isset.referrerId) {
+          field.Name = "referrerId";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ReferrerId);
+          oprot.WriteFieldEnd();
+        }
+        if (Event != null && __isset.@event) {
+          field.Name = "event";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Event);
+          oprot.WriteFieldEnd();
+        }
+        if (CustomData != null && __isset.customData) {
+          field.Name = "customData";
+          field.Type = TType.Map;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, CustomData.Count));
+            foreach (string _iter57 in CustomData.Keys)
+            {
+              oprot.WriteString(_iter57);
+              oprot.WriteString(CustomData[_iter57]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("setReferrer_args(");
+      bool __first = true;
+      if (SessionId != null && __isset.sessionId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
+      }
+      if (ReferrerId != null && __isset.referrerId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ReferrerId: ");
+        __sb.Append(ReferrerId);
+      }
+      if (Event != null && __isset.@event) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Event: ");
+        __sb.Append(Event);
+      }
+      if (CustomData != null && __isset.customData) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CustomData: ");
+        __sb.Append(CustomData);
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class setReferrer_result : TBase
+  {
+    private bool _success;
+    private THErrors _errors;
+
+    public bool Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public setReferrer_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Bool) {
+                Success = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("setReferrer_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          field.Name = "Success";
+          field.Type = TType.Bool;
+          field.ID = 0;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(Success);
+          oprot.WriteFieldEnd();
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("setReferrer_result(");
+      bool __first = true;
+      if (__isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class processCrossPromoClick_args : TBase
   {
     private string _sessionId;
@@ -12152,13 +13532,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<THActivityPost>();
-                  TList _list45 = iprot.ReadListBegin();
-                  for( int _i46 = 0; _i46 < _list45.Count; ++_i46)
+                  TList _list58 = iprot.ReadListBegin();
+                  for( int _i59 = 0; _i59 < _list58.Count; ++_i59)
                   {
-                    THActivityPost _elem47;
-                    _elem47 = new THActivityPost();
-                    _elem47.Read(iprot);
-                    Success.Add(_elem47);
+                    THActivityPost _elem60;
+                    _elem60 = new THActivityPost();
+                    _elem60.Read(iprot);
+                    Success.Add(_elem60);
                   }
                   iprot.ReadListEnd();
                 }
@@ -12204,9 +13584,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
-              foreach (THActivityPost _iter48 in Success)
+              foreach (THActivityPost _iter61 in Success)
               {
-                _iter48.Write(oprot);
+                _iter61.Write(oprot);
               }
               oprot.WriteListEnd();
             }
@@ -12463,13 +13843,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<THActivityPost>();
-                  TList _list49 = iprot.ReadListBegin();
-                  for( int _i50 = 0; _i50 < _list49.Count; ++_i50)
+                  TList _list62 = iprot.ReadListBegin();
+                  for( int _i63 = 0; _i63 < _list62.Count; ++_i63)
                   {
-                    THActivityPost _elem51;
-                    _elem51 = new THActivityPost();
-                    _elem51.Read(iprot);
-                    Success.Add(_elem51);
+                    THActivityPost _elem64;
+                    _elem64 = new THActivityPost();
+                    _elem64.Read(iprot);
+                    Success.Add(_elem64);
                   }
                   iprot.ReadListEnd();
                 }
@@ -12515,9 +13895,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
-              foreach (THActivityPost _iter52 in Success)
+              foreach (THActivityPost _iter65 in Success)
               {
-                _iter52.Write(oprot);
+                _iter65.Write(oprot);
               }
               oprot.WriteListEnd();
             }
@@ -12811,13 +14191,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<THActivityPost>();
-                  TList _list53 = iprot.ReadListBegin();
-                  for( int _i54 = 0; _i54 < _list53.Count; ++_i54)
+                  TList _list66 = iprot.ReadListBegin();
+                  for( int _i67 = 0; _i67 < _list66.Count; ++_i67)
                   {
-                    THActivityPost _elem55;
-                    _elem55 = new THActivityPost();
-                    _elem55.Read(iprot);
-                    Success.Add(_elem55);
+                    THActivityPost _elem68;
+                    _elem68 = new THActivityPost();
+                    _elem68.Read(iprot);
+                    Success.Add(_elem68);
                   }
                   iprot.ReadListEnd();
                 }
@@ -12863,9 +14243,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
-              foreach (THActivityPost _iter56 in Success)
+              foreach (THActivityPost _iter69 in Success)
               {
-                _iter56.Write(oprot);
+                _iter69.Write(oprot);
               }
               oprot.WriteListEnd();
             }
@@ -13123,12 +14503,12 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<string>();
-                  TList _list57 = iprot.ReadListBegin();
-                  for( int _i58 = 0; _i58 < _list57.Count; ++_i58)
+                  TList _list70 = iprot.ReadListBegin();
+                  for( int _i71 = 0; _i71 < _list70.Count; ++_i71)
                   {
-                    string _elem59;
-                    _elem59 = iprot.ReadString();
-                    Success.Add(_elem59);
+                    string _elem72;
+                    _elem72 = iprot.ReadString();
+                    Success.Add(_elem72);
                   }
                   iprot.ReadListEnd();
                 }
@@ -13174,9 +14554,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.String, Success.Count));
-              foreach (string _iter60 in Success)
+              foreach (string _iter73 in Success)
               {
-                oprot.WriteString(_iter60);
+                oprot.WriteString(_iter73);
               }
               oprot.WriteListEnd();
             }
@@ -14791,13 +16171,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<THPostAuthor>();
-                  TList _list61 = iprot.ReadListBegin();
-                  for( int _i62 = 0; _i62 < _list61.Count; ++_i62)
+                  TList _list74 = iprot.ReadListBegin();
+                  for( int _i75 = 0; _i75 < _list74.Count; ++_i75)
                   {
-                    THPostAuthor _elem63;
-                    _elem63 = new THPostAuthor();
-                    _elem63.Read(iprot);
-                    Success.Add(_elem63);
+                    THPostAuthor _elem76;
+                    _elem76 = new THPostAuthor();
+                    _elem76.Read(iprot);
+                    Success.Add(_elem76);
                   }
                   iprot.ReadListEnd();
                 }
@@ -14843,9 +16223,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
-              foreach (THPostAuthor _iter64 in Success)
+              foreach (THPostAuthor _iter77 in Success)
               {
-                _iter64.Write(oprot);
+                _iter77.Write(oprot);
               }
               oprot.WriteListEnd();
             }
@@ -14965,12 +16345,12 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   ActivityIds = new List<string>();
-                  TList _list65 = iprot.ReadListBegin();
-                  for( int _i66 = 0; _i66 < _list65.Count; ++_i66)
+                  TList _list78 = iprot.ReadListBegin();
+                  for( int _i79 = 0; _i79 < _list78.Count; ++_i79)
                   {
-                    string _elem67;
-                    _elem67 = iprot.ReadString();
-                    ActivityIds.Add(_elem67);
+                    string _elem80;
+                    _elem80 = iprot.ReadString();
+                    ActivityIds.Add(_elem80);
                   }
                   iprot.ReadListEnd();
                 }
@@ -15014,9 +16394,9 @@ public partial class Hades {
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, ActivityIds.Count));
-            foreach (string _iter68 in ActivityIds)
+            foreach (string _iter81 in ActivityIds)
             {
-              oprot.WriteString(_iter68);
+              oprot.WriteString(_iter81);
             }
             oprot.WriteListEnd();
           }
@@ -15627,13 +17007,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Events = new List<THAnalyticsBaseEvent>();
-                  TList _list69 = iprot.ReadListBegin();
-                  for( int _i70 = 0; _i70 < _list69.Count; ++_i70)
+                  TList _list82 = iprot.ReadListBegin();
+                  for( int _i83 = 0; _i83 < _list82.Count; ++_i83)
                   {
-                    THAnalyticsBaseEvent _elem71;
-                    _elem71 = new THAnalyticsBaseEvent();
-                    _elem71.Read(iprot);
-                    Events.Add(_elem71);
+                    THAnalyticsBaseEvent _elem84;
+                    _elem84 = new THAnalyticsBaseEvent();
+                    _elem84.Read(iprot);
+                    Events.Add(_elem84);
                   }
                   iprot.ReadListEnd();
                 }
@@ -15685,9 +17065,9 @@ public partial class Hades {
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Events.Count));
-            foreach (THAnalyticsBaseEvent _iter72 in Events)
+            foreach (THAnalyticsBaseEvent _iter85 in Events)
             {
-              _iter72.Write(oprot);
+              _iter85.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -17221,13 +18601,13 @@ public partial class Hades {
               if (field.Type == TType.List) {
                 {
                   Success = new List<THNotification>();
-                  TList _list73 = iprot.ReadListBegin();
-                  for( int _i74 = 0; _i74 < _list73.Count; ++_i74)
+                  TList _list86 = iprot.ReadListBegin();
+                  for( int _i87 = 0; _i87 < _list86.Count; ++_i87)
                   {
-                    THNotification _elem75;
-                    _elem75 = new THNotification();
-                    _elem75.Read(iprot);
-                    Success.Add(_elem75);
+                    THNotification _elem88;
+                    _elem88 = new THNotification();
+                    _elem88.Read(iprot);
+                    Success.Add(_elem88);
                   }
                   iprot.ReadListEnd();
                 }
@@ -17273,9 +18653,9 @@ public partial class Hades {
             oprot.WriteFieldBegin(field);
             {
               oprot.WriteListBegin(new TList(TType.Struct, Success.Count));
-              foreach (THNotification _iter76 in Success)
+              foreach (THNotification _iter89 in Success)
               {
-                _iter76.Write(oprot);
+                _iter89.Write(oprot);
               }
               oprot.WriteListEnd();
             }

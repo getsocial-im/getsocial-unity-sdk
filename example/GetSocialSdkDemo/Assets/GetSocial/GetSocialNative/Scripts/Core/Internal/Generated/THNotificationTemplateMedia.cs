@@ -27,6 +27,7 @@ public partial class THNotificationTemplateMedia : TBase
   private string _backgroundImage;
   private string _titleColor;
   private string _textColor;
+  private string _sound;
 
   public string Image
   {
@@ -93,6 +94,19 @@ public partial class THNotificationTemplateMedia : TBase
     }
   }
 
+  public string Sound
+  {
+    get
+    {
+      return _sound;
+    }
+    set
+    {
+      __isset.sound = true;
+      this._sound = value;
+    }
+  }
+
 
   public Isset __isset;
   #if !SILVERLIGHT
@@ -104,6 +118,7 @@ public partial class THNotificationTemplateMedia : TBase
     public bool backgroundImage;
     public bool titleColor;
     public bool textColor;
+    public bool sound;
   }
 
   public THNotificationTemplateMedia() {
@@ -155,6 +170,13 @@ public partial class THNotificationTemplateMedia : TBase
           case 5:
             if (field.Type == TType.String) {
               TextColor = iprot.ReadString();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 6:
+            if (field.Type == TType.String) {
+              Sound = iprot.ReadString();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -220,6 +242,14 @@ public partial class THNotificationTemplateMedia : TBase
         oprot.WriteString(TextColor);
         oprot.WriteFieldEnd();
       }
+      if (Sound != null && __isset.sound) {
+        field.Name = "sound";
+        field.Type = TType.String;
+        field.ID = 6;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteString(Sound);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -261,6 +291,12 @@ public partial class THNotificationTemplateMedia : TBase
       __first = false;
       __sb.Append("TextColor: ");
       __sb.Append(TextColor);
+    }
+    if (Sound != null && __isset.sound) {
+      if(!__first) { __sb.Append(", "); }
+      __first = false;
+      __sb.Append("Sound: ");
+      __sb.Append(Sound);
     }
     __sb.Append(")");
     return __sb.ToString();

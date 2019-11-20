@@ -154,6 +154,7 @@ public class GetSocialDemoController : MonoBehaviour
             GetComponentInChildren<SendNotificationSection>(),
             GetComponentInChildren<PromoCodesSection>(),
             GetComponentInChildren<CustomAnalyticsEventSection>(),
+            GetComponentInChildren<SetReferrerSection>(),
 #if USE_GETSOCIAL_UI
             GetComponentInChildren<SmartInvitesUiSection>(),
             GetComponentInChildren<ActivityFeedUiSection>(),
@@ -460,6 +461,7 @@ public class GetSocialDemoController : MonoBehaviour
         Button("Send Notification", ShowMenuSection<SendNotificationSection>);
         Button("Promo Codes", ShowMenuSection<PromoCodesSection>);
         Button("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
+        Button("Set Referrer", ShowMenuSection<SetReferrerSection>);
 #if USE_GETSOCIAL_UI
         GUILayout.Space(30f);
         GUILayout.Label("UI", GSStyles.NormalLabelText);

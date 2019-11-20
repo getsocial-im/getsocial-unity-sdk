@@ -323,6 +323,34 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
+        /// Returns list of users who are referred by current user for a specific event.
+        /// </summary>
+        /// <param name="query">Instance of ReferralUsersQuery.</param>
+        /// <param name="onSuccess">Called when invocation was successfull.</param>
+        /// <param name="onFailure">Called when failed retrieving list of referred users.</param>
+        public static void GetReferredUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.GetReferredUsers(query, onSuccess, onFailure);
+        }
+
+        /// <summary>
+        /// Returns list of users who are referrers for current user for a specific event.
+        /// </summary>
+        /// <param name="query">Instance of ReferralUsersQuery.</param>
+        /// <param name="onSuccess">Called when invocation was successfull.</param>
+        /// <param name="onFailure">Called when failed retrieving list of referred users.</param>
+        public static void GetReferrerUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+            
+            GetSocialImpl.GetReferrerUsers(query, onSuccess, onFailure);
+        }
+
+        /// <summary>
         /// Creates a Smart Link with user referral data attached used for Smart Invites.
         /// </summary>
         /// <param name="linkParams">Link customization parameters. More info @see <a href="https://docs.getsocial.im/guides/smart-links/parameters/">here</a></param>
@@ -330,10 +358,26 @@ namespace GetSocialSdk.Core
         /// <param name="onFailure">Called when smart link creation failed.</param>
         public static void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
         {
-            Check.Argument.IsNotNull(onSuccess, "onComplete");
+            Check.Argument.IsNotNull(onSuccess, "onSuccess");
             Check.Argument.IsNotNull(onFailure, "onFailure");
             
             GetSocialImpl.CreateInviteLink(linkParams, onSuccess, onFailure);
+        }
+
+        ///
+        /// Sets referrer id for current user.
+        ///
+        /// <param name="referrerId">Id of referrer user.
+        /// <param name="eventName">Referrer event.
+        /// <param name="customData">Custom key-value pairs.
+        /// <param name="onComplete">Called when setting referrer is finished.</param>
+        /// <param name="onFailure">Called when setting referrer is failed.</param>
+        public static void SetReferrer(string referrerId, string eventName, Dictionary<string, string> customData, Action onComplete, Action<GetSocialError> onFailure)
+        {
+            Check.Argument.IsNotNull(onComplete, "onSuccess");
+            Check.Argument.IsNotNull(onFailure, "onFailure");
+
+            GetSocialImpl.SetReferrer(referrerId, eventName, customData, onComplete, onFailure);
         }
 
         #endregion

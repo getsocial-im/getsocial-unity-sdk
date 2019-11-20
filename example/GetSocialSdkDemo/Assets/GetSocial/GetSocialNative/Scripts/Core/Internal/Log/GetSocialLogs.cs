@@ -8,9 +8,9 @@ namespace GetSocialSdk.Core
     
     internal static class GetSocialLogs
     {
-#pragma warning disable 649        
+#pragma warning disable 0649
         internal static OnLogWritten Delegate;
-#pragma warning restore 649
+#pragma warning restore 0649
 
         internal enum LogLevel
         {

@@ -19,6 +19,7 @@ namespace GetSocialSdk.Core
         internal GetSocialAction _action;
         internal readonly List<ActionButton> _actionButtons;
         internal NotificationCustomization _customization;
+        internal Badge _badge;
 #pragma warning restore 414
 
         private NotificationContent()
@@ -141,6 +142,17 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
+        /// Set badge update for receiver. Works only if receiver's platform is iOS.
+        /// </summary>
+        /// <param name="badge">Change badge.</param>
+        /// <returns>notification content for methods chaining</returns>
+        public NotificationContent WithBadge(Badge badge)
+        {
+            _badge = badge;
+            return this;
+        }
+
+        /// <summary>
         /// Customize notification, like change background image, title and text color.
         /// Supported only on Android.
         /// </summary>
@@ -177,6 +189,10 @@ namespace GetSocialSdk.Core
             {
                 notificationContent.CallAJO("withCustomization", _customization.ToAjo());
             }
+            if (_badge != null)
+            {
+                notificationContent.CallAJO("withBadge", _badge.ToAjo());
+            }
             
             return notificationContent;
         }
@@ -192,7 +208,8 @@ namespace GetSocialSdk.Core
                 {"TemplatePlaceholders", _templatePlaceholders},
                 {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()},
                 {"ActionButtons", _actionButtons.ConvertAll(item => item.ToJson())},
-                {"Customization", _customization == null ? "" : _customization.ToJson()}
+                {"Customization", _customization == null ? "" : _customization.ToJson()},
+                {"Badge", _badge == null ? "" : _badge.ToJson()}
             };
             return GSJson.Serialize(json);
         }

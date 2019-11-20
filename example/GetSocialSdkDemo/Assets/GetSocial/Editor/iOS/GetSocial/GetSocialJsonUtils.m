@@ -195,15 +195,28 @@
     [notificationContent setMediaAttachment:[self deserializeMediaAttachment:json[@"MediaAttachment"]]];
     [notificationContent setTemplateName:json[@"Template"]];
     [notificationContent addTemplatePlaceholders:json[@"TemplatePlaceholders"]];
-    
+    [notificationContent setBadge:[self deserializeBadge:json[@"Badge"]]];
     NSArray *actionButtons = json[@"ActionButtons"];
     for (NSString *actionButton in actionButtons)
     {
         [notificationContent addActionButton:[self deserializeActionButton:actionButton] ];
     }
     [notificationContent setCustomization:[self deserializeCustomization:json[@"Customization"]]];
-    
     return notificationContent;
+}
+
++ (GetSocialNotificationBadge *)deserializeBadge:(NSString *)badge {
+    if (badge.length == 0) {
+        return nil;
+    }
+    NSDictionary *json = [GetSocialBridgeUtils createDictionaryFromNSString:badge];
+    if (json[@"Increase"] != nil) {
+        return [GetSocialNotificationBadge increaseBy:[json[@"Increase"] intValue]];
+    } else if (json[@"Value"] != nil) {
+        return [GetSocialNotificationBadge setTo:[json[@"Value"] intValue]];
+    } else {
+        return nil;
+    }
 }
 
 + (GetSocialNotificationCustomization*)deserializeCustomization:(NSString*)customizationJson {

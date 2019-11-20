@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -55,6 +56,9 @@ public class SmartInvitesApiSection : DemoMenuSection
 
     private bool _sendCustomImage;
     private bool _sendCustomVideo;
+
+    string _referrerEvent = "";
+    string _referredEvent = "";
 
     private Texture2D CustomLandingPageImage
     {
@@ -171,6 +175,8 @@ public class SmartInvitesApiSection : DemoMenuSection
         DrawSendInvites();
         DrawSendCustomInvites();
         DrawGetReferredUsers();
+        DrawGetReferredUsersV2();
+        DrawGetReferrerUsers();
     }
 
     void PrintAvailableInviteChannelsDetails()
@@ -360,9 +366,80 @@ public class SmartInvitesApiSection : DemoMenuSection
     
     private void DrawGetReferredUsers()
     {
-        GUILayout.Label("Referred users", GSStyles.BigLabelText);
+        GUILayout.Label("Referred users (OLD)", GSStyles.BigLabelText);
 
         DemoGuiUtils.DrawButton("Get referred users", GetReferredUsers, style: GSStyles.Button);
+    }
+
+    private void DrawGetReferredUsersV2()
+    {
+        GUILayout.Label("Referred users", GSStyles.BigLabelText);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Event", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        _referredEvent = GUILayout.TextField(_referredEvent, GSStyles.TextField,
+            GUILayout.Width(Screen.width * 0.50f));
+        if (GUILayout.Button("Paste", GSStyles.PasteButton))
+        {
+            _referredEvent = GUIUtility.systemCopyBuffer;
+        }
+        GUILayout.EndHorizontal();
+
+        DemoGuiUtils.DrawButton("Get referred users", GetReferredUsersV2, style: GSStyles.Button);
+    }
+
+    private void DrawGetReferrerUsers()
+    {
+        GUILayout.Label("Referrer users", GSStyles.BigLabelText);
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Event", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
+        _referrerEvent = GUILayout.TextField(_referrerEvent, GSStyles.TextField,
+            GUILayout.Width(Screen.width * 0.50f));
+        if (GUILayout.Button("Paste", GSStyles.PasteButton))
+        {
+            _referrerEvent = GUIUtility.systemCopyBuffer;
+        }
+        GUILayout.EndHorizontal();
+
+        DemoGuiUtils.DrawButton("Get referrer users", GetReferrerUsers, style: GSStyles.Button);
+    }
+
+    private void GetReferredUsersV2()
+    {
+        var query = _referredEvent.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(_referredEvent);
+        GetSocial.GetReferredUsers(query, referralUsers => {
+            DemoUtils.ShowPopup("Referred Users", GetReferralUsersInfo(referralUsers));
+        }, error =>
+        {
+            _console.LogE(string.Format("Failed to get referred users: {0}", error.Message));
+        });
+    }
+
+    private void GetReferrerUsers()
+    {
+        var query = _referrerEvent.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(_referrerEvent);
+        GetSocial.GetReferrerUsers(query, referralUsers =>
+        {
+            DemoUtils.ShowPopup("Referrer Users", GetReferralUsersInfo(referralUsers));
+        }, error =>
+        {
+            _console.LogE(string.Format("Failed to get referrer users: {0}", error.Message));
+        });
+    }
+
+    private string GetReferralUsersInfo(List<ReferralUser> referralUsers)
+    {
+        var builder = new StringBuilder();
+        referralUsers.ForEach(referralUser => {
+            builder.Append(FormatReferralUserInfo(referralUser));
+            builder.AppendLine();
+        });
+        builder.AppendLine();
+        return builder.ToString();
+    }
+
+    private string FormatReferralUserInfo(ReferralUser referralUser)
+    {
+        return string.Format("{0}(on {1:yyyy-MM-dd HH:mm}, eventName={2}, eventData={3}), ", referralUser.DisplayName, referralUser.EventDate, referralUser.Event, referralUser.EventData.ToDebugString());
     }
 
     private void GetReferredUsers()

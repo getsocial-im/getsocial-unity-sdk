@@ -303,7 +303,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             AddBuildFileImpl(targetGuid, frameworkGuid, weak, null);
         }
 
-        public void RemoveDynamicFramework(string frameworkPathInProject)
+        public void RemoveDynamicFramework(string target, string frameworkPathInProject)
         {
             var fileGuid = FindFileGuidByProjectPath(frameworkPathInProject);
             if (fileGuid == null)
@@ -313,7 +313,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             }
             RemoveFile(fileGuid);
             var embedFrameworkFileData = FindEmbeddedFramework(fileGuid);
-            var embedFrameworkSection = FindEmbeddedFrameworkSection();
+            var embedFrameworkSection = FindEmbeddedFrameworkSection(target);
             if (embedFrameworkSection != null && embedFrameworkFileData != null)
             {
                 embedFrameworkSection.files.RemoveGUID(embedFrameworkFileData.guid);
@@ -337,7 +337,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             }
 
             // add "Embed Frameworks" section
-            var embedFrameworksSection = FindEmbeddedFrameworkSection();
+            var embedFrameworksSection = FindEmbeddedFrameworkSection(targetGuid);
             if (embedFrameworksSection == null)
             {
                 embedFrameworksSection = PBXCopyFilesBuildPhaseData.Create("Embed Frameworks", "10");
@@ -370,11 +370,21 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             }
         }
 
-        internal PBXCopyFilesBuildPhaseData FindEmbeddedFrameworkSection()
+        internal PBXCopyFilesBuildPhaseData FindEmbeddedFrameworkSection(string targetGuid)
         {
-            return copyFiles.GetEntries()
-                .Where(copyFileEntry => copyFileEntry.Value.name == "Embed Frameworks")
-                .Select(copyFileEntry => copyFileEntry.Value).FirstOrDefault();
+            var targetPhases = nativeTargets[targetGuid].phases;
+            foreach (var uid in targetPhases) 
+            {
+                if (copyFiles[uid] != null)
+                {
+                    var section = copyFiles[uid];
+                    if ("Embed Frameworks".Equals(section.name))
+                    {
+                        return section;
+                    }
+                }
+            }
+            return null;
         }
 
         internal PBXBuildFileData FindEmbeddedFramework(string fileGuid)
@@ -801,15 +811,19 @@ namespace UnityEditor.iOS.Xcode.GetSocial
         {
             // create build configurations
             var releaseBuildConfig = XCBuildConfigurationData.Create("Release");
+            releaseBuildConfig.SetProperty("FRAMEWORK_SEARCH_PATHS","$(inherited) $(PROJECT_DIR)/Frameworks/GetSocial/Plugins/iOS");
             buildConfigs.AddEntry(releaseBuildConfig);
 
             var releaseForRunningBuildConfig = XCBuildConfigurationData.Create("ReleaseForRunning");
+            releaseForRunningBuildConfig.SetProperty("FRAMEWORK_SEARCH_PATHS","$(inherited) $(PROJECT_DIR)/Frameworks/GetSocial/Plugins/iOS");
             buildConfigs.AddEntry(releaseForRunningBuildConfig);
 
             var releaseForProfilingBuildConfig = XCBuildConfigurationData.Create("ReleaseForProfiling");
+            releaseForProfilingBuildConfig.SetProperty("FRAMEWORK_SEARCH_PATHS","$(inherited) $(PROJECT_DIR)/Frameworks/GetSocial/Plugins/iOS");
             buildConfigs.AddEntry(releaseForProfilingBuildConfig);
 
             var debugBuildConfig = XCBuildConfigurationData.Create("Debug");
+            debugBuildConfig.SetProperty("FRAMEWORK_SEARCH_PATHS","$(inherited) $(PROJECT_DIR)/Frameworks/GetSocial/Plugins/iOS");
             buildConfigs.AddEntry(debugBuildConfig);
 
             var buildConfigList = XCConfigurationListData.Create();

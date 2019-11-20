@@ -206,6 +206,26 @@ extern "C" {
         [GetSocial referredUsersWithSuccess:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure: errorBlock(failureCallback, onFailureActionPtr)];
     }
     
+    void _gs_getReferredUsersV2(const char *queryJson, StringCallbackDelegate getReferredUsersCallback, void *onSuccessActionPtr,
+                              FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSDictionary *queryDict = [GetSocialBridgeUtils createDictionaryFromCString:queryJson];
+        GetSocialReferralUsersQuery* query = [GetSocialReferralUsersQuery usersForEvent:queryDict[@"EventName"]];
+        query.offset = [queryDict[@"Offset"] intValue];
+        query.limit = [queryDict[@"Limit"] intValue];
+        [GetSocial referredUsersWithQuery:query success:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
+    
+    void _gs_getReferrerUsers(const char *queryJson, StringCallbackDelegate getReferredUsersCallback, void *onSuccessActionPtr,
+                              FailureCallbackDelegate failureCallback, void *onFailureActionPtr)
+    {
+        NSDictionary *queryDict = [GetSocialBridgeUtils createDictionaryFromCString:queryJson];
+        GetSocialReferralUsersQuery* query = [GetSocialReferralUsersQuery usersForEvent:queryDict[@"EventName"]];
+        query.offset = [queryDict[@"Offset"] intValue];
+        query.limit = [queryDict[@"Limit"] intValue];
+        [GetSocial referrerUsersWithQuery:query success:objectBlock(getReferredUsersCallback, onSuccessActionPtr) failure:errorBlock(failureCallback, onFailureActionPtr)];
+    }
+    
     void _gs_createInviteLink(const char *linkParamsJsonStr,
                               StringCallbackDelegate completeCallback, void *onCompletePtr,
                               FailureCallbackDelegate failureCallback, void *onFailurePtr) {
@@ -216,6 +236,24 @@ extern "C" {
             completeCallback(onCompletePtr, [GetSocialBridgeUtils createCStringFrom:result]);
         } failure: errorBlock(failureCallback, onFailurePtr)];
     }
+
+void _gs_setReferrer(const char *referrerId,
+                    const char *eventName,
+                     const char *customDataJsonStr,
+                          VoidCallbackDelegate completeCallback, void *onCompletePtr,
+                          FailureCallbackDelegate failureCallback, void *onFailurePtr) {
+    NSString *referrerIdStr = [GetSocialBridgeUtils createNSStringFrom:referrerId];
+    NSString *eventNameStr = [GetSocialBridgeUtils createNSStringFrom:eventName];
+
+    NSDictionary *customData = [GetSocialBridgeUtils createDictionaryFromCString:customDataJsonStr];
+
+    [GetSocial setReferrerWithId:referrerIdStr
+                           event:eventNameStr
+                      customData:customData
+                         success:completeBlock(completeCallback, onCompletePtr)
+                         failure:errorBlock(failureCallback, onFailurePtr)];
+}
+
     
 #pragma mark - Invite Callbacks
     // Invite Callbacks

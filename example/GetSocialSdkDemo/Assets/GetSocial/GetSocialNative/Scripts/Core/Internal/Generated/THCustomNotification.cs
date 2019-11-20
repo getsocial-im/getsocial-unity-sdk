@@ -35,6 +35,7 @@ public partial class THCustomNotification : TBase
   private List<THActionButton> _actionButtons;
   private THNotificationTemplateMedia _media;
   private Dictionary<THDeviceOs, THNotificationTemplateMedia> _platformMedia;
+  private THBadge _badge;
 
   public List<string> UserIds
   {
@@ -205,6 +206,19 @@ public partial class THCustomNotification : TBase
     }
   }
 
+  public THBadge Badge
+  {
+    get
+    {
+      return _badge;
+    }
+    set
+    {
+      __isset.badge = true;
+      this._badge = value;
+    }
+  }
+
 
   public Isset __isset;
   #if !SILVERLIGHT
@@ -224,6 +238,7 @@ public partial class THCustomNotification : TBase
     public bool actionButtons;
     public bool media;
     public bool platformMedia;
+    public bool badge;
   }
 
   public THCustomNotification() {
@@ -395,6 +410,14 @@ public partial class THCustomNotification : TBase
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
+          case 14:
+            if (field.Type == TType.Struct) {
+              Badge = new THBadge();
+              Badge.Read(iprot);
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
           default: 
             TProtocolUtil.Skip(iprot, field.Type);
             break;
@@ -558,6 +581,14 @@ public partial class THCustomNotification : TBase
         }
         oprot.WriteFieldEnd();
       }
+      if (Badge != null && __isset.badge) {
+        field.Name = "badge";
+        field.Type = TType.Struct;
+        field.ID = 14;
+        oprot.WriteFieldBegin(field);
+        Badge.Write(oprot);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -647,6 +678,12 @@ public partial class THCustomNotification : TBase
       __first = false;
       __sb.Append("PlatformMedia: ");
       __sb.Append(PlatformMedia);
+    }
+    if (Badge != null && __isset.badge) {
+      if(!__first) { __sb.Append(", "); }
+      __first = false;
+      __sb.Append("Badge: ");
+      __sb.Append(Badge== null ? "<null>" : Badge.ToString());
     }
     __sb.Append(")");
     return __sb.ToString();

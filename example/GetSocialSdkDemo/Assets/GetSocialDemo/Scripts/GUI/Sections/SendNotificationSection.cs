@@ -36,6 +36,10 @@ namespace GetSocialDemo.Scripts.GUI.Sections
         private bool _useCustomImage;
         private bool _useCustomVideo;
         private readonly List<UserId> _userIds = new List<UserId>();
+        private bool _sendBadgeValue;
+        private bool _sendBadgeIncrease;
+        private string _badgeValue = "";
+        private string _badgeIncrease = "";
 
         private int _selectedPlaceholder;
 
@@ -174,6 +178,38 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             
             DemoGuiUtils.DynamicRowFor(_userIds, "Custom Users ID");
             
+            DemoGuiUtils.DrawRow(() =>
+            {
+                _sendBadgeValue = GUILayout.Toggle(_sendBadgeValue, "", GSStyles.Toggle);
+                if (_sendBadgeValue)
+                {
+                    _sendBadgeIncrease = false;
+                    _badgeIncrease = "";
+                }
+                GUILayout.Label("Badge Count", GSStyles.NormalLabelText);
+            });
+
+            if (_sendBadgeValue)
+            {
+                _badgeValue = GUILayout.TextField(_badgeValue, GSStyles.TextField);
+            }
+
+            DemoGuiUtils.DrawRow(() =>
+            {
+                _sendBadgeIncrease = GUILayout.Toggle(_sendBadgeIncrease, "", GSStyles.Toggle);
+                if (_sendBadgeIncrease)
+                {
+                    _sendBadgeValue = false;
+                    _badgeValue = "";
+                }
+                GUILayout.Label("Badge Increase", GSStyles.NormalLabelText);
+            });
+
+            if (_sendBadgeIncrease)
+            {
+                _badgeIncrease = GUILayout.TextField(_badgeIncrease, GSStyles.TextField);
+            }
+
             if (GUILayout.Button("Send", GSStyles.Button))
             {
                 var recipients = _userIds.ConvertAll(user => user.UserIdString);
@@ -219,9 +255,9 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                     : null;
 
                 var customization = NotificationCustomization
-                    .WithBackgroundImageConfiguration(_backgroundImageConfiguration)
-                    .WithTitleColor(_titleColor)
-                    .WithTextColor(_textColor);
+                    .WithBackgroundImageConfiguration(_backgroundImageConfiguration.ToNullIfEmpty())
+                    .WithTitleColor(_titleColor.ToNullIfEmpty())
+                    .WithTextColor(_textColor.ToNullIfEmpty());
                 var content = NotificationContent.NotificationWithText(_text)
                     .WithTitle(_title)
                     .WithTemplateName(_templateName)
@@ -229,8 +265,15 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                     .WithMediaAttachment(mediaAttachment)
                     .WithCustomization(customization)
                     .AddActionButtons(_actionButtons.ConvertAll(item => ActionButton.Create(item.Key, item.Val))
-                       
                  );
+
+                if (_sendBadgeValue) 
+                {
+                    content.WithBadge(Badge.SetTo(int.Parse(_badgeValue)));
+                } else if (_sendBadgeIncrease)
+                {
+                    content.WithBadge(Badge.IncreaseBy(int.Parse(_badgeIncrease)));
+                }
                 
                 if (_action != null)
                 {
@@ -268,6 +311,13 @@ namespace GetSocialDemo.Scripts.GUI.Sections
             {
                 UserIdString = GUILayout.TextField(UserIdString, GSStyles.TextField);
             }
+        }
+    }
+    static class StringHelper 
+    {
+        public static string ToNullIfEmpty(this string str)
+        {
+            return str == null || str.Length == 0 ? null : str;
         }
     }
 }

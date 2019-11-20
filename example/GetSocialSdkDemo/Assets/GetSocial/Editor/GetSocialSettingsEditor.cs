@@ -52,6 +52,11 @@ namespace GetSocialSdk.Editor
         private static string _remoteRequestStatusLabel;
         private static UiConfigValidationResult _uiConfigurationValidationResult = new UiConfigValidationResult(true, "");
 
+        private bool _androidFrameworkStatus = true;
+        private bool _iosFrameworkStatus = true;
+
+        private IEnumerator<object> _checkFrameworks;
+        private bool _visible;
         #region lifecycle
         
         void OnEnable()
@@ -60,6 +65,29 @@ namespace GetSocialSdk.Editor
             UpdateDefineSymbols();
             UpdateRemoteConfig();
             UpdateUiConfigFileCheck();
+
+            _visible = true;
+            _checkFrameworks = CheckForFrameworks();
+            EditorCoroutine.Start(_checkFrameworks);
+        }
+
+        private void OnDisable() 
+        {
+            _visible = false;
+        }
+
+        private IEnumerator<object> CheckForFrameworks()
+        {
+            while (_visible)
+            {
+                if (FileHelper.AndroidDownloadInProgress || FileHelper.IOSDownloadInProgress) 
+                {
+                    Repaint();
+                }
+                _androidFrameworkStatus = FileHelper.CheckAndroidFramework();
+                _iosFrameworkStatus = FileHelper.CheckiOSFramework();
+                yield return null;
+            }
         }
 
         public override void OnInspectorGUI()
@@ -216,7 +244,8 @@ namespace GetSocialSdk.Editor
 
         private void DrawAndroidFrameworkStatusSettings()
         {
-            bool frameworkStatus = FileHelper.CheckAndroidFramework();
+            bool frameworkStatus = _androidFrameworkStatus;
+            
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Framework status", EditorGuiUtils.OneThirdWidth);
@@ -248,6 +277,11 @@ namespace GetSocialSdk.Editor
                                     buttonText = "✘ Not downloaded";
                                 });
                             }
+                        }
+                        if (FileHelper.AndroidDownloadInProgress)
+                        {
+                            var progress = (int) (FileHelper.AndroidDownloadProgress * 100);
+                            EditorGUILayout.LabelField(string.Format("{0}%", progress), EditorGuiUtils.OneThirdWidth);
                         }
                     });
             }
@@ -337,7 +371,7 @@ namespace GetSocialSdk.Editor
 
         private void DrawiOSFrameworkStatusSettings()
         {
-            bool frameworkStatus = FileHelper.CheckiOSFramework();
+            bool frameworkStatus = _iosFrameworkStatus;
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Framework status", EditorGuiUtils.OneThirdWidth);
@@ -369,6 +403,12 @@ namespace GetSocialSdk.Editor
                                     buttonText = "✘ Not downloaded";
                                 });
                             }
+                        }
+
+                        if (FileHelper.IOSDownloadInProgress)
+                        {
+                            var progress = (int) (FileHelper.IOSDownloadProgress * 100);
+                            EditorGUILayout.LabelField(string.Format("{0}%", progress), EditorGuiUtils.OneThirdWidth);
                         }
                     });
             }

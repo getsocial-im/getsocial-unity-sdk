@@ -32,6 +32,7 @@ public static class GSStyles
     public static readonly GUIStyle ConsoleText;
     public static readonly GUIStyle ImageToggle;
     public static readonly GUIStyle ClearButton;
+    public static readonly GUIStyle PasteButton;
 
     static GSStyles()
     {
@@ -145,6 +146,14 @@ public static class GSStyles
         {
             fontSize = 16,
             fixedHeight = 40,
+            stretchWidth = true,
+            richText = false,
+            alignment = TextAnchor.MiddleCenter
+        };
+        PasteButton = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 28,
+            fixedHeight = 65,
             stretchWidth = true,
             richText = false,
             alignment = TextAnchor.MiddleCenter

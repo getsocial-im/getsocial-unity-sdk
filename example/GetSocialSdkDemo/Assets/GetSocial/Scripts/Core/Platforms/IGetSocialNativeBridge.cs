@@ -7,8 +7,6 @@ namespace GetSocialSdk.Core
 {
     partial interface IGetSocialNativeBridge
     {
-
-        GetSocialFactory.AvailableRuntimes[] RuntimeImplementation { get; }
         
         #region initialization
         
@@ -56,8 +54,12 @@ namespace GetSocialSdk.Core
         void ClearReferralData();
 
         void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure);
+        void GetReferredUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure);
+        void GetReferrerUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure);
 
         void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure);
+
+        void SetReferrer(string referrerId, string eventName, Dictionary<string, string> customData, Action onComplete, Action<GetSocialError> onFailure);
 
         #endregion
 

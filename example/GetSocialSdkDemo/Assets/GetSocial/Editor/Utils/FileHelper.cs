@@ -11,6 +11,8 @@ namespace GetSocialSdk.Editor
     {
         public static bool AndroidDownloadInProgress { get; private set; }
         public static bool IOSDownloadInProgress { get; private set; }
+        public static float AndroidDownloadProgress { get; private set; }
+        public static float IOSDownloadProgress { get; private set; }
 
         private const string DownloadUrlAndroid = "http://s3.amazonaws.com/downloads.getsocial.im/unity/releases/{0}/getsocial-unity-android-sdk.zip"; 
         private const string DownloadUrliOS = "http://s3.amazonaws.com/downloads.getsocial.im/unity/releases/{0}/getsocial-unity-ios-sdk.zip";
@@ -35,8 +37,10 @@ namespace GetSocialSdk.Editor
             ForEachIn(coreDir, path => UpdatePlatformState(new [] {path}, BuildTarget.iOS, true));
             ForEachIn(uiDir, path => UpdatePlatformState(new [] {path}, BuildTarget.iOS, true));
             var coreFrameworkPath = AssetDatabase.AssetPathToGUID(Path.Combine(GetSocialSettings.GetPluginPath(), "Plugins/iOS/GetSocial.framework"));
+            var extensionFrameworkPath = AssetDatabase.AssetPathToGUID(Path.Combine(GetSocialSettings.GetPluginPath(), "Plugins/iOS/GetSocialExtension.framework"));
             var uiFrameworkPath = AssetDatabase.AssetPathToGUID(Path.Combine(GetSocialSettings.GetPluginPath(), "Plugins/iOS/GetSocialUI.framework"));
             UpdatePlatformState(new [] {coreFrameworkPath}, BuildTarget.iOS, true);
+            UpdatePlatformState(new [] {extensionFrameworkPath}, BuildTarget.iOS, true);
             UpdatePlatformState(new [] {uiFrameworkPath}, BuildTarget.iOS, true);
         }
         
@@ -76,7 +80,6 @@ namespace GetSocialSdk.Editor
             UpdatePlatformState(iosUiLib, BuildTarget.iOS, enabled);
             UpdatePlatformState(androidCoreLib, BuildTarget.Android, true);
             UpdatePlatformState(androidUiLib, BuildTarget.Android, enabled);
-            
         }
 
         public static void DownloadiOSFramework(Action onSuccess = null, Action<string> onFailure = null)
@@ -93,6 +96,7 @@ namespace GetSocialSdk.Editor
             downloadFrameworkRequest.Start(() =>
             {
                 IOSDownloadInProgress = false;
+                IOSDownloadProgress = 0;
                 if (UnzipFramework(Path.Combine(pluginFolderPath, IOSArchiveName), pluginFolderPath))
                 {
                     AddFrameworksToAssets(new[]
@@ -114,6 +118,9 @@ namespace GetSocialSdk.Editor
                         onFailure(error);
                     }
                 }
+            }, progress =>
+            {
+                IOSDownloadProgress = progress;
             }, error =>
             {
                 IOSDownloadInProgress = false;
@@ -158,6 +165,7 @@ namespace GetSocialSdk.Editor
                 
             downloadFrameworkRequest.Start(() =>
             {
+                AndroidDownloadProgress = 0;
                 AndroidDownloadInProgress = false;
                 if (UnzipFramework(Path.Combine(pluginFolderPath, AndroidArchiveName), pluginFolderPath))
                 {
@@ -180,6 +188,9 @@ namespace GetSocialSdk.Editor
                         onFailure(error);
                     }
                 }
+            }, progress =>
+            {
+                AndroidDownloadProgress = progress;
             }, error =>
             {
                 AndroidDownloadInProgress = false;
@@ -249,7 +260,16 @@ namespace GetSocialSdk.Editor
         {
             if (Directory.Exists(directoryPath))
             {
-                RemoveNotNeededFiles(directoryPath, Directory.GetFiles(directoryPath));
+                foreach (var filePath in Directory.EnumerateFiles(directoryPath))
+                {
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    } else if (Directory.Exists(filePath))
+                    {
+                        Directory.Delete(filePath, true);
+                    }
+                }
             }
         }
 
@@ -258,17 +278,6 @@ namespace GetSocialSdk.Editor
             foreach (var path in filePath)
             {
                 AssetDatabase.ImportAsset(Path.Combine(GetSocialSettings.GetPluginPath(), path), ImportAssetOptions.ForceUpdate);
-            }
-        }
-
-        private static void RemoveNotNeededFiles(string folderPath, string[] fileNames)
-        {
-            foreach (var fileName in fileNames)
-            {
-                if (File.Exists(Path.Combine(folderPath, fileName)))
-                {
-                    File.Delete(Path.Combine(folderPath, fileName));
-                }
             }
         }
         

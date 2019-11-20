@@ -171,6 +171,12 @@ namespace GetSocialSdk.Core
         }
 
         [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
+        public static void GetReferralUsers(IntPtr actionPtr, string json)
+        {
+            GetObjectsListCallback<ReferralUser>(actionPtr, json);
+        }
+
+        [AOT.MonoPInvokeCallback(typeof(StringCallbackDelegate))]
         public static void GetUserReferences(IntPtr actionPtr, string json)
         {
             GetObjectsListCallback<UserReference>(actionPtr, json);

@@ -1,4 +1,5 @@
-#if UNITY_ANDROID// && !UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,6 @@ namespace GetSocialSdk.Core
         private const string GetSocialClassSignature = "im.getsocial.sdk.GetSocial";
         private const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
         private const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
-
-        public GetSocialFactory.AvailableRuntimes[] RuntimeImplementation
-        {
-            get { return new[] {GetSocialFactory.AvailableRuntimes.Android}; }
-        }
 
         static IGetSocialNativeBridge _instance;
 
@@ -128,10 +124,25 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("getReferredUsers", new ListCallbackProxy<ReferredUser>(onSuccess, onFailure));
         }
 
+        public void GetReferredUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("getReferredUsers", query.ToAjo(), new ListCallbackProxy<ReferralUser>(onSuccess, onFailure));
+        }
+
+        public void GetReferrerUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("getReferrerUsers", query.ToAjo(), new ListCallbackProxy<ReferralUser>(onSuccess, onFailure));
+        }
+
         public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
         {
             var linkParamsAjo = linkParams == null ? null : linkParams.ToAjo();
             _getSocial.CallStatic("createInviteLink", linkParamsAjo, new StringCallbackProxy(onSuccess, onFailure));
+        }
+
+        public void SetReferrer(string referrerId, string eventName, Dictionary<string, string> customData, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            _getSocial.CallStatic("setReferrer", referrerId, eventName, customData.ToJavaHashMap(), new CompletionCallback(onSuccess, onFailure));
         }
 
         #endregion

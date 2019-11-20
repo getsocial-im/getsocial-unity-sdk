@@ -10,12 +10,6 @@ namespace GetSocialSdk.Core
 {
     class GetSocialNativeBridgeIOS : IGetSocialNativeBridge
     {
-    
-        public GetSocialFactory.AvailableRuntimes[] RuntimeImplementation
-        {
-            get { return new[] {GetSocialFactory.AvailableRuntimes.iOS}; }
-        }
-
         public void Init(string appId)
         {
             _gs_init(appId);
@@ -128,6 +122,19 @@ namespace GetSocialSdk.Core
             _gs_getReferredUsers(Callbacks.GetReferredUsers, onSuccess.GetPointer(), 
                 Callbacks.FailureCallback, onFailure.GetPointer());
         }
+        
+        public void GetReferredUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getReferredUsersV2(query.ToJson(), Callbacks.GetReferralUsers, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
+
+        
+        public void GetReferrerUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            _gs_getReferrerUsers(query.ToJson(), Callbacks.GetReferralUsers, onSuccess.GetPointer(), 
+                Callbacks.FailureCallback, onFailure.GetPointer());
+        }
 
 
         public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
@@ -140,7 +147,13 @@ namespace GetSocialSdk.Core
             
             _gs_createInviteLink(linkParamsJson, Callbacks.StringCallback, onSuccess.GetPointer(),
                 Callbacks.FailureCallback, onFailure.GetPointer());
-        } 
+        }
+
+        public void SetReferrer(string referrerId, String eventName, Dictionary<string, string> customData, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            var customDataJson = customData != null ? GSJson.Serialize(customData) : null;
+            _gs_setReferrer(referrerId, eventName, customDataJson, Callbacks.ActionCallback, onSuccess.GetPointer(), Callbacks.FailureCallback, onFailure.GetPointer());
+        }
 
         #endregion
 
@@ -675,7 +688,21 @@ namespace GetSocialSdk.Core
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         [DllImport("__Internal")]
+        static extern void _gs_getReferredUsersV2(string queryJson,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_getReferrerUsers(string queryJson,
+            StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
         static extern void _gs_createInviteLink(string linkParamsJson, StringCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
+            FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
+
+        [DllImport("__Internal")]
+        static extern void _gs_setReferrer(string referrerId, string eventName, string customDataJson, VoidCallbackDelegate successCallback, IntPtr onSuccessActionPtr,
             FailureCallbackDelegate failureCallback, IntPtr onFailureActionPtr);
 
         // Invite Callbacks

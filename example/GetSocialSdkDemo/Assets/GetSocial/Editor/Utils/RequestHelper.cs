@@ -9,6 +9,8 @@ namespace GetSocialSdk.Editor
         string GetErrorMessage();
         byte[] GetBytes();
         string GetString();
+
+        float Progress();
     }
    
     public class RequestHelper
@@ -75,6 +77,11 @@ namespace GetSocialSdk.Editor
         {
             return _www.text;
         }
+
+        public float Progress()
+        {
+            return _www.progress;
+        }
     }
 #pragma warning restore 0618
 
@@ -108,6 +115,11 @@ namespace GetSocialSdk.Editor
         public string GetString()
         {
             return _webRequest.downloadHandler.text;
+        }
+        
+        public float Progress()
+        {
+            return _webRequest.downloadProgress;
         }
     }
 

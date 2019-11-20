@@ -35,7 +35,6 @@ namespace GetSocialSdk.Editor
 #if !UNITY_CLOUD_BUILD
             Debug.Log(string.Format("GetSocial: Xcode postprocessing started for project '{0}'", projectPath));
 #endif
-            
             PBXProjectUtils.ModifyPbxProject(projectPath, (project, target) =>
             {
                 AddOtherLinkerFlags(project, target);
@@ -98,6 +97,13 @@ namespace GetSocialSdk.Editor
             project.AddFileToBuild(appExtensionTarget, project.AddFile(extensionServiceTargetHeaderFile, extensionServiceTargetHeaderFile));
             project.AddFileToBuild(appExtensionTarget, project.AddFile(extensionServiceTargetImpFile, extensionServiceTargetImpFile));
 
+            var frameworksPath =
+                GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
+            
+            var relativeExtensionFrameworkPath = "Frameworks/" + frameworksPath + "/Plugins/iOS/GetSocialExtension.framework";
+
+            project.AddFileToBuild(appExtensionTarget, project.FindFileGuidByProjectPath(relativeExtensionFrameworkPath));
+            
             var deviceFamily = "";
             switch (PlayerSettings.iOS.targetDevice)
             {
@@ -114,8 +120,14 @@ namespace GetSocialSdk.Editor
             
 
             project.SetBuildProperty(appExtensionTarget, "TARGETED_DEVICE_FAMILY", deviceFamily);
-            var osVersion = Convert.ToInt32(double.Parse(PlayerSettings.iOS.targetOSVersionString));
-            project.SetBuildProperty(appExtensionTarget, "IPHONEOS_DEPLOYMENT_TARGET", Math.Min(10, osVersion).ToString());
+            if (double.Parse(PlayerSettings.iOS.targetOSVersionString) > 10) 
+            {
+                project.SetBuildProperty(appExtensionTarget, "IPHONEOS_DEPLOYMENT_TARGET", PlayerSettings.iOS.targetOSVersionString.ToString());
+            } else
+            {
+                project.SetBuildProperty(appExtensionTarget, "IPHONEOS_DEPLOYMENT_TARGET", "10.0");
+            }
+            
             project.SetBuildProperty(appExtensionTarget, "DEVELOPMENT_TEAM", PlayerSettings.iOS.appleDeveloperTeamID);
             project.SetBuildProperty(appExtensionTarget, "PRODUCT_BUNDLE_IDENTIFIER", GetSocialSettings.ExtensionBundleId);
             project.SetBuildProperty(appExtensionTarget, "CODE_SIGN_STYLE", PlayerSettings.iOS.appleEnableAutomaticSigning ?  "Automatic" : "Manual");
@@ -132,7 +144,24 @@ namespace GetSocialSdk.Editor
                 }
             }
             project.AddFrameworkToProject(mainTarget, "UserNotifications.framework", false);
+            AddExtensionEntitlements(projectPath, project, appExtensionTarget);
 #endif            
+        }
+        static void AddExtensionEntitlements(string projectPath, PBXProject project, string target)
+        {
+            var entitlementsSetting = "extension.entitlements";
+            project.AddFileToBuild(target,
+                    project.AddFile("extension.entitlements", entitlementsSetting, PBXSourceTree.Source));
+            project.AddBuildProperty(target, "CODE_SIGN_ENTITLEMENTS", entitlementsSetting);
+            
+            var entitlementsFilePath = Path.Combine(projectPath, entitlementsSetting); 
+            var entitlements = new PlistDocument();
+            if (File.Exists(entitlementsFilePath))
+            {
+                entitlements.ReadFromFile(entitlementsFilePath);
+            }
+            ConfigureAppGroups(entitlements);
+            entitlements.WriteToFile(entitlementsFilePath);
         }
 
         static void RemoveUiPluginFiles(PBXProject project, string target)
@@ -205,7 +234,7 @@ namespace GetSocialSdk.Editor
             }
             else
             {
-                project.RemoveDynamicFramework(relativeUiFrameworkPath);
+                project.RemoveDynamicFramework(target, relativeUiFrameworkPath);
             }
 #if !UNITY_CLOUD_BUILD
             Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
@@ -277,11 +306,24 @@ namespace GetSocialSdk.Editor
                     entitlements.ReadFromFile(entitlementsFilePath);
                 }
 
+                if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
+                {
+                    ConfigureAppGroups(entitlements);
+                }
                 ConfigureAssociatedDomains(entitlements);
                 ConfigurePushNotifications(entitlements);
                 
                 entitlements.WriteToFile(entitlementsFilePath);
             }
+        }
+
+        private static void ConfigureAppGroups(PlistDocument entitlements)
+        {
+            var appGroupsNode = entitlements.root["com.apple.security.application-groups"] != null 
+                ? entitlements.root["com.apple.security.application-groups"].AsArray() 
+                : entitlements.root.CreateArray("com.apple.security.application-groups");
+
+            appGroupsNode.AddString(string.Format("group.{0}.getsocial_extension", Application.identifier));
         }
 
         public static void ConfigureAssociatedDomains(PlistDocument entitlements)

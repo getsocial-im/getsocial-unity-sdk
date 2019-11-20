@@ -11,20 +11,6 @@ namespace GetSocialSdk.Core
 {
     internal class GetSocialNativeUnityBridge : IGetSocialNativeBridge
     {
-        public GetSocialFactory.AvailableRuntimes[] RuntimeImplementation
-        {
-            get
-            {
-                return new[]
-                {
-                    GetSocialFactory.AvailableRuntimes.Windows, 
-                    GetSocialFactory.AvailableRuntimes.Linux,
-                    GetSocialFactory.AvailableRuntimes.OSX,
-                    GetSocialFactory.AvailableRuntimes.Editor
-                };
-            }
-        }
-
         private readonly GetSocialStateController _stateController = new GetSocialStateController();
         
         private string SessionId { get { return _stateController.SessionId; } }
@@ -264,6 +250,35 @@ namespace GetSocialSdk.Core
             }, onFailure);
         }
 
+        public void GetReferredUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            LogRequest("getReferredUsers, query= ", query.ToString());
+            WithHadesClient(client =>
+            {
+                var rpcUsers = client.getReferredUsersV2(SessionId, query.GetEventName(), query.GetOffset(), query.GetLimit());
+                var users = rpcUsers.ConvertAll(user => user.ToReferralUser());
+                Ui(() =>
+                {
+                    LogResponse("getReferredUsers", rpcUsers.ToDebugString());
+                    onSuccess.SafeCall(users);
+                });
+            }, onFailure);
+        }
+
+        public void GetReferrerUsers(ReferralUsersQuery query, Action<List<ReferralUser>> onSuccess, Action<GetSocialError> onFailure)
+        {
+            LogRequest("getReferrerUsers, query= ", query.ToString());
+            WithHadesClient(client =>
+            {
+                var rpcUsers = client.getReferrerUsers(SessionId, query.GetEventName(), query.GetOffset(), query.GetLimit());
+                var users = rpcUsers.ConvertAll(user => user.ToReferralUser());
+                Ui(() =>
+                {
+                    LogResponse("getReferrerUsers", rpcUsers.ToDebugString());
+                    onSuccess.SafeCall(users);
+                });
+            }, onFailure);
+        }
         public void CreateInviteLink(LinkParams linkParams, Action<string> onSuccess, Action<GetSocialError> onFailure)
         {
             var request = new THCreateTokenRequest
@@ -280,6 +295,20 @@ namespace GetSocialSdk.Core
                 {
                     LogResponse("createInviteUrl", response);
                     onSuccess.SafeCall(response.Url);
+                });
+            }, onFailure);
+        }
+
+        public void SetReferrer(string referrerId, string eventName, Dictionary<string, string> customData, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            LogRequest("setReferrer", "referrerId=" + referrerId + "; eventName=" + eventName + "; customData=" + customData.ToDebugString());
+            WithHadesClient(client =>
+            {
+                var response = client.setReferrer(SessionId, referrerId, eventName, customData);
+                Ui(() =>
+                {
+                    LogResponse("setReferrer", response);
+                    onSuccess.SafeCall();
                 });
             }, onFailure);
         }
@@ -1201,7 +1230,6 @@ namespace GetSocialSdk.Core
                 // Just to be sure we won't crash in logs
             }
         }
-
     }
 }
 #endif

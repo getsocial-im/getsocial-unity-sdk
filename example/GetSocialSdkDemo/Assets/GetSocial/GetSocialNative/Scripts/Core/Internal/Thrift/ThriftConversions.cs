@@ -101,6 +101,20 @@ namespace GetSocialSdk.Core
                 installationChannel: publicUser.InstallProvider
             );
         }
+        public static ReferralUser ToReferralUser(this THReferralUser referralUser)
+        {
+            var publicUser = referralUser.User;
+            return new ReferralUser(
+                publicProperties: publicUser.PublicProperties, 
+                id: publicUser.Id, 
+                displayName:publicUser.DisplayName, 
+                avatarUrl:publicUser.AvatarUrl, 
+                identities:IdentitiesToDictionary(publicUser.Identities),
+                eventDate: DateUtils.FromUnixTime(long.Parse(referralUser.EventDate)),
+                eventName: referralUser.Event,
+                eventData: referralUser.CustomData
+            );
+        }
         
         public static THIdentity ToRpcModel(this AuthIdentity authIdentity)
         {
@@ -387,8 +401,22 @@ namespace GetSocialSdk.Core
                 NewAction = content._action.ToRpcModel(),
                 Image = media.GetImageUrl(),
                 Video = media.GetVideoUrl(),
-                ActionButtons = content._actionButtons.ConvertAll(button => button.ToRpcModel())
+                ActionButtons = content._actionButtons.ConvertAll(button => button.ToRpcModel()),
+                Badge = content._badge.ToRpcModel()
             };
+        }
+
+        public static THBadge ToRpcModel(this Badge badge) 
+        {
+            if (badge == null) 
+            {
+                return null;
+            }
+            if (badge.Value == int.MinValue)
+            {
+                return new THBadge { Increase = badge.Increase };
+            }
+            return new THBadge { Value = badge.Value };
         }
 
         public static THActionButton ToRpcModel(this ActionButton button)

@@ -8,9 +8,6 @@ namespace GetSocialSdk.Editor
 {
     public class DownloadFrameworkRequest
     {
-     
-        public bool IsInProgress { get; private set; }
-        
         private Request _downloadRequest;
 
         private readonly string _url;
@@ -29,9 +26,8 @@ namespace GetSocialSdk.Editor
             _archiveFilePath = archiveFilePath;
         }
 
-        public void Start(Action onSuccess, Action<string> onFailure, bool sync = false)
+        public void Start(Action onSuccess, Action<float> onUpdate, Action<string> onFailure, bool sync = false)
         {
-            IsInProgress = true;
             Directory.CreateDirectory(_destinationFolderPath);
             if (sync)
             {
@@ -39,7 +35,7 @@ namespace GetSocialSdk.Editor
             }
             else
             {
-                EditorCoroutine.Start(StartRequest(onSuccess, onFailure));
+                EditorCoroutine.Start(StartRequest(onSuccess, onUpdate, onFailure));
             }
         }
 
@@ -51,7 +47,6 @@ namespace GetSocialSdk.Editor
                 {
                     wc.DownloadFile(new Uri(_url), _archiveFilePath);
                     onSuccess();
-                    IsInProgress = false;
                 }
             }
             catch (WebException)
@@ -61,14 +56,14 @@ namespace GetSocialSdk.Editor
             
         }
 
-        private IEnumerator StartRequest(Action onSuccess, Action<string> onFailure)
+        private IEnumerator StartRequest(Action onSuccess, Action<float> onUpdate, Action<string> onFailure)
         {
             _downloadRequest = RequestHelper.CreateDownloadRequest(_url);
             while (!_downloadRequest.IsDone())
             {
+                onUpdate(_downloadRequest.Progress());
                 yield return null;
             }
-            IsInProgress = false;
             if (_downloadRequest.GetErrorMessage() != null)
             {
                 onFailure("Can not download GetSocial frameworks, check your internet connection");
