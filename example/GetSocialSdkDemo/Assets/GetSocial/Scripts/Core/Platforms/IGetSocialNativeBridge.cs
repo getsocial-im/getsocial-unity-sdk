@@ -231,5 +231,10 @@ namespace GetSocialSdk.Core
         void ProcessAction(GetSocialAction notificationAction);
         
         #endregion
+
+        #region Device
+        string DeviceIdentifier { get; }
+        bool IsTestDevice { get; }
+        #endregion
     }
 }

@@ -12,17 +12,18 @@ namespace GetSocialSdk.Core
     {
         private const string GetSocialClassSignature = "im.getsocial.sdk.GetSocial";
         private const string GetSocialUserClassSignature = GetSocialClassSignature + "$User";
+        private const string GetSocialDeviceClassSignature = GetSocialClassSignature + "$Device";
         private const string AndroidAccessHelperClass = "im.getsocial.sdk.GetSocialAccessHelper";
-
-        static IGetSocialNativeBridge _instance;
 
         readonly AndroidJavaClass _getSocial;
         readonly AndroidJavaClass _user;
+        readonly AndroidJavaClass _device;
 
         public GetSocialNativeBridgeAndroid()
         {
             _getSocial = new AndroidJavaClass(GetSocialClassSignature);
             _user = new AndroidJavaClass(GetSocialUserClassSignature);
+            _device = new AndroidJavaClass(GetSocialDeviceClassSignature);
         }
 
         #region initialization
@@ -543,6 +544,18 @@ namespace GetSocialSdk.Core
             _getSocial.CallStatic("processAction", notificationAction.ToAjo());
         }
 
+        #endregion
+
+        #region Device
+        public bool IsTestDevice 
+        {
+            get { return _device.CallStaticBool("isTestDevice"); }
+        }
+
+        public string DeviceIdentifier
+        {
+            get { return _device.CallStaticStr("getIdentifier"); }
+        }
         #endregion
     }
 }

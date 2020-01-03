@@ -1139,6 +1139,15 @@ namespace GetSocialSdk.Core
             DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), notificationAction);
         }
 
+        public bool IsTestDevice 
+        {
+            get { return false; }
+        }
+
+        public string DeviceIdentifier
+        {
+            get { return ""; }
+        }
 
         public void Reset()
         {

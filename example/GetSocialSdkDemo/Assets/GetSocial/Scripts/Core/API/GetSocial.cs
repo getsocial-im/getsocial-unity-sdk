@@ -1393,6 +1393,22 @@ namespace GetSocialSdk.Core
         {
             GetSocialImpl.ProcessAction(notificationAction);
         }
+
+        #endregion
+
+        #region Device
+        public static class Device 
+        {
+            public static bool IsTestDevice
+            {
+                get { return GetSocialImpl.IsTestDevice; }
+            }
+
+            public static string Identifier
+            {
+                get { return GetSocialImpl.DeviceIdentifier; }
+            }
+        }
         #endregion
     }
 }

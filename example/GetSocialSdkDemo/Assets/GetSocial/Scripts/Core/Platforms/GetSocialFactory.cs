@@ -6,7 +6,6 @@ namespace GetSocialSdk.Core
 {
     static class GetSocialFactory
     {
-
         private static IGetSocialNativeBridge _nativeImplementation;
 
         internal static IGetSocialNativeBridge Instance

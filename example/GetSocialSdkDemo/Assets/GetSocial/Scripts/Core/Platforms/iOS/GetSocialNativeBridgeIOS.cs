@@ -609,12 +609,26 @@ namespace GetSocialSdk.Core
             var eventPropertiesJson = eventProperties != null ? GSJson.Serialize(eventProperties) : null;
             return _gs_trackCustomEvent(eventName, eventPropertiesJson);
         }
+        #endregion
 
+        #region Actions
         public void ProcessAction(GetSocialAction notificationAction)
         {
             _gs_processAction(notificationAction.ToJson());
         }
 
+        #endregion
+
+        #region Device
+        public bool IsTestDevice 
+        {
+            get { return _gs_isTestDevice(); }
+        }
+
+        public string DeviceIdentifier
+        {
+            get { return _gs_deviceIdentifier(); }
+        }
         #endregion
 
         #region external_init
@@ -1024,6 +1038,15 @@ namespace GetSocialSdk.Core
         [DllImport("__Internal")]
         static extern void _gs_processAction(string actionJson);
 
+        #endregion
+
+        #region Device
+
+        [DllImport("__Internal")]
+        static extern bool _gs_isTestDevice();
+        
+        [DllImport("__Internal")]
+        static extern string _gs_deviceIdentifier();
         #endregion
     }
 }

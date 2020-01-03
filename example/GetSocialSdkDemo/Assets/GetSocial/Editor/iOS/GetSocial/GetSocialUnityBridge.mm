@@ -866,7 +866,18 @@ void _gs_setReferrer(const char *referrerId,
         [builder addActionData:action[@"Data"]];
         [GetSocial processAction:[builder build] ];
     }
-    
+
+#pragma mark - Device
+
+    BOOL _gs_isTestDevice()
+    {
+        return [GetSocial isTestDevice];
+    }
+
+    char *_gs_deviceIdentifier()
+    {
+        return [GetSocialBridgeUtils createCStringFrom:[GetSocial deviceIdentifier]];
+    }
 #pragma mark - Internal
     void _gs_handleOnStartUnityEvent()
     {

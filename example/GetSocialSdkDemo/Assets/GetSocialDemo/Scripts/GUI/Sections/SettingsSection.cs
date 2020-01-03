@@ -89,6 +89,7 @@ public class SettingsSection : DemoMenuSection
         DemoGuiUtils.DrawButton(_pnEnabled ? "Disable Push Notifications" : "Enable Push Notifications", TogglePNEnabled, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Change Language", () => _currentSection = SettingsSubSection.ChooseLanguage,
             style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Print Device Identifier", () => _console.LogD("Device ID: " + GetSocial.Device.Identifier), style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Set Global Error Listener", () =>
             {
                 var result = GetSocial.SetGlobalErrorListener(OnGlobalError);

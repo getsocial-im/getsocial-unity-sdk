@@ -258,19 +258,13 @@ namespace GetSocialSdk.Editor
 
         private static void RemoveOldVersions(string directoryPath)
         {
-            if (Directory.Exists(directoryPath))
+            if (!Directory.Exists(directoryPath)) 
             {
-                foreach (var filePath in Directory.EnumerateFiles(directoryPath))
-                {
-                    if (File.Exists(filePath))
-                    {
-                        File.Delete(filePath);
-                    } else if (Directory.Exists(filePath))
-                    {
-                        Directory.Delete(filePath, true);
-                    }
-                }
+                return;
             }
+            // this function requires / as path separator, so if we're on Windows we have to replace it
+            FileUtil.DeleteFileOrDirectory(directoryPath.Replace(Path.DirectorySeparatorChar, '/'));
+            Directory.CreateDirectory(directoryPath);
         }
 
         private static void AddFrameworksToAssets(string[] filePath)
