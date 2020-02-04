@@ -82,7 +82,16 @@ namespace GetSocialSdk.MiniJSON
 
         public static string TextureToBase64(this Texture2D obj)
         {
-            return obj == null ? "" : Convert.ToBase64String(obj.EncodeToPNG());
+            if (obj == null)
+            {
+                return null;
+            }
+            var bytes = obj.EncodeToPNG();
+            if (bytes == null)
+            {
+                return null;
+            }
+            return Convert.ToBase64String(bytes);
         }
 
         public static Texture2D FromBase64(this string base64Image)

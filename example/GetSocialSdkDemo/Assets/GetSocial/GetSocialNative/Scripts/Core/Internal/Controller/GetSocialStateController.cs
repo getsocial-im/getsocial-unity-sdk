@@ -11,7 +11,8 @@ namespace GetSocialSdk.Core
         private readonly IMetaDataReader _metaDataReader = Dependencies.GetMetaDataReader();
 
         private string _sdkLanguage;
-        public string SdkLanguage {
+        public string SdkLanguage
+        {
             get { return _sdkLanguage; }
             set { _sdkLanguage = Localization.ValidateLanguageCode(value); }
         }
@@ -23,9 +24,9 @@ namespace GetSocialSdk.Core
 
         public string SessionId { get; private set; }
 
-        public bool IsInitialized { get ; private set; }
+        public bool IsInitialized { get; private set; }
 
-        public long ServerTimeDiff { get; private set; } 
+        public long ServerTimeDiff { get; private set; }
 
         /// <summary>
         /// !IMPORTANT! Call from the UI thread only.
@@ -51,7 +52,7 @@ namespace GetSocialSdk.Core
                     DeviceModel = SystemInfo.deviceModel, // probably would be just PC
                     DeviceOsVersion = SystemInfo.operatingSystem, // 'Windows <version> 64 bit', and if the CPU is 32-bit - 'Windows <version>'.
                     AppVersionInternal = Application.buildGUID,
-                    
+
                     // todo This one is implemented for Windows only, don't forget to implement in for Linux/Mac
                     DeviceIdfa = SystemInfo.deviceUniqueIdentifier, // details are here: https://docs.unity3d.com/ScriptReference/SystemInfo-deviceUniqueIdentifier.html
                     DeviceCarrier = "",
@@ -60,14 +61,14 @@ namespace GetSocialSdk.Core
                     DeviceNetworkType = "",
                     DeviceNetworkSubType = "",
                     DeviceJailbroken = false
-                }; 
+                };
 
                 return props;
             }
         }
 
         private string _appId;
-        
+
         /// <summary>
         /// !IMPORTANT! Call from the UI thread only.
         /// </summary>
@@ -81,7 +82,8 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public bool IsNewInstall {
+        public bool IsNewInstall
+        {
             get
             {
                 const string isNewInstallKey = "is_new_install";
@@ -116,7 +118,7 @@ namespace GetSocialSdk.Core
             OnInit.SafeCall();
             OnInit = null;
         }
-        
+
         /// <summary>
         /// !IMPORTANT! Call from the UI thread only.
         /// </summary>
@@ -126,25 +128,36 @@ namespace GetSocialSdk.Core
         {
             SessionId = sessionId;
             User = user;
-            
+
             _localStorage.Set(LocalStorageKeys.UserId, user.Id);
             _localStorage.Set(LocalStorageKeys.UserPassword, user.Password);
-            
+
             OnUserChanged.SafeCall();
         }
 
         public UserCredentials LoadUserCredentials(string appId)
         {
-            if (appId.Equals(LoadSavedAppId()))
+            // check app id
+            if (!appId.Equals(LoadSavedAppId()))
             {
-                return new UserCredentials
-                {
-                    Id = _localStorage.GetString(LocalStorageKeys.UserId),
-                    Password = _localStorage.GetString(LocalStorageKeys.UserPassword)
-                };
+                GetSocialLogs.W("Stored AppId [ " + LoadSavedAppId() + " ] is different than current one [" + appId + "]. New user will be created.");
+                ClearUser();
+                return new UserCredentials();
             }
-            ClearUser();
-            return new UserCredentials();
+            // check userId and password
+            var userId = _localStorage.GetString(LocalStorageKeys.UserId);
+            string password = _localStorage.GetString(LocalStorageKeys.UserPassword);
+            if (userId == null || password == null)
+            {
+                GetSocialLogs.W("Invalid user credentials, userId = [" + userId + "], password = [ " + password + " ]. New user will be created.");
+                ClearUser();
+                return new UserCredentials();
+            }
+            return new UserCredentials
+            {
+                Id = userId,
+                Password = password
+            };
         }
 
         public string LoadAppIdFromMetaData()

@@ -152,11 +152,11 @@ namespace GetSocialSdk.Editor
         {
             var deepLinkIntentFilter = new IntentFilter(false);
             AddBrowsableTags(deepLinkIntentFilter);
-            deepLinkIntentFilter.AddChild(new Data("getsocial", GetSocialSettings.AppId));
+            deepLinkIntentFilter.AddChild(new GetSocialSdk.Editor.Android.Manifest.Data("getsocial", GetSocialSettings.AppId));
             
             var appLinkIntentFilter = new IntentFilter(true);
             AddBrowsableTags(appLinkIntentFilter);
-            GetSocialSettings.DeeplinkingDomains.ForEach(domain => appLinkIntentFilter.AddChild(new Data("https", domain)));
+            GetSocialSettings.DeeplinkingDomains.ForEach(domain => appLinkIntentFilter.AddChild(new GetSocialSdk.Editor.Android.Manifest.Data("https", domain)));
             
             return new List<IntentFilter>() {deepLinkIntentFilter, appLinkIntentFilter};
         }

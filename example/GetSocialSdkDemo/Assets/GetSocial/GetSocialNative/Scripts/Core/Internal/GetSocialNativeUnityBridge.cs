@@ -146,7 +146,7 @@ namespace GetSocialSdk.Core
 
         public bool IsInviteChannelAvailable(string channelId)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), channelId);
+            GetSocialLogs.W("IsInviteChannelAvailable is not supported in Editor yet");
             return false;
         }
 
@@ -218,23 +218,21 @@ namespace GetSocialSdk.Core
         public void SendInvite(string channelId, InviteContent customInviteContent, LinkParams linkParams, Action onComplete,
             Action onCancel, Action<GetSocialError> onFailure)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), channelId, customInviteContent, linkParams,
-                onComplete, onCancel, onFailure);
-            onComplete();
+            GetSocialLogs.W("SendInvite is not supported in Editor yet");
+            onFailure(new GetSocialError("SendInvite doesn't work in Unity Editor yet"));
         }
 
         public bool RegisterInviteChannelPlugin(string channelId, InviteChannelPlugin inviteChannelPlugin)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), channelId, inviteChannelPlugin);
+            GetSocialLogs.W("RegisterInviteChannelPlugin is not supported in Editor yet");
             return false;
         }
 
         public void GetReferralData(Action<ReferralData> onSuccess, Action<GetSocialError> onFailure)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), onSuccess, onFailure);
-            onSuccess(null);
+            GetSocialLogs.W("GetReferralData is not supported in Editor yet");
+            onFailure(new GetSocialError("GetReferralData doesn't work in Unity Editor yet"));
         }
-
         public void GetReferredUsers(Action<List<ReferredUser>> onSuccess, Action<GetSocialError> onFailure)
         {
             LogRequest("getReferredUsers");
@@ -328,12 +326,12 @@ namespace GetSocialSdk.Core
         
         public void RegisterForPushNotifications()
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+            GetSocialLogs.W("RegisterForPushNotifications is not supported in Editor yet");
         }
 
         public void SetNotificationListener(Func<Notification, bool, bool> listener)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
+            GetSocialLogs.W("SetNotificationListener is not supported in Editor yet");
         }
 
         public void GetNotifications(NotificationsQuery query, Action<List<Notification>> onSuccess, Action<GetSocialError> onError)
@@ -514,7 +512,7 @@ namespace GetSocialSdk.Core
         public void SetAvatar(Texture2D avatar, Action onComplete, Action<GetSocialError> onFailure)
         {
             GetSocialLogs.W("Uploading Texture2D as avatar is not supported in Editor yet");
-            onComplete();
+            onFailure(new GetSocialError("Uploading Texture2D as avatar is not supported in Editor yet"));
         }
 
         public void SetPublicProperty(string key, string value, Action onSuccess, Action<GetSocialError> onFailure)
@@ -1018,17 +1016,17 @@ namespace GetSocialSdk.Core
 
         public void ClearReferralData()
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod());
+            GetSocialLogs.W("ClearReferralData is not supported in Editor yet");
         }
 
         public void SetNotificationListener(NotificationListener listener)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
+            GetSocialLogs.W("SetNotificationListener is not supported in Editor yet");
         }
 
         public void SetPushTokenListener(PushTokenListener listener)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), listener);
+            GetSocialLogs.W("SetPushTokenListener is not supported in Editor yet");
         }
 
         public void SendNotification(List<string> userIds, NotificationContent content, Action<NotificationsSummary> onSuccess, Action<GetSocialError> onError)
@@ -1111,7 +1109,7 @@ namespace GetSocialSdk.Core
 
         public bool TrackPurchaseEvent(PurchaseData purchaseData)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), purchaseData);
+            GetSocialLogs.W("TrackPurchaseEvent is not supported in Editor yet");
             return false;
         }
 
@@ -1136,7 +1134,7 @@ namespace GetSocialSdk.Core
 
         public void ProcessAction(GetSocialAction notificationAction)
         {
-            DebugUtils.LogMethodCall(MethodBase.GetCurrentMethod(), notificationAction);
+            GetSocialLogs.W("ProcessAction is not supported in Editor yet");
         }
 
         public bool IsTestDevice 

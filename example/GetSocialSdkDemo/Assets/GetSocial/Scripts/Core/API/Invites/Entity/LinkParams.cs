@@ -72,7 +72,14 @@ namespace GetSocialSdk.Core
                 var texture2D = image as Texture2D;
                 if (texture2D != null)
                 {
-                    retValue[KeyCustomImage] = texture2D.ToAjoBitmap();
+                    var ajoBitmap = texture2D.ToAjoBitmap();
+                    if (ajoBitmap != null)
+                    {
+                        retValue[KeyCustomImage] = ajoBitmap;
+                    } else
+                    {
+                        Debug.Log("Provided texture is invalid!");
+                    }
                 }
             }
             return new AndroidJavaObject("im.getsocial.sdk.invites.LinkParams", retValue.ToJavaHashMap());

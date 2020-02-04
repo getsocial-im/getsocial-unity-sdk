@@ -754,7 +754,12 @@ namespace GetSocialSdk.Core
                 get { return GetSocialImpl.AvatarUrl; }
             }
 
-
+            /// <summary>
+            /// Log out of current user and creates a new anonymous user.
+            /// If succeeded, OnUserChangeListener is called.
+            /// </summary>
+            /// <param name="onSuccess"></param>
+            /// <param name="onError"></param>
             public static void Reset(Action onSuccess, Action<GetSocialError> onError)
             {
                 GetSocialImpl.ResetUser(onSuccess, onError);
@@ -973,6 +978,7 @@ namespace GetSocialSdk.Core
 
             /// <summary>
             /// Switches the current user with the PublicUser corresponding to the details provided.
+            /// If succeeded, OnUserChangeListener is called.
             /// </summary>
             /// <param name="authIdentity">Identity to be switched to.</param>
             /// <param name="onSuccess">Called if switching user was successful.</param>
@@ -1169,6 +1175,8 @@ namespace GetSocialSdk.Core
             /// - SDK initialization is finished;<br/>
             /// - <see cref="SwitchUser(AuthIdentity, System.Action, System.Action{GetSocialSdk.Core.GetSocialError})"/>
             /// method was called and user was successfully changed.
+            /// - <see cref="Reset(Action, Action<GetSocialError>)"/> 
+            /// method was called and user was successfully reset to a new anonymous one.
             /// </param>
             /// <returns><c>true</c>, if the operation was successful, <c>false</c> otherwise.</returns>
             public static bool SetOnUserChangedListener(Action onUserChanged)

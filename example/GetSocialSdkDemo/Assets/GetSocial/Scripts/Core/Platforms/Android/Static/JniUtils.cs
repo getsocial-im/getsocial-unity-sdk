@@ -195,7 +195,16 @@ namespace GetSocialSdk.Core
 
         public static AndroidJavaObject ToAjoBitmap(this Texture2D texture2D)
         {
-            return new AndroidJavaClass("im.getsocial.sdk.internal.unity.BitmapFactory").CallStaticAJO("decodeBase64", texture2D.TextureToBase64());
+            if (texture2D == null)
+            {
+                return null;
+            }
+            var base64Texture = texture2D.TextureToBase64();
+            if (base64Texture == null || base64Texture.Length == 0)
+            {
+                return null;
+            }
+            return new AndroidJavaClass("im.getsocial.sdk.internal.unity.BitmapFactory").CallStaticAJO("decodeBase64", base64Texture);
         }
     }
 }

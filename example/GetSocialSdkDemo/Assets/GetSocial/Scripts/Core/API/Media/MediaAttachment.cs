@@ -22,7 +22,16 @@ namespace GetSocialSdk.Core
         
         public static MediaAttachment Image(Texture2D texture)
         {
-            return texture == null ? null : new MediaAttachment("image", Convert(texture));
+            if (texture == null)
+            {
+                return null;
+            }
+            var bitmap = Convert(texture);
+            if (bitmap == null)
+            {
+                return null;
+            }
+            return new MediaAttachment("image", bitmap);
         }
         
         public static MediaAttachment ImageUrl(string imageUrl)
@@ -57,7 +66,13 @@ namespace GetSocialSdk.Core
         private static object Convert(Texture2D texture)
         {
 #if UNITY_ANDROID
-            return texture.ToAjoBitmap();
+            var ajoBitmap = texture.ToAjoBitmap();
+            if (ajoBitmap == null)
+            {
+                Debug.Log("Provided texture is invalid!");
+                return null;
+            }
+            return ajoBitmap;
 #elif UNITY_IOS
             return texture.TextureToBase64();
 #else
