@@ -218,16 +218,18 @@ namespace GetSocialSdk.Editor
         {
             const string coreFrameworkName = "GetSocial.framework";
             const string uiFrameworkName = "GetSocialUI.framework";
+            const string extensionFrameworkName = "GetSocialExtension.framework";
 
             var frameworksPath =
                 GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
             
             var defaultLocationInProj = "Frameworks/" + frameworksPath + "/Plugins/iOS/";
             var relativeCoreFrameworkPath = defaultLocationInProj + coreFrameworkName;
+            var relativeExtensionFrameworkPath = defaultLocationInProj + extensionFrameworkName;
             var relativeUiFrameworkPath = defaultLocationInProj + uiFrameworkName;
             
             project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
-            
+            project.AddDynamicFrameworkToProject(target, relativeExtensionFrameworkPath);
             if (GetSocialSettings.UseGetSocialUi)
             {
                 project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
@@ -236,6 +238,7 @@ namespace GetSocialSdk.Editor
             {
                 project.RemoveDynamicFramework(target, relativeUiFrameworkPath);
             }
+            
 #if !UNITY_CLOUD_BUILD
             Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
 #endif            
