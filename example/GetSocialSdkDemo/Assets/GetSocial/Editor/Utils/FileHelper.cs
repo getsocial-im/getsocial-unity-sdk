@@ -65,7 +65,7 @@ namespace GetSocialSdk.Editor
             {
                 var path = Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathAndroid);
 
-                UpdatePlatformState(Path.Combine(path, AndroidFrameworkName_UI), BuildTarget.iOS, enabled);
+                UpdatePlatformState(Path.Combine(path, AndroidFrameworkName_UI), BuildTarget.Android, enabled);
             }
 
             if (Directory.Exists(Path.Combine(GetSocialSettings.GetPluginPath(), DestinationFolderPathiOS)) && !IOSDownloadInProgress)
