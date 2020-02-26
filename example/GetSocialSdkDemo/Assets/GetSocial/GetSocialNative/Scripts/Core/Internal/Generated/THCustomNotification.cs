@@ -36,6 +36,7 @@ public partial class THCustomNotification : TBase
   private THNotificationTemplateMedia _media;
   private Dictionary<THDeviceOs, THNotificationTemplateMedia> _platformMedia;
   private THBadge _badge;
+  private int _expiration;
 
   public List<string> UserIds
   {
@@ -219,6 +220,19 @@ public partial class THCustomNotification : TBase
     }
   }
 
+  public int Expiration
+  {
+    get
+    {
+      return _expiration;
+    }
+    set
+    {
+      __isset.expiration = true;
+      this._expiration = value;
+    }
+  }
+
 
   public Isset __isset;
   #if !SILVERLIGHT
@@ -239,6 +253,7 @@ public partial class THCustomNotification : TBase
     public bool media;
     public bool platformMedia;
     public bool badge;
+    public bool expiration;
   }
 
   public THCustomNotification() {
@@ -418,6 +433,13 @@ public partial class THCustomNotification : TBase
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
+          case 15:
+            if (field.Type == TType.I32) {
+              Expiration = iprot.ReadI32();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
           default: 
             TProtocolUtil.Skip(iprot, field.Type);
             break;
@@ -589,6 +611,14 @@ public partial class THCustomNotification : TBase
         Badge.Write(oprot);
         oprot.WriteFieldEnd();
       }
+      if (__isset.expiration) {
+        field.Name = "expiration";
+        field.Type = TType.I32;
+        field.ID = 15;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteI32(Expiration);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -684,6 +714,12 @@ public partial class THCustomNotification : TBase
       __first = false;
       __sb.Append("Badge: ");
       __sb.Append(Badge== null ? "<null>" : Badge.ToString());
+    }
+    if (__isset.expiration) {
+      if(!__first) { __sb.Append(", "); }
+      __first = false;
+      __sb.Append("Expiration: ");
+      __sb.Append(Expiration);
     }
     __sb.Append(")");
     return __sb.ToString();

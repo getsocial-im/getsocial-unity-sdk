@@ -71,6 +71,7 @@ public partial class Hades {
     THPromoCode getPromoCode(string sessionId, string code);
     THPromoCode setPromoCode(string sessionId, THPromoCode code);
     THReceipt validateIAP(string sessionId, byte[] receipt, byte[] signature, string checkpoint, bool isSubscription, bool validateOnline);
+    bool trackLatency(TrackLatencyRequest request);
   }
 
   public interface Iface : ISync {
@@ -2160,6 +2161,43 @@ public partial class Hades {
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "validateIAP failed: unknown result");
     }
 
+    
+    public bool trackLatency(TrackLatencyRequest request)
+    {
+      send_trackLatency(request);
+      return recv_trackLatency();
+
+    }
+    public void send_trackLatency(TrackLatencyRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("trackLatency", TMessageType.Call, seqid_));
+      trackLatency_args args = new trackLatency_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public bool recv_trackLatency()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      trackLatency_result result = new trackLatency_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "trackLatency failed: unknown result");
+    }
+
   }
   public class Processor : TProcessor {
     public Processor(ISync iface)
@@ -2218,6 +2256,7 @@ public partial class Hades {
       processMap_["getPromoCode"] = getPromoCode_Process;
       processMap_["setPromoCode"] = setPromoCode_Process;
       processMap_["validateIAP"] = validateIAP_Process;
+      processMap_["trackLatency"] = trackLatency_Process;
     }
 
     protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);
@@ -4092,6 +4131,41 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("validateIAP", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void trackLatency_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      trackLatency_args args = new trackLatency_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      trackLatency_result result = new trackLatency_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.trackLatency(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("trackLatency", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("trackLatency", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -20593,6 +20667,262 @@ public partial class Hades {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class trackLatency_args : TBase
+  {
+    private TrackLatencyRequest _request;
+
+    public TrackLatencyRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public trackLatency_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new TrackLatencyRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("trackLatency_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("trackLatency_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class trackLatency_result : TBase
+  {
+    private bool _success;
+    private THErrors _errors;
+
+    public bool Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public trackLatency_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Bool) {
+                Success = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("trackLatency_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          field.Name = "Success";
+          field.Type = TType.Bool;
+          field.ID = 0;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(Success);
+          oprot.WriteFieldEnd();
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("trackLatency_result(");
+      bool __first = true;
+      if (__isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
       }
       if (Errors != null && __isset.errors) {
         if(!__first) { __sb.Append(", "); }

@@ -24,6 +24,7 @@ public partial class THBannedPublicUser : TBase
 {
   private THPublicUser _user;
   private long _banExpiry;
+  private string _banReason;
 
   public THPublicUser User
   {
@@ -51,6 +52,19 @@ public partial class THBannedPublicUser : TBase
     }
   }
 
+  public string BanReason
+  {
+    get
+    {
+      return _banReason;
+    }
+    set
+    {
+      __isset.banReason = true;
+      this._banReason = value;
+    }
+  }
+
 
   public Isset __isset;
   #if !SILVERLIGHT
@@ -59,6 +73,7 @@ public partial class THBannedPublicUser : TBase
   public struct Isset {
     public bool user;
     public bool banExpiry;
+    public bool banReason;
   }
 
   public THBannedPublicUser() {
@@ -90,6 +105,13 @@ public partial class THBannedPublicUser : TBase
           case 2:
             if (field.Type == TType.I64) {
               BanExpiry = iprot.ReadI64();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 3:
+            if (field.Type == TType.String) {
+              BanReason = iprot.ReadString();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -131,6 +153,14 @@ public partial class THBannedPublicUser : TBase
         oprot.WriteI64(BanExpiry);
         oprot.WriteFieldEnd();
       }
+      if (BanReason != null && __isset.banReason) {
+        field.Name = "banReason";
+        field.Type = TType.String;
+        field.ID = 3;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteString(BanReason);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -154,6 +184,12 @@ public partial class THBannedPublicUser : TBase
       __first = false;
       __sb.Append("BanExpiry: ");
       __sb.Append(BanExpiry);
+    }
+    if (BanReason != null && __isset.banReason) {
+      if(!__first) { __sb.Append(", "); }
+      __first = false;
+      __sb.Append("BanReason: ");
+      __sb.Append(BanReason);
     }
     __sb.Append(")");
     return __sb.ToString();
