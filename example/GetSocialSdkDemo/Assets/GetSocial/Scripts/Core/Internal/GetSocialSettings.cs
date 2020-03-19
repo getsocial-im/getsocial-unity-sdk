@@ -44,9 +44,6 @@ namespace GetSocialSdk.Core
         string _getSocialDefaultConfigurationFilePath = string.Empty;
 
         [SerializeField] 
-        string _iosPushEnvironment = string.Empty;
-
-        [SerializeField] 
         List<string> _deeplinkingDomains = new List<string>();
 
         [SerializeField] 
@@ -169,16 +166,6 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._disableFacebookReferralCheck = value;
-                MarkAssetDirty();
-            }
-        }
-
-        public static string IosPushEnvironment
-        {
-            get { return Instance._iosPushEnvironment; }
-            set
-            {
-                Instance._iosPushEnvironment= value;
                 MarkAssetDirty();
             }
         }

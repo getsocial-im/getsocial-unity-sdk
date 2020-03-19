@@ -327,8 +327,6 @@ namespace GetSocialSdk.Editor
 
                     if (GetSocialSettings.IsIosPushEnabled)
                     {
-                        DrawDashboardSettingToogle("Push notifications environment",
-                            "    " + GetSocialSettings.IosPushEnvironment.Capitalize());
 #if UNITY_2018_1_OR_NEWER                        
                         var richNotificationsEnabled = new GUIContent("Enable Rich Notifications [?]", "If it is enabled, notifications with images/videos can be displayed.");
                         var enableRichNotifications = EditorGUILayout.ToggleLeft(richNotificationsEnabled, GetSocialSettings.IsRichPushNotificationsEnabled);
@@ -346,7 +344,7 @@ namespace GetSocialSdk.Editor
                         SetExtensionBundleId(extensionBundleId);
                         if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
                         {
-                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/social-notifications/unity/rich-notifications/#ios?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/notifications/setup-push-notifications/unity/#receiving-rich-push-notifications-and-badges-ios-only?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
                         }
                         EditorGUILayout.EndHorizontal();
 
@@ -358,7 +356,7 @@ namespace GetSocialSdk.Editor
                         SetExtensionProvisioningProfile(extensionProvisioningProfile);
                         if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
                         {
-                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/social-notifications/unity/rich-notifications/#ios?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/notifications/setup-push-notifications/unity/#receiving-rich-push-notifications-and-badges-ios-only?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
                         }
                         EditorGUILayout.EndHorizontal();
 #endif                        
@@ -657,7 +655,6 @@ namespace GetSocialSdk.Editor
                         GetSocialSettings.IsAndroidPushEnabled = remoteConfig.Android.IsPushNotificationEnabled;
                         GetSocialSettings.IsIosEnabled = remoteConfig.Ios.IsEnabled;
                         GetSocialSettings.IsIosPushEnabled = remoteConfig.Ios.IsPushNotificationEnabled;
-                        GetSocialSettings.IosPushEnvironment = remoteConfig.Ios.PushEnvironment;
                         GetSocialSettings.DeeplinkingDomains = ExtractDeeplinksFromRemoteConfig(remoteConfig);
                         GetSocialSettings.IsAppIdValidated = true;
 
