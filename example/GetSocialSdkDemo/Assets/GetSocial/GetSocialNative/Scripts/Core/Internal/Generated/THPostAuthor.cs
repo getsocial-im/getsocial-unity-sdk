@@ -179,13 +179,13 @@ public partial class THPostAuthor : TBase
             if (field.Type == TType.List) {
               {
                 Identities = new List<THIdentity>();
-                TList _list8 = iprot.ReadListBegin();
-                for( int _i9 = 0; _i9 < _list8.Count; ++_i9)
+                TList _list57 = iprot.ReadListBegin();
+                for( int _i58 = 0; _i58 < _list57.Count; ++_i58)
                 {
-                  THIdentity _elem10;
-                  _elem10 = new THIdentity();
-                  _elem10.Read(iprot);
-                  Identities.Add(_elem10);
+                  THIdentity _elem59;
+                  _elem59 = new THIdentity();
+                  _elem59.Read(iprot);
+                  Identities.Add(_elem59);
                 }
                 iprot.ReadListEnd();
               }
@@ -211,14 +211,14 @@ public partial class THPostAuthor : TBase
             if (field.Type == TType.Map) {
               {
                 PublicProperties = new Dictionary<string, string>();
-                TMap _map11 = iprot.ReadMapBegin();
-                for( int _i12 = 0; _i12 < _map11.Count; ++_i12)
+                TMap _map60 = iprot.ReadMapBegin();
+                for( int _i61 = 0; _i61 < _map60.Count; ++_i61)
                 {
-                  string _key13;
-                  string _val14;
-                  _key13 = iprot.ReadString();
-                  _val14 = iprot.ReadString();
-                  PublicProperties[_key13] = _val14;
+                  string _key62;
+                  string _val63;
+                  _key62 = iprot.ReadString();
+                  _val63 = iprot.ReadString();
+                  PublicProperties[_key62] = _val63;
                 }
                 iprot.ReadMapEnd();
               }
@@ -278,9 +278,9 @@ public partial class THPostAuthor : TBase
         oprot.WriteFieldBegin(field);
         {
           oprot.WriteListBegin(new TList(TType.Struct, Identities.Count));
-          foreach (THIdentity _iter15 in Identities)
+          foreach (THIdentity _iter64 in Identities)
           {
-            _iter15.Write(oprot);
+            _iter64.Write(oprot);
           }
           oprot.WriteListEnd();
         }
@@ -309,10 +309,10 @@ public partial class THPostAuthor : TBase
         oprot.WriteFieldBegin(field);
         {
           oprot.WriteMapBegin(new TMap(TType.String, TType.String, PublicProperties.Count));
-          foreach (string _iter16 in PublicProperties.Keys)
+          foreach (string _iter65 in PublicProperties.Keys)
           {
-            oprot.WriteString(_iter16);
-            oprot.WriteString(PublicProperties[_iter16]);
+            oprot.WriteString(_iter65);
+            oprot.WriteString(PublicProperties[_iter65]);
           }
           oprot.WriteMapEnd();
         }

@@ -27,21 +27,33 @@ public partial class Hades {
     THPrivateUser removeIdentity(string sessionId, THIdentity identity);
     THPrivateUser getPrivateUserByIdentity(string sessionId, THIdentity identity);
     THPublicUser getPublicUser(string sessionId, string id);
+    GetUsersResponse getUsers(GetUsersRequest request);
+    GetUsersResponseById getUsersById(GetUsersRequestById request);
     Dictionary<string, THPublicUser> getPublicUsersByIdentity(string sessionId, string provider, List<string> providerIds);
     List<THUserReference> findUsers(string sessionId, THUsersQuery query);
     int addFriend(string sessionId, string userId);
+    AddFriendsResponse addFriends(AddFriendsRequest request);
     int addFriendsByIdentity(string sessionId, string provider, List<string> providerIds);
     int removeFriend(string sessionId, string userId);
+    RemoveFriendsResponse removeFriends(RemoveFriendsRequest request);
     int setFriends(string sessionId, List<string> userIds);
     int removeFriendsByIdentity(string sessionId, string provider, List<string> providerIds);
     int setFriendsByIdentity(string sessionId, string provider, List<string> providerIds);
     bool isFriend(string sessionId, string userId);
+    AreFriendsResponse areFriends(AreFriendsRequest request);
     int getFriendsCount(string sessionId);
     List<THPublicUser> getFriends(string sessionId, int offset, int limit);
+    GetFriendsResponse getFriendsV2(GetFriendsRequest request);
     List<THSuggestedFriend> getSuggestedFriends(string sessionId, int offset, int limit);
+    GetSuggestedFriendsResponse getSuggestedFriendsV2(GetSuggestedFriendsRequest request);
     List<THUserReference> getMentionFriends(string sessionId);
+    GetTopicsResponse getTopics(GetTopicsRequest request);
+    GetTopicResponse getTopic(GetTopicRequest request);
+    FollowEntitiesResponse followEntities(FollowEntitiesRequest request);
+    UnfollowEntitiesResponse unfollowEntities(UnfollowEntitiesRequest request);
+    GetEntityFollowersResponse getEntityFollowers(GetEntityFollowersRequest request);
+    IsFollowingResponse isFollowing(IsFollowingRequest request);
     THCreateTokenResponse createInviteUrl(string sessionId, THCreateTokenRequest request);
-    THInviteProviders getInviteProviders(string sessionId);
     THTokenInfo processAppOpen(string sessionId, THProcessAppOpenRequest request);
     List<THPublicUser> getReferredUsers(string sessionId);
     List<THReferralUser> getReferredUsersV2(string sessionId, string @event, int offset, int limit);
@@ -52,6 +64,7 @@ public partial class Hades {
     List<THActivityPost> getStickyActivities(string sessionId, string feed);
     List<THActivityPost> getComments(string sessionId, string activityId, THActivitiesQuery query);
     List<string> findTags(string sessionId, THTagsQuery query);
+    FindTagsResponse findTagsV2(FindTagsRequest request);
     THActivityPost getActivity(string sessionId, string activityId);
     THActivityPost postActivity(string sessionId, string feed, THActivityPostContent activityPostContent);
     THActivityPost postComment(string sessionId, string activityId, THActivityPostContent activityPostContent);
@@ -64,12 +77,30 @@ public partial class Hades {
     bool setPushNotificationsEnabled(string sessionId, bool enabled);
     bool isPushNotificationsEnabled(string sessionId);
     THNotificationsSummary sendPushNotification(string sessionId, THCustomNotification notification);
+    SendNotificationResponse sendNotification(SendNotificationRequest request);
     List<THNotification> getNotificationsList(string sessionId, THNotificationsQuery query);
-    bool setNotificationsStatus(string sessionId, THNotificationsSetStatusParams query);
     int getNotificationsCount(string sessionId, THNotificationsQuery query);
+    bool setNotificationsStatus(string sessionId, THNotificationsSetStatusParams query);
+    GetNotificationsResponse getNotifications(GetNotificationsRequest request);
     THPromoCode claimPromoCode(string sessionId, string code);
     THPromoCode getPromoCode(string sessionId, string code);
     THPromoCode setPromoCode(string sessionId, THPromoCode code);
+    CreatePromoCodeResponse createPromoCode(CreatePromoCodeRequest request);
+    GetPromoCodeResponse getPromoCodeV2(GetPromoCodeRequest request);
+    ClaimPromoCodeResponse claimPromoCodeV2(ClaimPromoCodeRequest request);
+    GetActivitiesV2Response getActivitiesV2(GetActivitiesV2Request request);
+    GetActivityByIDResponse getActivityByID(GetActivityByIDRequest request);
+    GetAnnouncementsResponse getAnnouncements(GetAnnouncementsRequest request);
+    CreateActivityResponse createActivity(CreateActivityRequest request);
+    UpdateActivityResponse updateActivity(UpdateActivityRequest request);
+    DeleteActivitiesResponse deleteActivities(DeleteActivitiesRequest request);
+    CreateAnnouncementResponse createAnnouncement(CreateAnnouncementRequest request);
+    UpdateAnnouncementResponse updateAnnouncement(UpdateAnnouncementRequest request);
+    GetReactionsResponse getReactions(GetReactionsRequest request);
+    CreateReactionResponse createReaction(CreateReactionRequest request);
+    DeleteReactionResponse deleteReaction(DeleteReactionRequest request);
+    ReportEntityV2Response reportEntityV2(ReportEntityV2Request request);
+    ActivityTrackViewResponse activityTrackView(ActivityTrackViewRequest request);
     THReceipt validateIAP(string sessionId, byte[] receipt, byte[] signature, string checkpoint, bool isSubscription, bool validateOnline);
     bool trackLatency(TrackLatencyRequest request);
   }
@@ -470,6 +501,80 @@ public partial class Hades {
     }
 
     
+    public GetUsersResponse getUsers(GetUsersRequest request)
+    {
+      send_getUsers(request);
+      return recv_getUsers();
+
+    }
+    public void send_getUsers(GetUsersRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getUsers", TMessageType.Call, seqid_));
+      getUsers_args args = new getUsers_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetUsersResponse recv_getUsers()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getUsers_result result = new getUsers_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getUsers failed: unknown result");
+    }
+
+    
+    public GetUsersResponseById getUsersById(GetUsersRequestById request)
+    {
+      send_getUsersById(request);
+      return recv_getUsersById();
+
+    }
+    public void send_getUsersById(GetUsersRequestById request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getUsersById", TMessageType.Call, seqid_));
+      getUsersById_args args = new getUsersById_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetUsersResponseById recv_getUsersById()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getUsersById_result result = new getUsersById_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getUsersById failed: unknown result");
+    }
+
+    
     public Dictionary<string, THPublicUser> getPublicUsersByIdentity(string sessionId, string provider, List<string> providerIds)
     {
       send_getPublicUsersByIdentity(sessionId, provider, providerIds);
@@ -585,6 +690,43 @@ public partial class Hades {
     }
 
     
+    public AddFriendsResponse addFriends(AddFriendsRequest request)
+    {
+      send_addFriends(request);
+      return recv_addFriends();
+
+    }
+    public void send_addFriends(AddFriendsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("addFriends", TMessageType.Call, seqid_));
+      addFriends_args args = new addFriends_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public AddFriendsResponse recv_addFriends()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      addFriends_result result = new addFriends_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "addFriends failed: unknown result");
+    }
+
+    
     public int addFriendsByIdentity(string sessionId, string provider, List<string> providerIds)
     {
       send_addFriendsByIdentity(sessionId, provider, providerIds);
@@ -659,6 +801,43 @@ public partial class Hades {
         throw result.Errors;
       }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "removeFriend failed: unknown result");
+    }
+
+    
+    public RemoveFriendsResponse removeFriends(RemoveFriendsRequest request)
+    {
+      send_removeFriends(request);
+      return recv_removeFriends();
+
+    }
+    public void send_removeFriends(RemoveFriendsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("removeFriends", TMessageType.Call, seqid_));
+      removeFriends_args args = new removeFriends_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public RemoveFriendsResponse recv_removeFriends()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      removeFriends_result result = new removeFriends_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "removeFriends failed: unknown result");
     }
 
     
@@ -816,6 +995,43 @@ public partial class Hades {
     }
 
     
+    public AreFriendsResponse areFriends(AreFriendsRequest request)
+    {
+      send_areFriends(request);
+      return recv_areFriends();
+
+    }
+    public void send_areFriends(AreFriendsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("areFriends", TMessageType.Call, seqid_));
+      areFriends_args args = new areFriends_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public AreFriendsResponse recv_areFriends()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      areFriends_result result = new areFriends_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "areFriends failed: unknown result");
+    }
+
+    
     public int getFriendsCount(string sessionId)
     {
       send_getFriendsCount(sessionId);
@@ -892,6 +1108,43 @@ public partial class Hades {
     }
 
     
+    public GetFriendsResponse getFriendsV2(GetFriendsRequest request)
+    {
+      send_getFriendsV2(request);
+      return recv_getFriendsV2();
+
+    }
+    public void send_getFriendsV2(GetFriendsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getFriendsV2", TMessageType.Call, seqid_));
+      getFriendsV2_args args = new getFriendsV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetFriendsResponse recv_getFriendsV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getFriendsV2_result result = new getFriendsV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getFriendsV2 failed: unknown result");
+    }
+
+    
     public List<THSuggestedFriend> getSuggestedFriends(string sessionId, int offset, int limit)
     {
       send_getSuggestedFriends(sessionId, offset, limit);
@@ -928,6 +1181,43 @@ public partial class Hades {
         throw result.Errors;
       }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getSuggestedFriends failed: unknown result");
+    }
+
+    
+    public GetSuggestedFriendsResponse getSuggestedFriendsV2(GetSuggestedFriendsRequest request)
+    {
+      send_getSuggestedFriendsV2(request);
+      return recv_getSuggestedFriendsV2();
+
+    }
+    public void send_getSuggestedFriendsV2(GetSuggestedFriendsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getSuggestedFriendsV2", TMessageType.Call, seqid_));
+      getSuggestedFriendsV2_args args = new getSuggestedFriendsV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetSuggestedFriendsResponse recv_getSuggestedFriendsV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getSuggestedFriendsV2_result result = new getSuggestedFriendsV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getSuggestedFriendsV2 failed: unknown result");
     }
 
     
@@ -968,6 +1258,228 @@ public partial class Hades {
     }
 
     
+    public GetTopicsResponse getTopics(GetTopicsRequest request)
+    {
+      send_getTopics(request);
+      return recv_getTopics();
+
+    }
+    public void send_getTopics(GetTopicsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getTopics", TMessageType.Call, seqid_));
+      getTopics_args args = new getTopics_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetTopicsResponse recv_getTopics()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getTopics_result result = new getTopics_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getTopics failed: unknown result");
+    }
+
+    
+    public GetTopicResponse getTopic(GetTopicRequest request)
+    {
+      send_getTopic(request);
+      return recv_getTopic();
+
+    }
+    public void send_getTopic(GetTopicRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getTopic", TMessageType.Call, seqid_));
+      getTopic_args args = new getTopic_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetTopicResponse recv_getTopic()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getTopic_result result = new getTopic_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getTopic failed: unknown result");
+    }
+
+    
+    public FollowEntitiesResponse followEntities(FollowEntitiesRequest request)
+    {
+      send_followEntities(request);
+      return recv_followEntities();
+
+    }
+    public void send_followEntities(FollowEntitiesRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("followEntities", TMessageType.Call, seqid_));
+      followEntities_args args = new followEntities_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public FollowEntitiesResponse recv_followEntities()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      followEntities_result result = new followEntities_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "followEntities failed: unknown result");
+    }
+
+    
+    public UnfollowEntitiesResponse unfollowEntities(UnfollowEntitiesRequest request)
+    {
+      send_unfollowEntities(request);
+      return recv_unfollowEntities();
+
+    }
+    public void send_unfollowEntities(UnfollowEntitiesRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("unfollowEntities", TMessageType.Call, seqid_));
+      unfollowEntities_args args = new unfollowEntities_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public UnfollowEntitiesResponse recv_unfollowEntities()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      unfollowEntities_result result = new unfollowEntities_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "unfollowEntities failed: unknown result");
+    }
+
+    
+    public GetEntityFollowersResponse getEntityFollowers(GetEntityFollowersRequest request)
+    {
+      send_getEntityFollowers(request);
+      return recv_getEntityFollowers();
+
+    }
+    public void send_getEntityFollowers(GetEntityFollowersRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getEntityFollowers", TMessageType.Call, seqid_));
+      getEntityFollowers_args args = new getEntityFollowers_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetEntityFollowersResponse recv_getEntityFollowers()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getEntityFollowers_result result = new getEntityFollowers_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getEntityFollowers failed: unknown result");
+    }
+
+    
+    public IsFollowingResponse isFollowing(IsFollowingRequest request)
+    {
+      send_isFollowing(request);
+      return recv_isFollowing();
+
+    }
+    public void send_isFollowing(IsFollowingRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("isFollowing", TMessageType.Call, seqid_));
+      isFollowing_args args = new isFollowing_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public IsFollowingResponse recv_isFollowing()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      isFollowing_result result = new isFollowing_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "isFollowing failed: unknown result");
+    }
+
+    
     public THCreateTokenResponse createInviteUrl(string sessionId, THCreateTokenRequest request)
     {
       send_createInviteUrl(sessionId, request);
@@ -1003,43 +1515,6 @@ public partial class Hades {
         throw result.Errors;
       }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "createInviteUrl failed: unknown result");
-    }
-
-    
-    public THInviteProviders getInviteProviders(string sessionId)
-    {
-      send_getInviteProviders(sessionId);
-      return recv_getInviteProviders();
-
-    }
-    public void send_getInviteProviders(string sessionId)
-    {
-      oprot_.WriteMessageBegin(new TMessage("getInviteProviders", TMessageType.Call, seqid_));
-      getInviteProviders_args args = new getInviteProviders_args();
-      args.SessionId = sessionId;
-      args.Write(oprot_);
-      oprot_.WriteMessageEnd();
-      oprot_.Transport.Flush();
-    }
-
-    public THInviteProviders recv_getInviteProviders()
-    {
-      TMessage msg = iprot_.ReadMessageBegin();
-      if (msg.Type == TMessageType.Exception) {
-        TApplicationException x = TApplicationException.Read(iprot_);
-        iprot_.ReadMessageEnd();
-        throw x;
-      }
-      getInviteProviders_result result = new getInviteProviders_result();
-      result.Read(iprot_);
-      iprot_.ReadMessageEnd();
-      if (result.__isset.success) {
-        return result.Success;
-      }
-      if (result.__isset.errors) {
-        throw result.Errors;
-      }
-      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getInviteProviders failed: unknown result");
     }
 
     
@@ -1427,6 +1902,43 @@ public partial class Hades {
         throw result.Errors;
       }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "findTags failed: unknown result");
+    }
+
+    
+    public FindTagsResponse findTagsV2(FindTagsRequest request)
+    {
+      send_findTagsV2(request);
+      return recv_findTagsV2();
+
+    }
+    public void send_findTagsV2(FindTagsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("findTagsV2", TMessageType.Call, seqid_));
+      findTagsV2_args args = new findTagsV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public FindTagsResponse recv_findTagsV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      findTagsV2_result result = new findTagsV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "findTagsV2 failed: unknown result");
     }
 
     
@@ -1892,6 +2404,43 @@ public partial class Hades {
     }
 
     
+    public SendNotificationResponse sendNotification(SendNotificationRequest request)
+    {
+      send_sendNotification(request);
+      return recv_sendNotification();
+
+    }
+    public void send_sendNotification(SendNotificationRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("sendNotification", TMessageType.Call, seqid_));
+      sendNotification_args args = new sendNotification_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public SendNotificationResponse recv_sendNotification()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      sendNotification_result result = new sendNotification_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "sendNotification failed: unknown result");
+    }
+
+    
     public List<THNotification> getNotificationsList(string sessionId, THNotificationsQuery query)
     {
       send_getNotificationsList(sessionId, query);
@@ -1927,6 +2476,44 @@ public partial class Hades {
         throw result.Errors;
       }
       throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getNotificationsList failed: unknown result");
+    }
+
+    
+    public int getNotificationsCount(string sessionId, THNotificationsQuery query)
+    {
+      send_getNotificationsCount(sessionId, query);
+      return recv_getNotificationsCount();
+
+    }
+    public void send_getNotificationsCount(string sessionId, THNotificationsQuery query)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getNotificationsCount", TMessageType.Call, seqid_));
+      getNotificationsCount_args args = new getNotificationsCount_args();
+      args.SessionId = sessionId;
+      args.Query = query;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public int recv_getNotificationsCount()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getNotificationsCount_result result = new getNotificationsCount_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getNotificationsCount failed: unknown result");
     }
 
     
@@ -1968,24 +2555,23 @@ public partial class Hades {
     }
 
     
-    public int getNotificationsCount(string sessionId, THNotificationsQuery query)
+    public GetNotificationsResponse getNotifications(GetNotificationsRequest request)
     {
-      send_getNotificationsCount(sessionId, query);
-      return recv_getNotificationsCount();
+      send_getNotifications(request);
+      return recv_getNotifications();
 
     }
-    public void send_getNotificationsCount(string sessionId, THNotificationsQuery query)
+    public void send_getNotifications(GetNotificationsRequest request)
     {
-      oprot_.WriteMessageBegin(new TMessage("getNotificationsCount", TMessageType.Call, seqid_));
-      getNotificationsCount_args args = new getNotificationsCount_args();
-      args.SessionId = sessionId;
-      args.Query = query;
+      oprot_.WriteMessageBegin(new TMessage("getNotifications", TMessageType.Call, seqid_));
+      getNotifications_args args = new getNotifications_args();
+      args.Request = request;
       args.Write(oprot_);
       oprot_.WriteMessageEnd();
       oprot_.Transport.Flush();
     }
 
-    public int recv_getNotificationsCount()
+    public GetNotificationsResponse recv_getNotifications()
     {
       TMessage msg = iprot_.ReadMessageBegin();
       if (msg.Type == TMessageType.Exception) {
@@ -1993,7 +2579,7 @@ public partial class Hades {
         iprot_.ReadMessageEnd();
         throw x;
       }
-      getNotificationsCount_result result = new getNotificationsCount_result();
+      getNotifications_result result = new getNotifications_result();
       result.Read(iprot_);
       iprot_.ReadMessageEnd();
       if (result.__isset.success) {
@@ -2002,7 +2588,7 @@ public partial class Hades {
       if (result.__isset.errors) {
         throw result.Errors;
       }
-      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getNotificationsCount failed: unknown result");
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getNotifications failed: unknown result");
     }
 
     
@@ -2120,6 +2706,598 @@ public partial class Hades {
     }
 
     
+    public CreatePromoCodeResponse createPromoCode(CreatePromoCodeRequest request)
+    {
+      send_createPromoCode(request);
+      return recv_createPromoCode();
+
+    }
+    public void send_createPromoCode(CreatePromoCodeRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("createPromoCode", TMessageType.Call, seqid_));
+      createPromoCode_args args = new createPromoCode_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public CreatePromoCodeResponse recv_createPromoCode()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      createPromoCode_result result = new createPromoCode_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "createPromoCode failed: unknown result");
+    }
+
+    
+    public GetPromoCodeResponse getPromoCodeV2(GetPromoCodeRequest request)
+    {
+      send_getPromoCodeV2(request);
+      return recv_getPromoCodeV2();
+
+    }
+    public void send_getPromoCodeV2(GetPromoCodeRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getPromoCodeV2", TMessageType.Call, seqid_));
+      getPromoCodeV2_args args = new getPromoCodeV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetPromoCodeResponse recv_getPromoCodeV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getPromoCodeV2_result result = new getPromoCodeV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getPromoCodeV2 failed: unknown result");
+    }
+
+    
+    public ClaimPromoCodeResponse claimPromoCodeV2(ClaimPromoCodeRequest request)
+    {
+      send_claimPromoCodeV2(request);
+      return recv_claimPromoCodeV2();
+
+    }
+    public void send_claimPromoCodeV2(ClaimPromoCodeRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("claimPromoCodeV2", TMessageType.Call, seqid_));
+      claimPromoCodeV2_args args = new claimPromoCodeV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public ClaimPromoCodeResponse recv_claimPromoCodeV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      claimPromoCodeV2_result result = new claimPromoCodeV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "claimPromoCodeV2 failed: unknown result");
+    }
+
+    
+    public GetActivitiesV2Response getActivitiesV2(GetActivitiesV2Request request)
+    {
+      send_getActivitiesV2(request);
+      return recv_getActivitiesV2();
+
+    }
+    public void send_getActivitiesV2(GetActivitiesV2Request request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getActivitiesV2", TMessageType.Call, seqid_));
+      getActivitiesV2_args args = new getActivitiesV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetActivitiesV2Response recv_getActivitiesV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getActivitiesV2_result result = new getActivitiesV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getActivitiesV2 failed: unknown result");
+    }
+
+    
+    public GetActivityByIDResponse getActivityByID(GetActivityByIDRequest request)
+    {
+      send_getActivityByID(request);
+      return recv_getActivityByID();
+
+    }
+    public void send_getActivityByID(GetActivityByIDRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getActivityByID", TMessageType.Call, seqid_));
+      getActivityByID_args args = new getActivityByID_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetActivityByIDResponse recv_getActivityByID()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getActivityByID_result result = new getActivityByID_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getActivityByID failed: unknown result");
+    }
+
+    
+    public GetAnnouncementsResponse getAnnouncements(GetAnnouncementsRequest request)
+    {
+      send_getAnnouncements(request);
+      return recv_getAnnouncements();
+
+    }
+    public void send_getAnnouncements(GetAnnouncementsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getAnnouncements", TMessageType.Call, seqid_));
+      getAnnouncements_args args = new getAnnouncements_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetAnnouncementsResponse recv_getAnnouncements()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getAnnouncements_result result = new getAnnouncements_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getAnnouncements failed: unknown result");
+    }
+
+    
+    public CreateActivityResponse createActivity(CreateActivityRequest request)
+    {
+      send_createActivity(request);
+      return recv_createActivity();
+
+    }
+    public void send_createActivity(CreateActivityRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("createActivity", TMessageType.Call, seqid_));
+      createActivity_args args = new createActivity_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public CreateActivityResponse recv_createActivity()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      createActivity_result result = new createActivity_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "createActivity failed: unknown result");
+    }
+
+    
+    public UpdateActivityResponse updateActivity(UpdateActivityRequest request)
+    {
+      send_updateActivity(request);
+      return recv_updateActivity();
+
+    }
+    public void send_updateActivity(UpdateActivityRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("updateActivity", TMessageType.Call, seqid_));
+      updateActivity_args args = new updateActivity_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public UpdateActivityResponse recv_updateActivity()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      updateActivity_result result = new updateActivity_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "updateActivity failed: unknown result");
+    }
+
+    
+    public DeleteActivitiesResponse deleteActivities(DeleteActivitiesRequest request)
+    {
+      send_deleteActivities(request);
+      return recv_deleteActivities();
+
+    }
+    public void send_deleteActivities(DeleteActivitiesRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("deleteActivities", TMessageType.Call, seqid_));
+      deleteActivities_args args = new deleteActivities_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public DeleteActivitiesResponse recv_deleteActivities()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      deleteActivities_result result = new deleteActivities_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "deleteActivities failed: unknown result");
+    }
+
+    
+    public CreateAnnouncementResponse createAnnouncement(CreateAnnouncementRequest request)
+    {
+      send_createAnnouncement(request);
+      return recv_createAnnouncement();
+
+    }
+    public void send_createAnnouncement(CreateAnnouncementRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("createAnnouncement", TMessageType.Call, seqid_));
+      createAnnouncement_args args = new createAnnouncement_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public CreateAnnouncementResponse recv_createAnnouncement()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      createAnnouncement_result result = new createAnnouncement_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "createAnnouncement failed: unknown result");
+    }
+
+    
+    public UpdateAnnouncementResponse updateAnnouncement(UpdateAnnouncementRequest request)
+    {
+      send_updateAnnouncement(request);
+      return recv_updateAnnouncement();
+
+    }
+    public void send_updateAnnouncement(UpdateAnnouncementRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("updateAnnouncement", TMessageType.Call, seqid_));
+      updateAnnouncement_args args = new updateAnnouncement_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public UpdateAnnouncementResponse recv_updateAnnouncement()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      updateAnnouncement_result result = new updateAnnouncement_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "updateAnnouncement failed: unknown result");
+    }
+
+    
+    public GetReactionsResponse getReactions(GetReactionsRequest request)
+    {
+      send_getReactions(request);
+      return recv_getReactions();
+
+    }
+    public void send_getReactions(GetReactionsRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("getReactions", TMessageType.Call, seqid_));
+      getReactions_args args = new getReactions_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public GetReactionsResponse recv_getReactions()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      getReactions_result result = new getReactions_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getReactions failed: unknown result");
+    }
+
+    
+    public CreateReactionResponse createReaction(CreateReactionRequest request)
+    {
+      send_createReaction(request);
+      return recv_createReaction();
+
+    }
+    public void send_createReaction(CreateReactionRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("createReaction", TMessageType.Call, seqid_));
+      createReaction_args args = new createReaction_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public CreateReactionResponse recv_createReaction()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      createReaction_result result = new createReaction_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "createReaction failed: unknown result");
+    }
+
+    
+    public DeleteReactionResponse deleteReaction(DeleteReactionRequest request)
+    {
+      send_deleteReaction(request);
+      return recv_deleteReaction();
+
+    }
+    public void send_deleteReaction(DeleteReactionRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("deleteReaction", TMessageType.Call, seqid_));
+      deleteReaction_args args = new deleteReaction_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public DeleteReactionResponse recv_deleteReaction()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      deleteReaction_result result = new deleteReaction_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "deleteReaction failed: unknown result");
+    }
+
+    
+    public ReportEntityV2Response reportEntityV2(ReportEntityV2Request request)
+    {
+      send_reportEntityV2(request);
+      return recv_reportEntityV2();
+
+    }
+    public void send_reportEntityV2(ReportEntityV2Request request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("reportEntityV2", TMessageType.Call, seqid_));
+      reportEntityV2_args args = new reportEntityV2_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public ReportEntityV2Response recv_reportEntityV2()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      reportEntityV2_result result = new reportEntityV2_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "reportEntityV2 failed: unknown result");
+    }
+
+    
+    public ActivityTrackViewResponse activityTrackView(ActivityTrackViewRequest request)
+    {
+      send_activityTrackView(request);
+      return recv_activityTrackView();
+
+    }
+    public void send_activityTrackView(ActivityTrackViewRequest request)
+    {
+      oprot_.WriteMessageBegin(new TMessage("activityTrackView", TMessageType.Call, seqid_));
+      activityTrackView_args args = new activityTrackView_args();
+      args.Request = request;
+      args.Write(oprot_);
+      oprot_.WriteMessageEnd();
+      oprot_.Transport.Flush();
+    }
+
+    public ActivityTrackViewResponse recv_activityTrackView()
+    {
+      TMessage msg = iprot_.ReadMessageBegin();
+      if (msg.Type == TMessageType.Exception) {
+        TApplicationException x = TApplicationException.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        throw x;
+      }
+      activityTrackView_result result = new activityTrackView_result();
+      result.Read(iprot_);
+      iprot_.ReadMessageEnd();
+      if (result.__isset.success) {
+        return result.Success;
+      }
+      if (result.__isset.errors) {
+        throw result.Errors;
+      }
+      throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "activityTrackView failed: unknown result");
+    }
+
+    
     public THReceipt validateIAP(string sessionId, byte[] receipt, byte[] signature, string checkpoint, bool isSubscription, bool validateOnline)
     {
       send_validateIAP(sessionId, receipt, signature, checkpoint, isSubscription, validateOnline);
@@ -2212,21 +3390,33 @@ public partial class Hades {
       processMap_["removeIdentity"] = removeIdentity_Process;
       processMap_["getPrivateUserByIdentity"] = getPrivateUserByIdentity_Process;
       processMap_["getPublicUser"] = getPublicUser_Process;
+      processMap_["getUsers"] = getUsers_Process;
+      processMap_["getUsersById"] = getUsersById_Process;
       processMap_["getPublicUsersByIdentity"] = getPublicUsersByIdentity_Process;
       processMap_["findUsers"] = findUsers_Process;
       processMap_["addFriend"] = addFriend_Process;
+      processMap_["addFriends"] = addFriends_Process;
       processMap_["addFriendsByIdentity"] = addFriendsByIdentity_Process;
       processMap_["removeFriend"] = removeFriend_Process;
+      processMap_["removeFriends"] = removeFriends_Process;
       processMap_["setFriends"] = setFriends_Process;
       processMap_["removeFriendsByIdentity"] = removeFriendsByIdentity_Process;
       processMap_["setFriendsByIdentity"] = setFriendsByIdentity_Process;
       processMap_["isFriend"] = isFriend_Process;
+      processMap_["areFriends"] = areFriends_Process;
       processMap_["getFriendsCount"] = getFriendsCount_Process;
       processMap_["getFriends"] = getFriends_Process;
+      processMap_["getFriendsV2"] = getFriendsV2_Process;
       processMap_["getSuggestedFriends"] = getSuggestedFriends_Process;
+      processMap_["getSuggestedFriendsV2"] = getSuggestedFriendsV2_Process;
       processMap_["getMentionFriends"] = getMentionFriends_Process;
+      processMap_["getTopics"] = getTopics_Process;
+      processMap_["getTopic"] = getTopic_Process;
+      processMap_["followEntities"] = followEntities_Process;
+      processMap_["unfollowEntities"] = unfollowEntities_Process;
+      processMap_["getEntityFollowers"] = getEntityFollowers_Process;
+      processMap_["isFollowing"] = isFollowing_Process;
       processMap_["createInviteUrl"] = createInviteUrl_Process;
-      processMap_["getInviteProviders"] = getInviteProviders_Process;
       processMap_["processAppOpen"] = processAppOpen_Process;
       processMap_["getReferredUsers"] = getReferredUsers_Process;
       processMap_["getReferredUsersV2"] = getReferredUsersV2_Process;
@@ -2237,6 +3427,7 @@ public partial class Hades {
       processMap_["getStickyActivities"] = getStickyActivities_Process;
       processMap_["getComments"] = getComments_Process;
       processMap_["findTags"] = findTags_Process;
+      processMap_["findTagsV2"] = findTagsV2_Process;
       processMap_["getActivity"] = getActivity_Process;
       processMap_["postActivity"] = postActivity_Process;
       processMap_["postComment"] = postComment_Process;
@@ -2249,12 +3440,30 @@ public partial class Hades {
       processMap_["setPushNotificationsEnabled"] = setPushNotificationsEnabled_Process;
       processMap_["isPushNotificationsEnabled"] = isPushNotificationsEnabled_Process;
       processMap_["sendPushNotification"] = sendPushNotification_Process;
+      processMap_["sendNotification"] = sendNotification_Process;
       processMap_["getNotificationsList"] = getNotificationsList_Process;
-      processMap_["setNotificationsStatus"] = setNotificationsStatus_Process;
       processMap_["getNotificationsCount"] = getNotificationsCount_Process;
+      processMap_["setNotificationsStatus"] = setNotificationsStatus_Process;
+      processMap_["getNotifications"] = getNotifications_Process;
       processMap_["claimPromoCode"] = claimPromoCode_Process;
       processMap_["getPromoCode"] = getPromoCode_Process;
       processMap_["setPromoCode"] = setPromoCode_Process;
+      processMap_["createPromoCode"] = createPromoCode_Process;
+      processMap_["getPromoCodeV2"] = getPromoCodeV2_Process;
+      processMap_["claimPromoCodeV2"] = claimPromoCodeV2_Process;
+      processMap_["getActivitiesV2"] = getActivitiesV2_Process;
+      processMap_["getActivityByID"] = getActivityByID_Process;
+      processMap_["getAnnouncements"] = getAnnouncements_Process;
+      processMap_["createActivity"] = createActivity_Process;
+      processMap_["updateActivity"] = updateActivity_Process;
+      processMap_["deleteActivities"] = deleteActivities_Process;
+      processMap_["createAnnouncement"] = createAnnouncement_Process;
+      processMap_["updateAnnouncement"] = updateAnnouncement_Process;
+      processMap_["getReactions"] = getReactions_Process;
+      processMap_["createReaction"] = createReaction_Process;
+      processMap_["deleteReaction"] = deleteReaction_Process;
+      processMap_["reportEntityV2"] = reportEntityV2_Process;
+      processMap_["activityTrackView"] = activityTrackView_Process;
       processMap_["validateIAP"] = validateIAP_Process;
       processMap_["trackLatency"] = trackLatency_Process;
     }
@@ -2597,6 +3806,76 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
+    public void getUsers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getUsers_args args = new getUsers_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getUsers_result result = new getUsers_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getUsers(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getUsers", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getUsers", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getUsersById_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getUsersById_args args = new getUsersById_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getUsersById_result result = new getUsersById_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getUsersById(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getUsersById", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getUsersById", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
     public void getPublicUsersByIdentity_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
       getPublicUsersByIdentity_args args = new getPublicUsersByIdentity_args();
@@ -2702,6 +3981,41 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
+    public void addFriends_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      addFriends_args args = new addFriends_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      addFriends_result result = new addFriends_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.addFriends(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("addFriends", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("addFriends", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
     public void addFriendsByIdentity_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
       addFriendsByIdentity_args args = new addFriendsByIdentity_args();
@@ -2766,6 +4080,41 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("removeFriend", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void removeFriends_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      removeFriends_args args = new removeFriends_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      removeFriends_result result = new removeFriends_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.removeFriends(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("removeFriends", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("removeFriends", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -2912,6 +4261,41 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
+    public void areFriends_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      areFriends_args args = new areFriends_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      areFriends_result result = new areFriends_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.areFriends(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("areFriends", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("areFriends", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
     public void getFriendsCount_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
       getFriendsCount_args args = new getFriendsCount_args();
@@ -2982,6 +4366,41 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
+    public void getFriendsV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getFriendsV2_args args = new getFriendsV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getFriendsV2_result result = new getFriendsV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getFriendsV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getFriendsV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getFriendsV2", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
     public void getSuggestedFriends_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
       getSuggestedFriends_args args = new getSuggestedFriends_args();
@@ -3011,6 +4430,41 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("getSuggestedFriends", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getSuggestedFriendsV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getSuggestedFriendsV2_args args = new getSuggestedFriendsV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getSuggestedFriendsV2_result result = new getSuggestedFriendsV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getSuggestedFriendsV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getSuggestedFriendsV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getSuggestedFriendsV2", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -3052,6 +4506,216 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
+    public void getTopics_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getTopics_args args = new getTopics_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getTopics_result result = new getTopics_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getTopics(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getTopics", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getTopics", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getTopic_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getTopic_args args = new getTopic_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getTopic_result result = new getTopic_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getTopic(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getTopic", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getTopic", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void followEntities_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      followEntities_args args = new followEntities_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      followEntities_result result = new followEntities_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.followEntities(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("followEntities", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("followEntities", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void unfollowEntities_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      unfollowEntities_args args = new unfollowEntities_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      unfollowEntities_result result = new unfollowEntities_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.unfollowEntities(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("unfollowEntities", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("unfollowEntities", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getEntityFollowers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getEntityFollowers_args args = new getEntityFollowers_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getEntityFollowers_result result = new getEntityFollowers_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getEntityFollowers(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getEntityFollowers", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getEntityFollowers", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void isFollowing_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      isFollowing_args args = new isFollowing_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      isFollowing_result result = new isFollowing_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.isFollowing(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("isFollowing", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("isFollowing", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
     public void createInviteUrl_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
       createInviteUrl_args args = new createInviteUrl_args();
@@ -3081,41 +4745,6 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("createInviteUrl", TMessageType.Exception, seqid));
-        x.Write(oprot);
-      }
-      oprot.WriteMessageEnd();
-      oprot.Transport.Flush();
-    }
-
-    public void getInviteProviders_Process(int seqid, TProtocol iprot, TProtocol oprot)
-    {
-      getInviteProviders_args args = new getInviteProviders_args();
-      args.Read(iprot);
-      iprot.ReadMessageEnd();
-      getInviteProviders_result result = new getInviteProviders_result();
-      try
-      {
-        try
-        {
-          result.Success = iface_.getInviteProviders(args.SessionId);
-        }
-        catch (THErrors errors)
-        {
-          result.Errors = errors;
-        }
-        oprot.WriteMessageBegin(new TMessage("getInviteProviders", TMessageType.Reply, seqid)); 
-        result.Write(oprot);
-      }
-      catch (TTransportException)
-      {
-        throw;
-      }
-      catch (Exception ex)
-      {
-        Console.Error.WriteLine("Error occurred in processor:");
-        Console.Error.WriteLine(ex.ToString());
-        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
-        oprot.WriteMessageBegin(new TMessage("getInviteProviders", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -3466,6 +5095,41 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("findTags", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void findTagsV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      findTagsV2_args args = new findTagsV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      findTagsV2_result result = new findTagsV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.findTagsV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("findTagsV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("findTagsV2", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -3892,6 +5556,41 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
+    public void sendNotification_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      sendNotification_args args = new sendNotification_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      sendNotification_result result = new sendNotification_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.sendNotification(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("sendNotification", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("sendNotification", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
     public void getNotificationsList_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
       getNotificationsList_args args = new getNotificationsList_args();
@@ -3921,6 +5620,41 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("getNotificationsList", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getNotificationsCount_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getNotificationsCount_args args = new getNotificationsCount_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getNotificationsCount_result result = new getNotificationsCount_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getNotificationsCount(args.SessionId, args.Query);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getNotificationsCount", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getNotificationsCount", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -3962,23 +5696,23 @@ public partial class Hades {
       oprot.Transport.Flush();
     }
 
-    public void getNotificationsCount_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    public void getNotifications_Process(int seqid, TProtocol iprot, TProtocol oprot)
     {
-      getNotificationsCount_args args = new getNotificationsCount_args();
+      getNotifications_args args = new getNotifications_args();
       args.Read(iprot);
       iprot.ReadMessageEnd();
-      getNotificationsCount_result result = new getNotificationsCount_result();
+      getNotifications_result result = new getNotifications_result();
       try
       {
         try
         {
-          result.Success = iface_.getNotificationsCount(args.SessionId, args.Query);
+          result.Success = iface_.getNotifications(args.Request);
         }
         catch (THErrors errors)
         {
           result.Errors = errors;
         }
-        oprot.WriteMessageBegin(new TMessage("getNotificationsCount", TMessageType.Reply, seqid)); 
+        oprot.WriteMessageBegin(new TMessage("getNotifications", TMessageType.Reply, seqid)); 
         result.Write(oprot);
       }
       catch (TTransportException)
@@ -3990,7 +5724,7 @@ public partial class Hades {
         Console.Error.WriteLine("Error occurred in processor:");
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
-        oprot.WriteMessageBegin(new TMessage("getNotificationsCount", TMessageType.Exception, seqid));
+        oprot.WriteMessageBegin(new TMessage("getNotifications", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -4096,6 +5830,566 @@ public partial class Hades {
         Console.Error.WriteLine(ex.ToString());
         TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
         oprot.WriteMessageBegin(new TMessage("setPromoCode", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void createPromoCode_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      createPromoCode_args args = new createPromoCode_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      createPromoCode_result result = new createPromoCode_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.createPromoCode(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("createPromoCode", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("createPromoCode", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getPromoCodeV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getPromoCodeV2_args args = new getPromoCodeV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getPromoCodeV2_result result = new getPromoCodeV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getPromoCodeV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getPromoCodeV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getPromoCodeV2", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void claimPromoCodeV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      claimPromoCodeV2_args args = new claimPromoCodeV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      claimPromoCodeV2_result result = new claimPromoCodeV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.claimPromoCodeV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("claimPromoCodeV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("claimPromoCodeV2", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getActivitiesV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getActivitiesV2_args args = new getActivitiesV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getActivitiesV2_result result = new getActivitiesV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getActivitiesV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getActivitiesV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getActivitiesV2", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getActivityByID_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getActivityByID_args args = new getActivityByID_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getActivityByID_result result = new getActivityByID_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getActivityByID(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getActivityByID", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getActivityByID", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getAnnouncements_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getAnnouncements_args args = new getAnnouncements_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getAnnouncements_result result = new getAnnouncements_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getAnnouncements(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getAnnouncements", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getAnnouncements", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void createActivity_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      createActivity_args args = new createActivity_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      createActivity_result result = new createActivity_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.createActivity(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("createActivity", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("createActivity", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void updateActivity_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      updateActivity_args args = new updateActivity_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      updateActivity_result result = new updateActivity_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.updateActivity(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("updateActivity", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("updateActivity", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void deleteActivities_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      deleteActivities_args args = new deleteActivities_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      deleteActivities_result result = new deleteActivities_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.deleteActivities(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("deleteActivities", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("deleteActivities", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void createAnnouncement_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      createAnnouncement_args args = new createAnnouncement_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      createAnnouncement_result result = new createAnnouncement_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.createAnnouncement(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("createAnnouncement", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("createAnnouncement", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void updateAnnouncement_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      updateAnnouncement_args args = new updateAnnouncement_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      updateAnnouncement_result result = new updateAnnouncement_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.updateAnnouncement(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("updateAnnouncement", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("updateAnnouncement", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void getReactions_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      getReactions_args args = new getReactions_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      getReactions_result result = new getReactions_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.getReactions(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("getReactions", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("getReactions", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void createReaction_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      createReaction_args args = new createReaction_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      createReaction_result result = new createReaction_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.createReaction(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("createReaction", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("createReaction", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void deleteReaction_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      deleteReaction_args args = new deleteReaction_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      deleteReaction_result result = new deleteReaction_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.deleteReaction(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("deleteReaction", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("deleteReaction", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void reportEntityV2_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      reportEntityV2_args args = new reportEntityV2_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      reportEntityV2_result result = new reportEntityV2_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.reportEntityV2(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("reportEntityV2", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("reportEntityV2", TMessageType.Exception, seqid));
+        x.Write(oprot);
+      }
+      oprot.WriteMessageEnd();
+      oprot.Transport.Flush();
+    }
+
+    public void activityTrackView_Process(int seqid, TProtocol iprot, TProtocol oprot)
+    {
+      activityTrackView_args args = new activityTrackView_args();
+      args.Read(iprot);
+      iprot.ReadMessageEnd();
+      activityTrackView_result result = new activityTrackView_result();
+      try
+      {
+        try
+        {
+          result.Success = iface_.activityTrackView(args.Request);
+        }
+        catch (THErrors errors)
+        {
+          result.Errors = errors;
+        }
+        oprot.WriteMessageBegin(new TMessage("activityTrackView", TMessageType.Reply, seqid)); 
+        result.Write(oprot);
+      }
+      catch (TTransportException)
+      {
+        throw;
+      }
+      catch (Exception ex)
+      {
+        Console.Error.WriteLine("Error occurred in processor:");
+        Console.Error.WriteLine(ex.ToString());
+        TApplicationException x = new TApplicationException      (TApplicationException.ExceptionType.InternalError," Internal error.");
+        oprot.WriteMessageBegin(new TMessage("activityTrackView", TMessageType.Exception, seqid));
         x.Write(oprot);
       }
       oprot.WriteMessageEnd();
@@ -6681,6 +8975,524 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class getUsers_args : TBase
+  {
+    private GetUsersRequest _request;
+
+    public GetUsersRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getUsers_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetUsersRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getUsers_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getUsers_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getUsers_result : TBase
+  {
+    private GetUsersResponse _success;
+    private THErrors _errors;
+
+    public GetUsersResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getUsers_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetUsersResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getUsers_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getUsers_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getUsersById_args : TBase
+  {
+    private GetUsersRequestById _request;
+
+    public GetUsersRequestById Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getUsersById_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetUsersRequestById();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getUsersById_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getUsersById_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getUsersById_result : TBase
+  {
+    private GetUsersResponseById _success;
+    private THErrors _errors;
+
+    public GetUsersResponseById Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getUsersById_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetUsersResponseById();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getUsersById_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getUsersById_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class getPublicUsersByIdentity_args : TBase
   {
     private string _sessionId;
@@ -7651,6 +10463,265 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class addFriends_args : TBase
+  {
+    private AddFriendsRequest _request;
+
+    public AddFriendsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public addFriends_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new AddFriendsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("addFriends_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("addFriends_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class addFriends_result : TBase
+  {
+    private AddFriendsResponse _success;
+    private THErrors _errors;
+
+    public AddFriendsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public addFriends_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new AddFriendsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("addFriends_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("addFriends_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class addFriendsByIdentity_args : TBase
   {
     private string _sessionId;
@@ -8269,6 +11340,265 @@ public partial class Hades {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class removeFriends_args : TBase
+  {
+    private RemoveFriendsRequest _request;
+
+    public RemoveFriendsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public removeFriends_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new RemoveFriendsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("removeFriends_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("removeFriends_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class removeFriends_result : TBase
+  {
+    private RemoveFriendsResponse _success;
+    private THErrors _errors;
+
+    public RemoveFriendsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public removeFriends_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new RemoveFriendsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("removeFriends_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("removeFriends_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
       }
       if (Errors != null && __isset.errors) {
         if(!__first) { __sb.Append(", "); }
@@ -9573,6 +12903,265 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class areFriends_args : TBase
+  {
+    private AreFriendsRequest _request;
+
+    public AreFriendsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public areFriends_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new AreFriendsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("areFriends_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("areFriends_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class areFriends_result : TBase
+  {
+    private AreFriendsResponse _success;
+    private THErrors _errors;
+
+    public AreFriendsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public areFriends_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new AreFriendsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("areFriends_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("areFriends_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class getFriendsCount_args : TBase
   {
     private string _sessionId;
@@ -10175,6 +13764,265 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class getFriendsV2_args : TBase
+  {
+    private GetFriendsRequest _request;
+
+    public GetFriendsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getFriendsV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetFriendsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getFriendsV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getFriendsV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getFriendsV2_result : TBase
+  {
+    private GetFriendsResponse _success;
+    private THErrors _errors;
+
+    public GetFriendsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getFriendsV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetFriendsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getFriendsV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getFriendsV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class getSuggestedFriends_args : TBase
   {
     private string _sessionId;
@@ -10522,6 +14370,265 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class getSuggestedFriendsV2_args : TBase
+  {
+    private GetSuggestedFriendsRequest _request;
+
+    public GetSuggestedFriendsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getSuggestedFriendsV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetSuggestedFriendsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getSuggestedFriendsV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getSuggestedFriendsV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getSuggestedFriendsV2_result : TBase
+  {
+    private GetSuggestedFriendsResponse _success;
+    private THErrors _errors;
+
+    public GetSuggestedFriendsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getSuggestedFriendsV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetSuggestedFriendsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getSuggestedFriendsV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getSuggestedFriendsV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class getMentionFriends_args : TBase
   {
     private string _sessionId;
@@ -10780,6 +14887,1560 @@ public partial class Hades {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getTopics_args : TBase
+  {
+    private GetTopicsRequest _request;
+
+    public GetTopicsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getTopics_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetTopicsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getTopics_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getTopics_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getTopics_result : TBase
+  {
+    private GetTopicsResponse _success;
+    private THErrors _errors;
+
+    public GetTopicsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getTopics_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetTopicsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getTopics_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getTopics_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getTopic_args : TBase
+  {
+    private GetTopicRequest _request;
+
+    public GetTopicRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getTopic_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetTopicRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getTopic_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getTopic_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getTopic_result : TBase
+  {
+    private GetTopicResponse _success;
+    private THErrors _errors;
+
+    public GetTopicResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getTopic_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetTopicResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getTopic_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getTopic_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class followEntities_args : TBase
+  {
+    private FollowEntitiesRequest _request;
+
+    public FollowEntitiesRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public followEntities_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new FollowEntitiesRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("followEntities_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("followEntities_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class followEntities_result : TBase
+  {
+    private FollowEntitiesResponse _success;
+    private THErrors _errors;
+
+    public FollowEntitiesResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public followEntities_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new FollowEntitiesResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("followEntities_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("followEntities_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class unfollowEntities_args : TBase
+  {
+    private UnfollowEntitiesRequest _request;
+
+    public UnfollowEntitiesRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public unfollowEntities_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new UnfollowEntitiesRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("unfollowEntities_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("unfollowEntities_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class unfollowEntities_result : TBase
+  {
+    private UnfollowEntitiesResponse _success;
+    private THErrors _errors;
+
+    public UnfollowEntitiesResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public unfollowEntities_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new UnfollowEntitiesResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("unfollowEntities_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("unfollowEntities_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getEntityFollowers_args : TBase
+  {
+    private GetEntityFollowersRequest _request;
+
+    public GetEntityFollowersRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getEntityFollowers_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetEntityFollowersRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getEntityFollowers_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getEntityFollowers_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getEntityFollowers_result : TBase
+  {
+    private GetEntityFollowersResponse _success;
+    private THErrors _errors;
+
+    public GetEntityFollowersResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getEntityFollowers_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetEntityFollowersResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getEntityFollowers_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getEntityFollowers_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class isFollowing_args : TBase
+  {
+    private IsFollowingRequest _request;
+
+    public IsFollowingRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public isFollowing_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new IsFollowingRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("isFollowing_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("isFollowing_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class isFollowing_result : TBase
+  {
+    private IsFollowingResponse _success;
+    private THErrors _errors;
+
+    public IsFollowingResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public isFollowing_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new IsFollowingResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("isFollowing_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("isFollowing_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
       }
       if (Errors != null && __isset.errors) {
         if(!__first) { __sb.Append(", "); }
@@ -11069,264 +16730,6 @@ public partial class Hades {
 
     public override string ToString() {
       StringBuilder __sb = new StringBuilder("createInviteUrl_result(");
-      bool __first = true;
-      if (Success != null && __isset.success) {
-        if(!__first) { __sb.Append(", "); }
-        __first = false;
-        __sb.Append("Success: ");
-        __sb.Append(Success== null ? "<null>" : Success.ToString());
-      }
-      if (Errors != null && __isset.errors) {
-        if(!__first) { __sb.Append(", "); }
-        __first = false;
-        __sb.Append("Errors: ");
-        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
-      }
-      __sb.Append(")");
-      return __sb.ToString();
-    }
-
-  }
-
-
-  #if !SILVERLIGHT
-  [Serializable]
-  #endif
-  public partial class getInviteProviders_args : TBase
-  {
-    private string _sessionId;
-
-    public string SessionId
-    {
-      get
-      {
-        return _sessionId;
-      }
-      set
-      {
-        __isset.sessionId = true;
-        this._sessionId = value;
-      }
-    }
-
-
-    public Isset __isset;
-    #if !SILVERLIGHT
-    [Serializable]
-    #endif
-    public struct Isset {
-      public bool sessionId;
-    }
-
-    public getInviteProviders_args() {
-    }
-
-    public void Read (TProtocol iprot)
-    {
-      iprot.IncrementRecursionDepth();
-      try
-      {
-        TField field;
-        iprot.ReadStructBegin();
-        while (true)
-        {
-          field = iprot.ReadFieldBegin();
-          if (field.Type == TType.Stop) { 
-            break;
-          }
-          switch (field.ID)
-          {
-            case 1:
-              if (field.Type == TType.String) {
-                SessionId = iprot.ReadString();
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            default: 
-              TProtocolUtil.Skip(iprot, field.Type);
-              break;
-          }
-          iprot.ReadFieldEnd();
-        }
-        iprot.ReadStructEnd();
-      }
-      finally
-      {
-        iprot.DecrementRecursionDepth();
-      }
-    }
-
-    public void Write(TProtocol oprot) {
-      oprot.IncrementRecursionDepth();
-      try
-      {
-        TStruct struc = new TStruct("getInviteProviders_args");
-        oprot.WriteStructBegin(struc);
-        TField field = new TField();
-        if (SessionId != null && __isset.sessionId) {
-          field.Name = "sessionId";
-          field.Type = TType.String;
-          field.ID = 1;
-          oprot.WriteFieldBegin(field);
-          oprot.WriteString(SessionId);
-          oprot.WriteFieldEnd();
-        }
-        oprot.WriteFieldStop();
-        oprot.WriteStructEnd();
-      }
-      finally
-      {
-        oprot.DecrementRecursionDepth();
-      }
-    }
-
-    public override string ToString() {
-      StringBuilder __sb = new StringBuilder("getInviteProviders_args(");
-      bool __first = true;
-      if (SessionId != null && __isset.sessionId) {
-        if(!__first) { __sb.Append(", "); }
-        __first = false;
-        __sb.Append("SessionId: ");
-        __sb.Append(SessionId);
-      }
-      __sb.Append(")");
-      return __sb.ToString();
-    }
-
-  }
-
-
-  #if !SILVERLIGHT
-  [Serializable]
-  #endif
-  public partial class getInviteProviders_result : TBase
-  {
-    private THInviteProviders _success;
-    private THErrors _errors;
-
-    public THInviteProviders Success
-    {
-      get
-      {
-        return _success;
-      }
-      set
-      {
-        __isset.success = true;
-        this._success = value;
-      }
-    }
-
-    public THErrors Errors
-    {
-      get
-      {
-        return _errors;
-      }
-      set
-      {
-        __isset.errors = true;
-        this._errors = value;
-      }
-    }
-
-
-    public Isset __isset;
-    #if !SILVERLIGHT
-    [Serializable]
-    #endif
-    public struct Isset {
-      public bool success;
-      public bool errors;
-    }
-
-    public getInviteProviders_result() {
-    }
-
-    public void Read (TProtocol iprot)
-    {
-      iprot.IncrementRecursionDepth();
-      try
-      {
-        TField field;
-        iprot.ReadStructBegin();
-        while (true)
-        {
-          field = iprot.ReadFieldBegin();
-          if (field.Type == TType.Stop) { 
-            break;
-          }
-          switch (field.ID)
-          {
-            case 0:
-              if (field.Type == TType.Struct) {
-                Success = new THInviteProviders();
-                Success.Read(iprot);
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            case 1:
-              if (field.Type == TType.Struct) {
-                Errors = new THErrors();
-                Errors.Read(iprot);
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            default: 
-              TProtocolUtil.Skip(iprot, field.Type);
-              break;
-          }
-          iprot.ReadFieldEnd();
-        }
-        iprot.ReadStructEnd();
-      }
-      finally
-      {
-        iprot.DecrementRecursionDepth();
-      }
-    }
-
-    public void Write(TProtocol oprot) {
-      oprot.IncrementRecursionDepth();
-      try
-      {
-        TStruct struc = new TStruct("getInviteProviders_result");
-        oprot.WriteStructBegin(struc);
-        TField field = new TField();
-
-        if (this.__isset.success) {
-          if (Success != null) {
-            field.Name = "Success";
-            field.Type = TType.Struct;
-            field.ID = 0;
-            oprot.WriteFieldBegin(field);
-            Success.Write(oprot);
-            oprot.WriteFieldEnd();
-          }
-        } else if (this.__isset.errors) {
-          if (Errors != null) {
-            field.Name = "Errors";
-            field.Type = TType.Struct;
-            field.ID = 1;
-            oprot.WriteFieldBegin(field);
-            Errors.Write(oprot);
-            oprot.WriteFieldEnd();
-          }
-        }
-        oprot.WriteFieldStop();
-        oprot.WriteStructEnd();
-      }
-      finally
-      {
-        oprot.DecrementRecursionDepth();
-      }
-    }
-
-    public override string ToString() {
-      StringBuilder __sb = new StringBuilder("getInviteProviders_result(");
       bool __first = true;
       if (Success != null && __isset.success) {
         if(!__first) { __sb.Append(", "); }
@@ -14663,6 +20066,265 @@ public partial class Hades {
         __first = false;
         __sb.Append("Success: ");
         __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class findTagsV2_args : TBase
+  {
+    private FindTagsRequest _request;
+
+    public FindTagsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public findTagsV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new FindTagsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("findTagsV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("findTagsV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class findTagsV2_result : TBase
+  {
+    private FindTagsResponse _success;
+    private THErrors _errors;
+
+    public FindTagsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public findTagsV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new FindTagsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("findTagsV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("findTagsV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
       }
       if (Errors != null && __isset.errors) {
         if(!__first) { __sb.Append(", "); }
@@ -18467,6 +24129,265 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
+  public partial class sendNotification_args : TBase
+  {
+    private SendNotificationRequest _request;
+
+    public SendNotificationRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public sendNotification_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new SendNotificationRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("sendNotification_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("sendNotification_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class sendNotification_result : TBase
+  {
+    private SendNotificationResponse _success;
+    private THErrors _errors;
+
+    public SendNotificationResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public sendNotification_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new SendNotificationResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("sendNotification_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("sendNotification_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
   public partial class getNotificationsList_args : TBase
   {
     private string _sessionId;
@@ -18758,6 +24679,298 @@ public partial class Hades {
       StringBuilder __sb = new StringBuilder("getNotificationsList_result(");
       bool __first = true;
       if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success);
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getNotificationsCount_args : TBase
+  {
+    private string _sessionId;
+    private THNotificationsQuery _query;
+
+    public string SessionId
+    {
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public THNotificationsQuery Query
+    {
+      get
+      {
+        return _query;
+      }
+      set
+      {
+        __isset.query = true;
+        this._query = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool query;
+    }
+
+    public getNotificationsCount_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Struct) {
+                Query = new THNotificationsQuery();
+                Query.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getNotificationsCount_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (Query != null && __isset.query) {
+          field.Name = "query";
+          field.Type = TType.Struct;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          Query.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getNotificationsCount_args(");
+      bool __first = true;
+      if (SessionId != null && __isset.sessionId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
+      }
+      if (Query != null && __isset.query) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Query: ");
+        __sb.Append(Query== null ? "<null>" : Query.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getNotificationsCount_result : TBase
+  {
+    private int _success;
+    private THErrors _errors;
+
+    public int Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getNotificationsCount_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.I32) {
+                Success = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getNotificationsCount_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          field.Name = "Success";
+          field.Type = TType.I32;
+          field.ID = 0;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Success);
+          oprot.WriteFieldEnd();
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getNotificationsCount_result(");
+      bool __first = true;
+      if (__isset.success) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
         __sb.Append("Success: ");
@@ -19071,34 +25284,20 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class getNotificationsCount_args : TBase
+  public partial class getNotifications_args : TBase
   {
-    private string _sessionId;
-    private THNotificationsQuery _query;
+    private GetNotificationsRequest _request;
 
-    public string SessionId
+    public GetNotificationsRequest Request
     {
       get
       {
-        return _sessionId;
+        return _request;
       }
       set
       {
-        __isset.sessionId = true;
-        this._sessionId = value;
-      }
-    }
-
-    public THNotificationsQuery Query
-    {
-      get
-      {
-        return _query;
-      }
-      set
-      {
-        __isset.query = true;
-        this._query = value;
+        __isset.request = true;
+        this._request = value;
       }
     }
 
@@ -19108,11 +25307,10 @@ public partial class Hades {
     [Serializable]
     #endif
     public struct Isset {
-      public bool sessionId;
-      public bool query;
+      public bool request;
     }
 
-    public getNotificationsCount_args() {
+    public getNotifications_args() {
     }
 
     public void Read (TProtocol iprot)
@@ -19131,16 +25329,9 @@ public partial class Hades {
           switch (field.ID)
           {
             case 1:
-              if (field.Type == TType.String) {
-                SessionId = iprot.ReadString();
-              } else { 
-                TProtocolUtil.Skip(iprot, field.Type);
-              }
-              break;
-            case 2:
               if (field.Type == TType.Struct) {
-                Query = new THNotificationsQuery();
-                Query.Read(iprot);
+                Request = new GetNotificationsRequest();
+                Request.Read(iprot);
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -19163,23 +25354,15 @@ public partial class Hades {
       oprot.IncrementRecursionDepth();
       try
       {
-        TStruct struc = new TStruct("getNotificationsCount_args");
+        TStruct struc = new TStruct("getNotifications_args");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
-        if (SessionId != null && __isset.sessionId) {
-          field.Name = "sessionId";
-          field.Type = TType.String;
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
           field.ID = 1;
           oprot.WriteFieldBegin(field);
-          oprot.WriteString(SessionId);
-          oprot.WriteFieldEnd();
-        }
-        if (Query != null && __isset.query) {
-          field.Name = "query";
-          field.Type = TType.Struct;
-          field.ID = 2;
-          oprot.WriteFieldBegin(field);
-          Query.Write(oprot);
+          Request.Write(oprot);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -19192,19 +25375,13 @@ public partial class Hades {
     }
 
     public override string ToString() {
-      StringBuilder __sb = new StringBuilder("getNotificationsCount_args(");
+      StringBuilder __sb = new StringBuilder("getNotifications_args(");
       bool __first = true;
-      if (SessionId != null && __isset.sessionId) {
+      if (Request != null && __isset.request) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("SessionId: ");
-        __sb.Append(SessionId);
-      }
-      if (Query != null && __isset.query) {
-        if(!__first) { __sb.Append(", "); }
-        __first = false;
-        __sb.Append("Query: ");
-        __sb.Append(Query== null ? "<null>" : Query.ToString());
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
       }
       __sb.Append(")");
       return __sb.ToString();
@@ -19216,12 +25393,12 @@ public partial class Hades {
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class getNotificationsCount_result : TBase
+  public partial class getNotifications_result : TBase
   {
-    private int _success;
+    private GetNotificationsResponse _success;
     private THErrors _errors;
 
-    public int Success
+    public GetNotificationsResponse Success
     {
       get
       {
@@ -19257,7 +25434,7 @@ public partial class Hades {
       public bool errors;
     }
 
-    public getNotificationsCount_result() {
+    public getNotifications_result() {
     }
 
     public void Read (TProtocol iprot)
@@ -19276,8 +25453,9 @@ public partial class Hades {
           switch (field.ID)
           {
             case 0:
-              if (field.Type == TType.I32) {
-                Success = iprot.ReadI32();
+              if (field.Type == TType.Struct) {
+                Success = new GetNotificationsResponse();
+                Success.Read(iprot);
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -19308,17 +25486,19 @@ public partial class Hades {
       oprot.IncrementRecursionDepth();
       try
       {
-        TStruct struc = new TStruct("getNotificationsCount_result");
+        TStruct struc = new TStruct("getNotifications_result");
         oprot.WriteStructBegin(struc);
         TField field = new TField();
 
         if (this.__isset.success) {
-          field.Name = "Success";
-          field.Type = TType.I32;
-          field.ID = 0;
-          oprot.WriteFieldBegin(field);
-          oprot.WriteI32(Success);
-          oprot.WriteFieldEnd();
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
         } else if (this.__isset.errors) {
           if (Errors != null) {
             field.Name = "Errors";
@@ -19339,13 +25519,13 @@ public partial class Hades {
     }
 
     public override string ToString() {
-      StringBuilder __sb = new StringBuilder("getNotificationsCount_result(");
+      StringBuilder __sb = new StringBuilder("getNotifications_result(");
       bool __first = true;
-      if (__isset.success) {
+      if (Success != null && __isset.success) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
         __sb.Append("Success: ");
-        __sb.Append(Success);
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
       }
       if (Errors != null && __isset.errors) {
         if(!__first) { __sb.Append(", "); }
@@ -20223,6 +26403,4150 @@ public partial class Hades {
 
     public override string ToString() {
       StringBuilder __sb = new StringBuilder("setPromoCode_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createPromoCode_args : TBase
+  {
+    private CreatePromoCodeRequest _request;
+
+    public CreatePromoCodeRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public createPromoCode_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new CreatePromoCodeRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createPromoCode_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createPromoCode_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createPromoCode_result : TBase
+  {
+    private CreatePromoCodeResponse _success;
+    private THErrors _errors;
+
+    public CreatePromoCodeResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public createPromoCode_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CreatePromoCodeResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createPromoCode_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createPromoCode_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getPromoCodeV2_args : TBase
+  {
+    private GetPromoCodeRequest _request;
+
+    public GetPromoCodeRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getPromoCodeV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetPromoCodeRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getPromoCodeV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getPromoCodeV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getPromoCodeV2_result : TBase
+  {
+    private GetPromoCodeResponse _success;
+    private THErrors _errors;
+
+    public GetPromoCodeResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getPromoCodeV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetPromoCodeResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getPromoCodeV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getPromoCodeV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class claimPromoCodeV2_args : TBase
+  {
+    private ClaimPromoCodeRequest _request;
+
+    public ClaimPromoCodeRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public claimPromoCodeV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new ClaimPromoCodeRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("claimPromoCodeV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("claimPromoCodeV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class claimPromoCodeV2_result : TBase
+  {
+    private ClaimPromoCodeResponse _success;
+    private THErrors _errors;
+
+    public ClaimPromoCodeResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public claimPromoCodeV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new ClaimPromoCodeResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("claimPromoCodeV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("claimPromoCodeV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getActivitiesV2_args : TBase
+  {
+    private GetActivitiesV2Request _request;
+
+    public GetActivitiesV2Request Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getActivitiesV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetActivitiesV2Request();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getActivitiesV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getActivitiesV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getActivitiesV2_result : TBase
+  {
+    private GetActivitiesV2Response _success;
+    private THErrors _errors;
+
+    public GetActivitiesV2Response Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getActivitiesV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetActivitiesV2Response();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getActivitiesV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getActivitiesV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getActivityByID_args : TBase
+  {
+    private GetActivityByIDRequest _request;
+
+    public GetActivityByIDRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getActivityByID_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetActivityByIDRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getActivityByID_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getActivityByID_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getActivityByID_result : TBase
+  {
+    private GetActivityByIDResponse _success;
+    private THErrors _errors;
+
+    public GetActivityByIDResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getActivityByID_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetActivityByIDResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getActivityByID_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getActivityByID_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getAnnouncements_args : TBase
+  {
+    private GetAnnouncementsRequest _request;
+
+    public GetAnnouncementsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getAnnouncements_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetAnnouncementsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getAnnouncements_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getAnnouncements_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getAnnouncements_result : TBase
+  {
+    private GetAnnouncementsResponse _success;
+    private THErrors _errors;
+
+    public GetAnnouncementsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getAnnouncements_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetAnnouncementsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getAnnouncements_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getAnnouncements_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createActivity_args : TBase
+  {
+    private CreateActivityRequest _request;
+
+    public CreateActivityRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public createActivity_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new CreateActivityRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createActivity_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createActivity_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createActivity_result : TBase
+  {
+    private CreateActivityResponse _success;
+    private THErrors _errors;
+
+    public CreateActivityResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public createActivity_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CreateActivityResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createActivity_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createActivity_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class updateActivity_args : TBase
+  {
+    private UpdateActivityRequest _request;
+
+    public UpdateActivityRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public updateActivity_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new UpdateActivityRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("updateActivity_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("updateActivity_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class updateActivity_result : TBase
+  {
+    private UpdateActivityResponse _success;
+    private THErrors _errors;
+
+    public UpdateActivityResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public updateActivity_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new UpdateActivityResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("updateActivity_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("updateActivity_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class deleteActivities_args : TBase
+  {
+    private DeleteActivitiesRequest _request;
+
+    public DeleteActivitiesRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public deleteActivities_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new DeleteActivitiesRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("deleteActivities_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("deleteActivities_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class deleteActivities_result : TBase
+  {
+    private DeleteActivitiesResponse _success;
+    private THErrors _errors;
+
+    public DeleteActivitiesResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public deleteActivities_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new DeleteActivitiesResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("deleteActivities_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("deleteActivities_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createAnnouncement_args : TBase
+  {
+    private CreateAnnouncementRequest _request;
+
+    public CreateAnnouncementRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public createAnnouncement_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new CreateAnnouncementRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createAnnouncement_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createAnnouncement_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createAnnouncement_result : TBase
+  {
+    private CreateAnnouncementResponse _success;
+    private THErrors _errors;
+
+    public CreateAnnouncementResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public createAnnouncement_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CreateAnnouncementResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createAnnouncement_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createAnnouncement_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class updateAnnouncement_args : TBase
+  {
+    private UpdateAnnouncementRequest _request;
+
+    public UpdateAnnouncementRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public updateAnnouncement_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new UpdateAnnouncementRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("updateAnnouncement_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("updateAnnouncement_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class updateAnnouncement_result : TBase
+  {
+    private UpdateAnnouncementResponse _success;
+    private THErrors _errors;
+
+    public UpdateAnnouncementResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public updateAnnouncement_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new UpdateAnnouncementResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("updateAnnouncement_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("updateAnnouncement_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getReactions_args : TBase
+  {
+    private GetReactionsRequest _request;
+
+    public GetReactionsRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public getReactions_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new GetReactionsRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getReactions_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getReactions_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class getReactions_result : TBase
+  {
+    private GetReactionsResponse _success;
+    private THErrors _errors;
+
+    public GetReactionsResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public getReactions_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new GetReactionsResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("getReactions_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("getReactions_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createReaction_args : TBase
+  {
+    private CreateReactionRequest _request;
+
+    public CreateReactionRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public createReaction_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new CreateReactionRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createReaction_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createReaction_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class createReaction_result : TBase
+  {
+    private CreateReactionResponse _success;
+    private THErrors _errors;
+
+    public CreateReactionResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public createReaction_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new CreateReactionResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("createReaction_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("createReaction_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class deleteReaction_args : TBase
+  {
+    private DeleteReactionRequest _request;
+
+    public DeleteReactionRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public deleteReaction_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new DeleteReactionRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("deleteReaction_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("deleteReaction_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class deleteReaction_result : TBase
+  {
+    private DeleteReactionResponse _success;
+    private THErrors _errors;
+
+    public DeleteReactionResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public deleteReaction_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new DeleteReactionResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("deleteReaction_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("deleteReaction_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class reportEntityV2_args : TBase
+  {
+    private ReportEntityV2Request _request;
+
+    public ReportEntityV2Request Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public reportEntityV2_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new ReportEntityV2Request();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("reportEntityV2_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("reportEntityV2_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class reportEntityV2_result : TBase
+  {
+    private ReportEntityV2Response _success;
+    private THErrors _errors;
+
+    public ReportEntityV2Response Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public reportEntityV2_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new ReportEntityV2Response();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("reportEntityV2_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("reportEntityV2_result(");
+      bool __first = true;
+      if (Success != null && __isset.success) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Success: ");
+        __sb.Append(Success== null ? "<null>" : Success.ToString());
+      }
+      if (Errors != null && __isset.errors) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Errors: ");
+        __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class activityTrackView_args : TBase
+  {
+    private ActivityTrackViewRequest _request;
+
+    public ActivityTrackViewRequest Request
+    {
+      get
+      {
+        return _request;
+      }
+      set
+      {
+        __isset.request = true;
+        this._request = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool request;
+    }
+
+    public activityTrackView_args() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Request = new ActivityTrackViewRequest();
+                Request.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("activityTrackView_args");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Request != null && __isset.request) {
+          field.Name = "request";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Request.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("activityTrackView_args(");
+      bool __first = true;
+      if (Request != null && __isset.request) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Request: ");
+        __sb.Append(Request== null ? "<null>" : Request.ToString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
+  }
+
+
+  #if !SILVERLIGHT
+  [Serializable]
+  #endif
+  public partial class activityTrackView_result : TBase
+  {
+    private ActivityTrackViewResponse _success;
+    private THErrors _errors;
+
+    public ActivityTrackViewResponse Success
+    {
+      get
+      {
+        return _success;
+      }
+      set
+      {
+        __isset.success = true;
+        this._success = value;
+      }
+    }
+
+    public THErrors Errors
+    {
+      get
+      {
+        return _errors;
+      }
+      set
+      {
+        __isset.errors = true;
+        this._errors = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool success;
+      public bool errors;
+    }
+
+    public activityTrackView_result() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 0:
+              if (field.Type == TType.Struct) {
+                Success = new ActivityTrackViewResponse();
+                Success.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 1:
+              if (field.Type == TType.Struct) {
+                Errors = new THErrors();
+                Errors.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("activityTrackView_result");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+
+        if (this.__isset.success) {
+          if (Success != null) {
+            field.Name = "Success";
+            field.Type = TType.Struct;
+            field.ID = 0;
+            oprot.WriteFieldBegin(field);
+            Success.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        } else if (this.__isset.errors) {
+          if (Errors != null) {
+            field.Name = "Errors";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Errors.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("activityTrackView_result(");
       bool __first = true;
       if (Success != null && __isset.success) {
         if(!__first) { __sb.Append(", "); }

@@ -37,6 +37,7 @@ public partial class THCustomNotification : TBase
   private Dictionary<THDeviceOs, THNotificationTemplateMedia> _platformMedia;
   private THBadge _badge;
   private int _expiration;
+  private THNotificationTemplateProperties _properties;
 
   public List<string> UserIds
   {
@@ -233,6 +234,19 @@ public partial class THCustomNotification : TBase
     }
   }
 
+  public THNotificationTemplateProperties Properties
+  {
+    get
+    {
+      return _properties;
+    }
+    set
+    {
+      __isset.properties = true;
+      this._properties = value;
+    }
+  }
+
 
   public Isset __isset;
   #if !SILVERLIGHT
@@ -254,6 +268,7 @@ public partial class THCustomNotification : TBase
     public bool platformMedia;
     public bool badge;
     public bool expiration;
+    public bool properties;
   }
 
   public THCustomNotification() {
@@ -440,6 +455,14 @@ public partial class THCustomNotification : TBase
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
+          case 16:
+            if (field.Type == TType.Struct) {
+              Properties = new THNotificationTemplateProperties();
+              Properties.Read(iprot);
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
           default: 
             TProtocolUtil.Skip(iprot, field.Type);
             break;
@@ -619,6 +642,14 @@ public partial class THCustomNotification : TBase
         oprot.WriteI32(Expiration);
         oprot.WriteFieldEnd();
       }
+      if (Properties != null && __isset.properties) {
+        field.Name = "properties";
+        field.Type = TType.Struct;
+        field.ID = 16;
+        oprot.WriteFieldBegin(field);
+        Properties.Write(oprot);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -720,6 +751,12 @@ public partial class THCustomNotification : TBase
       __first = false;
       __sb.Append("Expiration: ");
       __sb.Append(Expiration);
+    }
+    if (Properties != null && __isset.properties) {
+      if(!__first) { __sb.Append(", "); }
+      __first = false;
+      __sb.Append("Properties: ");
+      __sb.Append(Properties== null ? "<null>" : Properties.ToString());
     }
     __sb.Append(")");
     return __sb.ToString();

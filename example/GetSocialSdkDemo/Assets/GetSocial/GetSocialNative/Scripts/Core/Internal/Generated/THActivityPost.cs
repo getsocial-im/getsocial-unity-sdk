@@ -290,13 +290,13 @@ public partial class THActivityPost : TBase
             if (field.Type == TType.List) {
               {
                 Mentions = new List<THMention>();
-                TList _list0 = iprot.ReadListBegin();
-                for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                TList _list4 = iprot.ReadListBegin();
+                for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
                 {
-                  THMention _elem2;
-                  _elem2 = new THMention();
-                  _elem2.Read(iprot);
-                  Mentions.Add(_elem2);
+                  THMention _elem6;
+                  _elem6 = new THMention();
+                  _elem6.Read(iprot);
+                  Mentions.Add(_elem6);
                 }
                 iprot.ReadListEnd();
               }
@@ -412,9 +412,9 @@ public partial class THActivityPost : TBase
         oprot.WriteFieldBegin(field);
         {
           oprot.WriteListBegin(new TList(TType.Struct, Mentions.Count));
-          foreach (THMention _iter3 in Mentions)
+          foreach (THMention _iter7 in Mentions)
           {
-            _iter3.Write(oprot);
+            _iter7.Write(oprot);
           }
           oprot.WriteListEnd();
         }

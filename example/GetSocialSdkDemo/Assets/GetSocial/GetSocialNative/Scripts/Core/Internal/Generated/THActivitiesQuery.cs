@@ -178,12 +178,12 @@ public partial class THActivitiesQuery : TBase
             if (field.Type == TType.List) {
               {
                 Tags = new List<string>();
-                TList _list4 = iprot.ReadListBegin();
-                for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
+                TList _list53 = iprot.ReadListBegin();
+                for( int _i54 = 0; _i54 < _list53.Count; ++_i54)
                 {
-                  string _elem6;
-                  _elem6 = iprot.ReadString();
-                  Tags.Add(_elem6);
+                  string _elem55;
+                  _elem55 = iprot.ReadString();
+                  Tags.Add(_elem55);
                 }
                 iprot.ReadListEnd();
               }
@@ -259,9 +259,9 @@ public partial class THActivitiesQuery : TBase
         oprot.WriteFieldBegin(field);
         {
           oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-          foreach (string _iter7 in Tags)
+          foreach (string _iter56 in Tags)
           {
-            oprot.WriteString(_iter7);
+            oprot.WriteString(_iter56);
           }
           oprot.WriteListEnd();
         }

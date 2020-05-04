@@ -67,6 +67,7 @@ public enum THErrorCode
   AFStickyDatesBadRange = 6014,
   AFStickyComment = 6015,
   AFStickyPostsFeed = 6016,
+  AFInvalidParam = 6017,
   /// <summary>
   /// Apollo (Social Graph)
   /// </summary>
@@ -135,6 +136,7 @@ public enum THErrorCode
   IrisNotificationTargetUsersEmpty = 9027,
   IrisNotificationNoText = 9028,
   IrisSendPNUsersLimit = 9029,
+  IrisAllTemplateFeaturesDisabled = 9030,
   /// <summary>
   /// Talos
   /// </summary>
