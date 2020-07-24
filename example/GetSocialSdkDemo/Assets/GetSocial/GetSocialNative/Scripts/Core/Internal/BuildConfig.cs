@@ -6,7 +6,7 @@ namespace GetSocialSdk.Core
     internal static class NativeBuildConfig
     {
         public const string SdkVersion = BuildConfig.UnitySdkVersion;
-        public static readonly string HadesUrl = HadesProductionUrl;
+        public static string HadesUrl = HadesProductionUrl;
 
 #if GETSOCIAL_DEBUG
         public const bool Debug = true;
@@ -14,7 +14,8 @@ namespace GetSocialSdk.Core
         public const bool Debug = false;
 #endif
 
-        private const string HadesProductionUrl = "https://hades.getsocial.im/sdk";
+        internal const string HadesProductionUrl = "https://hades.getsocial.im/sdk";
+        internal const string HadesTestingUrl = "https://hades.testing.getsocial.im/sdk";
     }
 }
 #endif

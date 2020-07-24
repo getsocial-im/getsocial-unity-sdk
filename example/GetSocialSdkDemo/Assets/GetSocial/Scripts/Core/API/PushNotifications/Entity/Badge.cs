@@ -1,20 +1,17 @@
-
-#if UNITY_ANDROID
-using UnityEngine;
-#elif UNITY_IOS
-using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
-#endif
 
 namespace GetSocialSdk.Core
 {
-    public sealed class Badge: IConvertableToNative
+    public sealed class Badge
     {
-        
+
+        [JsonSerializationKey("value")]
         internal int Value = int.MinValue;
+
+        [JsonSerializationKey("increase")]
         internal int Increase;
 
-        public Badge()
+        internal Badge()
         {
             
         }
@@ -33,7 +30,7 @@ namespace GetSocialSdk.Core
         /// <summary>
         /// Recipient badge will be set to value.
         /// </summary>
-        /// <param name="value"Value to be set as badge.></param>
+        /// <param name="value">Value to be set as badge.></param>
         /// <returns>New badge instance.</returns>
         public static Badge SetTo(int value)
         {
@@ -41,35 +38,5 @@ namespace GetSocialSdk.Core
             badge.Value = value;
             return badge;
         }
-
-#if UNITY_ANDROID
-        
-        public AndroidJavaObject ToAjo()
-        {
-            if (Value == int.MinValue)
-            {
-                return new AndroidJavaClass("im.getsocial.sdk.pushnotifications.NotificationContent$Badge")
-                    .CallStaticAJO("increaseBy", Increase);
-            } else 
-            {
-                return new AndroidJavaClass("im.getsocial.sdk.pushnotifications.NotificationContent$Badge")
-                    .CallStaticAJO("setTo", Value);
-            }
-        }
-#elif UNITY_IOS
-        public string ToJson()
-        {
-            var dictionary = new Dictionary<string, object>();
-            if (Value == int.MinValue)
-            {
-                dictionary["Increase"] = Increase;
-            }
-            else 
-            {
-                dictionary["Value"] = Value;
-            }
-            return GSJson.Serialize(dictionary);
-        }
-#endif
     }
 }

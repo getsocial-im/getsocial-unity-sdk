@@ -16,332 +16,339 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class UpdateAnnouncementRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _sessionId;
-  private Dictionary<string, AFContent> _content;
-  private long _startDate;
-  private long _endDate;
-  private Dictionary<string, string> _properties;
-  private SGEntity _id;
 
-  public string SessionId
-  {
-    get
-    {
-      return _sessionId;
-    }
-    set
-    {
-      __isset.sessionId = true;
-      this._sessionId = value;
-    }
-  }
-
-  public Dictionary<string, AFContent> Content
-  {
-    get
-    {
-      return _content;
-    }
-    set
-    {
-      __isset.content = true;
-      this._content = value;
-    }
-  }
-
-  public long StartDate
-  {
-    get
-    {
-      return _startDate;
-    }
-    set
-    {
-      __isset.startDate = true;
-      this._startDate = value;
-    }
-  }
-
-  public long EndDate
-  {
-    get
-    {
-      return _endDate;
-    }
-    set
-    {
-      __isset.endDate = true;
-      this._endDate = value;
-    }
-  }
-
-  public Dictionary<string, string> Properties
-  {
-    get
-    {
-      return _properties;
-    }
-    set
-    {
-      __isset.properties = true;
-      this._properties = value;
-    }
-  }
-
-  public SGEntity Id
-  {
-    get
-    {
-      return _id;
-    }
-    set
-    {
-      __isset.id = true;
-      this._id = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool sessionId;
-    public bool content;
-    public bool startDate;
-    public bool endDate;
-    public bool properties;
-    public bool id;
-  }
-
-  public UpdateAnnouncementRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class UpdateAnnouncementRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              SessionId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Map) {
-              {
-                Content = new Dictionary<string, AFContent>();
-                TMap _map130 = iprot.ReadMapBegin();
-                for( int _i131 = 0; _i131 < _map130.Count; ++_i131)
-                {
-                  string _key132;
-                  AFContent _val133;
-                  _key132 = iprot.ReadString();
-                  _val133 = new AFContent();
-                  _val133.Read(iprot);
-                  Content[_key132] = _val133;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.I64) {
-              StartDate = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.I64) {
-              EndDate = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Map) {
-              {
-                Properties = new Dictionary<string, string>();
-                TMap _map134 = iprot.ReadMapBegin();
-                for( int _i135 = 0; _i135 < _map134.Count; ++_i135)
-                {
-                  string _key136;
-                  string _val137;
-                  _key136 = iprot.ReadString();
-                  _val137 = iprot.ReadString();
-                  Properties[_key136] = _val137;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.Struct) {
-              Id = new SGEntity();
-              Id.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _sessionId;
+    private Dictionary<string, AFContent> _content;
+    private long _startDate;
+    private long _endDate;
+    private Dictionary<string, string> _properties;
+    private SGEntity _id;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string SessionId
     {
-      TStruct struc = new TStruct("UpdateAnnouncementRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public Dictionary<string, AFContent> Content
+    {
+      get
+      {
+        return _content;
+      }
+      set
+      {
+        __isset.content = true;
+        this._content = value;
+      }
+    }
+
+    public long StartDate
+    {
+      get
+      {
+        return _startDate;
+      }
+      set
+      {
+        __isset.startDate = true;
+        this._startDate = value;
+      }
+    }
+
+    public long EndDate
+    {
+      get
+      {
+        return _endDate;
+      }
+      set
+      {
+        __isset.endDate = true;
+        this._endDate = value;
+      }
+    }
+
+    public Dictionary<string, string> Properties
+    {
+      get
+      {
+        return _properties;
+      }
+      set
+      {
+        __isset.properties = true;
+        this._properties = value;
+      }
+    }
+
+    public SGEntity Id
+    {
+      get
+      {
+        return _id;
+      }
+      set
+      {
+        __isset.id = true;
+        this._id = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool content;
+      public bool startDate;
+      public bool endDate;
+      public bool properties;
+      public bool id;
+    }
+
+    public UpdateAnnouncementRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Map) {
+                {
+                  Content = new Dictionary<string, AFContent>();
+                  TMap _map198 = iprot.ReadMapBegin();
+                  for( int _i199 = 0; _i199 < _map198.Count; ++_i199)
+                  {
+                    string _key200;
+                    AFContent _val201;
+                    _key200 = iprot.ReadString();
+                    _val201 = new AFContent();
+                    _val201.Read(iprot);
+                    Content[_key200] = _val201;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I64) {
+                StartDate = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I64) {
+                EndDate = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Map) {
+                {
+                  Properties = new Dictionary<string, string>();
+                  TMap _map202 = iprot.ReadMapBegin();
+                  for( int _i203 = 0; _i203 < _map202.Count; ++_i203)
+                  {
+                    string _key204;
+                    string _val205;
+                    _key204 = iprot.ReadString();
+                    _val205 = iprot.ReadString();
+                    Properties[_key204] = _val205;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Struct) {
+                Id = new SGEntity();
+                Id.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("UpdateAnnouncementRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (Content != null && __isset.content) {
+          field.Name = "content";
+          field.Type = TType.Map;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
+            foreach (string _iter206 in Content.Keys)
+            {
+              oprot.WriteString(_iter206);
+              Content[_iter206].Write(oprot);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.startDate) {
+          field.Name = "startDate";
+          field.Type = TType.I64;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(StartDate);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.endDate) {
+          field.Name = "endDate";
+          field.Type = TType.I64;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(EndDate);
+          oprot.WriteFieldEnd();
+        }
+        if (Properties != null && __isset.properties) {
+          field.Name = "properties";
+          field.Type = TType.Map;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
+            foreach (string _iter207 in Properties.Keys)
+            {
+              oprot.WriteString(_iter207);
+              oprot.WriteString(Properties[_iter207]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Id != null && __isset.id) {
+          field.Name = "id";
+          field.Type = TType.Struct;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          Id.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("UpdateAnnouncementRequest(");
+      bool __first = true;
       if (SessionId != null && __isset.sessionId) {
-        field.Name = "sessionId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(SessionId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
       }
       if (Content != null && __isset.content) {
-        field.Name = "content";
-        field.Type = TType.Map;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
-          foreach (string _iter138 in Content.Keys)
-          {
-            oprot.WriteString(_iter138);
-            Content[_iter138].Write(oprot);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Content: ");
+        __sb.Append(Content.ToDebugString());
       }
       if (__isset.startDate) {
-        field.Name = "startDate";
-        field.Type = TType.I64;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(StartDate);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("StartDate: ");
+        __sb.Append(StartDate);
       }
       if (__isset.endDate) {
-        field.Name = "endDate";
-        field.Type = TType.I64;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(EndDate);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("EndDate: ");
+        __sb.Append(EndDate);
       }
       if (Properties != null && __isset.properties) {
-        field.Name = "properties";
-        field.Type = TType.Map;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-          foreach (string _iter139 in Properties.Keys)
-          {
-            oprot.WriteString(_iter139);
-            oprot.WriteString(Properties[_iter139]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Properties: ");
+        __sb.Append(Properties.ToDebugString());
       }
       if (Id != null && __isset.id) {
-        field.Name = "id";
-        field.Type = TType.Struct;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        Id.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Id: ");
+        __sb.Append(Id== null ? "<null>" : Id.ToString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("UpdateAnnouncementRequest(");
-    bool __first = true;
-    if (SessionId != null && __isset.sessionId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SessionId: ");
-      __sb.Append(SessionId);
-    }
-    if (Content != null && __isset.content) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Content: ");
-      __sb.Append(Content);
-    }
-    if (__isset.startDate) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("StartDate: ");
-      __sb.Append(StartDate);
-    }
-    if (__isset.endDate) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("EndDate: ");
-      __sb.Append(EndDate);
-    }
-    if (Properties != null && __isset.properties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Properties: ");
-      __sb.Append(Properties);
-    }
-    if (Id != null && __isset.id) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Id: ");
-      __sb.Append(Id== null ? "<null>" : Id.ToString());
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Text;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
+using GetSocialSdk.Ui;
 using UnityEngine;
 
 public class SmartInvitesApiSection : DemoMenuSection
@@ -56,9 +57,6 @@ public class SmartInvitesApiSection : DemoMenuSection
 
     private bool _sendCustomImage;
     private bool _sendCustomVideo;
-
-    string _referrerEvent = "";
-    string _referredEvent = "";
 
     private Texture2D CustomLandingPageImage
     {
@@ -99,11 +97,11 @@ public class SmartInvitesApiSection : DemoMenuSection
         get { return _customWindowTitle; }
     }
 
-    public LinkParams LinkParams
+    public Dictionary<string, object> CustomLinkParams
     {
         get
         {
-            var linkParams = new LinkParams
+            var linkParams = new Dictionary<string, object>
             {
                 {_key1, _value1},
                 {_key2, _value2},
@@ -123,7 +121,7 @@ public class SmartInvitesApiSection : DemoMenuSection
             }
             if (_customLandingPageVideoURL.Length > 0)
             {
-                linkParams[LinkParams.KeyCustomYouTubeVideo] = _customLandingPageVideoURL;
+                linkParams[LinkParams.KeyCustomYoutubeVideo] = _customLandingPageVideoURL;
             }
             if (CustomLandingPageImage != null)
             {
@@ -137,15 +135,17 @@ public class SmartInvitesApiSection : DemoMenuSection
     {
         get
         {
-            var mediaAttachment = _sendCustomImage ? MediaAttachment.Image(Image)
-                : _sendCustomVideo ? MediaAttachment.Video(Video)
+            var mediaAttachment = _sendCustomImage ? MediaAttachment.WithImage(Image)
+                : _sendCustomVideo ? MediaAttachment.WithVideo(Video)
                 : null;
 
-            return InviteContent.CreateBuilder()
-                .WithSubject(_customWindowTitle)
-                .WithText(_customText)
-                .WithMediaAttachment(mediaAttachment)
-                .Build();
+            var inviteContent = new InviteContent
+            {
+                Subject = _customWindowTitle,
+                Text = _customText,
+                MediaAttachment = mediaAttachment,
+            }.AddLinkParams(CustomLinkParams);
+            return inviteContent;
         }
     }
 
@@ -165,40 +165,59 @@ public class SmartInvitesApiSection : DemoMenuSection
 
     void DrawMainSection()
     {
+        DemoGuiUtils.DrawButton("Open Smart Invites", ShowNativeSmartInvitesView, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Open Customized Smart Invites", ShowNativeSmartInvitesViewCustomized, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Available Channels Details", PrintAvailableInviteChannelsDetails, style: GSStyles.Button);
-        DemoGuiUtils.DrawButton("Get Available Channels", PrintAvailbleChannelsList, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Get Available Channels", PrintAvailableChannelsList, style: GSStyles.Button);
         DrawCreateInviteLink();
         DrawCustomInviteParamsForm();
 
         // API calls to SendInvite
-        DrawReferralData();
         DrawSendInvites();
         DrawSendCustomInvites();
-        DrawGetReferredUsers();
-        DrawGetReferredUsersV2();
-        DrawGetReferrerUsers();
+   }
+    
+    static void ShowNativeSmartInvitesView()
+    {
+        InvitesViewBuilder.Create().Show();
+    }
+
+    void ShowNativeSmartInvitesViewCustomized()
+    {
+        var inviteContent = CustomInviteContent;
+        InvitesViewBuilder.Create()
+            .SetWindowTitle(CustomTitle)
+            .SetCustomInviteContent(CustomInviteContent)
+            .SetInviteCallbacks(
+                channelId => _console.LogD("Successfully sent invite for " + channelId),
+                channelId => _console.LogW("Sending invite cancelled for " + channelId),
+                (channelId, error) => _console.LogE(string.Format("Failed to send invite: {0} for {1}", error.Message, channelId)))
+            .Show();
     }
 
     void PrintAvailableInviteChannelsDetails()
     {
-        _currentInviteChannels = GetSocial.InviteChannels;
-        var channels = _currentInviteChannels.ToList().ConvertAll(x => x.ToString()).ToArray();
-        var channelsJoined = string.Join(", ", channels);
-        _console.LogD(string.Format("Available invite channels: {0}", channelsJoined));
+        Invites.GetAvailableChannels((inviteChannels) => {
+            _currentInviteChannels = inviteChannels.ToArray();
+            var channels = _currentInviteChannels.ToList().ConvertAll(x => x.ToString()).ToArray();
+            var channelsJoined = string.Join(", ", channels);
+            _console.LogD(string.Format("Available invite channels: {0}", channelsJoined));
+        }, (error) => {
+            _console.LogE("Error while getting invite channels: " + error.Message);
+        });
     }
     
-    private void PrintAvailbleChannelsList()
+    private void PrintAvailableChannelsList()
     {
-        var channelIds = typeof(InviteChannelIds)
-            .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-            .Where(fi => fi.IsLiteral && !fi.IsInitOnly)
-            .Select(field => field.GetValue("").ToString())
-            .ToList();
 
-        var messageBuilder = new StringBuilder("Invite channels availability:\n");
-        channelIds.ForEach(channelId => messageBuilder.AppendLine(string.Format("{0}: {1}", channelId, GetSocial.IsInviteChannelAvailable(channelId))));
+        Invites.GetAvailableChannels((availableChannels) => {
+            var messageBuilder = new StringBuilder("Invite channels availability:\n");
+            availableChannels.ForEach(channel => messageBuilder.AppendLine(channel.Id));
+            _console.LogD(messageBuilder.ToString());
+        }, (error) => {
+            _console.LogE("failed to get available invite channels, error: " + error);
+        });
         
-        _console.LogD(messageBuilder.ToString());
     }
 
     public void DrawCustomInviteParamsForm()
@@ -356,141 +375,7 @@ public class SmartInvitesApiSection : DemoMenuSection
         GSStyles.TextField.fixedWidth = 0;
         GUILayout.EndHorizontal();
     }
-
-    private void DrawReferralData()
-    {
-        GUILayout.Label("Referral data", GSStyles.BigLabelText);
-
-        DemoGuiUtils.DrawButton("Get referral data", GetReferralData, style: GSStyles.Button);
-    }
     
-    private void DrawGetReferredUsers()
-    {
-        GUILayout.Label("Referred users (OLD)", GSStyles.BigLabelText);
-
-        DemoGuiUtils.DrawButton("Get referred users", GetReferredUsers, style: GSStyles.Button);
-    }
-
-    private void DrawGetReferredUsersV2()
-    {
-        GUILayout.Label("Referred users", GSStyles.BigLabelText);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Event", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
-        _referredEvent = GUILayout.TextField(_referredEvent, GSStyles.TextField,
-            GUILayout.Width(Screen.width * 0.50f));
-        if (GUILayout.Button("Paste", GSStyles.PasteButton))
-        {
-            _referredEvent = GUIUtility.systemCopyBuffer;
-        }
-        GUILayout.EndHorizontal();
-
-        DemoGuiUtils.DrawButton("Get referred users", GetReferredUsersV2, style: GSStyles.Button);
-    }
-
-    private void DrawGetReferrerUsers()
-    {
-        GUILayout.Label("Referrer users", GSStyles.BigLabelText);
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Event", GSStyles.NormalLabelText, GUILayout.Width(Screen.width * 0.25f));
-        _referrerEvent = GUILayout.TextField(_referrerEvent, GSStyles.TextField,
-            GUILayout.Width(Screen.width * 0.50f));
-        if (GUILayout.Button("Paste", GSStyles.PasteButton))
-        {
-            _referrerEvent = GUIUtility.systemCopyBuffer;
-        }
-        GUILayout.EndHorizontal();
-
-        DemoGuiUtils.DrawButton("Get referrer users", GetReferrerUsers, style: GSStyles.Button);
-    }
-
-    private void GetReferredUsersV2()
-    {
-        var query = _referredEvent.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(_referredEvent);
-        GetSocial.GetReferredUsers(query, referralUsers => {
-            DemoUtils.ShowPopup("Referred Users", GetReferralUsersInfo(referralUsers));
-        }, error =>
-        {
-            _console.LogE(string.Format("Failed to get referred users: {0}", error.Message));
-        });
-    }
-
-    private void GetReferrerUsers()
-    {
-        var query = _referrerEvent.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(_referrerEvent);
-        GetSocial.GetReferrerUsers(query, referralUsers =>
-        {
-            DemoUtils.ShowPopup("Referrer Users", GetReferralUsersInfo(referralUsers));
-        }, error =>
-        {
-            _console.LogE(string.Format("Failed to get referrer users: {0}", error.Message));
-        });
-    }
-
-    private string GetReferralUsersInfo(List<ReferralUser> referralUsers)
-    {
-        var builder = new StringBuilder();
-        referralUsers.ForEach(referralUser => {
-            builder.Append(FormatReferralUserInfo(referralUser));
-            builder.AppendLine();
-        });
-        builder.AppendLine();
-        return builder.ToString();
-    }
-
-    private string FormatReferralUserInfo(ReferralUser referralUser)
-    {
-        return string.Format("{0}(on {1:yyyy-MM-dd HH:mm}, eventName={2}, eventData={3}), ", referralUser.DisplayName, referralUser.EventDate, referralUser.Event, referralUser.EventData.ToDebugString());
-    }
-
-    private void GetReferredUsers()
-    {
-        GetSocial.GetReferredUsers(referredUsers =>
-            {
-                var message = "";
-                if (referredUsers.Count > 0)
-                {
-                    foreach (var referredUser in referredUsers)
-                    {
-                        message += string.Format("{0}(on {1:yy-MM-dd HH:mm} via {2}, installPlatform={3}, reinstall={4}, installSuspicious={5}), ", referredUser.DisplayName, referredUser.InstallationDate, referredUser.InstallationChannel, referredUser.InstallPlatform, referredUser.Reinstall, referredUser.InstallSuspicious);
-                    }
-                    message = message.Substring(0, message.Length - 2);
-                }
-                else
-                {
-                    message = "No referred user found.";
-                }
-                DemoUtils.ShowPopup("Referred Users", message);
-            }, 
-            error => _console.LogE(string.Format("Failed to get referred users: {0}", error.Message)));
-    }
-
-    private void GetReferralData()
-    {
-        GetSocial.GetReferralData(
-            referralData => {
-                var logMessage = String.Empty;
-
-                if (referralData != null)
-                {
-                    logMessage += string.Format("Token: {0}\n", referralData.Token);
-                    logMessage += string.Format("Referrer user id: {0}\n", referralData.ReferrerUserId);
-                    logMessage += string.Format("Referrer channel: {0}\n", referralData.ReferrerChannelId);
-                    logMessage += string.Format("Is first match: {0}\n", referralData.IsFirstMatch);
-                    logMessage += string.Format("Is guarateed match: {0}\n", referralData.IsGuaranteedMatch);
-                    logMessage += "Referral Link params:\n" + referralData.ReferralLinkParams.ToDebugString();
-                }
-                else
-                {
-                    logMessage += "No referral data retrieved";
-                }
-
-                _console.LogD("Referral data: \n" + logMessage);
-            },
-            error => _console.LogE(string.Format("Failed to get referral data: {0}", error.Message))
-
-        );
-    }
-
     void DrawSendInvites()
     {
         if (_currentInviteChannels.Length == 0) { return; }
@@ -532,7 +417,7 @@ public class SmartInvitesApiSection : DemoMenuSection
     void SendInvite(string channelId)
     {
         _console.LogD(string.Format("Sending {0} invite...", channelId));
-        GetSocial.SendInvite(channelId,
+        Invites.Send(null, channelId,
             () => _console.LogD("Successfully sent invite"),
             () => _console.LogW("Sending invite cancelled"),
             error => _console.LogE(string.Format("Failed to send invite: {0}", error.Message))
@@ -542,16 +427,16 @@ public class SmartInvitesApiSection : DemoMenuSection
     void CreateInviteLink()
     {
         _console.LogD("Creating invite link...");
-        GetSocial.CreateInviteLink(null, 
-            (string inviteLink) => _console.LogD("Created invite link: " + inviteLink),
-            error => _console.LogE(string.Format("Failed to create invite link: {0}", error.Message))
+        Invites.CreateLink(CustomLinkParams, 
+            (String invite) => _console.LogD("Created invite link: " + invite),
+            error => _console.LogE(string.Format("Failed to create invite: {0}", error.Message))
         );
     }
 
     void SendCustomInvite(string channelId)
     {
         _console.LogD(string.Format("Sending custom {0} invite...", channelId));
-        GetSocial.SendInvite(channelId, CustomInviteContent, LinkParams,
+        Invites.Send(CustomInviteContent, channelId,
             () => _console.LogD("Successfully sent invite"),
             () => _console.LogW("Sending invite cancelled"),
             error => _console.LogE(string.Format("Failed to send invite: {0}", error.Message))

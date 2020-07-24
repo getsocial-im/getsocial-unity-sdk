@@ -6,9 +6,15 @@
  *  @generated
  */
 
-public enum THInviteType
+namespace GetSocialSdk.Core 
 {
-  SMART_INVITE = 1,
-  MARKETING_CAMPAIGN = 2,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THInviteType
+  {
+    SMART_INVITE = 1,
+    MARKETING_CAMPAIGN = 2,
+  }
 }
 #endif

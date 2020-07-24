@@ -1,6 +1,5 @@
-#if USE_GETSOCIAL_UI
-
 using System;
+using UnityEngine;
 
 namespace GetSocialSdk.Ui
 {
@@ -16,53 +15,6 @@ namespace GetSocialSdk.Ui
         internal static IGetSocialUiNativeBridge GetSocialImpl
         {
             get { return _getSocialUiImpl ?? (_getSocialUiImpl = GetSocialUiFactory.InstantiateGetSocialUi()); }
-        }
-
-        /// <summary>
-        /// Returns a builder to specify parameters you want on the InvitesView.
-        /// </summary>
-        /// <returns>The smart invites view builder.</returns>
-        public static InvitesViewBuilder CreateInvitesView()
-        {
-            return new InvitesViewBuilder();
-        }
-
-        /// <summary>
-        /// Returns a builder to specify parameters you want on the Global Feed view.
-        /// </summary>
-        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
-        public static ActivityFeedViewBuilder CreateGlobalActivityFeedView()
-        {
-            return new ActivityFeedViewBuilder();
-        }
-
-        /// <summary>
-        /// Returns a builder to specify parameters you want on the Activity Feed view.
-        /// </summary>
-        /// <param name="feed">The id of the Activity Feed you want to show.</param>
-        /// <returns><see cref="ActivityFeedViewBuilder"/> instance.</returns>
-        public static ActivityFeedViewBuilder CreateActivityFeedView(string feed)
-        {
-            return new ActivityFeedViewBuilder(feed);
-        }
-
-        /// <summary>
-        /// Returns a builder to specify parameters you want on the Activity Details view.
-        /// </summary>
-        /// <param name="activityId">The id of the Activity you want to show.</param>
-        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
-        public static ActivityDetailsViewBuilder CreateActivityDetailsView(string activityId)
-        {
-            return new ActivityDetailsViewBuilder(activityId);
-        }
-
-        /// <summary>
-        /// Returns a builder to specify parameters you want on the Notification Center view.
-        /// </summary>
-        /// <returns><see cref="NotificationCenterViewBuilder"/> instance.</returns>
-        public static NotificationCenterViewBuilder CreateNotificationCenterView()
-        {
-            return new NotificationCenterViewBuilder();
         }
 
         /// <summary>
@@ -134,4 +86,3 @@ namespace GetSocialSdk.Ui
 #endif
     }
 }
-#endif

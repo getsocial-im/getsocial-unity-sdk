@@ -16,182 +16,189 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THUserReference : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _id;
-  private string _displayName;
-  private string _avatarUrl;
 
-  public string Id
-  {
-    get
-    {
-      return _id;
-    }
-    set
-    {
-      __isset.id = true;
-      this._id = value;
-    }
-  }
-
-  public string DisplayName
-  {
-    get
-    {
-      return _displayName;
-    }
-    set
-    {
-      __isset.displayName = true;
-      this._displayName = value;
-    }
-  }
-
-  public string AvatarUrl
-  {
-    get
-    {
-      return _avatarUrl;
-    }
-    set
-    {
-      __isset.avatarUrl = true;
-      this._avatarUrl = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool id;
-    public bool displayName;
-    public bool avatarUrl;
-  }
-
-  public THUserReference() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THUserReference : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              Id = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              DisplayName = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              AvatarUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _id;
+    private string _displayName;
+    private string _avatarUrl;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string Id
     {
-      TStruct struc = new TStruct("THUserReference");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _id;
+      }
+      set
+      {
+        __isset.id = true;
+        this._id = value;
+      }
+    }
+
+    public string DisplayName
+    {
+      get
+      {
+        return _displayName;
+      }
+      set
+      {
+        __isset.displayName = true;
+        this._displayName = value;
+      }
+    }
+
+    public string AvatarUrl
+    {
+      get
+      {
+        return _avatarUrl;
+      }
+      set
+      {
+        __isset.avatarUrl = true;
+        this._avatarUrl = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool id;
+      public bool displayName;
+      public bool avatarUrl;
+    }
+
+    public THUserReference() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                Id = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                DisplayName = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                AvatarUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THUserReference");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Id != null && __isset.id) {
+          field.Name = "id";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Id);
+          oprot.WriteFieldEnd();
+        }
+        if (DisplayName != null && __isset.displayName) {
+          field.Name = "displayName";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(DisplayName);
+          oprot.WriteFieldEnd();
+        }
+        if (AvatarUrl != null && __isset.avatarUrl) {
+          field.Name = "avatarUrl";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AvatarUrl);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THUserReference(");
+      bool __first = true;
       if (Id != null && __isset.id) {
-        field.Name = "id";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Id);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Id: ");
+        __sb.Append(Id);
       }
       if (DisplayName != null && __isset.displayName) {
-        field.Name = "displayName";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(DisplayName);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DisplayName: ");
+        __sb.Append(DisplayName);
       }
       if (AvatarUrl != null && __isset.avatarUrl) {
-        field.Name = "avatarUrl";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AvatarUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AvatarUrl: ");
+        __sb.Append(AvatarUrl);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THUserReference(");
-    bool __first = true;
-    if (Id != null && __isset.id) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Id: ");
-      __sb.Append(Id);
-    }
-    if (DisplayName != null && __isset.displayName) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("DisplayName: ");
-      __sb.Append(DisplayName);
-    }
-    if (AvatarUrl != null && __isset.avatarUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AvatarUrl: ");
-      __sb.Append(AvatarUrl);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

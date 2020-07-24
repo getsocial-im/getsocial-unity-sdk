@@ -1,59 +1,48 @@
-﻿#if UNITY_5_6_OR_NEWER
+/**
+ *     Copyright 2015-2016 GetSocial B.V.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
+using System.IO;
+using GetSocialSdk.Core;
+using GetSocialSdk.MiniJSON;
 using UnityEditor;
 using UnityEditor.Build;
-#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
-#endif
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace GetSocialSdk.Editor
 {
-    #if UNITY_2018_1_OR_NEWER
     public class GetSocialPreprocess : IPreprocessBuildWithReport
-    #elif UNITY_5_6_OR_NEWER
-    public class GetSocialPreprocess : IPreprocessBuild
-    #endif
-    {
-    #if UNITY_2018_1_OR_NEWER
+    {        
+        public int callbackOrder { get { return 0; } }
         public void OnPreprocessBuild(BuildReport report)
         {
-            checkFrameworks(report.summary.platform);
-        }
-    #elif UNITY_5_6_OR_NEWER
-        public void OnPreprocessBuild(BuildTarget target, string path)
-        {
-            checkFrameworks(target);
-        }
-    #endif
-
-        private void checkFrameworks(BuildTarget target) 
-        {
-            if (target == BuildTarget.iOS)
+            Debug.Log("GetSocialPreprocess.OnPreprocessBuild for target " + report.summary.platform + " at path " + report.summary.outputPath);
+            if (report.summary.platform == BuildTarget.iOS) 
             {
-                if (!FileHelper.CheckiOSFramework())
-                {
-                    Debug.LogError("GetSocial: Native libraries for GetSocial SDK are missing. Download it before building the project");
-                } else
-                {
-                    FileHelper.MarkIosFiles();
-                }
+                FileHelper.MarkIOSFrameworks();
             }
-            
-            if (target == BuildTarget.Android)
+            if (report.summary.platform == BuildTarget.Android)
             {
-                if (!FileHelper.CheckAndroidFramework())
-                {
-                    Debug.LogError("GetSocial: Native libraries for GetSocial SDK are missing. Download it before building the project");
-                }
-            }
+                AndroidManifestHelper.RemoveSdk6Configs();
+            } 
+            GetSocialSettings.UpdateConfigsFile();
         }
-
-        public int callbackOrder {
-            get { return 1; }
-        }
+        
     }
-    
 }
-
-#endif
 

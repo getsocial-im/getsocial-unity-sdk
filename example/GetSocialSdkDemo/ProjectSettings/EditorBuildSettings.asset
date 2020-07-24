@@ -7,3 +7,5 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/GetSocialDemo/Scenes/DemoScene.unity
+    guid: 848696832836243a8bb3bad39f9c9e12
+  m_configObjects: {}

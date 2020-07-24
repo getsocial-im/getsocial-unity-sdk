@@ -1,6 +1,5 @@
 ﻿using System;
 using GetSocialSdk.Core;
-using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 namespace GetSocialDemo.Scripts.GUI.Sections
@@ -57,23 +56,39 @@ namespace GetSocialDemo.Scripts.GUI.Sections
 
         private void TrackPurchase()
         {
-            var builder = PurchaseData.CreateBuilder();
-            builder.WithProductId(_productId);
-            builder.WithProductTitle(_productTitle);
-            builder.WithPriceCurrency(_priceCurrency);
-            builder.WithPrice(float.Parse(_priceStr));
+            if (_priceStr.Length == 0)
+            {
+                _console.LogD("Price cannot be empty");
+                return;
+            }
+            float priceFloat = 0;
+            try
+            {
+                priceFloat = float.Parse(_priceStr);
+            }
+            catch (Exception exception)
+            {
+                _console.LogD("Invalid price, error: " + exception);
+                return;
+            }
+
+            var purchaseData = new PurchaseData();
+            purchaseData.ProductId = _productId;
+            purchaseData.ProductTitle = _productTitle;
+            purchaseData.PriceCurrency = _priceCurrency;
+            purchaseData.Price = priceFloat;
             if (_productTypeStr.Equals("item"))
             {
-                builder.WithProductType(PurchaseData.ProductType.Item);
+                purchaseData.PurchaseType = PurchaseData.ProductType.Item;
             }
             else
             {
-                builder.WithProductType(PurchaseData.ProductType.Subscription);
+                purchaseData.PurchaseType = PurchaseData.ProductType.Subscription;
             }
-            builder.WithPurchaseDate(DateTime.Now);
-            builder.WithPurchaseId(System.Guid.NewGuid().ToString());
+            purchaseData.PurchaseDate = DateTime.Now;
+            purchaseData.PurchaseId = System.Guid.NewGuid().ToString();
             
-            if (GetSocial.TrackPurchaseEvent(builder.Build()))
+            if (Analytics.TrackPurchase(purchaseData))
             {
                 _console.LogD("Purchase was tracked.");
             } else 

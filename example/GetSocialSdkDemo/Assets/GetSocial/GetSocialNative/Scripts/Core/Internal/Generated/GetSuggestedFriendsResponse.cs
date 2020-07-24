@@ -16,164 +16,171 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetSuggestedFriendsResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<THSuggestedFriend> _users;
-  private string _nextCursor;
 
-  public List<THSuggestedFriend> Users
-  {
-    get
-    {
-      return _users;
-    }
-    set
-    {
-      __isset.users = true;
-      this._users = value;
-    }
-  }
-
-  public string NextCursor
-  {
-    get
-    {
-      return _nextCursor;
-    }
-    set
-    {
-      __isset.nextCursor = true;
-      this._nextCursor = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool users;
-    public bool nextCursor;
-  }
-
-  public GetSuggestedFriendsResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetSuggestedFriendsResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                Users = new List<THSuggestedFriend>();
-                TList _list47 = iprot.ReadListBegin();
-                for( int _i48 = 0; _i48 < _list47.Count; ++_i48)
-                {
-                  THSuggestedFriend _elem49;
-                  _elem49 = new THSuggestedFriend();
-                  _elem49.Read(iprot);
-                  Users.Add(_elem49);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              NextCursor = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<THSuggestedFriend> _users;
+    private string _nextCursor;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<THSuggestedFriend> Users
     {
-      TStruct struc = new TStruct("GetSuggestedFriendsResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Users != null && __isset.users) {
-        field.Name = "users";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _users;
+      }
+      set
+      {
+        __isset.users = true;
+        this._users = value;
+      }
+    }
+
+    public string NextCursor
+    {
+      get
+      {
+        return _nextCursor;
+      }
+      set
+      {
+        __isset.nextCursor = true;
+        this._nextCursor = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool users;
+      public bool nextCursor;
+    }
+
+    public GetSuggestedFriendsResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.Struct, Users.Count));
-          foreach (THSuggestedFriend _iter50 in Users)
-          {
-            _iter50.Write(oprot);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  Users = new List<THSuggestedFriend>();
+                  TList _list47 = iprot.ReadListBegin();
+                  for( int _i48 = 0; _i48 < _list47.Count; ++_i48)
+                  {
+                    THSuggestedFriend _elem49;
+                    _elem49 = new THSuggestedFriend();
+                    _elem49.Read(iprot);
+                    Users.Add(_elem49);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                NextCursor = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetSuggestedFriendsResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Users != null && __isset.users) {
+          field.Name = "users";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Users.Count));
+            foreach (THSuggestedFriend _iter50 in Users)
+            {
+              _iter50.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (NextCursor != null && __isset.nextCursor) {
+          field.Name = "nextCursor";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(NextCursor);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetSuggestedFriendsResponse(");
+      bool __first = true;
+      if (Users != null && __isset.users) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Users: ");
+        __sb.Append(Users.ToDebugString());
       }
       if (NextCursor != null && __isset.nextCursor) {
-        field.Name = "nextCursor";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(NextCursor);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NextCursor: ");
+        __sb.Append(NextCursor);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetSuggestedFriendsResponse(");
-    bool __first = true;
-    if (Users != null && __isset.users) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Users: ");
-      __sb.Append(Users);
-    }
-    if (NextCursor != null && __isset.nextCursor) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NextCursor: ");
-      __sb.Append(NextCursor);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

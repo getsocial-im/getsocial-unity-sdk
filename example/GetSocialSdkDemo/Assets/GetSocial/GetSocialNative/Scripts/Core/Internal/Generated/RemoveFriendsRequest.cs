@@ -16,163 +16,170 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class RemoveFriendsRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _sessionId;
-  private THashSet<string> _userIds;
 
-  public string SessionId
-  {
-    get
-    {
-      return _sessionId;
-    }
-    set
-    {
-      __isset.sessionId = true;
-      this._sessionId = value;
-    }
-  }
-
-  public THashSet<string> UserIds
-  {
-    get
-    {
-      return _userIds;
-    }
-    set
-    {
-      __isset.userIds = true;
-      this._userIds = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool sessionId;
-    public bool userIds;
-  }
-
-  public RemoveFriendsRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class RemoveFriendsRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              SessionId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Set) {
-              {
-                UserIds = new THashSet<string>();
-                TSet _set77 = iprot.ReadSetBegin();
-                for( int _i78 = 0; _i78 < _set77.Count; ++_i78)
-                {
-                  string _elem79;
-                  _elem79 = iprot.ReadString();
-                  UserIds.Add(_elem79);
-                }
-                iprot.ReadSetEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _sessionId;
+    private THashSet<string> _userIds;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string SessionId
     {
-      TStruct struc = new TStruct("RemoveFriendsRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public THashSet<string> UserIds
+    {
+      get
+      {
+        return _userIds;
+      }
+      set
+      {
+        __isset.userIds = true;
+        this._userIds = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool userIds;
+    }
+
+    public RemoveFriendsRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Set) {
+                {
+                  UserIds = new THashSet<string>();
+                  TSet _set81 = iprot.ReadSetBegin();
+                  for( int _i82 = 0; _i82 < _set81.Count; ++_i82)
+                  {
+                    string _elem83;
+                    _elem83 = iprot.ReadString();
+                    UserIds.Add(_elem83);
+                  }
+                  iprot.ReadSetEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("RemoveFriendsRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (UserIds != null && __isset.userIds) {
+          field.Name = "userIds";
+          field.Type = TType.Set;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteSetBegin(new TSet(TType.String, UserIds.Count));
+            foreach (string _iter84 in UserIds)
+            {
+              oprot.WriteString(_iter84);
+            }
+            oprot.WriteSetEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("RemoveFriendsRequest(");
+      bool __first = true;
       if (SessionId != null && __isset.sessionId) {
-        field.Name = "sessionId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(SessionId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
       }
       if (UserIds != null && __isset.userIds) {
-        field.Name = "userIds";
-        field.Type = TType.Set;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteSetBegin(new TSet(TType.String, UserIds.Count));
-          foreach (string _iter80 in UserIds)
-          {
-            oprot.WriteString(_iter80);
-          }
-          oprot.WriteSetEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("UserIds: ");
+        __sb.Append(UserIds);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("RemoveFriendsRequest(");
-    bool __first = true;
-    if (SessionId != null && __isset.sessionId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SessionId: ");
-      __sb.Append(SessionId);
-    }
-    if (UserIds != null && __isset.userIds) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("UserIds: ");
-      __sb.Append(UserIds);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

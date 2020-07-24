@@ -1,26 +1,35 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-
-#if UNITY_IOS
 using GetSocialSdk.MiniJSON;
-#endif
+using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
-    public sealed class MediaAttachment : IConvertableToNative
-    {       
-#pragma warning disable 414   
-        internal  readonly string _method;
-        internal  readonly object _object;
-#pragma warning restore 414
+    public sealed class MediaAttachment
+    {
+        [JsonSerializationKey("imageUrl")]
+        public string ImageUrl { get; internal set; }
 
-        private MediaAttachment(string method, object obj)
-        {
-            _method = method;
-            _object = obj;
+        public Texture2D Image {
+            get {
+                return _imageBase64.FromBase64();
+            }
         }
-        
-        public static MediaAttachment Image(Texture2D texture)
+
+        [JsonSerializationKey("gifUrl")]
+        public string GifUrl { get; internal set; }
+
+        [JsonSerializationKey("videoUrl")]
+        public string VideoUrl { get; internal set; }
+
+        [JsonSerializationKey("image")]
+        internal string _imageBase64;
+
+        [JsonSerializationKey("video")]
+        internal string _videoDataBase64;
+
+        internal MediaAttachment() { }
+
+        public static MediaAttachment WithImage(Texture2D texture)
         {
             if (texture == null)
             {
@@ -31,63 +40,54 @@ namespace GetSocialSdk.Core
             {
                 return null;
             }
-            return new MediaAttachment("image", bitmap);
-        }
-        
-        public static MediaAttachment ImageUrl(string imageUrl)
-        {
-            return imageUrl == null ? null : new MediaAttachment("imageUrl", imageUrl);
-        }
-        
-        public static MediaAttachment Video(byte[] video)
-        {
-            return video == null ? null : new MediaAttachment("video", Convert(video));
-        }
-        
-        public static MediaAttachment VideoUrl(string videoUrl)
-        {
-            return videoUrl == null ? null : new MediaAttachment("videoUrl", videoUrl);
-        }
-
-#if UNITY_ANDROID
-        public AndroidJavaObject ToAjo()
-        {
-            return new AndroidJavaClass("im.getsocial.sdk.media.MediaAttachment").CallStaticAJO(_method, _object);
-        }
-#elif UNITY_IOS
-        public string ToJson()
-        {
-            var dictionary = new Dictionary<string, string>();
-            dictionary[_method] = _object as string;
-            return GSJson.Serialize(dictionary);
-        }
-#endif
-        
-        private static object Convert(Texture2D texture)
-        {
-#if UNITY_ANDROID
-            var ajoBitmap = texture.ToAjoBitmap();
-            if (ajoBitmap == null)
+            return new MediaAttachment
             {
-                Debug.Log("Provided texture is invalid!");
+                _imageBase64 = bitmap
+            };
+        }
+        
+        public static MediaAttachment WithImageUrl(string imageUrl)
+        {
+            return new MediaAttachment
+            {
+                ImageUrl = imageUrl
+            };
+        }
+        
+        public static MediaAttachment WithVideo(byte[] video)
+        {
+            var bitmap = Convert(video);
+            if (bitmap == null)
+            {
                 return null;
             }
-            return ajoBitmap;
-#elif UNITY_IOS
-            return texture.TextureToBase64();
-#else
-            return texture;
-#endif
+            return new MediaAttachment
+            {
+                _videoDataBase64 = bitmap
+            };
         }
-        private static object Convert(byte[] video)
+        
+        public static MediaAttachment WithVideoUrl(string videoUrl)
         {
-#if UNITY_ANDROID
-            return video;
-#elif UNITY_IOS
+            return new MediaAttachment
+            {
+                VideoUrl = videoUrl
+            };
+        }
+
+        private static string Convert(Texture2D texture)
+        {
+            return texture.TextureToBase64();
+        }
+
+        private static string Convert(byte[] video)
+        {
             return video.ByteArrayToBase64();
-#else
-            return video;
-#endif
+        }
+
+        public override string ToString()
+        {
+            return $"ImageUrl={ImageUrl}, VideoUrl={VideoUrl}";
         }
     }
 }

@@ -16,164 +16,171 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetReactionsResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<AFReaction> _reactions;
-  private string _nextCursor;
 
-  public List<AFReaction> Reactions
-  {
-    get
-    {
-      return _reactions;
-    }
-    set
-    {
-      __isset.reactions = true;
-      this._reactions = value;
-    }
-  }
-
-  public string NextCursor
-  {
-    get
-    {
-      return _nextCursor;
-    }
-    set
-    {
-      __isset.nextCursor = true;
-      this._nextCursor = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool reactions;
-    public bool nextCursor;
-  }
-
-  public GetReactionsResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetReactionsResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                Reactions = new List<AFReaction>();
-                TList _list140 = iprot.ReadListBegin();
-                for( int _i141 = 0; _i141 < _list140.Count; ++_i141)
-                {
-                  AFReaction _elem142;
-                  _elem142 = new AFReaction();
-                  _elem142.Read(iprot);
-                  Reactions.Add(_elem142);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              NextCursor = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<AFReaction> _reactions;
+    private string _nextCursor;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<AFReaction> Reactions
     {
-      TStruct struc = new TStruct("GetReactionsResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Reactions != null && __isset.reactions) {
-        field.Name = "reactions";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _reactions;
+      }
+      set
+      {
+        __isset.reactions = true;
+        this._reactions = value;
+      }
+    }
+
+    public string NextCursor
+    {
+      get
+      {
+        return _nextCursor;
+      }
+      set
+      {
+        __isset.nextCursor = true;
+        this._nextCursor = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool reactions;
+      public bool nextCursor;
+    }
+
+    public GetReactionsResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.Struct, Reactions.Count));
-          foreach (AFReaction _iter143 in Reactions)
-          {
-            _iter143.Write(oprot);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  Reactions = new List<AFReaction>();
+                  TList _list218 = iprot.ReadListBegin();
+                  for( int _i219 = 0; _i219 < _list218.Count; ++_i219)
+                  {
+                    AFReaction _elem220;
+                    _elem220 = new AFReaction();
+                    _elem220.Read(iprot);
+                    Reactions.Add(_elem220);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                NextCursor = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetReactionsResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Reactions != null && __isset.reactions) {
+          field.Name = "reactions";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Reactions.Count));
+            foreach (AFReaction _iter221 in Reactions)
+            {
+              _iter221.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (NextCursor != null && __isset.nextCursor) {
+          field.Name = "nextCursor";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(NextCursor);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetReactionsResponse(");
+      bool __first = true;
+      if (Reactions != null && __isset.reactions) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Reactions: ");
+        __sb.Append(Reactions.ToDebugString());
       }
       if (NextCursor != null && __isset.nextCursor) {
-        field.Name = "nextCursor";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(NextCursor);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NextCursor: ");
+        __sb.Append(NextCursor);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetReactionsResponse(");
-    bool __first = true;
-    if (Reactions != null && __isset.reactions) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Reactions: ");
-      __sb.Append(Reactions);
-    }
-    if (NextCursor != null && __isset.nextCursor) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NextCursor: ");
-      __sb.Append(NextCursor);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

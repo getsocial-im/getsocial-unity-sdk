@@ -6,13 +6,19 @@
  *  @generated
  */
 
-public enum SGRole
+namespace GetSocialSdk.Core 
 {
-  OWNER = 0,
-  ADMIN = 1,
-  FRIEND = 2,
-  MEMBER = 3,
-  FOLLOWER = 4,
-  EVERYONE = 5,
+  /// <summary>
+  /// #sdk7
+  /// </summary>
+  public enum SGRole
+  {
+    OWNER = 0,
+    ADMIN = 1,
+    FRIEND = 2,
+    MEMBER = 3,
+    FOLLOWER = 4,
+    EVERYONE = 5,
+  }
 }
 #endif

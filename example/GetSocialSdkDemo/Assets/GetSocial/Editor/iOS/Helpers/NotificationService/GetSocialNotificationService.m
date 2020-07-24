@@ -1,9 +1,9 @@
-#import <GetSocialExtension/GetSocialNotificationExtensionHandler.h>
+#import <GetSocialNotificationExtension/GetSocialNotificationExtension.h>
 #import "GetSocialNotificationService.h"
 
 @interface GetSocialNotificationService()
 
-@property (nonatomic, strong) GetSocialNotificationExtensionHandler *handler;
+@property (nonatomic, strong) GetSocialNotificationRequestHandler *handler;
 
 @end
 
@@ -11,7 +11,7 @@
 
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent *_Nonnull))contentHandler
 {
-    self.handler = [GetSocialNotificationExtensionHandler new];
+    self.handler = [GetSocialNotificationRequestHandler new];
     [self.handler handleNotificationRequest:request withContentHandler:contentHandler];
 }
 

@@ -16,146 +16,153 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class Pagination : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _limit;
-  private string _nextCursor;
 
-  public int Limit
-  {
-    get
-    {
-      return _limit;
-    }
-    set
-    {
-      __isset.limit = true;
-      this._limit = value;
-    }
-  }
-
-  public string NextCursor
-  {
-    get
-    {
-      return _nextCursor;
-    }
-    set
-    {
-      __isset.nextCursor = true;
-      this._nextCursor = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool limit;
-    public bool nextCursor;
-  }
-
-  public Pagination() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class Pagination : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              Limit = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              NextCursor = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _limit;
+    private string _nextCursor;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int Limit
     {
-      TStruct struc = new TStruct("Pagination");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _limit;
+      }
+      set
+      {
+        __isset.limit = true;
+        this._limit = value;
+      }
+    }
+
+    public string NextCursor
+    {
+      get
+      {
+        return _nextCursor;
+      }
+      set
+      {
+        __isset.nextCursor = true;
+        this._nextCursor = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool limit;
+      public bool nextCursor;
+    }
+
+    public Pagination() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                Limit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                NextCursor = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("Pagination");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.limit) {
+          field.Name = "limit";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Limit);
+          oprot.WriteFieldEnd();
+        }
+        if (NextCursor != null && __isset.nextCursor) {
+          field.Name = "nextCursor";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(NextCursor);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("Pagination(");
+      bool __first = true;
       if (__isset.limit) {
-        field.Name = "limit";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Limit);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Limit: ");
+        __sb.Append(Limit);
       }
       if (NextCursor != null && __isset.nextCursor) {
-        field.Name = "nextCursor";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(NextCursor);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NextCursor: ");
+        __sb.Append(NextCursor);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("Pagination(");
-    bool __first = true;
-    if (__isset.limit) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Limit: ");
-      __sb.Append(Limit);
-    }
-    if (NextCursor != null && __isset.nextCursor) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NextCursor: ");
-      __sb.Append(NextCursor);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

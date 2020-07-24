@@ -16,307 +16,314 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THActivitiesQuery : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _limit;
-  private string _beforeId;
-  private string _afterId;
-  private string _userId;
-  private bool _friendsFeed;
-  private List<string> _tags;
 
-  public int Limit
-  {
-    get
-    {
-      return _limit;
-    }
-    set
-    {
-      __isset.limit = true;
-      this._limit = value;
-    }
-  }
-
-  public string BeforeId
-  {
-    get
-    {
-      return _beforeId;
-    }
-    set
-    {
-      __isset.beforeId = true;
-      this._beforeId = value;
-    }
-  }
-
-  public string AfterId
-  {
-    get
-    {
-      return _afterId;
-    }
-    set
-    {
-      __isset.afterId = true;
-      this._afterId = value;
-    }
-  }
-
-  public string UserId
-  {
-    get
-    {
-      return _userId;
-    }
-    set
-    {
-      __isset.userId = true;
-      this._userId = value;
-    }
-  }
-
-  public bool FriendsFeed
-  {
-    get
-    {
-      return _friendsFeed;
-    }
-    set
-    {
-      __isset.friendsFeed = true;
-      this._friendsFeed = value;
-    }
-  }
-
-  public List<string> Tags
-  {
-    get
-    {
-      return _tags;
-    }
-    set
-    {
-      __isset.tags = true;
-      this._tags = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool limit;
-    public bool beforeId;
-    public bool afterId;
-    public bool userId;
-    public bool friendsFeed;
-    public bool tags;
-  }
-
-  public THActivitiesQuery() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THActivitiesQuery : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              Limit = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              BeforeId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              AfterId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              UserId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Bool) {
-              FriendsFeed = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.List) {
-              {
-                Tags = new List<string>();
-                TList _list53 = iprot.ReadListBegin();
-                for( int _i54 = 0; _i54 < _list53.Count; ++_i54)
-                {
-                  string _elem55;
-                  _elem55 = iprot.ReadString();
-                  Tags.Add(_elem55);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _limit;
+    private string _beforeId;
+    private string _afterId;
+    private string _userId;
+    private bool _friendsFeed;
+    private List<string> _tags;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int Limit
     {
-      TStruct struc = new TStruct("THActivitiesQuery");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _limit;
+      }
+      set
+      {
+        __isset.limit = true;
+        this._limit = value;
+      }
+    }
+
+    public string BeforeId
+    {
+      get
+      {
+        return _beforeId;
+      }
+      set
+      {
+        __isset.beforeId = true;
+        this._beforeId = value;
+      }
+    }
+
+    public string AfterId
+    {
+      get
+      {
+        return _afterId;
+      }
+      set
+      {
+        __isset.afterId = true;
+        this._afterId = value;
+      }
+    }
+
+    public string UserId
+    {
+      get
+      {
+        return _userId;
+      }
+      set
+      {
+        __isset.userId = true;
+        this._userId = value;
+      }
+    }
+
+    public bool FriendsFeed
+    {
+      get
+      {
+        return _friendsFeed;
+      }
+      set
+      {
+        __isset.friendsFeed = true;
+        this._friendsFeed = value;
+      }
+    }
+
+    public List<string> Tags
+    {
+      get
+      {
+        return _tags;
+      }
+      set
+      {
+        __isset.tags = true;
+        this._tags = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool limit;
+      public bool beforeId;
+      public bool afterId;
+      public bool userId;
+      public bool friendsFeed;
+      public bool tags;
+    }
+
+    public THActivitiesQuery() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                Limit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                BeforeId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                AfterId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                UserId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Bool) {
+                FriendsFeed = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.List) {
+                {
+                  Tags = new List<string>();
+                  TList _list58 = iprot.ReadListBegin();
+                  for( int _i59 = 0; _i59 < _list58.Count; ++_i59)
+                  {
+                    string _elem60;
+                    _elem60 = iprot.ReadString();
+                    Tags.Add(_elem60);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THActivitiesQuery");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.limit) {
+          field.Name = "limit";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Limit);
+          oprot.WriteFieldEnd();
+        }
+        if (BeforeId != null && __isset.beforeId) {
+          field.Name = "beforeId";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(BeforeId);
+          oprot.WriteFieldEnd();
+        }
+        if (AfterId != null && __isset.afterId) {
+          field.Name = "afterId";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AfterId);
+          oprot.WriteFieldEnd();
+        }
+        if (UserId != null && __isset.userId) {
+          field.Name = "userId";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(UserId);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.friendsFeed) {
+          field.Name = "friendsFeed";
+          field.Type = TType.Bool;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(FriendsFeed);
+          oprot.WriteFieldEnd();
+        }
+        if (Tags != null && __isset.tags) {
+          field.Name = "tags";
+          field.Type = TType.List;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Tags.Count));
+            foreach (string _iter61 in Tags)
+            {
+              oprot.WriteString(_iter61);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THActivitiesQuery(");
+      bool __first = true;
       if (__isset.limit) {
-        field.Name = "limit";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Limit);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Limit: ");
+        __sb.Append(Limit);
       }
       if (BeforeId != null && __isset.beforeId) {
-        field.Name = "beforeId";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(BeforeId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("BeforeId: ");
+        __sb.Append(BeforeId);
       }
       if (AfterId != null && __isset.afterId) {
-        field.Name = "afterId";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AfterId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AfterId: ");
+        __sb.Append(AfterId);
       }
       if (UserId != null && __isset.userId) {
-        field.Name = "userId";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(UserId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("UserId: ");
+        __sb.Append(UserId);
       }
       if (__isset.friendsFeed) {
-        field.Name = "friendsFeed";
-        field.Type = TType.Bool;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(FriendsFeed);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("FriendsFeed: ");
+        __sb.Append(FriendsFeed);
       }
       if (Tags != null && __isset.tags) {
-        field.Name = "tags";
-        field.Type = TType.List;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-          foreach (string _iter56 in Tags)
-          {
-            oprot.WriteString(_iter56);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Tags: ");
+        __sb.Append(Tags.ToDebugString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THActivitiesQuery(");
-    bool __first = true;
-    if (__isset.limit) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Limit: ");
-      __sb.Append(Limit);
-    }
-    if (BeforeId != null && __isset.beforeId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("BeforeId: ");
-      __sb.Append(BeforeId);
-    }
-    if (AfterId != null && __isset.afterId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AfterId: ");
-      __sb.Append(AfterId);
-    }
-    if (UserId != null && __isset.userId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("UserId: ");
-      __sb.Append(UserId);
-    }
-    if (__isset.friendsFeed) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("FriendsFeed: ");
-      __sb.Append(FriendsFeed);
-    }
-    if (Tags != null && __isset.tags) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Tags: ");
-      __sb.Append(Tags);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

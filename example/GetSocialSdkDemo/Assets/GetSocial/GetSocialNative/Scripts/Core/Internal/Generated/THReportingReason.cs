@@ -6,9 +6,15 @@
  *  @generated
  */
 
-public enum THReportingReason
+namespace GetSocialSdk.Core 
 {
-  SPAM = 0,
-  INAPPROPRIATE_CONTENT = 1,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THReportingReason
+  {
+    SPAM = 0,
+    INAPPROPRIATE_CONTENT = 1,
+  }
 }
 #endif

@@ -16,259 +16,263 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THReportedActivityPost : TBase
+namespace GetSocialSdk.Core 
 {
-  private THActivityPost _activity;
-  private int _reportsCount;
-  private THReportStatus _reportStatus;
-  private int _authorBanExpiry;
-  private int _deletedAt;
 
-  public THActivityPost Activity
-  {
-    get
-    {
-      return _activity;
-    }
-    set
-    {
-      __isset.activity = true;
-      this._activity = value;
-    }
-  }
-
-  public int ReportsCount
-  {
-    get
-    {
-      return _reportsCount;
-    }
-    set
-    {
-      __isset.reportsCount = true;
-      this._reportsCount = value;
-    }
-  }
-
-  /// <summary>
-  /// 
-  /// <seealso cref="THReportStatus"/>
-  /// </summary>
-  public THReportStatus ReportStatus
-  {
-    get
-    {
-      return _reportStatus;
-    }
-    set
-    {
-      __isset.reportStatus = true;
-      this._reportStatus = value;
-    }
-  }
-
-  public int AuthorBanExpiry
-  {
-    get
-    {
-      return _authorBanExpiry;
-    }
-    set
-    {
-      __isset.authorBanExpiry = true;
-      this._authorBanExpiry = value;
-    }
-  }
-
-  public int DeletedAt
-  {
-    get
-    {
-      return _deletedAt;
-    }
-    set
-    {
-      __isset.deletedAt = true;
-      this._deletedAt = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool activity;
-    public bool reportsCount;
-    public bool reportStatus;
-    public bool authorBanExpiry;
-    public bool deletedAt;
-  }
-
-  public THReportedActivityPost() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THReportedActivityPost : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.Struct) {
-              Activity = new THActivityPost();
-              Activity.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I32) {
-              ReportsCount = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.I32) {
-              ReportStatus = (THReportStatus)iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.I32) {
-              AuthorBanExpiry = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.I32) {
-              DeletedAt = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private THActivityPost _activity;
+    private int _reportsCount;
+    private THReportStatus _reportStatus;
+    private int _authorBanExpiry;
+    private int _deletedAt;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public THActivityPost Activity
     {
-      TStruct struc = new TStruct("THReportedActivityPost");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _activity;
+      }
+      set
+      {
+        __isset.activity = true;
+        this._activity = value;
+      }
+    }
+
+    public int ReportsCount
+    {
+      get
+      {
+        return _reportsCount;
+      }
+      set
+      {
+        __isset.reportsCount = true;
+        this._reportsCount = value;
+      }
+    }
+
+    /// <summary>
+    /// 
+    /// <seealso cref="THReportStatus"/>
+    /// </summary>
+    public THReportStatus ReportStatus
+    {
+      get
+      {
+        return _reportStatus;
+      }
+      set
+      {
+        __isset.reportStatus = true;
+        this._reportStatus = value;
+      }
+    }
+
+    public int AuthorBanExpiry
+    {
+      get
+      {
+        return _authorBanExpiry;
+      }
+      set
+      {
+        __isset.authorBanExpiry = true;
+        this._authorBanExpiry = value;
+      }
+    }
+
+    public int DeletedAt
+    {
+      get
+      {
+        return _deletedAt;
+      }
+      set
+      {
+        __isset.deletedAt = true;
+        this._deletedAt = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool activity;
+      public bool reportsCount;
+      public bool reportStatus;
+      public bool authorBanExpiry;
+      public bool deletedAt;
+    }
+
+    public THReportedActivityPost() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Activity = new THActivityPost();
+                Activity.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I32) {
+                ReportsCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I32) {
+                ReportStatus = (THReportStatus)iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I32) {
+                AuthorBanExpiry = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.I32) {
+                DeletedAt = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THReportedActivityPost");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Activity != null && __isset.activity) {
+          field.Name = "activity";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Activity.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.reportsCount) {
+          field.Name = "reportsCount";
+          field.Type = TType.I32;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(ReportsCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.reportStatus) {
+          field.Name = "reportStatus";
+          field.Type = TType.I32;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32((int)ReportStatus);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.authorBanExpiry) {
+          field.Name = "authorBanExpiry";
+          field.Type = TType.I32;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(AuthorBanExpiry);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.deletedAt) {
+          field.Name = "deletedAt";
+          field.Type = TType.I32;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(DeletedAt);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THReportedActivityPost(");
+      bool __first = true;
       if (Activity != null && __isset.activity) {
-        field.Name = "activity";
-        field.Type = TType.Struct;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        Activity.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Activity: ");
+        __sb.Append(Activity== null ? "<null>" : Activity.ToString());
       }
       if (__isset.reportsCount) {
-        field.Name = "reportsCount";
-        field.Type = TType.I32;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(ReportsCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ReportsCount: ");
+        __sb.Append(ReportsCount);
       }
       if (__isset.reportStatus) {
-        field.Name = "reportStatus";
-        field.Type = TType.I32;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32((int)ReportStatus);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ReportStatus: ");
+        __sb.Append(ReportStatus);
       }
       if (__isset.authorBanExpiry) {
-        field.Name = "authorBanExpiry";
-        field.Type = TType.I32;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(AuthorBanExpiry);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AuthorBanExpiry: ");
+        __sb.Append(AuthorBanExpiry);
       }
       if (__isset.deletedAt) {
-        field.Name = "deletedAt";
-        field.Type = TType.I32;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(DeletedAt);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DeletedAt: ");
+        __sb.Append(DeletedAt);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THReportedActivityPost(");
-    bool __first = true;
-    if (Activity != null && __isset.activity) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Activity: ");
-      __sb.Append(Activity== null ? "<null>" : Activity.ToString());
-    }
-    if (__isset.reportsCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ReportsCount: ");
-      __sb.Append(ReportsCount);
-    }
-    if (__isset.reportStatus) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ReportStatus: ");
-      __sb.Append(ReportStatus);
-    }
-    if (__isset.authorBanExpiry) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AuthorBanExpiry: ");
-      __sb.Append(AuthorBanExpiry);
-    }
-    if (__isset.deletedAt) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("DeletedAt: ");
-      __sb.Append(DeletedAt);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

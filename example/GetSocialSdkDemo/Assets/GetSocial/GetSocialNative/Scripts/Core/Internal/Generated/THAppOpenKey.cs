@@ -6,14 +6,20 @@
  *  @generated
  */
 
-public enum THAppOpenKey
+namespace GetSocialSdk.Core 
 {
-  Url = 0,
-  InstallBeginTimestamp = 1,
-  ReferrerClickTimestamp = 2,
   /// <summary>
-  /// Used for THAppOpenSource=Manual
+  /// #sdk6 #sdk7
   /// </summary>
-  Value = 3,
+  public enum THAppOpenKey
+  {
+    Url = 0,
+    InstallBeginTimestamp = 1,
+    ReferrerClickTimestamp = 2,
+    /// <summary>
+    /// Used for THAppOpenSource=Manual
+    /// </summary>
+    Value = 3,
+  }
 }
 #endif

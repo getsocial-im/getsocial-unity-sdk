@@ -1,4 +1,3 @@
-#if USE_GETSOCIAL_UI
 namespace GetSocialSdk.Ui
 {
     interface IGetSocialUiNativeBridge
@@ -18,4 +17,3 @@ namespace GetSocialSdk.Ui
 #endif
     }
 }
-#endif

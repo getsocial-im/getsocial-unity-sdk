@@ -16,369 +16,376 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class AFUserReactions : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _commentCount;
-  private List<THPublicUser> _knownCommenters;
-  private Dictionary<string, int> _reactionCount;
-  private List<AFReaction> _knownReactors;
-  private List<string> _myReactions;
-  private int _viewCount;
-
-  public int CommentCount
-  {
-    get
-    {
-      return _commentCount;
-    }
-    set
-    {
-      __isset.commentCount = true;
-      this._commentCount = value;
-    }
-  }
-
-  public List<THPublicUser> KnownCommenters
-  {
-    get
-    {
-      return _knownCommenters;
-    }
-    set
-    {
-      __isset.knownCommenters = true;
-      this._knownCommenters = value;
-    }
-  }
 
   /// <summary>
-  /// at most 3 items
+  /// #sdk7
   /// </summary>
-  public Dictionary<string, int> ReactionCount
-  {
-    get
-    {
-      return _reactionCount;
-    }
-    set
-    {
-      __isset.reactionCount = true;
-      this._reactionCount = value;
-    }
-  }
-
-  public List<AFReaction> KnownReactors
-  {
-    get
-    {
-      return _knownReactors;
-    }
-    set
-    {
-      __isset.knownReactors = true;
-      this._knownReactors = value;
-    }
-  }
-
-  /// <summary>
-  /// at most 3 items
-  /// </summary>
-  public List<string> MyReactions
-  {
-    get
-    {
-      return _myReactions;
-    }
-    set
-    {
-      __isset.myReactions = true;
-      this._myReactions = value;
-    }
-  }
-
-  public int ViewCount
-  {
-    get
-    {
-      return _viewCount;
-    }
-    set
-    {
-      __isset.viewCount = true;
-      this._viewCount = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool commentCount;
-    public bool knownCommenters;
-    public bool reactionCount;
-    public bool knownReactors;
-    public bool myReactions;
-    public bool viewCount;
-  }
-
-  public AFUserReactions() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class AFUserReactions : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              CommentCount = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.List) {
-              {
-                KnownCommenters = new List<THPublicUser>();
-                TList _list12 = iprot.ReadListBegin();
-                for( int _i13 = 0; _i13 < _list12.Count; ++_i13)
-                {
-                  THPublicUser _elem14;
-                  _elem14 = new THPublicUser();
-                  _elem14.Read(iprot);
-                  KnownCommenters.Add(_elem14);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                ReactionCount = new Dictionary<string, int>();
-                TMap _map15 = iprot.ReadMapBegin();
-                for( int _i16 = 0; _i16 < _map15.Count; ++_i16)
-                {
-                  string _key17;
-                  int _val18;
-                  _key17 = iprot.ReadString();
-                  _val18 = iprot.ReadI32();
-                  ReactionCount[_key17] = _val18;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.List) {
-              {
-                KnownReactors = new List<AFReaction>();
-                TList _list19 = iprot.ReadListBegin();
-                for( int _i20 = 0; _i20 < _list19.Count; ++_i20)
-                {
-                  AFReaction _elem21;
-                  _elem21 = new AFReaction();
-                  _elem21.Read(iprot);
-                  KnownReactors.Add(_elem21);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.List) {
-              {
-                MyReactions = new List<string>();
-                TList _list22 = iprot.ReadListBegin();
-                for( int _i23 = 0; _i23 < _list22.Count; ++_i23)
-                {
-                  string _elem24;
-                  _elem24 = iprot.ReadString();
-                  MyReactions.Add(_elem24);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.I32) {
-              ViewCount = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _commentCount;
+    private List<THPublicUser> _knownCommenters;
+    private Dictionary<string, int> _reactionCount;
+    private List<AFReaction> _knownReactors;
+    private List<string> _myReactions;
+    private int _viewCount;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int CommentCount
     {
-      TStruct struc = new TStruct("AFUserReactions");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _commentCount;
+      }
+      set
+      {
+        __isset.commentCount = true;
+        this._commentCount = value;
+      }
+    }
+
+    public List<THPublicUser> KnownCommenters
+    {
+      get
+      {
+        return _knownCommenters;
+      }
+      set
+      {
+        __isset.knownCommenters = true;
+        this._knownCommenters = value;
+      }
+    }
+
+    /// <summary>
+    /// at most 3 items
+    /// </summary>
+    public Dictionary<string, int> ReactionCount
+    {
+      get
+      {
+        return _reactionCount;
+      }
+      set
+      {
+        __isset.reactionCount = true;
+        this._reactionCount = value;
+      }
+    }
+
+    public List<AFReaction> KnownReactors
+    {
+      get
+      {
+        return _knownReactors;
+      }
+      set
+      {
+        __isset.knownReactors = true;
+        this._knownReactors = value;
+      }
+    }
+
+    /// <summary>
+    /// at most 3 items
+    /// </summary>
+    public List<string> MyReactions
+    {
+      get
+      {
+        return _myReactions;
+      }
+      set
+      {
+        __isset.myReactions = true;
+        this._myReactions = value;
+      }
+    }
+
+    public int ViewCount
+    {
+      get
+      {
+        return _viewCount;
+      }
+      set
+      {
+        __isset.viewCount = true;
+        this._viewCount = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool commentCount;
+      public bool knownCommenters;
+      public bool reactionCount;
+      public bool knownReactors;
+      public bool myReactions;
+      public bool viewCount;
+    }
+
+    public AFUserReactions() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                CommentCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.List) {
+                {
+                  KnownCommenters = new List<THPublicUser>();
+                  TList _list12 = iprot.ReadListBegin();
+                  for( int _i13 = 0; _i13 < _list12.Count; ++_i13)
+                  {
+                    THPublicUser _elem14;
+                    _elem14 = new THPublicUser();
+                    _elem14.Read(iprot);
+                    KnownCommenters.Add(_elem14);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  ReactionCount = new Dictionary<string, int>();
+                  TMap _map15 = iprot.ReadMapBegin();
+                  for( int _i16 = 0; _i16 < _map15.Count; ++_i16)
+                  {
+                    string _key17;
+                    int _val18;
+                    _key17 = iprot.ReadString();
+                    _val18 = iprot.ReadI32();
+                    ReactionCount[_key17] = _val18;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.List) {
+                {
+                  KnownReactors = new List<AFReaction>();
+                  TList _list19 = iprot.ReadListBegin();
+                  for( int _i20 = 0; _i20 < _list19.Count; ++_i20)
+                  {
+                    AFReaction _elem21;
+                    _elem21 = new AFReaction();
+                    _elem21.Read(iprot);
+                    KnownReactors.Add(_elem21);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.List) {
+                {
+                  MyReactions = new List<string>();
+                  TList _list22 = iprot.ReadListBegin();
+                  for( int _i23 = 0; _i23 < _list22.Count; ++_i23)
+                  {
+                    string _elem24;
+                    _elem24 = iprot.ReadString();
+                    MyReactions.Add(_elem24);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.I32) {
+                ViewCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("AFUserReactions");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.commentCount) {
+          field.Name = "commentCount";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(CommentCount);
+          oprot.WriteFieldEnd();
+        }
+        if (KnownCommenters != null && __isset.knownCommenters) {
+          field.Name = "knownCommenters";
+          field.Type = TType.List;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, KnownCommenters.Count));
+            foreach (THPublicUser _iter25 in KnownCommenters)
+            {
+              _iter25.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (ReactionCount != null && __isset.reactionCount) {
+          field.Name = "reactionCount";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.I32, ReactionCount.Count));
+            foreach (string _iter26 in ReactionCount.Keys)
+            {
+              oprot.WriteString(_iter26);
+              oprot.WriteI32(ReactionCount[_iter26]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (KnownReactors != null && __isset.knownReactors) {
+          field.Name = "knownReactors";
+          field.Type = TType.List;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, KnownReactors.Count));
+            foreach (AFReaction _iter27 in KnownReactors)
+            {
+              _iter27.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (MyReactions != null && __isset.myReactions) {
+          field.Name = "myReactions";
+          field.Type = TType.List;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, MyReactions.Count));
+            foreach (string _iter28 in MyReactions)
+            {
+              oprot.WriteString(_iter28);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.viewCount) {
+          field.Name = "viewCount";
+          field.Type = TType.I32;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(ViewCount);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("AFUserReactions(");
+      bool __first = true;
       if (__isset.commentCount) {
-        field.Name = "commentCount";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(CommentCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CommentCount: ");
+        __sb.Append(CommentCount);
       }
       if (KnownCommenters != null && __isset.knownCommenters) {
-        field.Name = "knownCommenters";
-        field.Type = TType.List;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.Struct, KnownCommenters.Count));
-          foreach (THPublicUser _iter25 in KnownCommenters)
-          {
-            _iter25.Write(oprot);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("KnownCommenters: ");
+        __sb.Append(KnownCommenters.ToDebugString());
       }
       if (ReactionCount != null && __isset.reactionCount) {
-        field.Name = "reactionCount";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.I32, ReactionCount.Count));
-          foreach (string _iter26 in ReactionCount.Keys)
-          {
-            oprot.WriteString(_iter26);
-            oprot.WriteI32(ReactionCount[_iter26]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ReactionCount: ");
+        __sb.Append(ReactionCount.ToDebugString());
       }
       if (KnownReactors != null && __isset.knownReactors) {
-        field.Name = "knownReactors";
-        field.Type = TType.List;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.Struct, KnownReactors.Count));
-          foreach (AFReaction _iter27 in KnownReactors)
-          {
-            _iter27.Write(oprot);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("KnownReactors: ");
+        __sb.Append(KnownReactors.ToDebugString());
       }
       if (MyReactions != null && __isset.myReactions) {
-        field.Name = "myReactions";
-        field.Type = TType.List;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.String, MyReactions.Count));
-          foreach (string _iter28 in MyReactions)
-          {
-            oprot.WriteString(_iter28);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("MyReactions: ");
+        __sb.Append(MyReactions.ToDebugString());
       }
       if (__isset.viewCount) {
-        field.Name = "viewCount";
-        field.Type = TType.I32;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(ViewCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ViewCount: ");
+        __sb.Append(ViewCount);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("AFUserReactions(");
-    bool __first = true;
-    if (__isset.commentCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("CommentCount: ");
-      __sb.Append(CommentCount);
-    }
-    if (KnownCommenters != null && __isset.knownCommenters) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("KnownCommenters: ");
-      __sb.Append(KnownCommenters);
-    }
-    if (ReactionCount != null && __isset.reactionCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ReactionCount: ");
-      __sb.Append(ReactionCount);
-    }
-    if (KnownReactors != null && __isset.knownReactors) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("KnownReactors: ");
-      __sb.Append(KnownReactors);
-    }
-    if (MyReactions != null && __isset.myReactions) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("MyReactions: ");
-      __sb.Append(MyReactions);
-    }
-    if (__isset.viewCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ViewCount: ");
-      __sb.Append(ViewCount);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

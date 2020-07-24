@@ -8,42 +8,6 @@ namespace GetSocialSdk.Core
 {
     public static class GSJsonUtils
     {
-        public static T Parse<T>(string json) where T : IConvertableFromNative<T>, new()
-        {
-            T result = new T();
-            if (string.IsNullOrEmpty(json))
-            {
-                // return immediately in case of unexpected empty/null json
-                GetSocialDebugLogger.E("ParseList is parsing null or empty json string");
-                return result;
-            }
-
-            return result.ParseFromJson(json.ToDict());
-        }
-
-        public static List<T> ParseList<T>(string json) where T : IConvertableFromNative<T>, new()
-        {
-            var result = new List<T>();
-            
-            if (string.IsNullOrEmpty(json))
-            {
-                // return immediately in case of unexpected empty/null json
-                GetSocialDebugLogger.E("ParseList is parsing null or empty json string");
-                return result;
-            }
-            
-            
-            var entities = GSJson.Deserialize(json) as List<object>;
-            
-            if (entities == null)
-            {
-                return result;
-            }
-            return entities
-                .ConvertAll(item => item as Dictionary<string, object>)
-                .ConvertAll(entity => new T().ParseFromJson(entity));
-        }
-
         public static Dictionary<string, string> ParseDictionary(string json)
         {
             var dictionary = GSJson.Deserialize(json) as Dictionary<string, object>;
@@ -79,25 +43,6 @@ namespace GetSocialSdk.Core
             return json.ToDictionary(entry => entry.Key, entry => entry.Value as string);
         }
 
-        public static Dictionary<string, T> ParseDictionary<T>(string json)
-            where T : IConvertableFromNative<T>, new()
-        {
-            var result = new Dictionary<string, T>();
-            if (string.IsNullOrEmpty(json))
-            {
-                // return immediately in case of unexpected empty/null json
-                GetSocialDebugLogger.E("ParseDictionary is parsing null or empty json string");
-                return result;
-            }
-
-            var objectDict = ToDict(json);
-            foreach (var keyValuePairs in objectDict)
-            {
-                T value = new T();
-                result.Add(keyValuePairs.Key, value.ParseFromJson((Dictionary<string, object>)keyValuePairs.Value));
-            }
-            return result;
-        }
     }
 }
 

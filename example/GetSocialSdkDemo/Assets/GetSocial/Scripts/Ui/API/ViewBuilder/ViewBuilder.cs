@@ -5,8 +5,6 @@ using GetSocialSdk.Core;
 using UnityEngine;
 #endif
 
-#if USE_GETSOCIAL_UI
-
 namespace GetSocialSdk.Ui
 {
     /// <summary>
@@ -120,5 +118,3 @@ namespace GetSocialSdk.Ui
 #endif
     }
 }
-
-#endif

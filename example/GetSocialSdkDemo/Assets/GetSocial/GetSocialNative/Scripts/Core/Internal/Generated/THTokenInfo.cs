@@ -16,467 +16,474 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THTokenInfo : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _referrerUserId;
-  private string _token;
-  private string _provider;
-  private bool _firstMatch;
-  private Dictionary<string, string> _linkParams;
-  private Dictionary<string, string> _internalData;
-  private bool _guaranteedMatch;
-  private Dictionary<string, string> _originalData;
-  private string _debug;
-
-  public string ReferrerUserId
-  {
-    get
-    {
-      return _referrerUserId;
-    }
-    set
-    {
-      __isset.referrerUserId = true;
-      this._referrerUserId = value;
-    }
-  }
-
-  public string Token
-  {
-    get
-    {
-      return _token;
-    }
-    set
-    {
-      __isset.token = true;
-      this._token = value;
-    }
-  }
-
-  public string Provider
-  {
-    get
-    {
-      return _provider;
-    }
-    set
-    {
-      __isset.provider = true;
-      this._provider = value;
-    }
-  }
 
   /// <summary>
-  /// whatsapp etc.
+  /// #sdk6 #sdk7
   /// </summary>
-  public bool FirstMatch
-  {
-    get
-    {
-      return _firstMatch;
-    }
-    set
-    {
-      __isset.firstMatch = true;
-      this._firstMatch = value;
-    }
-  }
-
-  public Dictionary<string, string> LinkParams
-  {
-    get
-    {
-      return _linkParams;
-    }
-    set
-    {
-      __isset.linkParams = true;
-      this._linkParams = value;
-    }
-  }
-
-  public Dictionary<string, string> InternalData
-  {
-    get
-    {
-      return _internalData;
-    }
-    set
-    {
-      __isset.internalData = true;
-      this._internalData = value;
-    }
-  }
-
-  public bool GuaranteedMatch
-  {
-    get
-    {
-      return _guaranteedMatch;
-    }
-    set
-    {
-      __isset.guaranteedMatch = true;
-      this._guaranteedMatch = value;
-    }
-  }
-
-  /// <summary>
-  /// true if the backend trust this result 100%. Fingerprint matches are always false.
-  /// </summary>
-  public Dictionary<string, string> OriginalData
-  {
-    get
-    {
-      return _originalData;
-    }
-    set
-    {
-      __isset.originalData = true;
-      this._originalData = value;
-    }
-  }
-
-  /// <summary>
-  /// Debug info from the backend. SDK should log it, along with the rest of the request + response.
-  /// </summary>
-  public string Debug
-  {
-    get
-    {
-      return _debug;
-    }
-    set
-    {
-      __isset.debug = true;
-      this._debug = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool referrerUserId;
-    public bool token;
-    public bool provider;
-    public bool firstMatch;
-    public bool linkParams;
-    public bool internalData;
-    public bool guaranteedMatch;
-    public bool originalData;
-    public bool debug;
-  }
-
-  public THTokenInfo() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THTokenInfo : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              ReferrerUserId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              Token = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              Provider = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.Bool) {
-              FirstMatch = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Map) {
-              {
-                LinkParams = new Dictionary<string, string>();
-                TMap _map33 = iprot.ReadMapBegin();
-                for( int _i34 = 0; _i34 < _map33.Count; ++_i34)
-                {
-                  string _key35;
-                  string _val36;
-                  _key35 = iprot.ReadString();
-                  _val36 = iprot.ReadString();
-                  LinkParams[_key35] = _val36;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.Map) {
-              {
-                InternalData = new Dictionary<string, string>();
-                TMap _map37 = iprot.ReadMapBegin();
-                for( int _i38 = 0; _i38 < _map37.Count; ++_i38)
-                {
-                  string _key39;
-                  string _val40;
-                  _key39 = iprot.ReadString();
-                  _val40 = iprot.ReadString();
-                  InternalData[_key39] = _val40;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 7:
-            if (field.Type == TType.Bool) {
-              GuaranteedMatch = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 8:
-            if (field.Type == TType.Map) {
-              {
-                OriginalData = new Dictionary<string, string>();
-                TMap _map41 = iprot.ReadMapBegin();
-                for( int _i42 = 0; _i42 < _map41.Count; ++_i42)
-                {
-                  string _key43;
-                  string _val44;
-                  _key43 = iprot.ReadString();
-                  _val44 = iprot.ReadString();
-                  OriginalData[_key43] = _val44;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 9:
-            if (field.Type == TType.String) {
-              Debug = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _referrerUserId;
+    private string _token;
+    private string _provider;
+    private bool _firstMatch;
+    private Dictionary<string, string> _linkParams;
+    private Dictionary<string, string> _internalData;
+    private bool _guaranteedMatch;
+    private Dictionary<string, string> _originalData;
+    private string _debug;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string ReferrerUserId
     {
-      TStruct struc = new TStruct("THTokenInfo");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _referrerUserId;
+      }
+      set
+      {
+        __isset.referrerUserId = true;
+        this._referrerUserId = value;
+      }
+    }
+
+    public string Token
+    {
+      get
+      {
+        return _token;
+      }
+      set
+      {
+        __isset.token = true;
+        this._token = value;
+      }
+    }
+
+    public string Provider
+    {
+      get
+      {
+        return _provider;
+      }
+      set
+      {
+        __isset.provider = true;
+        this._provider = value;
+      }
+    }
+
+    /// <summary>
+    /// whatsapp etc.
+    /// </summary>
+    public bool FirstMatch
+    {
+      get
+      {
+        return _firstMatch;
+      }
+      set
+      {
+        __isset.firstMatch = true;
+        this._firstMatch = value;
+      }
+    }
+
+    public Dictionary<string, string> LinkParams
+    {
+      get
+      {
+        return _linkParams;
+      }
+      set
+      {
+        __isset.linkParams = true;
+        this._linkParams = value;
+      }
+    }
+
+    public Dictionary<string, string> InternalData
+    {
+      get
+      {
+        return _internalData;
+      }
+      set
+      {
+        __isset.internalData = true;
+        this._internalData = value;
+      }
+    }
+
+    public bool GuaranteedMatch
+    {
+      get
+      {
+        return _guaranteedMatch;
+      }
+      set
+      {
+        __isset.guaranteedMatch = true;
+        this._guaranteedMatch = value;
+      }
+    }
+
+    /// <summary>
+    /// true if the backend trust this result 100%. Fingerprint matches are always false.
+    /// </summary>
+    public Dictionary<string, string> OriginalData
+    {
+      get
+      {
+        return _originalData;
+      }
+      set
+      {
+        __isset.originalData = true;
+        this._originalData = value;
+      }
+    }
+
+    /// <summary>
+    /// Debug info from the backend. SDK should log it, along with the rest of the request + response.
+    /// </summary>
+    public string Debug
+    {
+      get
+      {
+        return _debug;
+      }
+      set
+      {
+        __isset.debug = true;
+        this._debug = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool referrerUserId;
+      public bool token;
+      public bool provider;
+      public bool firstMatch;
+      public bool linkParams;
+      public bool internalData;
+      public bool guaranteedMatch;
+      public bool originalData;
+      public bool debug;
+    }
+
+    public THTokenInfo() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                ReferrerUserId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Token = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                Provider = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.Bool) {
+                FirstMatch = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Map) {
+                {
+                  LinkParams = new Dictionary<string, string>();
+                  TMap _map42 = iprot.ReadMapBegin();
+                  for( int _i43 = 0; _i43 < _map42.Count; ++_i43)
+                  {
+                    string _key44;
+                    string _val45;
+                    _key44 = iprot.ReadString();
+                    _val45 = iprot.ReadString();
+                    LinkParams[_key44] = _val45;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Map) {
+                {
+                  InternalData = new Dictionary<string, string>();
+                  TMap _map46 = iprot.ReadMapBegin();
+                  for( int _i47 = 0; _i47 < _map46.Count; ++_i47)
+                  {
+                    string _key48;
+                    string _val49;
+                    _key48 = iprot.ReadString();
+                    _val49 = iprot.ReadString();
+                    InternalData[_key48] = _val49;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.Bool) {
+                GuaranteedMatch = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.Map) {
+                {
+                  OriginalData = new Dictionary<string, string>();
+                  TMap _map50 = iprot.ReadMapBegin();
+                  for( int _i51 = 0; _i51 < _map50.Count; ++_i51)
+                  {
+                    string _key52;
+                    string _val53;
+                    _key52 = iprot.ReadString();
+                    _val53 = iprot.ReadString();
+                    OriginalData[_key52] = _val53;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.String) {
+                Debug = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THTokenInfo");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (ReferrerUserId != null && __isset.referrerUserId) {
+          field.Name = "referrerUserId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ReferrerUserId);
+          oprot.WriteFieldEnd();
+        }
+        if (Token != null && __isset.token) {
+          field.Name = "token";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Token);
+          oprot.WriteFieldEnd();
+        }
+        if (Provider != null && __isset.provider) {
+          field.Name = "provider";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Provider);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.firstMatch) {
+          field.Name = "firstMatch";
+          field.Type = TType.Bool;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(FirstMatch);
+          oprot.WriteFieldEnd();
+        }
+        if (LinkParams != null && __isset.linkParams) {
+          field.Name = "linkParams";
+          field.Type = TType.Map;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, LinkParams.Count));
+            foreach (string _iter54 in LinkParams.Keys)
+            {
+              oprot.WriteString(_iter54);
+              oprot.WriteString(LinkParams[_iter54]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (InternalData != null && __isset.internalData) {
+          field.Name = "internalData";
+          field.Type = TType.Map;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, InternalData.Count));
+            foreach (string _iter55 in InternalData.Keys)
+            {
+              oprot.WriteString(_iter55);
+              oprot.WriteString(InternalData[_iter55]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.guaranteedMatch) {
+          field.Name = "guaranteedMatch";
+          field.Type = TType.Bool;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(GuaranteedMatch);
+          oprot.WriteFieldEnd();
+        }
+        if (OriginalData != null && __isset.originalData) {
+          field.Name = "originalData";
+          field.Type = TType.Map;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, OriginalData.Count));
+            foreach (string _iter56 in OriginalData.Keys)
+            {
+              oprot.WriteString(_iter56);
+              oprot.WriteString(OriginalData[_iter56]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Debug != null && __isset.debug) {
+          field.Name = "debug";
+          field.Type = TType.String;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Debug);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THTokenInfo(");
+      bool __first = true;
       if (ReferrerUserId != null && __isset.referrerUserId) {
-        field.Name = "referrerUserId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ReferrerUserId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ReferrerUserId: ");
+        __sb.Append(ReferrerUserId);
       }
       if (Token != null && __isset.token) {
-        field.Name = "token";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Token);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Token: ");
+        __sb.Append(Token);
       }
       if (Provider != null && __isset.provider) {
-        field.Name = "provider";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Provider);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Provider: ");
+        __sb.Append(Provider);
       }
       if (__isset.firstMatch) {
-        field.Name = "firstMatch";
-        field.Type = TType.Bool;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(FirstMatch);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("FirstMatch: ");
+        __sb.Append(FirstMatch);
       }
       if (LinkParams != null && __isset.linkParams) {
-        field.Name = "linkParams";
-        field.Type = TType.Map;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, LinkParams.Count));
-          foreach (string _iter45 in LinkParams.Keys)
-          {
-            oprot.WriteString(_iter45);
-            oprot.WriteString(LinkParams[_iter45]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("LinkParams: ");
+        __sb.Append(LinkParams.ToDebugString());
       }
       if (InternalData != null && __isset.internalData) {
-        field.Name = "internalData";
-        field.Type = TType.Map;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, InternalData.Count));
-          foreach (string _iter46 in InternalData.Keys)
-          {
-            oprot.WriteString(_iter46);
-            oprot.WriteString(InternalData[_iter46]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("InternalData: ");
+        __sb.Append(InternalData.ToDebugString());
       }
       if (__isset.guaranteedMatch) {
-        field.Name = "guaranteedMatch";
-        field.Type = TType.Bool;
-        field.ID = 7;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(GuaranteedMatch);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("GuaranteedMatch: ");
+        __sb.Append(GuaranteedMatch);
       }
       if (OriginalData != null && __isset.originalData) {
-        field.Name = "originalData";
-        field.Type = TType.Map;
-        field.ID = 8;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, OriginalData.Count));
-          foreach (string _iter47 in OriginalData.Keys)
-          {
-            oprot.WriteString(_iter47);
-            oprot.WriteString(OriginalData[_iter47]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("OriginalData: ");
+        __sb.Append(OriginalData.ToDebugString());
       }
       if (Debug != null && __isset.debug) {
-        field.Name = "debug";
-        field.Type = TType.String;
-        field.ID = 9;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Debug);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Debug: ");
+        __sb.Append(Debug);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THTokenInfo(");
-    bool __first = true;
-    if (ReferrerUserId != null && __isset.referrerUserId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ReferrerUserId: ");
-      __sb.Append(ReferrerUserId);
-    }
-    if (Token != null && __isset.token) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Token: ");
-      __sb.Append(Token);
-    }
-    if (Provider != null && __isset.provider) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Provider: ");
-      __sb.Append(Provider);
-    }
-    if (__isset.firstMatch) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("FirstMatch: ");
-      __sb.Append(FirstMatch);
-    }
-    if (LinkParams != null && __isset.linkParams) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("LinkParams: ");
-      __sb.Append(LinkParams);
-    }
-    if (InternalData != null && __isset.internalData) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("InternalData: ");
-      __sb.Append(InternalData);
-    }
-    if (__isset.guaranteedMatch) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("GuaranteedMatch: ");
-      __sb.Append(GuaranteedMatch);
-    }
-    if (OriginalData != null && __isset.originalData) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("OriginalData: ");
-      __sb.Append(OriginalData);
-    }
-    if (Debug != null && __isset.debug) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Debug: ");
-      __sb.Append(Debug);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

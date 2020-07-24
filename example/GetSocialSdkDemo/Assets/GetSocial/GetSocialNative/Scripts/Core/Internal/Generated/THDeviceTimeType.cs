@@ -6,10 +6,16 @@
  *  @generated
  */
 
-public enum THDeviceTimeType
+namespace GetSocialSdk.Core 
 {
-  SERVER_TIME = 0,
-  DEVICE_UPTIME = 1,
-  LOCAL_TIME = 2,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THDeviceTimeType
+  {
+    SERVER_TIME = 0,
+    DEVICE_UPTIME = 1,
+    LOCAL_TIME = 2,
+  }
 }
 #endif

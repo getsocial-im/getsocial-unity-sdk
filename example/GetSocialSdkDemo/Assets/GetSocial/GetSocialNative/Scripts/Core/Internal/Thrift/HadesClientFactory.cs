@@ -13,7 +13,6 @@ namespace GetSocialSdk.Core
         {
             new Thread(() =>
             {
-                ServicePointManager.ServerCertificateValidationCallback += (p1, p2, p3, p4) => true;
                 var uri = new Uri(NativeBuildConfig.HadesUrl);
                 using (var transport = new THttpClient(uri))
                 using (var protocol = new TBinaryProtocol(transport))

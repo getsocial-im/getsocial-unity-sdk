@@ -1,5 +1,6 @@
-﻿#if UNITY_ANDROID && USE_GETSOCIAL_UI
+﻿#if UNITY_ANDROID 
 using System;
+using UnityEngine;
 using System.Diagnostics.CodeAnalysis;
 using GetSocialSdk.Core;
 
@@ -15,9 +16,9 @@ namespace GetSocialSdk.Ui
             _onMentionClickListener = onMentionClickListener;
         }
 
-        void onMentionClicked(string userId)
+        void onMentionClicked(string mention)
         {
-            ExecuteOnMainThread(() => _onMentionClickListener(userId));
+            ExecuteOnMainThread(() => _onMentionClickListener(mention));
         }
     }
 }

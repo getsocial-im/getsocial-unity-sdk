@@ -1,4 +1,4 @@
-﻿#if UNITY_ANDROID && USE_GETSOCIAL_UI
+﻿#if UNITY_ANDROID 
 using System;
 using GetSocialSdk.Core;
 using UnityEngine;
@@ -15,11 +15,12 @@ namespace GetSocialSdk.Ui
             _notificationClickListener = notificationClickListener;
         }
 
-        bool onNotificationClicked(AndroidJavaObject notificationAJO)
+        void onNotificationClicked(AndroidJavaObject notificationAJO, AndroidJavaObject contextAJO)
         {
             Debug.Log(">>>>>>> XXXX");
-            var notification = new Notification().ParseFromAJO(notificationAJO);
-            return _notificationClickListener != null && _notificationClickListener(notification);
+            var notification = AndroidAJOConverter.Convert<Notification>(notificationAJO);
+            var context = AndroidAJOConverter.Convert<NotificationContext>(contextAJO);
+            ExecuteOnMainThread(() => _notificationClickListener(notification, context));
         }
         
     }

@@ -16,490 +16,497 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THActivityPost : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _id;
-  private THContent _content;
-  private THPostAuthor _author;
-  private int _createdAt;
-  private int _stickyStart;
-  private int _stickyEnd;
-  private int _commentsCount;
-  private int _likesCount;
-  private bool _likedByMe;
-  private string _feedId;
-  private List<THMention> _mentions;
 
-  public string Id
-  {
-    get
-    {
-      return _id;
-    }
-    set
-    {
-      __isset.id = true;
-      this._id = value;
-    }
-  }
-
-  public THContent Content
-  {
-    get
-    {
-      return _content;
-    }
-    set
-    {
-      __isset.content = true;
-      this._content = value;
-    }
-  }
-
-  public THPostAuthor Author
-  {
-    get
-    {
-      return _author;
-    }
-    set
-    {
-      __isset.author = true;
-      this._author = value;
-    }
-  }
-
-  public int CreatedAt
-  {
-    get
-    {
-      return _createdAt;
-    }
-    set
-    {
-      __isset.createdAt = true;
-      this._createdAt = value;
-    }
-  }
-
-  public int StickyStart
-  {
-    get
-    {
-      return _stickyStart;
-    }
-    set
-    {
-      __isset.stickyStart = true;
-      this._stickyStart = value;
-    }
-  }
-
-  public int StickyEnd
-  {
-    get
-    {
-      return _stickyEnd;
-    }
-    set
-    {
-      __isset.stickyEnd = true;
-      this._stickyEnd = value;
-    }
-  }
-
-  public int CommentsCount
-  {
-    get
-    {
-      return _commentsCount;
-    }
-    set
-    {
-      __isset.commentsCount = true;
-      this._commentsCount = value;
-    }
-  }
-
-  public int LikesCount
-  {
-    get
-    {
-      return _likesCount;
-    }
-    set
-    {
-      __isset.likesCount = true;
-      this._likesCount = value;
-    }
-  }
-
-  public bool LikedByMe
-  {
-    get
-    {
-      return _likedByMe;
-    }
-    set
-    {
-      __isset.likedByMe = true;
-      this._likedByMe = value;
-    }
-  }
-
-  public string FeedId
-  {
-    get
-    {
-      return _feedId;
-    }
-    set
-    {
-      __isset.feedId = true;
-      this._feedId = value;
-    }
-  }
-
-  public List<THMention> Mentions
-  {
-    get
-    {
-      return _mentions;
-    }
-    set
-    {
-      __isset.mentions = true;
-      this._mentions = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool id;
-    public bool content;
-    public bool author;
-    public bool createdAt;
-    public bool stickyStart;
-    public bool stickyEnd;
-    public bool commentsCount;
-    public bool likesCount;
-    public bool likedByMe;
-    public bool feedId;
-    public bool mentions;
-  }
-
-  public THActivityPost() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THActivityPost : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              Id = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Struct) {
-              Content = new THContent();
-              Content.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Struct) {
-              Author = new THPostAuthor();
-              Author.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.I32) {
-              CreatedAt = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.I32) {
-              StickyStart = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.I32) {
-              StickyEnd = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 7:
-            if (field.Type == TType.I32) {
-              CommentsCount = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 8:
-            if (field.Type == TType.I32) {
-              LikesCount = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 9:
-            if (field.Type == TType.Bool) {
-              LikedByMe = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 10:
-            if (field.Type == TType.String) {
-              FeedId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 11:
-            if (field.Type == TType.List) {
-              {
-                Mentions = new List<THMention>();
-                TList _list4 = iprot.ReadListBegin();
-                for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
-                {
-                  THMention _elem6;
-                  _elem6 = new THMention();
-                  _elem6.Read(iprot);
-                  Mentions.Add(_elem6);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _id;
+    private THContent _content;
+    private THPostAuthor _author;
+    private int _createdAt;
+    private int _stickyStart;
+    private int _stickyEnd;
+    private int _commentsCount;
+    private int _likesCount;
+    private bool _likedByMe;
+    private string _feedId;
+    private List<THMention> _mentions;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string Id
     {
-      TStruct struc = new TStruct("THActivityPost");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _id;
+      }
+      set
+      {
+        __isset.id = true;
+        this._id = value;
+      }
+    }
+
+    public THContent Content
+    {
+      get
+      {
+        return _content;
+      }
+      set
+      {
+        __isset.content = true;
+        this._content = value;
+      }
+    }
+
+    public THPostAuthor Author
+    {
+      get
+      {
+        return _author;
+      }
+      set
+      {
+        __isset.author = true;
+        this._author = value;
+      }
+    }
+
+    public int CreatedAt
+    {
+      get
+      {
+        return _createdAt;
+      }
+      set
+      {
+        __isset.createdAt = true;
+        this._createdAt = value;
+      }
+    }
+
+    public int StickyStart
+    {
+      get
+      {
+        return _stickyStart;
+      }
+      set
+      {
+        __isset.stickyStart = true;
+        this._stickyStart = value;
+      }
+    }
+
+    public int StickyEnd
+    {
+      get
+      {
+        return _stickyEnd;
+      }
+      set
+      {
+        __isset.stickyEnd = true;
+        this._stickyEnd = value;
+      }
+    }
+
+    public int CommentsCount
+    {
+      get
+      {
+        return _commentsCount;
+      }
+      set
+      {
+        __isset.commentsCount = true;
+        this._commentsCount = value;
+      }
+    }
+
+    public int LikesCount
+    {
+      get
+      {
+        return _likesCount;
+      }
+      set
+      {
+        __isset.likesCount = true;
+        this._likesCount = value;
+      }
+    }
+
+    public bool LikedByMe
+    {
+      get
+      {
+        return _likedByMe;
+      }
+      set
+      {
+        __isset.likedByMe = true;
+        this._likedByMe = value;
+      }
+    }
+
+    public string FeedId
+    {
+      get
+      {
+        return _feedId;
+      }
+      set
+      {
+        __isset.feedId = true;
+        this._feedId = value;
+      }
+    }
+
+    public List<THMention> Mentions
+    {
+      get
+      {
+        return _mentions;
+      }
+      set
+      {
+        __isset.mentions = true;
+        this._mentions = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool id;
+      public bool content;
+      public bool author;
+      public bool createdAt;
+      public bool stickyStart;
+      public bool stickyEnd;
+      public bool commentsCount;
+      public bool likesCount;
+      public bool likedByMe;
+      public bool feedId;
+      public bool mentions;
+    }
+
+    public THActivityPost() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                Id = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Struct) {
+                Content = new THContent();
+                Content.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Struct) {
+                Author = new THPostAuthor();
+                Author.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I32) {
+                CreatedAt = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.I32) {
+                StickyStart = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.I32) {
+                StickyEnd = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.I32) {
+                CommentsCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.I32) {
+                LikesCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.Bool) {
+                LikedByMe = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.String) {
+                FeedId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.List) {
+                {
+                  Mentions = new List<THMention>();
+                  TList _list4 = iprot.ReadListBegin();
+                  for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
+                  {
+                    THMention _elem6;
+                    _elem6 = new THMention();
+                    _elem6.Read(iprot);
+                    Mentions.Add(_elem6);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THActivityPost");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Id != null && __isset.id) {
+          field.Name = "id";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Id);
+          oprot.WriteFieldEnd();
+        }
+        if (Content != null && __isset.content) {
+          field.Name = "content";
+          field.Type = TType.Struct;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          Content.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (Author != null && __isset.author) {
+          field.Name = "author";
+          field.Type = TType.Struct;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          Author.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.createdAt) {
+          field.Name = "createdAt";
+          field.Type = TType.I32;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(CreatedAt);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.stickyStart) {
+          field.Name = "stickyStart";
+          field.Type = TType.I32;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(StickyStart);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.stickyEnd) {
+          field.Name = "stickyEnd";
+          field.Type = TType.I32;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(StickyEnd);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.commentsCount) {
+          field.Name = "commentsCount";
+          field.Type = TType.I32;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(CommentsCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.likesCount) {
+          field.Name = "likesCount";
+          field.Type = TType.I32;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(LikesCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.likedByMe) {
+          field.Name = "likedByMe";
+          field.Type = TType.Bool;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(LikedByMe);
+          oprot.WriteFieldEnd();
+        }
+        if (FeedId != null && __isset.feedId) {
+          field.Name = "feedId";
+          field.Type = TType.String;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(FeedId);
+          oprot.WriteFieldEnd();
+        }
+        if (Mentions != null && __isset.mentions) {
+          field.Name = "mentions";
+          field.Type = TType.List;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Mentions.Count));
+            foreach (THMention _iter7 in Mentions)
+            {
+              _iter7.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THActivityPost(");
+      bool __first = true;
       if (Id != null && __isset.id) {
-        field.Name = "id";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Id);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Id: ");
+        __sb.Append(Id);
       }
       if (Content != null && __isset.content) {
-        field.Name = "content";
-        field.Type = TType.Struct;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        Content.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Content: ");
+        __sb.Append(Content== null ? "<null>" : Content.ToString());
       }
       if (Author != null && __isset.author) {
-        field.Name = "author";
-        field.Type = TType.Struct;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        Author.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Author: ");
+        __sb.Append(Author);
       }
       if (__isset.createdAt) {
-        field.Name = "createdAt";
-        field.Type = TType.I32;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(CreatedAt);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CreatedAt: ");
+        __sb.Append(CreatedAt);
       }
       if (__isset.stickyStart) {
-        field.Name = "stickyStart";
-        field.Type = TType.I32;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(StickyStart);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("StickyStart: ");
+        __sb.Append(StickyStart);
       }
       if (__isset.stickyEnd) {
-        field.Name = "stickyEnd";
-        field.Type = TType.I32;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(StickyEnd);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("StickyEnd: ");
+        __sb.Append(StickyEnd);
       }
       if (__isset.commentsCount) {
-        field.Name = "commentsCount";
-        field.Type = TType.I32;
-        field.ID = 7;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(CommentsCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CommentsCount: ");
+        __sb.Append(CommentsCount);
       }
       if (__isset.likesCount) {
-        field.Name = "likesCount";
-        field.Type = TType.I32;
-        field.ID = 8;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(LikesCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("LikesCount: ");
+        __sb.Append(LikesCount);
       }
       if (__isset.likedByMe) {
-        field.Name = "likedByMe";
-        field.Type = TType.Bool;
-        field.ID = 9;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(LikedByMe);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("LikedByMe: ");
+        __sb.Append(LikedByMe);
       }
       if (FeedId != null && __isset.feedId) {
-        field.Name = "feedId";
-        field.Type = TType.String;
-        field.ID = 10;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(FeedId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("FeedId: ");
+        __sb.Append(FeedId);
       }
       if (Mentions != null && __isset.mentions) {
-        field.Name = "mentions";
-        field.Type = TType.List;
-        field.ID = 11;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.Struct, Mentions.Count));
-          foreach (THMention _iter7 in Mentions)
-          {
-            _iter7.Write(oprot);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Mentions: ");
+        __sb.Append(Mentions.ToDebugString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THActivityPost(");
-    bool __first = true;
-    if (Id != null && __isset.id) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Id: ");
-      __sb.Append(Id);
-    }
-    if (Content != null && __isset.content) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Content: ");
-      __sb.Append(Content== null ? "<null>" : Content.ToString());
-    }
-    if (Author != null && __isset.author) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Author: ");
-      __sb.Append(Author);
-    }
-    if (__isset.createdAt) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("CreatedAt: ");
-      __sb.Append(CreatedAt);
-    }
-    if (__isset.stickyStart) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("StickyStart: ");
-      __sb.Append(StickyStart);
-    }
-    if (__isset.stickyEnd) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("StickyEnd: ");
-      __sb.Append(StickyEnd);
-    }
-    if (__isset.commentsCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("CommentsCount: ");
-      __sb.Append(CommentsCount);
-    }
-    if (__isset.likesCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("LikesCount: ");
-      __sb.Append(LikesCount);
-    }
-    if (__isset.likedByMe) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("LikedByMe: ");
-      __sb.Append(LikedByMe);
-    }
-    if (FeedId != null && __isset.feedId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("FeedId: ");
-      __sb.Append(FeedId);
-    }
-    if (Mentions != null && __isset.mentions) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Mentions: ");
-      __sb.Append(Mentions);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

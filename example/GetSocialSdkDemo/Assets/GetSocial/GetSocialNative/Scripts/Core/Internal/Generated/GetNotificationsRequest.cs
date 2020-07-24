@@ -16,306 +16,313 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetNotificationsRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _sessionId;
-  private List<string> _types;
-  private List<string> _statuses;
-  private List<string> _actions;
-  private Pagination _pagination;
 
-  public string SessionId
-  {
-    get
-    {
-      return _sessionId;
-    }
-    set
-    {
-      __isset.sessionId = true;
-      this._sessionId = value;
-    }
-  }
-
-  public List<string> Types
-  {
-    get
-    {
-      return _types;
-    }
-    set
-    {
-      __isset.types = true;
-      this._types = value;
-    }
-  }
-
-  public List<string> Statuses
-  {
-    get
-    {
-      return _statuses;
-    }
-    set
-    {
-      __isset.statuses = true;
-      this._statuses = value;
-    }
-  }
-
-  public List<string> Actions
-  {
-    get
-    {
-      return _actions;
-    }
-    set
-    {
-      __isset.actions = true;
-      this._actions = value;
-    }
-  }
-
-  public Pagination Pagination
-  {
-    get
-    {
-      return _pagination;
-    }
-    set
-    {
-      __isset.pagination = true;
-      this._pagination = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool sessionId;
-    public bool types;
-    public bool statuses;
-    public bool actions;
-    public bool pagination;
-  }
-
-  public GetNotificationsRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetNotificationsRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              SessionId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.List) {
-              {
-                Types = new List<string>();
-                TList _list52 = iprot.ReadListBegin();
-                for( int _i53 = 0; _i53 < _list52.Count; ++_i53)
-                {
-                  string _elem54;
-                  _elem54 = iprot.ReadString();
-                  Types.Add(_elem54);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.List) {
-              {
-                Statuses = new List<string>();
-                TList _list55 = iprot.ReadListBegin();
-                for( int _i56 = 0; _i56 < _list55.Count; ++_i56)
-                {
-                  string _elem57;
-                  _elem57 = iprot.ReadString();
-                  Statuses.Add(_elem57);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.List) {
-              {
-                Actions = new List<string>();
-                TList _list58 = iprot.ReadListBegin();
-                for( int _i59 = 0; _i59 < _list58.Count; ++_i59)
-                {
-                  string _elem60;
-                  _elem60 = iprot.ReadString();
-                  Actions.Add(_elem60);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Struct) {
-              Pagination = new Pagination();
-              Pagination.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _sessionId;
+    private List<string> _types;
+    private List<string> _statuses;
+    private List<string> _actions;
+    private Pagination _pagination;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string SessionId
     {
-      TStruct struc = new TStruct("GetNotificationsRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public List<string> Types
+    {
+      get
+      {
+        return _types;
+      }
+      set
+      {
+        __isset.types = true;
+        this._types = value;
+      }
+    }
+
+    public List<string> Statuses
+    {
+      get
+      {
+        return _statuses;
+      }
+      set
+      {
+        __isset.statuses = true;
+        this._statuses = value;
+      }
+    }
+
+    public List<string> Actions
+    {
+      get
+      {
+        return _actions;
+      }
+      set
+      {
+        __isset.actions = true;
+        this._actions = value;
+      }
+    }
+
+    public Pagination Pagination
+    {
+      get
+      {
+        return _pagination;
+      }
+      set
+      {
+        __isset.pagination = true;
+        this._pagination = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool types;
+      public bool statuses;
+      public bool actions;
+      public bool pagination;
+    }
+
+    public GetNotificationsRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.List) {
+                {
+                  Types = new List<string>();
+                  TList _list99 = iprot.ReadListBegin();
+                  for( int _i100 = 0; _i100 < _list99.Count; ++_i100)
+                  {
+                    string _elem101;
+                    _elem101 = iprot.ReadString();
+                    Types.Add(_elem101);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.List) {
+                {
+                  Statuses = new List<string>();
+                  TList _list102 = iprot.ReadListBegin();
+                  for( int _i103 = 0; _i103 < _list102.Count; ++_i103)
+                  {
+                    string _elem104;
+                    _elem104 = iprot.ReadString();
+                    Statuses.Add(_elem104);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.List) {
+                {
+                  Actions = new List<string>();
+                  TList _list105 = iprot.ReadListBegin();
+                  for( int _i106 = 0; _i106 < _list105.Count; ++_i106)
+                  {
+                    string _elem107;
+                    _elem107 = iprot.ReadString();
+                    Actions.Add(_elem107);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Struct) {
+                Pagination = new Pagination();
+                Pagination.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetNotificationsRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (Types != null && __isset.types) {
+          field.Name = "types";
+          field.Type = TType.List;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Types.Count));
+            foreach (string _iter108 in Types)
+            {
+              oprot.WriteString(_iter108);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Statuses != null && __isset.statuses) {
+          field.Name = "statuses";
+          field.Type = TType.List;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Statuses.Count));
+            foreach (string _iter109 in Statuses)
+            {
+              oprot.WriteString(_iter109);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Actions != null && __isset.actions) {
+          field.Name = "actions";
+          field.Type = TType.List;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Actions.Count));
+            foreach (string _iter110 in Actions)
+            {
+              oprot.WriteString(_iter110);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Pagination != null && __isset.pagination) {
+          field.Name = "pagination";
+          field.Type = TType.Struct;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          Pagination.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetNotificationsRequest(");
+      bool __first = true;
       if (SessionId != null && __isset.sessionId) {
-        field.Name = "sessionId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(SessionId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
       }
       if (Types != null && __isset.types) {
-        field.Name = "types";
-        field.Type = TType.List;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.String, Types.Count));
-          foreach (string _iter61 in Types)
-          {
-            oprot.WriteString(_iter61);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Types: ");
+        __sb.Append(Types.ToDebugString());
       }
       if (Statuses != null && __isset.statuses) {
-        field.Name = "statuses";
-        field.Type = TType.List;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.String, Statuses.Count));
-          foreach (string _iter62 in Statuses)
-          {
-            oprot.WriteString(_iter62);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Statuses: ");
+        __sb.Append(Statuses.ToDebugString());
       }
       if (Actions != null && __isset.actions) {
-        field.Name = "actions";
-        field.Type = TType.List;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.String, Actions.Count));
-          foreach (string _iter63 in Actions)
-          {
-            oprot.WriteString(_iter63);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Actions: ");
+        __sb.Append(Actions.ToDebugString());
       }
       if (Pagination != null && __isset.pagination) {
-        field.Name = "pagination";
-        field.Type = TType.Struct;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        Pagination.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Pagination: ");
+        __sb.Append(Pagination== null ? "<null>" : Pagination.ToString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetNotificationsRequest(");
-    bool __first = true;
-    if (SessionId != null && __isset.sessionId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SessionId: ");
-      __sb.Append(SessionId);
-    }
-    if (Types != null && __isset.types) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Types: ");
-      __sb.Append(Types);
-    }
-    if (Statuses != null && __isset.statuses) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Statuses: ");
-      __sb.Append(Statuses);
-    }
-    if (Actions != null && __isset.actions) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Actions: ");
-      __sb.Append(Actions);
-    }
-    if (Pagination != null && __isset.pagination) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Pagination: ");
-      __sb.Append(Pagination== null ? "<null>" : Pagination.ToString());
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

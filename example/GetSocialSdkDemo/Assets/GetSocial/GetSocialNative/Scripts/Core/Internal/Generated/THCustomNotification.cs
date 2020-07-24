@@ -16,750 +16,757 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THCustomNotification : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<string> _userIds;
-  private int _action;
-  private Dictionary<string, string> _actionData;
-  private string _text;
-  private string _title;
-  private string _image;
-  private string _video;
-  private string _templateName;
-  private Dictionary<string, string> _templateData;
-  private THAction _newAction;
-  private List<THActionButton> _actionButtons;
-  private THNotificationTemplateMedia _media;
-  private Dictionary<THDeviceOs, THNotificationTemplateMedia> _platformMedia;
-  private THBadge _badge;
-  private int _expiration;
-  private THNotificationTemplateProperties _properties;
 
-  public List<string> UserIds
-  {
-    get
-    {
-      return _userIds;
-    }
-    set
-    {
-      __isset.userIds = true;
-      this._userIds = value;
-    }
-  }
-
-  public int Action
-  {
-    get
-    {
-      return _action;
-    }
-    set
-    {
-      __isset.action = true;
-      this._action = value;
-    }
-  }
-
-  public Dictionary<string, string> ActionData
-  {
-    get
-    {
-      return _actionData;
-    }
-    set
-    {
-      __isset.actionData = true;
-      this._actionData = value;
-    }
-  }
-
-  public string Text
-  {
-    get
-    {
-      return _text;
-    }
-    set
-    {
-      __isset.text = true;
-      this._text = value;
-    }
-  }
-
-  public string Title
-  {
-    get
-    {
-      return _title;
-    }
-    set
-    {
-      __isset.title = true;
-      this._title = value;
-    }
-  }
-
-  public string Image
-  {
-    get
-    {
-      return _image;
-    }
-    set
-    {
-      __isset.image = true;
-      this._image = value;
-    }
-  }
-
-  public string Video
-  {
-    get
-    {
-      return _video;
-    }
-    set
-    {
-      __isset.video = true;
-      this._video = value;
-    }
-  }
-
-  public string TemplateName
-  {
-    get
-    {
-      return _templateName;
-    }
-    set
-    {
-      __isset.templateName = true;
-      this._templateName = value;
-    }
-  }
-
-  public Dictionary<string, string> TemplateData
-  {
-    get
-    {
-      return _templateData;
-    }
-    set
-    {
-      __isset.templateData = true;
-      this._templateData = value;
-    }
-  }
-
-  public THAction NewAction
-  {
-    get
-    {
-      return _newAction;
-    }
-    set
-    {
-      __isset.newAction = true;
-      this._newAction = value;
-    }
-  }
-
-  public List<THActionButton> ActionButtons
-  {
-    get
-    {
-      return _actionButtons;
-    }
-    set
-    {
-      __isset.actionButtons = true;
-      this._actionButtons = value;
-    }
-  }
-
-  public THNotificationTemplateMedia Media
-  {
-    get
-    {
-      return _media;
-    }
-    set
-    {
-      __isset.media = true;
-      this._media = value;
-    }
-  }
-
-  public Dictionary<THDeviceOs, THNotificationTemplateMedia> PlatformMedia
-  {
-    get
-    {
-      return _platformMedia;
-    }
-    set
-    {
-      __isset.platformMedia = true;
-      this._platformMedia = value;
-    }
-  }
-
-  public THBadge Badge
-  {
-    get
-    {
-      return _badge;
-    }
-    set
-    {
-      __isset.badge = true;
-      this._badge = value;
-    }
-  }
-
-  public int Expiration
-  {
-    get
-    {
-      return _expiration;
-    }
-    set
-    {
-      __isset.expiration = true;
-      this._expiration = value;
-    }
-  }
-
-  public THNotificationTemplateProperties Properties
-  {
-    get
-    {
-      return _properties;
-    }
-    set
-    {
-      __isset.properties = true;
-      this._properties = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool userIds;
-    public bool action;
-    public bool actionData;
-    public bool text;
-    public bool title;
-    public bool image;
-    public bool video;
-    public bool templateName;
-    public bool templateData;
-    public bool newAction;
-    public bool actionButtons;
-    public bool media;
-    public bool platformMedia;
-    public bool badge;
-    public bool expiration;
-    public bool properties;
-  }
-
-  public THCustomNotification() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THCustomNotification : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                UserIds = new List<string>();
-                TList _list9 = iprot.ReadListBegin();
-                for( int _i10 = 0; _i10 < _list9.Count; ++_i10)
-                {
-                  string _elem11;
-                  _elem11 = iprot.ReadString();
-                  UserIds.Add(_elem11);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I32) {
-              Action = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                ActionData = new Dictionary<string, string>();
-                TMap _map12 = iprot.ReadMapBegin();
-                for( int _i13 = 0; _i13 < _map12.Count; ++_i13)
-                {
-                  string _key14;
-                  string _val15;
-                  _key14 = iprot.ReadString();
-                  _val15 = iprot.ReadString();
-                  ActionData[_key14] = _val15;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              Text = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.String) {
-              Title = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.String) {
-              Image = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 7:
-            if (field.Type == TType.String) {
-              Video = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 8:
-            if (field.Type == TType.String) {
-              TemplateName = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 9:
-            if (field.Type == TType.Map) {
-              {
-                TemplateData = new Dictionary<string, string>();
-                TMap _map16 = iprot.ReadMapBegin();
-                for( int _i17 = 0; _i17 < _map16.Count; ++_i17)
-                {
-                  string _key18;
-                  string _val19;
-                  _key18 = iprot.ReadString();
-                  _val19 = iprot.ReadString();
-                  TemplateData[_key18] = _val19;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 10:
-            if (field.Type == TType.Struct) {
-              NewAction = new THAction();
-              NewAction.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 11:
-            if (field.Type == TType.List) {
-              {
-                ActionButtons = new List<THActionButton>();
-                TList _list20 = iprot.ReadListBegin();
-                for( int _i21 = 0; _i21 < _list20.Count; ++_i21)
-                {
-                  THActionButton _elem22;
-                  _elem22 = new THActionButton();
-                  _elem22.Read(iprot);
-                  ActionButtons.Add(_elem22);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 12:
-            if (field.Type == TType.Struct) {
-              Media = new THNotificationTemplateMedia();
-              Media.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 13:
-            if (field.Type == TType.Map) {
-              {
-                PlatformMedia = new Dictionary<THDeviceOs, THNotificationTemplateMedia>();
-                TMap _map23 = iprot.ReadMapBegin();
-                for( int _i24 = 0; _i24 < _map23.Count; ++_i24)
-                {
-                  THDeviceOs _key25;
-                  THNotificationTemplateMedia _val26;
-                  _key25 = (THDeviceOs)iprot.ReadI32();
-                  _val26 = new THNotificationTemplateMedia();
-                  _val26.Read(iprot);
-                  PlatformMedia[_key25] = _val26;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 14:
-            if (field.Type == TType.Struct) {
-              Badge = new THBadge();
-              Badge.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 15:
-            if (field.Type == TType.I32) {
-              Expiration = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 16:
-            if (field.Type == TType.Struct) {
-              Properties = new THNotificationTemplateProperties();
-              Properties.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<string> _userIds;
+    private int _action;
+    private Dictionary<string, string> _actionData;
+    private string _text;
+    private string _title;
+    private string _image;
+    private string _video;
+    private string _templateName;
+    private Dictionary<string, string> _templateData;
+    private THAction _newAction;
+    private List<THActionButton> _actionButtons;
+    private THNotificationTemplateMedia _media;
+    private Dictionary<THDeviceOs, THNotificationTemplateMedia> _platformMedia;
+    private THBadge _badge;
+    private int _expiration;
+    private THNotificationTemplateProperties _properties;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<string> UserIds
     {
-      TStruct struc = new TStruct("THCustomNotification");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (UserIds != null && __isset.userIds) {
-        field.Name = "userIds";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _userIds;
+      }
+      set
+      {
+        __isset.userIds = true;
+        this._userIds = value;
+      }
+    }
+
+    public int Action
+    {
+      get
+      {
+        return _action;
+      }
+      set
+      {
+        __isset.action = true;
+        this._action = value;
+      }
+    }
+
+    public Dictionary<string, string> ActionData
+    {
+      get
+      {
+        return _actionData;
+      }
+      set
+      {
+        __isset.actionData = true;
+        this._actionData = value;
+      }
+    }
+
+    public string Text
+    {
+      get
+      {
+        return _text;
+      }
+      set
+      {
+        __isset.text = true;
+        this._text = value;
+      }
+    }
+
+    public string Title
+    {
+      get
+      {
+        return _title;
+      }
+      set
+      {
+        __isset.title = true;
+        this._title = value;
+      }
+    }
+
+    public string Image
+    {
+      get
+      {
+        return _image;
+      }
+      set
+      {
+        __isset.image = true;
+        this._image = value;
+      }
+    }
+
+    public string Video
+    {
+      get
+      {
+        return _video;
+      }
+      set
+      {
+        __isset.video = true;
+        this._video = value;
+      }
+    }
+
+    public string TemplateName
+    {
+      get
+      {
+        return _templateName;
+      }
+      set
+      {
+        __isset.templateName = true;
+        this._templateName = value;
+      }
+    }
+
+    public Dictionary<string, string> TemplateData
+    {
+      get
+      {
+        return _templateData;
+      }
+      set
+      {
+        __isset.templateData = true;
+        this._templateData = value;
+      }
+    }
+
+    public THAction NewAction
+    {
+      get
+      {
+        return _newAction;
+      }
+      set
+      {
+        __isset.newAction = true;
+        this._newAction = value;
+      }
+    }
+
+    public List<THActionButton> ActionButtons
+    {
+      get
+      {
+        return _actionButtons;
+      }
+      set
+      {
+        __isset.actionButtons = true;
+        this._actionButtons = value;
+      }
+    }
+
+    public THNotificationTemplateMedia Media
+    {
+      get
+      {
+        return _media;
+      }
+      set
+      {
+        __isset.media = true;
+        this._media = value;
+      }
+    }
+
+    public Dictionary<THDeviceOs, THNotificationTemplateMedia> PlatformMedia
+    {
+      get
+      {
+        return _platformMedia;
+      }
+      set
+      {
+        __isset.platformMedia = true;
+        this._platformMedia = value;
+      }
+    }
+
+    public THBadge Badge
+    {
+      get
+      {
+        return _badge;
+      }
+      set
+      {
+        __isset.badge = true;
+        this._badge = value;
+      }
+    }
+
+    public int Expiration
+    {
+      get
+      {
+        return _expiration;
+      }
+      set
+      {
+        __isset.expiration = true;
+        this._expiration = value;
+      }
+    }
+
+    public THNotificationTemplateProperties Properties
+    {
+      get
+      {
+        return _properties;
+      }
+      set
+      {
+        __isset.properties = true;
+        this._properties = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool userIds;
+      public bool action;
+      public bool actionData;
+      public bool text;
+      public bool title;
+      public bool image;
+      public bool video;
+      public bool templateName;
+      public bool templateData;
+      public bool newAction;
+      public bool actionButtons;
+      public bool media;
+      public bool platformMedia;
+      public bool badge;
+      public bool expiration;
+      public bool properties;
+    }
+
+    public THCustomNotification() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.String, UserIds.Count));
-          foreach (string _iter27 in UserIds)
-          {
-            oprot.WriteString(_iter27);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  UserIds = new List<string>();
+                  TList _list33 = iprot.ReadListBegin();
+                  for( int _i34 = 0; _i34 < _list33.Count; ++_i34)
+                  {
+                    string _elem35;
+                    _elem35 = iprot.ReadString();
+                    UserIds.Add(_elem35);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I32) {
+                Action = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  ActionData = new Dictionary<string, string>();
+                  TMap _map36 = iprot.ReadMapBegin();
+                  for( int _i37 = 0; _i37 < _map36.Count; ++_i37)
+                  {
+                    string _key38;
+                    string _val39;
+                    _key38 = iprot.ReadString();
+                    _val39 = iprot.ReadString();
+                    ActionData[_key38] = _val39;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                Text = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.String) {
+                Title = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.String) {
+                Image = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.String) {
+                Video = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.String) {
+                TemplateName = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.Map) {
+                {
+                  TemplateData = new Dictionary<string, string>();
+                  TMap _map40 = iprot.ReadMapBegin();
+                  for( int _i41 = 0; _i41 < _map40.Count; ++_i41)
+                  {
+                    string _key42;
+                    string _val43;
+                    _key42 = iprot.ReadString();
+                    _val43 = iprot.ReadString();
+                    TemplateData[_key42] = _val43;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.Struct) {
+                NewAction = new THAction();
+                NewAction.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.List) {
+                {
+                  ActionButtons = new List<THActionButton>();
+                  TList _list44 = iprot.ReadListBegin();
+                  for( int _i45 = 0; _i45 < _list44.Count; ++_i45)
+                  {
+                    THActionButton _elem46;
+                    _elem46 = new THActionButton();
+                    _elem46.Read(iprot);
+                    ActionButtons.Add(_elem46);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 12:
+              if (field.Type == TType.Struct) {
+                Media = new THNotificationTemplateMedia();
+                Media.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 13:
+              if (field.Type == TType.Map) {
+                {
+                  PlatformMedia = new Dictionary<THDeviceOs, THNotificationTemplateMedia>();
+                  TMap _map47 = iprot.ReadMapBegin();
+                  for( int _i48 = 0; _i48 < _map47.Count; ++_i48)
+                  {
+                    THDeviceOs _key49;
+                    THNotificationTemplateMedia _val50;
+                    _key49 = (THDeviceOs)iprot.ReadI32();
+                    _val50 = new THNotificationTemplateMedia();
+                    _val50.Read(iprot);
+                    PlatformMedia[_key49] = _val50;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 14:
+              if (field.Type == TType.Struct) {
+                Badge = new THBadge();
+                Badge.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 15:
+              if (field.Type == TType.I32) {
+                Expiration = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 16:
+              if (field.Type == TType.Struct) {
+                Properties = new THNotificationTemplateProperties();
+                Properties.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THCustomNotification");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (UserIds != null && __isset.userIds) {
+          field.Name = "userIds";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, UserIds.Count));
+            foreach (string _iter51 in UserIds)
+            {
+              oprot.WriteString(_iter51);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.action) {
+          field.Name = "action";
+          field.Type = TType.I32;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Action);
+          oprot.WriteFieldEnd();
+        }
+        if (ActionData != null && __isset.actionData) {
+          field.Name = "actionData";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, ActionData.Count));
+            foreach (string _iter52 in ActionData.Keys)
+            {
+              oprot.WriteString(_iter52);
+              oprot.WriteString(ActionData[_iter52]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Text != null && __isset.text) {
+          field.Name = "text";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Text);
+          oprot.WriteFieldEnd();
+        }
+        if (Title != null && __isset.title) {
+          field.Name = "title";
+          field.Type = TType.String;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Title);
+          oprot.WriteFieldEnd();
+        }
+        if (Image != null && __isset.image) {
+          field.Name = "image";
+          field.Type = TType.String;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Image);
+          oprot.WriteFieldEnd();
+        }
+        if (Video != null && __isset.video) {
+          field.Name = "video";
+          field.Type = TType.String;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Video);
+          oprot.WriteFieldEnd();
+        }
+        if (TemplateName != null && __isset.templateName) {
+          field.Name = "templateName";
+          field.Type = TType.String;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(TemplateName);
+          oprot.WriteFieldEnd();
+        }
+        if (TemplateData != null && __isset.templateData) {
+          field.Name = "templateData";
+          field.Type = TType.Map;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, TemplateData.Count));
+            foreach (string _iter53 in TemplateData.Keys)
+            {
+              oprot.WriteString(_iter53);
+              oprot.WriteString(TemplateData[_iter53]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (NewAction != null && __isset.newAction) {
+          field.Name = "newAction";
+          field.Type = TType.Struct;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          NewAction.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (ActionButtons != null && __isset.actionButtons) {
+          field.Name = "actionButtons";
+          field.Type = TType.List;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, ActionButtons.Count));
+            foreach (THActionButton _iter54 in ActionButtons)
+            {
+              _iter54.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Media != null && __isset.media) {
+          field.Name = "media";
+          field.Type = TType.Struct;
+          field.ID = 12;
+          oprot.WriteFieldBegin(field);
+          Media.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (PlatformMedia != null && __isset.platformMedia) {
+          field.Name = "platformMedia";
+          field.Type = TType.Map;
+          field.ID = 13;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.I32, TType.Struct, PlatformMedia.Count));
+            foreach (THDeviceOs _iter55 in PlatformMedia.Keys)
+            {
+              oprot.WriteI32((int)_iter55);
+              PlatformMedia[_iter55].Write(oprot);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Badge != null && __isset.badge) {
+          field.Name = "badge";
+          field.Type = TType.Struct;
+          field.ID = 14;
+          oprot.WriteFieldBegin(field);
+          Badge.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.expiration) {
+          field.Name = "expiration";
+          field.Type = TType.I32;
+          field.ID = 15;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Expiration);
+          oprot.WriteFieldEnd();
+        }
+        if (Properties != null && __isset.properties) {
+          field.Name = "properties";
+          field.Type = TType.Struct;
+          field.ID = 16;
+          oprot.WriteFieldBegin(field);
+          Properties.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THCustomNotification(");
+      bool __first = true;
+      if (UserIds != null && __isset.userIds) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("UserIds: ");
+        __sb.Append(UserIds.ToDebugString());
       }
       if (__isset.action) {
-        field.Name = "action";
-        field.Type = TType.I32;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Action);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Action: ");
+        __sb.Append(Action);
       }
       if (ActionData != null && __isset.actionData) {
-        field.Name = "actionData";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, ActionData.Count));
-          foreach (string _iter28 in ActionData.Keys)
-          {
-            oprot.WriteString(_iter28);
-            oprot.WriteString(ActionData[_iter28]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActionData: ");
+        __sb.Append(ActionData.ToDebugString());
       }
       if (Text != null && __isset.text) {
-        field.Name = "text";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Text);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Text: ");
+        __sb.Append(Text);
       }
       if (Title != null && __isset.title) {
-        field.Name = "title";
-        field.Type = TType.String;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Title);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Title: ");
+        __sb.Append(Title);
       }
       if (Image != null && __isset.image) {
-        field.Name = "image";
-        field.Type = TType.String;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Image);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Image: ");
+        __sb.Append(Image);
       }
       if (Video != null && __isset.video) {
-        field.Name = "video";
-        field.Type = TType.String;
-        field.ID = 7;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Video);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Video: ");
+        __sb.Append(Video);
       }
       if (TemplateName != null && __isset.templateName) {
-        field.Name = "templateName";
-        field.Type = TType.String;
-        field.ID = 8;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(TemplateName);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("TemplateName: ");
+        __sb.Append(TemplateName);
       }
       if (TemplateData != null && __isset.templateData) {
-        field.Name = "templateData";
-        field.Type = TType.Map;
-        field.ID = 9;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, TemplateData.Count));
-          foreach (string _iter29 in TemplateData.Keys)
-          {
-            oprot.WriteString(_iter29);
-            oprot.WriteString(TemplateData[_iter29]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("TemplateData: ");
+        __sb.Append(TemplateData.ToDebugString());
       }
       if (NewAction != null && __isset.newAction) {
-        field.Name = "newAction";
-        field.Type = TType.Struct;
-        field.ID = 10;
-        oprot.WriteFieldBegin(field);
-        NewAction.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NewAction: ");
+        __sb.Append(NewAction== null ? "<null>" : NewAction.ToString());
       }
       if (ActionButtons != null && __isset.actionButtons) {
-        field.Name = "actionButtons";
-        field.Type = TType.List;
-        field.ID = 11;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.Struct, ActionButtons.Count));
-          foreach (THActionButton _iter30 in ActionButtons)
-          {
-            _iter30.Write(oprot);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActionButtons: ");
+        __sb.Append(ActionButtons.ToDebugString());
       }
       if (Media != null && __isset.media) {
-        field.Name = "media";
-        field.Type = TType.Struct;
-        field.ID = 12;
-        oprot.WriteFieldBegin(field);
-        Media.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Media: ");
+        __sb.Append(Media== null ? "<null>" : Media.ToString());
       }
       if (PlatformMedia != null && __isset.platformMedia) {
-        field.Name = "platformMedia";
-        field.Type = TType.Map;
-        field.ID = 13;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.I32, TType.Struct, PlatformMedia.Count));
-          foreach (THDeviceOs _iter31 in PlatformMedia.Keys)
-          {
-            oprot.WriteI32((int)_iter31);
-            PlatformMedia[_iter31].Write(oprot);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PlatformMedia: ");
+        __sb.Append(PlatformMedia.ToDebugString());
       }
       if (Badge != null && __isset.badge) {
-        field.Name = "badge";
-        field.Type = TType.Struct;
-        field.ID = 14;
-        oprot.WriteFieldBegin(field);
-        Badge.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Badge: ");
+        __sb.Append(Badge== null ? "<null>" : Badge.ToString());
       }
       if (__isset.expiration) {
-        field.Name = "expiration";
-        field.Type = TType.I32;
-        field.ID = 15;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Expiration);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Expiration: ");
+        __sb.Append(Expiration);
       }
       if (Properties != null && __isset.properties) {
-        field.Name = "properties";
-        field.Type = TType.Struct;
-        field.ID = 16;
-        oprot.WriteFieldBegin(field);
-        Properties.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Properties: ");
+        __sb.Append(Properties== null ? "<null>" : Properties.ToString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THCustomNotification(");
-    bool __first = true;
-    if (UserIds != null && __isset.userIds) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("UserIds: ");
-      __sb.Append(UserIds);
-    }
-    if (__isset.action) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Action: ");
-      __sb.Append(Action);
-    }
-    if (ActionData != null && __isset.actionData) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ActionData: ");
-      __sb.Append(ActionData);
-    }
-    if (Text != null && __isset.text) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Text: ");
-      __sb.Append(Text);
-    }
-    if (Title != null && __isset.title) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Title: ");
-      __sb.Append(Title);
-    }
-    if (Image != null && __isset.image) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Image: ");
-      __sb.Append(Image);
-    }
-    if (Video != null && __isset.video) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Video: ");
-      __sb.Append(Video);
-    }
-    if (TemplateName != null && __isset.templateName) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("TemplateName: ");
-      __sb.Append(TemplateName);
-    }
-    if (TemplateData != null && __isset.templateData) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("TemplateData: ");
-      __sb.Append(TemplateData);
-    }
-    if (NewAction != null && __isset.newAction) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NewAction: ");
-      __sb.Append(NewAction== null ? "<null>" : NewAction.ToString());
-    }
-    if (ActionButtons != null && __isset.actionButtons) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ActionButtons: ");
-      __sb.Append(ActionButtons);
-    }
-    if (Media != null && __isset.media) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Media: ");
-      __sb.Append(Media== null ? "<null>" : Media.ToString());
-    }
-    if (PlatformMedia != null && __isset.platformMedia) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PlatformMedia: ");
-      __sb.Append(PlatformMedia);
-    }
-    if (Badge != null && __isset.badge) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Badge: ");
-      __sb.Append(Badge== null ? "<null>" : Badge.ToString());
-    }
-    if (__isset.expiration) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Expiration: ");
-      __sb.Append(Expiration);
-    }
-    if (Properties != null && __isset.properties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Properties: ");
-      __sb.Append(Properties== null ? "<null>" : Properties.ToString());
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

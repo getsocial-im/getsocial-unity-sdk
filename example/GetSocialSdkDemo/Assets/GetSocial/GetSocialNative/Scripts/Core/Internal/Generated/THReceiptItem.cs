@@ -16,257 +16,264 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THReceiptItem : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _productID;
-  private string _transactionID;
-  private long _purchaseDate;
-  private long _quantity;
-  private long _isValid;
-
-  public string ProductID
-  {
-    get
-    {
-      return _productID;
-    }
-    set
-    {
-      __isset.productID = true;
-      this._productID = value;
-    }
-  }
-
-  public string TransactionID
-  {
-    get
-    {
-      return _transactionID;
-    }
-    set
-    {
-      __isset.transactionID = true;
-      this._transactionID = value;
-    }
-  }
-
-  public long PurchaseDate
-  {
-    get
-    {
-      return _purchaseDate;
-    }
-    set
-    {
-      __isset.purchaseDate = true;
-      this._purchaseDate = value;
-    }
-  }
-
-  public long Quantity
-  {
-    get
-    {
-      return _quantity;
-    }
-    set
-    {
-      __isset.quantity = true;
-      this._quantity = value;
-    }
-  }
 
   /// <summary>
-  /// 0/1/2 for valid/invalid/unknown
+  /// #sdk6 #sdk7
   /// </summary>
-  public long IsValid
-  {
-    get
-    {
-      return _isValid;
-    }
-    set
-    {
-      __isset.isValid = true;
-      this._isValid = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool productID;
-    public bool transactionID;
-    public bool purchaseDate;
-    public bool quantity;
-    public bool isValid;
-  }
-
-  public THReceiptItem() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THReceiptItem : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              ProductID = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              TransactionID = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.I64) {
-              PurchaseDate = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.I64) {
-              Quantity = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.I64) {
-              IsValid = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _productID;
+    private string _transactionID;
+    private long _purchaseDate;
+    private long _quantity;
+    private long _isValid;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string ProductID
     {
-      TStruct struc = new TStruct("THReceiptItem");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _productID;
+      }
+      set
+      {
+        __isset.productID = true;
+        this._productID = value;
+      }
+    }
+
+    public string TransactionID
+    {
+      get
+      {
+        return _transactionID;
+      }
+      set
+      {
+        __isset.transactionID = true;
+        this._transactionID = value;
+      }
+    }
+
+    public long PurchaseDate
+    {
+      get
+      {
+        return _purchaseDate;
+      }
+      set
+      {
+        __isset.purchaseDate = true;
+        this._purchaseDate = value;
+      }
+    }
+
+    public long Quantity
+    {
+      get
+      {
+        return _quantity;
+      }
+      set
+      {
+        __isset.quantity = true;
+        this._quantity = value;
+      }
+    }
+
+    /// <summary>
+    /// 0/1/2 for valid/invalid/unknown
+    /// </summary>
+    public long IsValid
+    {
+      get
+      {
+        return _isValid;
+      }
+      set
+      {
+        __isset.isValid = true;
+        this._isValid = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool productID;
+      public bool transactionID;
+      public bool purchaseDate;
+      public bool quantity;
+      public bool isValid;
+    }
+
+    public THReceiptItem() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                ProductID = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                TransactionID = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I64) {
+                PurchaseDate = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I64) {
+                Quantity = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.I64) {
+                IsValid = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THReceiptItem");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (ProductID != null && __isset.productID) {
+          field.Name = "productID";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ProductID);
+          oprot.WriteFieldEnd();
+        }
+        if (TransactionID != null && __isset.transactionID) {
+          field.Name = "transactionID";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(TransactionID);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.purchaseDate) {
+          field.Name = "purchaseDate";
+          field.Type = TType.I64;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(PurchaseDate);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.quantity) {
+          field.Name = "quantity";
+          field.Type = TType.I64;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(Quantity);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isValid) {
+          field.Name = "isValid";
+          field.Type = TType.I64;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(IsValid);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THReceiptItem(");
+      bool __first = true;
       if (ProductID != null && __isset.productID) {
-        field.Name = "productID";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ProductID);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ProductID: ");
+        __sb.Append(ProductID);
       }
       if (TransactionID != null && __isset.transactionID) {
-        field.Name = "transactionID";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(TransactionID);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("TransactionID: ");
+        __sb.Append(TransactionID);
       }
       if (__isset.purchaseDate) {
-        field.Name = "purchaseDate";
-        field.Type = TType.I64;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(PurchaseDate);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PurchaseDate: ");
+        __sb.Append(PurchaseDate);
       }
       if (__isset.quantity) {
-        field.Name = "quantity";
-        field.Type = TType.I64;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(Quantity);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Quantity: ");
+        __sb.Append(Quantity);
       }
       if (__isset.isValid) {
-        field.Name = "isValid";
-        field.Type = TType.I64;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(IsValid);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsValid: ");
+        __sb.Append(IsValid);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THReceiptItem(");
-    bool __first = true;
-    if (ProductID != null && __isset.productID) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ProductID: ");
-      __sb.Append(ProductID);
-    }
-    if (TransactionID != null && __isset.transactionID) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("TransactionID: ");
-      __sb.Append(TransactionID);
-    }
-    if (__isset.purchaseDate) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PurchaseDate: ");
-      __sb.Append(PurchaseDate);
-    }
-    if (__isset.quantity) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Quantity: ");
-      __sb.Append(Quantity);
-    }
-    if (__isset.isValid) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IsValid: ");
-      __sb.Append(IsValid);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#if USE_GETSOCIAL_UI
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -82,4 +81,3 @@ public class UiCustomizationSection : DemoMenuSection
 
     #endregion
 }
-#endif

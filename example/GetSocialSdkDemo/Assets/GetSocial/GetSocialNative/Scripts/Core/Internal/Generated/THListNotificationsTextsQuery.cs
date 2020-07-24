@@ -16,146 +16,153 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THListNotificationsTextsQuery : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _messageType;
-  private string _language;
 
-  public int MessageType
-  {
-    get
-    {
-      return _messageType;
-    }
-    set
-    {
-      __isset.messageType = true;
-      this._messageType = value;
-    }
-  }
-
-  public string Language
-  {
-    get
-    {
-      return _language;
-    }
-    set
-    {
-      __isset.language = true;
-      this._language = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool messageType;
-    public bool language;
-  }
-
-  public THListNotificationsTextsQuery() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THListNotificationsTextsQuery : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              MessageType = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              Language = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _messageType;
+    private string _language;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int MessageType
     {
-      TStruct struc = new TStruct("THListNotificationsTextsQuery");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _messageType;
+      }
+      set
+      {
+        __isset.messageType = true;
+        this._messageType = value;
+      }
+    }
+
+    public string Language
+    {
+      get
+      {
+        return _language;
+      }
+      set
+      {
+        __isset.language = true;
+        this._language = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool messageType;
+      public bool language;
+    }
+
+    public THListNotificationsTextsQuery() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                MessageType = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Language = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THListNotificationsTextsQuery");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.messageType) {
+          field.Name = "messageType";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(MessageType);
+          oprot.WriteFieldEnd();
+        }
+        if (Language != null && __isset.language) {
+          field.Name = "language";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Language);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THListNotificationsTextsQuery(");
+      bool __first = true;
       if (__isset.messageType) {
-        field.Name = "messageType";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(MessageType);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("MessageType: ");
+        __sb.Append(MessageType);
       }
       if (Language != null && __isset.language) {
-        field.Name = "language";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Language);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Language: ");
+        __sb.Append(Language);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THListNotificationsTextsQuery(");
-    bool __first = true;
-    if (__isset.messageType) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("MessageType: ");
-      __sb.Append(MessageType);
-    }
-    if (Language != null && __isset.language) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Language: ");
-      __sb.Append(Language);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

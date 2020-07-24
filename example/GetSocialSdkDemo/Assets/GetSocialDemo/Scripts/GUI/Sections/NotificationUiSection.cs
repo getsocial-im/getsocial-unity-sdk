@@ -30,25 +30,36 @@ public class NotificationUiSection : DemoMenuSection
     protected override void DrawSectionBody()
     {
         DemoGuiUtils.DrawButton("Open Notification Center", ShowNotificationCenterView, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Open Notification Center without Handlers", ShowNotificationCenterViewWithoutHandlers, style: GSStyles.Button);
     }
 
     #endregion
 
     void ShowNotificationCenterView()
     {
-        GetSocialUi.CreateNotificationCenterView()
-            .SetNotificationClickListener((notification) =>
+        var query = NotificationsQuery.WithAllStatuses();
+        var notificationCenterView = NotificationCenterViewBuilder.Create(query);
+        notificationCenterView
+            .SetNotificationClickListener((notification, context) =>
             {
                 _console.LogD("Notification click listener invoked: " + notification.Id);
-                return demoController.HandleAction(notification.NotificationAction);
-            })
-            .SetActionButtonClickListener((notification, actionButton) =>
-            {
-                _console.LogD("Action button listener invoked: " + actionButton.Id + " - " + notification.Id);
-                return false;
+                if (context != null && context.Action != null)
+                {
+                    demoController.HandleAction(notification.Action);
+                    _console.LogD("Action button listener invoked: " + context.Action + " - " + notification.Id);
+                }
             })
             .SetViewStateCallbacks(() => _console.LogD("Notifications view opened"), () => _console.LogD("Notifications view closed"))
             .Show();
     }
- 
+    
+    void ShowNotificationCenterViewWithoutHandlers()
+    {
+        var query = NotificationsQuery.WithAllStatuses();
+        NotificationCenterViewBuilder.Create(query)
+            .SetViewStateCallbacks(() => _console.LogD("Notifications view opened"), () => _console.LogD("Notifications view closed"))
+            .Show();
+    }
+
+
 }

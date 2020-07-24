@@ -16,608 +16,615 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class SIPromoCode : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _id;
-  private string _appId;
-  private THCreator _creator;
-  private string _code;
-  private Dictionary<string, string> _properties;
-  private int _maxClaims;
-  private int _numClaims;
-  private long _validFrom;
-  private long _validUntil;
-  private long _createdAt;
-  private bool _makeFriends;
-  private bool _makeReferrer;
-  private bool _enabled;
-  private bool _claimable;
-
-  public string Id
-  {
-    get
-    {
-      return _id;
-    }
-    set
-    {
-      __isset.id = true;
-      this._id = value;
-    }
-  }
-
-  public string AppId
-  {
-    get
-    {
-      return _appId;
-    }
-    set
-    {
-      __isset.appId = true;
-      this._appId = value;
-    }
-  }
-
-  public THCreator Creator
-  {
-    get
-    {
-      return _creator;
-    }
-    set
-    {
-      __isset.creator = true;
-      this._creator = value;
-    }
-  }
-
-  public string Code
-  {
-    get
-    {
-      return _code;
-    }
-    set
-    {
-      __isset.code = true;
-      this._code = value;
-    }
-  }
-
-  public Dictionary<string, string> Properties
-  {
-    get
-    {
-      return _properties;
-    }
-    set
-    {
-      __isset.properties = true;
-      this._properties = value;
-    }
-  }
 
   /// <summary>
-  /// 0 if unlimited
+  /// #sdk7
   /// </summary>
-  public int MaxClaims
-  {
-    get
-    {
-      return _maxClaims;
-    }
-    set
-    {
-      __isset.maxClaims = true;
-      this._maxClaims = value;
-    }
-  }
-
-  public int NumClaims
-  {
-    get
-    {
-      return _numClaims;
-    }
-    set
-    {
-      __isset.numClaims = true;
-      this._numClaims = value;
-    }
-  }
-
-  public long ValidFrom
-  {
-    get
-    {
-      return _validFrom;
-    }
-    set
-    {
-      __isset.validFrom = true;
-      this._validFrom = value;
-    }
-  }
-
-  public long ValidUntil
-  {
-    get
-    {
-      return _validUntil;
-    }
-    set
-    {
-      __isset.validUntil = true;
-      this._validUntil = value;
-    }
-  }
-
-  public long CreatedAt
-  {
-    get
-    {
-      return _createdAt;
-    }
-    set
-    {
-      __isset.createdAt = true;
-      this._createdAt = value;
-    }
-  }
-
-  /// <summary>
-  /// If true, creator and claimer will become friends
-  /// </summary>
-  public bool MakeFriends
-  {
-    get
-    {
-      return _makeFriends;
-    }
-    set
-    {
-      __isset.makeFriends = true;
-      this._makeFriends = value;
-    }
-  }
-
-  /// <summary>
-  /// If true, creator will become the referrer of claimer
-  /// </summary>
-  public bool MakeReferrer
-  {
-    get
-    {
-      return _makeReferrer;
-    }
-    set
-    {
-      __isset.makeReferrer = true;
-      this._makeReferrer = value;
-    }
-  }
-
-  public bool Enabled
-  {
-    get
-    {
-      return _enabled;
-    }
-    set
-    {
-      __isset.enabled = true;
-      this._enabled = value;
-    }
-  }
-
-  public bool Claimable
-  {
-    get
-    {
-      return _claimable;
-    }
-    set
-    {
-      __isset.claimable = true;
-      this._claimable = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool id;
-    public bool appId;
-    public bool creator;
-    public bool code;
-    public bool properties;
-    public bool maxClaims;
-    public bool numClaims;
-    public bool validFrom;
-    public bool validUntil;
-    public bool createdAt;
-    public bool makeFriends;
-    public bool makeReferrer;
-    public bool enabled;
-    public bool claimable;
-  }
-
-  public SIPromoCode() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class SIPromoCode : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              Id = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              AppId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Struct) {
-              Creator = new THCreator();
-              Creator.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              Code = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Map) {
-              {
-                Properties = new Dictionary<string, string>();
-                TMap _map73 = iprot.ReadMapBegin();
-                for( int _i74 = 0; _i74 < _map73.Count; ++_i74)
-                {
-                  string _key75;
-                  string _val76;
-                  _key75 = iprot.ReadString();
-                  _val76 = iprot.ReadString();
-                  Properties[_key75] = _val76;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.I32) {
-              MaxClaims = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 7:
-            if (field.Type == TType.I32) {
-              NumClaims = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 8:
-            if (field.Type == TType.I64) {
-              ValidFrom = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 9:
-            if (field.Type == TType.I64) {
-              ValidUntil = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 10:
-            if (field.Type == TType.I64) {
-              CreatedAt = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 11:
-            if (field.Type == TType.Bool) {
-              MakeFriends = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 12:
-            if (field.Type == TType.Bool) {
-              MakeReferrer = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 13:
-            if (field.Type == TType.Bool) {
-              Enabled = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 14:
-            if (field.Type == TType.Bool) {
-              Claimable = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _id;
+    private string _appId;
+    private THCreator _creator;
+    private string _code;
+    private Dictionary<string, string> _properties;
+    private int _maxClaims;
+    private int _numClaims;
+    private long _validFrom;
+    private long _validUntil;
+    private long _createdAt;
+    private bool _makeFriends;
+    private bool _makeReferrer;
+    private bool _enabled;
+    private bool _claimable;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string Id
     {
-      TStruct struc = new TStruct("SIPromoCode");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _id;
+      }
+      set
+      {
+        __isset.id = true;
+        this._id = value;
+      }
+    }
+
+    public string AppId
+    {
+      get
+      {
+        return _appId;
+      }
+      set
+      {
+        __isset.appId = true;
+        this._appId = value;
+      }
+    }
+
+    public THCreator Creator
+    {
+      get
+      {
+        return _creator;
+      }
+      set
+      {
+        __isset.creator = true;
+        this._creator = value;
+      }
+    }
+
+    public string Code
+    {
+      get
+      {
+        return _code;
+      }
+      set
+      {
+        __isset.code = true;
+        this._code = value;
+      }
+    }
+
+    public Dictionary<string, string> Properties
+    {
+      get
+      {
+        return _properties;
+      }
+      set
+      {
+        __isset.properties = true;
+        this._properties = value;
+      }
+    }
+
+    /// <summary>
+    /// 0 if unlimited
+    /// </summary>
+    public int MaxClaims
+    {
+      get
+      {
+        return _maxClaims;
+      }
+      set
+      {
+        __isset.maxClaims = true;
+        this._maxClaims = value;
+      }
+    }
+
+    public int NumClaims
+    {
+      get
+      {
+        return _numClaims;
+      }
+      set
+      {
+        __isset.numClaims = true;
+        this._numClaims = value;
+      }
+    }
+
+    public long ValidFrom
+    {
+      get
+      {
+        return _validFrom;
+      }
+      set
+      {
+        __isset.validFrom = true;
+        this._validFrom = value;
+      }
+    }
+
+    public long ValidUntil
+    {
+      get
+      {
+        return _validUntil;
+      }
+      set
+      {
+        __isset.validUntil = true;
+        this._validUntil = value;
+      }
+    }
+
+    public long CreatedAt
+    {
+      get
+      {
+        return _createdAt;
+      }
+      set
+      {
+        __isset.createdAt = true;
+        this._createdAt = value;
+      }
+    }
+
+    /// <summary>
+    /// If true, creator and claimer will become friends
+    /// </summary>
+    public bool MakeFriends
+    {
+      get
+      {
+        return _makeFriends;
+      }
+      set
+      {
+        __isset.makeFriends = true;
+        this._makeFriends = value;
+      }
+    }
+
+    /// <summary>
+    /// If true, creator will become the referrer of claimer
+    /// </summary>
+    public bool MakeReferrer
+    {
+      get
+      {
+        return _makeReferrer;
+      }
+      set
+      {
+        __isset.makeReferrer = true;
+        this._makeReferrer = value;
+      }
+    }
+
+    public bool Enabled
+    {
+      get
+      {
+        return _enabled;
+      }
+      set
+      {
+        __isset.enabled = true;
+        this._enabled = value;
+      }
+    }
+
+    public bool Claimable
+    {
+      get
+      {
+        return _claimable;
+      }
+      set
+      {
+        __isset.claimable = true;
+        this._claimable = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool id;
+      public bool appId;
+      public bool creator;
+      public bool code;
+      public bool properties;
+      public bool maxClaims;
+      public bool numClaims;
+      public bool validFrom;
+      public bool validUntil;
+      public bool createdAt;
+      public bool makeFriends;
+      public bool makeReferrer;
+      public bool enabled;
+      public bool claimable;
+    }
+
+    public SIPromoCode() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                Id = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                AppId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Struct) {
+                Creator = new THCreator();
+                Creator.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                Code = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Map) {
+                {
+                  Properties = new Dictionary<string, string>();
+                  TMap _map91 = iprot.ReadMapBegin();
+                  for( int _i92 = 0; _i92 < _map91.Count; ++_i92)
+                  {
+                    string _key93;
+                    string _val94;
+                    _key93 = iprot.ReadString();
+                    _val94 = iprot.ReadString();
+                    Properties[_key93] = _val94;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.I32) {
+                MaxClaims = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.I32) {
+                NumClaims = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.I64) {
+                ValidFrom = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.I64) {
+                ValidUntil = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.I64) {
+                CreatedAt = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.Bool) {
+                MakeFriends = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 12:
+              if (field.Type == TType.Bool) {
+                MakeReferrer = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 13:
+              if (field.Type == TType.Bool) {
+                Enabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 14:
+              if (field.Type == TType.Bool) {
+                Claimable = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("SIPromoCode");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Id != null && __isset.id) {
+          field.Name = "id";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Id);
+          oprot.WriteFieldEnd();
+        }
+        if (AppId != null && __isset.appId) {
+          field.Name = "appId";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AppId);
+          oprot.WriteFieldEnd();
+        }
+        if (Creator != null && __isset.creator) {
+          field.Name = "creator";
+          field.Type = TType.Struct;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          Creator.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (Code != null && __isset.code) {
+          field.Name = "code";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Code);
+          oprot.WriteFieldEnd();
+        }
+        if (Properties != null && __isset.properties) {
+          field.Name = "properties";
+          field.Type = TType.Map;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
+            foreach (string _iter95 in Properties.Keys)
+            {
+              oprot.WriteString(_iter95);
+              oprot.WriteString(Properties[_iter95]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.maxClaims) {
+          field.Name = "maxClaims";
+          field.Type = TType.I32;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(MaxClaims);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.numClaims) {
+          field.Name = "numClaims";
+          field.Type = TType.I32;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(NumClaims);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.validFrom) {
+          field.Name = "validFrom";
+          field.Type = TType.I64;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(ValidFrom);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.validUntil) {
+          field.Name = "validUntil";
+          field.Type = TType.I64;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(ValidUntil);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.createdAt) {
+          field.Name = "createdAt";
+          field.Type = TType.I64;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(CreatedAt);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.makeFriends) {
+          field.Name = "makeFriends";
+          field.Type = TType.Bool;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(MakeFriends);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.makeReferrer) {
+          field.Name = "makeReferrer";
+          field.Type = TType.Bool;
+          field.ID = 12;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(MakeReferrer);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.enabled) {
+          field.Name = "enabled";
+          field.Type = TType.Bool;
+          field.ID = 13;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(Enabled);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.claimable) {
+          field.Name = "claimable";
+          field.Type = TType.Bool;
+          field.ID = 14;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(Claimable);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("SIPromoCode(");
+      bool __first = true;
       if (Id != null && __isset.id) {
-        field.Name = "id";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Id);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Id: ");
+        __sb.Append(Id);
       }
       if (AppId != null && __isset.appId) {
-        field.Name = "appId";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AppId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AppId: ");
+        __sb.Append(AppId);
       }
       if (Creator != null && __isset.creator) {
-        field.Name = "creator";
-        field.Type = TType.Struct;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        Creator.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Creator: ");
+        __sb.Append(Creator== null ? "<null>" : Creator.ToString());
       }
       if (Code != null && __isset.code) {
-        field.Name = "code";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Code);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Code: ");
+        __sb.Append(Code);
       }
       if (Properties != null && __isset.properties) {
-        field.Name = "properties";
-        field.Type = TType.Map;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-          foreach (string _iter77 in Properties.Keys)
-          {
-            oprot.WriteString(_iter77);
-            oprot.WriteString(Properties[_iter77]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Properties: ");
+        __sb.Append(Properties.ToDebugString());
       }
       if (__isset.maxClaims) {
-        field.Name = "maxClaims";
-        field.Type = TType.I32;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(MaxClaims);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("MaxClaims: ");
+        __sb.Append(MaxClaims);
       }
       if (__isset.numClaims) {
-        field.Name = "numClaims";
-        field.Type = TType.I32;
-        field.ID = 7;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(NumClaims);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NumClaims: ");
+        __sb.Append(NumClaims);
       }
       if (__isset.validFrom) {
-        field.Name = "validFrom";
-        field.Type = TType.I64;
-        field.ID = 8;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(ValidFrom);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ValidFrom: ");
+        __sb.Append(ValidFrom);
       }
       if (__isset.validUntil) {
-        field.Name = "validUntil";
-        field.Type = TType.I64;
-        field.ID = 9;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(ValidUntil);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ValidUntil: ");
+        __sb.Append(ValidUntil);
       }
       if (__isset.createdAt) {
-        field.Name = "createdAt";
-        field.Type = TType.I64;
-        field.ID = 10;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(CreatedAt);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CreatedAt: ");
+        __sb.Append(CreatedAt);
       }
       if (__isset.makeFriends) {
-        field.Name = "makeFriends";
-        field.Type = TType.Bool;
-        field.ID = 11;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(MakeFriends);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("MakeFriends: ");
+        __sb.Append(MakeFriends);
       }
       if (__isset.makeReferrer) {
-        field.Name = "makeReferrer";
-        field.Type = TType.Bool;
-        field.ID = 12;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(MakeReferrer);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("MakeReferrer: ");
+        __sb.Append(MakeReferrer);
       }
       if (__isset.enabled) {
-        field.Name = "enabled";
-        field.Type = TType.Bool;
-        field.ID = 13;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(Enabled);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Enabled: ");
+        __sb.Append(Enabled);
       }
       if (__isset.claimable) {
-        field.Name = "claimable";
-        field.Type = TType.Bool;
-        field.ID = 14;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(Claimable);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Claimable: ");
+        __sb.Append(Claimable);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("SIPromoCode(");
-    bool __first = true;
-    if (Id != null && __isset.id) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Id: ");
-      __sb.Append(Id);
-    }
-    if (AppId != null && __isset.appId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AppId: ");
-      __sb.Append(AppId);
-    }
-    if (Creator != null && __isset.creator) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Creator: ");
-      __sb.Append(Creator== null ? "<null>" : Creator.ToString());
-    }
-    if (Code != null && __isset.code) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Code: ");
-      __sb.Append(Code);
-    }
-    if (Properties != null && __isset.properties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Properties: ");
-      __sb.Append(Properties);
-    }
-    if (__isset.maxClaims) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("MaxClaims: ");
-      __sb.Append(MaxClaims);
-    }
-    if (__isset.numClaims) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NumClaims: ");
-      __sb.Append(NumClaims);
-    }
-    if (__isset.validFrom) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ValidFrom: ");
-      __sb.Append(ValidFrom);
-    }
-    if (__isset.validUntil) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ValidUntil: ");
-      __sb.Append(ValidUntil);
-    }
-    if (__isset.createdAt) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("CreatedAt: ");
-      __sb.Append(CreatedAt);
-    }
-    if (__isset.makeFriends) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("MakeFriends: ");
-      __sb.Append(MakeFriends);
-    }
-    if (__isset.makeReferrer) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("MakeReferrer: ");
-      __sb.Append(MakeReferrer);
-    }
-    if (__isset.enabled) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Enabled: ");
-      __sb.Append(Enabled);
-    }
-    if (__isset.claimable) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Claimable: ");
-      __sb.Append(Claimable);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

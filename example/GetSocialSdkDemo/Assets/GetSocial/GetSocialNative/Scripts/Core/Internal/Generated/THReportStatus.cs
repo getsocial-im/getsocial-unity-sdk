@@ -6,9 +6,12 @@
  *  @generated
  */
 
-public enum THReportStatus
+namespace GetSocialSdk.Core 
 {
-  OPEN = 0,
-  CLOSED = 1,
+  public enum THReportStatus
+  {
+    OPEN = 0,
+    CLOSED = 1,
+  }
 }
 #endif

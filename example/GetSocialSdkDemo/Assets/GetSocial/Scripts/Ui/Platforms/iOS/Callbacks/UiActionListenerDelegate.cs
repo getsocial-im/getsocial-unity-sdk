@@ -1,4 +1,4 @@
-#if UNITY_IOS && USE_GETSOCIAL_UI
+#if UNITY_IOS 
 using System;
 using System.Runtime.InteropServices;
 using GetSocialSdk.Core;

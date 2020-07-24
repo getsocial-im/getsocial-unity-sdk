@@ -16,163 +16,170 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class FindTagsResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<string> _tags;
-  private string _nextCursor;
 
-  public List<string> Tags
-  {
-    get
-    {
-      return _tags;
-    }
-    set
-    {
-      __isset.tags = true;
-      this._tags = value;
-    }
-  }
-
-  public string NextCursor
-  {
-    get
-    {
-      return _nextCursor;
-    }
-    set
-    {
-      __isset.nextCursor = true;
-      this._nextCursor = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool tags;
-    public bool nextCursor;
-  }
-
-  public FindTagsResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class FindTagsResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                Tags = new List<string>();
-                TList _list92 = iprot.ReadListBegin();
-                for( int _i93 = 0; _i93 < _list92.Count; ++_i93)
-                {
-                  string _elem94;
-                  _elem94 = iprot.ReadString();
-                  Tags.Add(_elem94);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              NextCursor = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<string> _tags;
+    private string _nextCursor;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<string> Tags
     {
-      TStruct struc = new TStruct("FindTagsResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Tags != null && __isset.tags) {
-        field.Name = "tags";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _tags;
+      }
+      set
+      {
+        __isset.tags = true;
+        this._tags = value;
+      }
+    }
+
+    public string NextCursor
+    {
+      get
+      {
+        return _nextCursor;
+      }
+      set
+      {
+        __isset.nextCursor = true;
+        this._nextCursor = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool tags;
+      public bool nextCursor;
+    }
+
+    public FindTagsResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-          foreach (string _iter95 in Tags)
-          {
-            oprot.WriteString(_iter95);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  Tags = new List<string>();
+                  TList _list101 = iprot.ReadListBegin();
+                  for( int _i102 = 0; _i102 < _list101.Count; ++_i102)
+                  {
+                    string _elem103;
+                    _elem103 = iprot.ReadString();
+                    Tags.Add(_elem103);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                NextCursor = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("FindTagsResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Tags != null && __isset.tags) {
+          field.Name = "tags";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Tags.Count));
+            foreach (string _iter104 in Tags)
+            {
+              oprot.WriteString(_iter104);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (NextCursor != null && __isset.nextCursor) {
+          field.Name = "nextCursor";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(NextCursor);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("FindTagsResponse(");
+      bool __first = true;
+      if (Tags != null && __isset.tags) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Tags: ");
+        __sb.Append(Tags.ToDebugString());
       }
       if (NextCursor != null && __isset.nextCursor) {
-        field.Name = "nextCursor";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(NextCursor);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NextCursor: ");
+        __sb.Append(NextCursor);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("FindTagsResponse(");
-    bool __first = true;
-    if (Tags != null && __isset.tags) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Tags: ");
-      __sb.Append(Tags);
-    }
-    if (NextCursor != null && __isset.nextCursor) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NextCursor: ");
-      __sb.Append(NextCursor);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

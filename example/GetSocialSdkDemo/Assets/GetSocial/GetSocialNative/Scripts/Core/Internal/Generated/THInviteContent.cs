@@ -16,294 +16,301 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THInviteContent : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _imageUrl;
-  private Dictionary<string, string> _subject;
-  private Dictionary<string, string> _text;
-  private string _gifUrl;
-  private string _videoUrl;
 
-  public string ImageUrl
-  {
-    get
-    {
-      return _imageUrl;
-    }
-    set
-    {
-      __isset.imageUrl = true;
-      this._imageUrl = value;
-    }
-  }
-
-  public Dictionary<string, string> Subject
-  {
-    get
-    {
-      return _subject;
-    }
-    set
-    {
-      __isset.subject = true;
-      this._subject = value;
-    }
-  }
-
-  public Dictionary<string, string> Text
-  {
-    get
-    {
-      return _text;
-    }
-    set
-    {
-      __isset.text = true;
-      this._text = value;
-    }
-  }
-
-  public string GifUrl
-  {
-    get
-    {
-      return _gifUrl;
-    }
-    set
-    {
-      __isset.gifUrl = true;
-      this._gifUrl = value;
-    }
-  }
-
-  public string VideoUrl
-  {
-    get
-    {
-      return _videoUrl;
-    }
-    set
-    {
-      __isset.videoUrl = true;
-      this._videoUrl = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool imageUrl;
-    public bool subject;
-    public bool text;
-    public bool gifUrl;
-    public bool videoUrl;
-  }
-
-  public THInviteContent() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THInviteContent : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              ImageUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Map) {
-              {
-                Subject = new Dictionary<string, string>();
-                TMap _map5 = iprot.ReadMapBegin();
-                for( int _i6 = 0; _i6 < _map5.Count; ++_i6)
-                {
-                  string _key7;
-                  string _val8;
-                  _key7 = iprot.ReadString();
-                  _val8 = iprot.ReadString();
-                  Subject[_key7] = _val8;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                Text = new Dictionary<string, string>();
-                TMap _map9 = iprot.ReadMapBegin();
-                for( int _i10 = 0; _i10 < _map9.Count; ++_i10)
-                {
-                  string _key11;
-                  string _val12;
-                  _key11 = iprot.ReadString();
-                  _val12 = iprot.ReadString();
-                  Text[_key11] = _val12;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              GifUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.String) {
-              VideoUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _imageUrl;
+    private Dictionary<string, string> _subject;
+    private Dictionary<string, string> _text;
+    private string _gifUrl;
+    private string _videoUrl;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string ImageUrl
     {
-      TStruct struc = new TStruct("THInviteContent");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _imageUrl;
+      }
+      set
+      {
+        __isset.imageUrl = true;
+        this._imageUrl = value;
+      }
+    }
+
+    public Dictionary<string, string> Subject
+    {
+      get
+      {
+        return _subject;
+      }
+      set
+      {
+        __isset.subject = true;
+        this._subject = value;
+      }
+    }
+
+    public Dictionary<string, string> Text
+    {
+      get
+      {
+        return _text;
+      }
+      set
+      {
+        __isset.text = true;
+        this._text = value;
+      }
+    }
+
+    public string GifUrl
+    {
+      get
+      {
+        return _gifUrl;
+      }
+      set
+      {
+        __isset.gifUrl = true;
+        this._gifUrl = value;
+      }
+    }
+
+    public string VideoUrl
+    {
+      get
+      {
+        return _videoUrl;
+      }
+      set
+      {
+        __isset.videoUrl = true;
+        this._videoUrl = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool imageUrl;
+      public bool subject;
+      public bool text;
+      public bool gifUrl;
+      public bool videoUrl;
+    }
+
+    public THInviteContent() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                ImageUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Map) {
+                {
+                  Subject = new Dictionary<string, string>();
+                  TMap _map10 = iprot.ReadMapBegin();
+                  for( int _i11 = 0; _i11 < _map10.Count; ++_i11)
+                  {
+                    string _key12;
+                    string _val13;
+                    _key12 = iprot.ReadString();
+                    _val13 = iprot.ReadString();
+                    Subject[_key12] = _val13;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  Text = new Dictionary<string, string>();
+                  TMap _map14 = iprot.ReadMapBegin();
+                  for( int _i15 = 0; _i15 < _map14.Count; ++_i15)
+                  {
+                    string _key16;
+                    string _val17;
+                    _key16 = iprot.ReadString();
+                    _val17 = iprot.ReadString();
+                    Text[_key16] = _val17;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                GifUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.String) {
+                VideoUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THInviteContent");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (ImageUrl != null && __isset.imageUrl) {
+          field.Name = "imageUrl";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ImageUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (Subject != null && __isset.subject) {
+          field.Name = "subject";
+          field.Type = TType.Map;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Subject.Count));
+            foreach (string _iter18 in Subject.Keys)
+            {
+              oprot.WriteString(_iter18);
+              oprot.WriteString(Subject[_iter18]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Text != null && __isset.text) {
+          field.Name = "text";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Text.Count));
+            foreach (string _iter19 in Text.Keys)
+            {
+              oprot.WriteString(_iter19);
+              oprot.WriteString(Text[_iter19]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (GifUrl != null && __isset.gifUrl) {
+          field.Name = "gifUrl";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(GifUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (VideoUrl != null && __isset.videoUrl) {
+          field.Name = "videoUrl";
+          field.Type = TType.String;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(VideoUrl);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THInviteContent(");
+      bool __first = true;
       if (ImageUrl != null && __isset.imageUrl) {
-        field.Name = "imageUrl";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ImageUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ImageUrl: ");
+        __sb.Append(ImageUrl);
       }
       if (Subject != null && __isset.subject) {
-        field.Name = "subject";
-        field.Type = TType.Map;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Subject.Count));
-          foreach (string _iter13 in Subject.Keys)
-          {
-            oprot.WriteString(_iter13);
-            oprot.WriteString(Subject[_iter13]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Subject: ");
+        __sb.Append(Subject.ToDebugString());
       }
       if (Text != null && __isset.text) {
-        field.Name = "text";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Text.Count));
-          foreach (string _iter14 in Text.Keys)
-          {
-            oprot.WriteString(_iter14);
-            oprot.WriteString(Text[_iter14]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Text: ");
+        __sb.Append(Text.ToDebugString());
       }
       if (GifUrl != null && __isset.gifUrl) {
-        field.Name = "gifUrl";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(GifUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("GifUrl: ");
+        __sb.Append(GifUrl);
       }
       if (VideoUrl != null && __isset.videoUrl) {
-        field.Name = "videoUrl";
-        field.Type = TType.String;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(VideoUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("VideoUrl: ");
+        __sb.Append(VideoUrl);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THInviteContent(");
-    bool __first = true;
-    if (ImageUrl != null && __isset.imageUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ImageUrl: ");
-      __sb.Append(ImageUrl);
-    }
-    if (Subject != null && __isset.subject) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Subject: ");
-      __sb.Append(Subject);
-    }
-    if (Text != null && __isset.text) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Text: ");
-      __sb.Append(Text);
-    }
-    if (GifUrl != null && __isset.gifUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("GifUrl: ");
-      __sb.Append(GifUrl);
-    }
-    if (VideoUrl != null && __isset.videoUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("VideoUrl: ");
-      __sb.Append(VideoUrl);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

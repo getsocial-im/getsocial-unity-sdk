@@ -16,146 +16,153 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THUsersQuery : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _limit;
-  private string _name;
 
-  public int Limit
-  {
-    get
-    {
-      return _limit;
-    }
-    set
-    {
-      __isset.limit = true;
-      this._limit = value;
-    }
-  }
-
-  public string Name
-  {
-    get
-    {
-      return _name;
-    }
-    set
-    {
-      __isset.name = true;
-      this._name = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool limit;
-    public bool name;
-  }
-
-  public THUsersQuery() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THUsersQuery : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              Limit = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              Name = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _limit;
+    private string _name;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int Limit
     {
-      TStruct struc = new TStruct("THUsersQuery");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _limit;
+      }
+      set
+      {
+        __isset.limit = true;
+        this._limit = value;
+      }
+    }
+
+    public string Name
+    {
+      get
+      {
+        return _name;
+      }
+      set
+      {
+        __isset.name = true;
+        this._name = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool limit;
+      public bool name;
+    }
+
+    public THUsersQuery() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                Limit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Name = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THUsersQuery");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.limit) {
+          field.Name = "limit";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Limit);
+          oprot.WriteFieldEnd();
+        }
+        if (Name != null && __isset.name) {
+          field.Name = "name";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Name);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THUsersQuery(");
+      bool __first = true;
       if (__isset.limit) {
-        field.Name = "limit";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Limit);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Limit: ");
+        __sb.Append(Limit);
       }
       if (Name != null && __isset.name) {
-        field.Name = "name";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Name);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Name: ");
+        __sb.Append(Name);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THUsersQuery(");
-    bool __first = true;
-    if (__isset.limit) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Limit: ");
-      __sb.Append(Limit);
-    }
-    if (Name != null && __isset.name) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Name: ");
-      __sb.Append(Name);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

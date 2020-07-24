@@ -1,5 +1,4 @@
-﻿#if USE_GETSOCIAL_UI
-using System;
+﻿﻿using System;
 using GetSocialSdk.Core;
 
 #if UNITY_ANDROID
@@ -23,11 +22,9 @@ namespace GetSocialSdk.Ui
         private string _commentId;
 
         private bool _showActivityFeedView;
-        private bool _readOnly;
 
-        Action<string, ActivityPost> _onButtonClicked;
         ActionListener _actionListener;
-        Action<PublicUser> _onAvatarClickListener;
+        Action<User> _onAvatarClickListener;
         Action<string> _onMentionClickListener;
         Action<string> _tagClickListener;
 #pragma warning restore 414
@@ -36,6 +33,11 @@ namespace GetSocialSdk.Ui
         {
             _activityId = activityId;
             _showActivityFeedView = true;
+        }
+
+        public static ActivityDetailsViewBuilder Create(string activityId) 
+        {
+            return new ActivityDetailsViewBuilder(activityId);
         }
 
         /// <summary>
@@ -53,19 +55,6 @@ namespace GetSocialSdk.Ui
 
 
         /// <summary>
-        /// Register callback to listen when activity action button was clicked.
-        /// </summary>
-        /// <param name="onButtonClicked">Called when activity action button was clicked.</param>
-        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance</returns>
-        [Obsolete("Use setActionListener instead")]
-        public ActivityDetailsViewBuilder SetButtonActionListener(Action<string, ActivityPost> onButtonClicked)
-        {
-            _onButtonClicked = onButtonClicked;
-
-            return this;
-        }
-        
-        /// <summary>
         /// Register a callback to listen to activity action button click events.
         /// </summary>
         /// <param name="listener">Called when action button is clicked</param>
@@ -73,7 +62,7 @@ namespace GetSocialSdk.Ui
         public ActivityDetailsViewBuilder SetActionListener(ActionListener listener)
         {
             _actionListener = listener;
-            
+
             return this;
         }
 
@@ -82,7 +71,7 @@ namespace GetSocialSdk.Ui
         /// </summary>
         /// <param name="onAvatarClickListener"></param>
         /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
-        public ActivityDetailsViewBuilder SetAvatarClickListener(Action<PublicUser> onAvatarClickListener)
+        public ActivityDetailsViewBuilder SetAvatarClickListener(Action<User> onAvatarClickListener)
         {
             _onAvatarClickListener = onAvatarClickListener;
 
@@ -106,55 +95,37 @@ namespace GetSocialSdk.Ui
         /// </summary>
         /// <param name="tagClickListener">Called with name of tag that was clicked.</param>
         /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
-        public ActivityDetailsViewBuilder SetTagClickListener(Action<string> tagClickListener) {
+        public ActivityDetailsViewBuilder SetTagClickListener(Action<string> tagClickListener)
+        {
             _tagClickListener = tagClickListener;
 
             return this;
         }
-        
-        /// <summary>
-        /// Make the feed read-only. UI elements, that allows to post, comment or like are hidden.
-        /// </summary>
-        /// <param name="readOnly">should feed be read-only</param>
-        /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
-        public ActivityDetailsViewBuilder SetReadOnly(bool readOnly) {
-            _readOnly = readOnly;
-            
-            return this;
-        }
-        
+
         /// <summary>
         /// Set detailed comment which should be focused. Default is null.
         /// </summary>
         /// <param name="commentId">comment identifier</param>
         /// <returns><see cref="ActivityDetailsViewBuilder"/> instance.</returns>
-        public ActivityDetailsViewBuilder SetCommentId(string commentId) {
+        public ActivityDetailsViewBuilder SetCommentId(string commentId)
+        {
             _commentId = commentId;
             return this;
         }
-        
+
         internal override bool ShowInternal()
         {
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            return _gs_showActivityDetailsView(_customWindowTitle, _activityId, _showActivityFeedView, _readOnly, _commentId,
-                ActivityFeedActionButtonCallback.OnActionButtonClick,
-                _onButtonClicked.GetPointer(),
-                Callbacks.ActionCallback,
-                _onOpen.GetPointer(),
-                Callbacks.ActionCallback,
-                _onClose.GetPointer(),
-                UiActionListenerCallback.OnUiAction,
-                _uiActionListener.GetPointer(),
-                AvatarClickListenerCallback.OnAvatarClicked,
-                _onAvatarClickListener.GetPointer(),
-                MentionClickListenerCallback.OnMentionClicled,
-                _onMentionClickListener.GetPointer(),
-                TagClickListenerCallback.OnTagClicked,
-                _tagClickListener.GetPointer(),
-                ActionListenerCallback.OnAction,
-                _actionListener.GetPointer());
+            return _gs_showActivityDetailsView(_customWindowTitle, _activityId, _showActivityFeedView, _commentId,
+                Callbacks.ActionCallback, _onOpen.GetPointer(),
+                Callbacks.ActionCallback, _onClose.GetPointer(),
+                UiActionListenerCallback.OnUiAction, _uiActionListener.GetPointer(),
+                AvatarClickListenerCallback.OnAvatarClicked, _onAvatarClickListener.GetPointer(),
+                MentionClickListenerCallback.OnMentionClicked, _onMentionClickListener.GetPointer(),
+                TagClickListenerCallback.OnTagClicked, _tagClickListener.GetPointer(),
+                ActionListenerCallback.OnAction, _actionListener.GetPointer());
 #else
             return false;
 #endif
@@ -164,15 +135,10 @@ namespace GetSocialSdk.Ui
 
         AndroidJavaObject ToAJO()
         {
-            var activityDetailsBuilderAJO =
-                new AndroidJavaObject("im.getsocial.sdk.ui.activities.ActivityDetailsViewBuilder", _activityId);
+            var activityFeedBuilderAJOClass = new AndroidJavaClass("im.getsocial.sdk.ui.communities.ActivityDetailsViewBuilder");
+            var activityDetailsBuilderAJO = activityFeedBuilderAJOClass.CallStaticAJO("create", _activityId);
 
             activityDetailsBuilderAJO.CallAJO("setShowActivityFeedView", _showActivityFeedView);
-            if (_onButtonClicked != null)
-            {
-                activityDetailsBuilderAJO.CallAJO("setButtonActionListener",
-                    new ActionButtonListenerProxy(_onButtonClicked));
-            }
             if (_actionListener != null)
             {
                 activityDetailsBuilderAJO.CallAJO("setActionListener",
@@ -197,15 +163,13 @@ namespace GetSocialSdk.Ui
             {
                 activityDetailsBuilderAJO.CallAJO("setCommentId", _commentId);
             }
-            activityDetailsBuilderAJO.CallAJO("setReadOnly", _readOnly);
             return activityDetailsBuilderAJO;
         }
 
 #elif UNITY_IOS
 
         [DllImport("__Internal")]
-        static extern bool _gs_showActivityDetailsView(string customWindowTitle, string activityId, bool showFeedView, bool readOnly, string commentId,
-            Action<IntPtr, string, string> onActionButtonClick, IntPtr onButtonClickPtr,
+        static extern bool _gs_showActivityDetailsView(string customWindowTitle, string activityId, bool showFeedView, string commentId,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
             Action<IntPtr> onCloseAction, IntPtr onCloseActionPtr,
             Action<IntPtr, int> uiActionListener, IntPtr uiActionListenerPtr,
@@ -216,5 +180,3 @@ namespace GetSocialSdk.Ui
 #endif
     }
 }
-
-#endif

@@ -16,278 +16,341 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class AFEntityReference : TBase
+namespace GetSocialSdk.Core 
 {
-  private SGEntity _id;
-  private Dictionary<string, string> _title;
-  private string _avatarUrl;
-  private int _followersCount;
-  private bool _isFollower;
-
-  public SGEntity Id
-  {
-    get
-    {
-      return _id;
-    }
-    set
-    {
-      __isset.id = true;
-      this._id = value;
-    }
-  }
-
-  public Dictionary<string, string> Title
-  {
-    get
-    {
-      return _title;
-    }
-    set
-    {
-      __isset.title = true;
-      this._title = value;
-    }
-  }
 
   /// <summary>
-  /// {your_language: title} - if regular user
+  /// #sdk7
   /// </summary>
-  public string AvatarUrl
-  {
-    get
-    {
-      return _avatarUrl;
-    }
-    set
-    {
-      __isset.avatarUrl = true;
-      this._avatarUrl = value;
-    }
-  }
-
-  public int FollowersCount
-  {
-    get
-    {
-      return _followersCount;
-    }
-    set
-    {
-      __isset.followersCount = true;
-      this._followersCount = value;
-    }
-  }
-
-  public bool IsFollower
-  {
-    get
-    {
-      return _isFollower;
-    }
-    set
-    {
-      __isset.isFollower = true;
-      this._isFollower = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool id;
-    public bool title;
-    public bool avatarUrl;
-    public bool followersCount;
-    public bool isFollower;
-  }
-
-  public AFEntityReference() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class AFEntityReference : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.Struct) {
-              Id = new SGEntity();
-              Id.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Map) {
-              {
-                Title = new Dictionary<string, string>();
-                TMap _map48 = iprot.ReadMapBegin();
-                for( int _i49 = 0; _i49 < _map48.Count; ++_i49)
-                {
-                  string _key50;
-                  string _val51;
-                  _key50 = iprot.ReadString();
-                  _val51 = iprot.ReadString();
-                  Title[_key50] = _val51;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              AvatarUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.I32) {
-              FollowersCount = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Bool) {
-              IsFollower = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private SGEntity _id;
+    private Dictionary<string, string> _title;
+    private string _avatarUrl;
+    private int _followersCount;
+    private bool _isFollower;
+    private Dictionary<int, bool> _allowedActions;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public SGEntity Id
     {
-      TStruct struc = new TStruct("AFEntityReference");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _id;
+      }
+      set
+      {
+        __isset.id = true;
+        this._id = value;
+      }
+    }
+
+    public Dictionary<string, string> Title
+    {
+      get
+      {
+        return _title;
+      }
+      set
+      {
+        __isset.title = true;
+        this._title = value;
+      }
+    }
+
+    /// <summary>
+    /// {your_language: title} - if regular user
+    /// </summary>
+    public string AvatarUrl
+    {
+      get
+      {
+        return _avatarUrl;
+      }
+      set
+      {
+        __isset.avatarUrl = true;
+        this._avatarUrl = value;
+      }
+    }
+
+    public int FollowersCount
+    {
+      get
+      {
+        return _followersCount;
+      }
+      set
+      {
+        __isset.followersCount = true;
+        this._followersCount = value;
+      }
+    }
+
+    public bool IsFollower
+    {
+      get
+      {
+        return _isFollower;
+      }
+      set
+      {
+        __isset.isFollower = true;
+        this._isFollower = value;
+      }
+    }
+
+    public Dictionary<int, bool> AllowedActions
+    {
+      get
+      {
+        return _allowedActions;
+      }
+      set
+      {
+        __isset.allowedActions = true;
+        this._allowedActions = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool id;
+      public bool title;
+      public bool avatarUrl;
+      public bool followersCount;
+      public bool isFollower;
+      public bool allowedActions;
+    }
+
+    public AFEntityReference() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Id = new SGEntity();
+                Id.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Map) {
+                {
+                  Title = new Dictionary<string, string>();
+                  TMap _map48 = iprot.ReadMapBegin();
+                  for( int _i49 = 0; _i49 < _map48.Count; ++_i49)
+                  {
+                    string _key50;
+                    string _val51;
+                    _key50 = iprot.ReadString();
+                    _val51 = iprot.ReadString();
+                    Title[_key50] = _val51;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                AvatarUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I32) {
+                FollowersCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Bool) {
+                IsFollower = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Map) {
+                {
+                  AllowedActions = new Dictionary<int, bool>();
+                  TMap _map52 = iprot.ReadMapBegin();
+                  for( int _i53 = 0; _i53 < _map52.Count; ++_i53)
+                  {
+                    int _key54;
+                    bool _val55;
+                    _key54 = iprot.ReadI32();
+                    _val55 = iprot.ReadBool();
+                    AllowedActions[_key54] = _val55;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("AFEntityReference");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Id != null && __isset.id) {
+          field.Name = "id";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Id.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (Title != null && __isset.title) {
+          field.Name = "title";
+          field.Type = TType.Map;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Title.Count));
+            foreach (string _iter56 in Title.Keys)
+            {
+              oprot.WriteString(_iter56);
+              oprot.WriteString(Title[_iter56]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (AvatarUrl != null && __isset.avatarUrl) {
+          field.Name = "avatarUrl";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AvatarUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.followersCount) {
+          field.Name = "followersCount";
+          field.Type = TType.I32;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(FollowersCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isFollower) {
+          field.Name = "isFollower";
+          field.Type = TType.Bool;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsFollower);
+          oprot.WriteFieldEnd();
+        }
+        if (AllowedActions != null && __isset.allowedActions) {
+          field.Name = "allowedActions";
+          field.Type = TType.Map;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.I32, TType.Bool, AllowedActions.Count));
+            foreach (int _iter57 in AllowedActions.Keys)
+            {
+              oprot.WriteI32(_iter57);
+              oprot.WriteBool(AllowedActions[_iter57]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("AFEntityReference(");
+      bool __first = true;
       if (Id != null && __isset.id) {
-        field.Name = "id";
-        field.Type = TType.Struct;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        Id.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Id: ");
+        __sb.Append(Id== null ? "<null>" : Id.ToString());
       }
       if (Title != null && __isset.title) {
-        field.Name = "title";
-        field.Type = TType.Map;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Title.Count));
-          foreach (string _iter52 in Title.Keys)
-          {
-            oprot.WriteString(_iter52);
-            oprot.WriteString(Title[_iter52]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Title: ");
+        __sb.Append(Title.ToDebugString());
       }
       if (AvatarUrl != null && __isset.avatarUrl) {
-        field.Name = "avatarUrl";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AvatarUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AvatarUrl: ");
+        __sb.Append(AvatarUrl);
       }
       if (__isset.followersCount) {
-        field.Name = "followersCount";
-        field.Type = TType.I32;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(FollowersCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("FollowersCount: ");
+        __sb.Append(FollowersCount);
       }
       if (__isset.isFollower) {
-        field.Name = "isFollower";
-        field.Type = TType.Bool;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IsFollower);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsFollower: ");
+        __sb.Append(IsFollower);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      if (AllowedActions != null && __isset.allowedActions) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AllowedActions: ");
+        __sb.Append(AllowedActions.ToDebugString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("AFEntityReference(");
-    bool __first = true;
-    if (Id != null && __isset.id) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Id: ");
-      __sb.Append(Id== null ? "<null>" : Id.ToString());
-    }
-    if (Title != null && __isset.title) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Title: ");
-      __sb.Append(Title);
-    }
-    if (AvatarUrl != null && __isset.avatarUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AvatarUrl: ");
-      __sb.Append(AvatarUrl);
-    }
-    if (__isset.followersCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("FollowersCount: ");
-      __sb.Append(FollowersCount);
-    }
-    if (__isset.isFollower) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IsFollower: ");
-      __sb.Append(IsFollower);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

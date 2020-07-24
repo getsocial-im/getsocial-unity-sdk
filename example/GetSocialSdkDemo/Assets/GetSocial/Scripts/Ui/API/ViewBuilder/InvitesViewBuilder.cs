@@ -1,10 +1,10 @@
-﻿#if USE_GETSOCIAL_UI
-
-using GetSocialSdk.Core;
+﻿using GetSocialSdk.Core;
+using GetSocialSdk.MiniJSON;
 using System;
 
 #if UNITY_IOS
 using System.Runtime.InteropServices;
+using UnityEngine;
 #endif
 
 #if UNITY_ANDROID
@@ -20,12 +20,15 @@ namespace GetSocialSdk.Ui
     public sealed class InvitesViewBuilder : ViewBuilder<InvitesViewBuilder>
     {
 #pragma warning disable 414
-        LinkParams _linkParams;
         InviteContent _inviteContent;
         Action<string> _onInviteComplete;
         Action<string> _onInviteCancel;
         Action<string, GetSocialError> _onInviteFailure;
 #pragma warning restore 414
+        public static InvitesViewBuilder Create()
+        {
+            return new InvitesViewBuilder();
+        }
 
         /// <summary>
         /// Sets the custom invite content.
@@ -35,30 +38,6 @@ namespace GetSocialSdk.Ui
         public InvitesViewBuilder SetCustomInviteContent(InviteContent inviteContent)
         {
             _inviteContent = inviteContent;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the custom referral data.
-        /// </summary>
-        /// <returns>The custom referral data.</returns>
-        /// <param name="customReferralData">Custom referral data.</param>
-        /// Deprecated, use <see cref="SetLinkParams"/> instead.
-        [Obsolete("Deprecated, use SetLinkParams instead.")]
-        public InvitesViewBuilder SetCustomReferralData(CustomReferralData customReferralData)
-        {
-            _linkParams = new LinkParams(customReferralData);
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the link parameters.
-        /// </summary>
-        /// <returns>InviteBuilder.</returns>
-        /// <param name="linkParams">Link parameters.</param>
-        public InvitesViewBuilder SetLinkParams(LinkParams linkParams)
-        {
-            _linkParams = linkParams;
             return this;
         }
 
@@ -92,10 +71,7 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
             return ShowBuilder(ToAJO());
 #elif UNITY_IOS
-            var serializedInviteContent = _inviteContent == null ? null : _inviteContent.ToJson();
-            var serializedLinkParams = _linkParams == null ? null : _linkParams.ToJson();
-
-            return _gs_showSmartInvitesView(_customWindowTitle, serializedInviteContent, serializedLinkParams,
+            return _gs_showSmartInvitesView(_customWindowTitle, GSJson.Serialize(_inviteContent),
                 Callbacks.StringCallback, _onInviteComplete.GetPointer(), _onInviteCancel.GetPointer(),
                 Callbacks.FailureWithDataCallback, _onInviteFailure.GetPointer(),
                 Callbacks.ActionCallback, _onOpen.GetPointer(),
@@ -111,17 +87,12 @@ namespace GetSocialSdk.Ui
 #if UNITY_ANDROID
         AndroidJavaObject ToAJO()
         {
-            var invitesBuilderAJO = new AndroidJavaObject("im.getsocial.sdk.ui.invites.InvitesViewBuilder");
-
-            if (_linkParams != null)
-            {
-                invitesBuilderAJO.CallAJO("setLinkParams", _linkParams.ToAjo());
-            }
+            var invitesBuilderAJOClass = new AndroidJavaClass("im.getsocial.sdk.ui.invites.InvitesViewBuilder");
+            var invitesBuilderAJO = invitesBuilderAJOClass.CallStaticAJO("create");
 
             if (_inviteContent != null)
             {
-                var inviteContentAJO = _inviteContent.ToAjo();
-                invitesBuilderAJO.CallAJO("setCustomInviteContent", inviteContentAJO);
+                invitesBuilderAJO.CallAJO("setCustomInviteContent", AndroidAJOConverter.Convert(_inviteContent, "im.getsocial.sdk.invites.InviteContent"));
             }
 
             if (_onInviteComplete != null)
@@ -138,7 +109,6 @@ namespace GetSocialSdk.Ui
         static extern bool _gs_showSmartInvitesView(
             string title,
             string serializedInviteContent,
-            string serializedLinkParams,
             StringCallbackDelegate stringCallback, IntPtr onInviteCompletePtr, IntPtr onInviteCancelPtr,
             FailureWithDataCallbackDelegate failureCallback, IntPtr onFailurePtr,
             Action<IntPtr> onOpenAction, IntPtr onOpenActionPtr,
@@ -148,5 +118,3 @@ namespace GetSocialSdk.Ui
 #endif
     }
 }
-
-#endif

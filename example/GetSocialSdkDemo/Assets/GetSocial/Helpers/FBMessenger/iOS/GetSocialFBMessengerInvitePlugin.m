@@ -1,5 +1,5 @@
 /*
- *    	Copyright 2015-2019 GetSocial B.V.
+ *    	Copyright 2015-2020 GetSocial B.V.
  *
  *	Licensed under the Apache License, Version 2.0 (the "License");
  *	you may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@
 
 @interface GetSocialFBMessengerInvitePlugin ()<FBSDKSharingDelegate>
 
+@property(nonatomic, copy) void (^successCallback)(NSDictionary<NSString *,NSString *> *);
+@property(nonatomic, copy) void (^cancelCallback)(NSDictionary<NSString *,NSString *> *);
+@property(nonatomic, copy) void (^failureCallback)(NSError*, NSDictionary<NSString *,NSString *> *);
+
 @end
 
 @implementation GetSocialFBMessengerInvitePlugin
@@ -30,18 +34,18 @@
 }
 
 - (void)presentPluginWithInviteChannel:(GetSocialInviteChannel *)inviteChannel
-                         invitePackage:(GetSocialInvitePackage *)invitePackage
+                         invite:(GetSocialInvite *)invite
                       onViewController:(UIViewController *)viewController
-                               success:(GetSocialInviteSuccessCallback)successCallback
-                                cancel:(GetSocialInviteCancelCallback)cancelCallback
-                               failure:(GetSocialFailureCallback)failureCallback
+                               success:(void (^)(NSDictionary<NSString *,NSString *> *))successCallback
+                                cancel:(void (^)(NSDictionary<NSString *,NSString *> *))cancelCallback
+                               failure:(void (^)(NSError* error, NSDictionary<NSString *,NSString *> *))failureCallback
 {
     self.successCallback = successCallback;
     self.failureCallback = failureCallback;
     self.cancelCallback = cancelCallback;
 
     FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
-    content.contentURL = [NSURL URLWithString:invitePackage.referralUrl];
+    content.contentURL = [NSURL URLWithString:invite.referralUrl];
 
     [FBSDKMessageDialog showWithContent:content delegate:self];
 }
@@ -56,14 +60,14 @@
         {
             if (self.successCallback)
             {
-                self.successCallback();
+                self.successCallback(@{});
             }
         }
         else
         {
             if (self.cancelCallback)
             {
-                self.cancelCallback();
+                self.cancelCallback(@{});
             }
         }
     }
@@ -72,7 +76,7 @@
         if (self.failureCallback)
         {
             self.failureCallback(
-                [NSError errorWithDomain:@"GetSocialFBMessengerInvitePlugin" code:1000 userInfo:@{NSLocalizedDescriptionKey : @"Failed to invite."}]);
+                                 [NSError errorWithDomain:@"GetSocialFBMessengerInvitePlugin" code:1000 userInfo:@{NSLocalizedDescriptionKey : @"Failed to invite."}], @{});
         }
     }
 }
@@ -81,7 +85,7 @@
 {
     if (self.failureCallback)
     {
-        self.failureCallback(error);
+        self.failureCallback(error, @{});
     }
 }
 
@@ -89,7 +93,7 @@
 {
     if (self.cancelCallback)
     {
-        self.cancelCallback();
+        self.cancelCallback(@{});
     }
 }
 

@@ -16,419 +16,426 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THProcessAppOpenRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private THFingerprint _fingerprint;
-  private string _referrer;
-  private string _deepLinkUrl;
-  private bool _isNewInstall;
-  private Dictionary<THAppOpenSource, string> _referrers;
-  private Dictionary<THAppOpenSource, Dictionary<THAppOpenKey, string>> _referrerData;
-  private Dictionary<string, string> _deviceInfo;
-
-  public THFingerprint Fingerprint
-  {
-    get
-    {
-      return _fingerprint;
-    }
-    set
-    {
-      __isset.fingerprint = true;
-      this._fingerprint = value;
-    }
-  }
-
-  public string Referrer
-  {
-    get
-    {
-      return _referrer;
-    }
-    set
-    {
-      __isset.referrer = true;
-      this._referrer = value;
-    }
-  }
 
   /// <summary>
-  /// deprecated, use `referrers` map instead
+  /// #sdk6 #sdk7
   /// </summary>
-  public string DeepLinkUrl
-  {
-    get
-    {
-      return _deepLinkUrl;
-    }
-    set
-    {
-      __isset.deepLinkUrl = true;
-      this._deepLinkUrl = value;
-    }
-  }
-
-  /// <summary>
-  /// deprecated, use `referrers` map instead
-  /// </summary>
-  public bool IsNewInstall
-  {
-    get
-    {
-      return _isNewInstall;
-    }
-    set
-    {
-      __isset.isNewInstall = true;
-      this._isNewInstall = value;
-    }
-  }
-
-  public Dictionary<THAppOpenSource, string> Referrers
-  {
-    get
-    {
-      return _referrers;
-    }
-    set
-    {
-      __isset.referrers = true;
-      this._referrers = value;
-    }
-  }
-
-  /// <summary>
-  /// deprecated, use `referrerData`
-  /// </summary>
-  public Dictionary<THAppOpenSource, Dictionary<THAppOpenKey, string>> ReferrerData
-  {
-    get
-    {
-      return _referrerData;
-    }
-    set
-    {
-      __isset.referrerData = true;
-      this._referrerData = value;
-    }
-  }
-
-  /// <summary>
-  /// from sdk version 6.16.0, for available keys see THAppOpenKey enum
-  /// </summary>
-  public Dictionary<string, string> DeviceInfo
-  {
-    get
-    {
-      return _deviceInfo;
-    }
-    set
-    {
-      __isset.deviceInfo = true;
-      this._deviceInfo = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool fingerprint;
-    public bool referrer;
-    public bool deepLinkUrl;
-    public bool isNewInstall;
-    public bool referrers;
-    public bool referrerData;
-    public bool deviceInfo;
-  }
-
-  public THProcessAppOpenRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THProcessAppOpenRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.Struct) {
-              Fingerprint = new THFingerprint();
-              Fingerprint.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              Referrer = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              DeepLinkUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.Bool) {
-              IsNewInstall = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.Map) {
-              {
-                Referrers = new Dictionary<THAppOpenSource, string>();
-                TMap _map48 = iprot.ReadMapBegin();
-                for( int _i49 = 0; _i49 < _map48.Count; ++_i49)
-                {
-                  THAppOpenSource _key50;
-                  string _val51;
-                  _key50 = (THAppOpenSource)iprot.ReadI32();
-                  _val51 = iprot.ReadString();
-                  Referrers[_key50] = _val51;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.Map) {
-              {
-                ReferrerData = new Dictionary<THAppOpenSource, Dictionary<THAppOpenKey, string>>();
-                TMap _map52 = iprot.ReadMapBegin();
-                for( int _i53 = 0; _i53 < _map52.Count; ++_i53)
-                {
-                  THAppOpenSource _key54;
-                  Dictionary<THAppOpenKey, string> _val55;
-                  _key54 = (THAppOpenSource)iprot.ReadI32();
-                  {
-                    _val55 = new Dictionary<THAppOpenKey, string>();
-                    TMap _map56 = iprot.ReadMapBegin();
-                    for( int _i57 = 0; _i57 < _map56.Count; ++_i57)
-                    {
-                      THAppOpenKey _key58;
-                      string _val59;
-                      _key58 = (THAppOpenKey)iprot.ReadI32();
-                      _val59 = iprot.ReadString();
-                      _val55[_key58] = _val59;
-                    }
-                    iprot.ReadMapEnd();
-                  }
-                  ReferrerData[_key54] = _val55;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 7:
-            if (field.Type == TType.Map) {
-              {
-                DeviceInfo = new Dictionary<string, string>();
-                TMap _map60 = iprot.ReadMapBegin();
-                for( int _i61 = 0; _i61 < _map60.Count; ++_i61)
-                {
-                  string _key62;
-                  string _val63;
-                  _key62 = iprot.ReadString();
-                  _val63 = iprot.ReadString();
-                  DeviceInfo[_key62] = _val63;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private THFingerprint _fingerprint;
+    private string _referrer;
+    private string _deepLinkUrl;
+    private bool _isNewInstall;
+    private Dictionary<THAppOpenSource, string> _referrers;
+    private Dictionary<THAppOpenSource, Dictionary<THAppOpenKey, string>> _referrerData;
+    private Dictionary<string, string> _deviceInfo;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public THFingerprint Fingerprint
     {
-      TStruct struc = new TStruct("THProcessAppOpenRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _fingerprint;
+      }
+      set
+      {
+        __isset.fingerprint = true;
+        this._fingerprint = value;
+      }
+    }
+
+    public string Referrer
+    {
+      get
+      {
+        return _referrer;
+      }
+      set
+      {
+        __isset.referrer = true;
+        this._referrer = value;
+      }
+    }
+
+    /// <summary>
+    /// deprecated, use `referrers` map instead
+    /// </summary>
+    public string DeepLinkUrl
+    {
+      get
+      {
+        return _deepLinkUrl;
+      }
+      set
+      {
+        __isset.deepLinkUrl = true;
+        this._deepLinkUrl = value;
+      }
+    }
+
+    /// <summary>
+    /// deprecated, use `referrers` map instead
+    /// </summary>
+    public bool IsNewInstall
+    {
+      get
+      {
+        return _isNewInstall;
+      }
+      set
+      {
+        __isset.isNewInstall = true;
+        this._isNewInstall = value;
+      }
+    }
+
+    public Dictionary<THAppOpenSource, string> Referrers
+    {
+      get
+      {
+        return _referrers;
+      }
+      set
+      {
+        __isset.referrers = true;
+        this._referrers = value;
+      }
+    }
+
+    /// <summary>
+    /// deprecated, use `referrerData`
+    /// </summary>
+    public Dictionary<THAppOpenSource, Dictionary<THAppOpenKey, string>> ReferrerData
+    {
+      get
+      {
+        return _referrerData;
+      }
+      set
+      {
+        __isset.referrerData = true;
+        this._referrerData = value;
+      }
+    }
+
+    /// <summary>
+    /// from sdk version 6.16.0, for available keys see THAppOpenKey enum
+    /// </summary>
+    public Dictionary<string, string> DeviceInfo
+    {
+      get
+      {
+        return _deviceInfo;
+      }
+      set
+      {
+        __isset.deviceInfo = true;
+        this._deviceInfo = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool fingerprint;
+      public bool referrer;
+      public bool deepLinkUrl;
+      public bool isNewInstall;
+      public bool referrers;
+      public bool referrerData;
+      public bool deviceInfo;
+    }
+
+    public THProcessAppOpenRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Fingerprint = new THFingerprint();
+                Fingerprint.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Referrer = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                DeepLinkUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.Bool) {
+                IsNewInstall = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Map) {
+                {
+                  Referrers = new Dictionary<THAppOpenSource, string>();
+                  TMap _map57 = iprot.ReadMapBegin();
+                  for( int _i58 = 0; _i58 < _map57.Count; ++_i58)
+                  {
+                    THAppOpenSource _key59;
+                    string _val60;
+                    _key59 = (THAppOpenSource)iprot.ReadI32();
+                    _val60 = iprot.ReadString();
+                    Referrers[_key59] = _val60;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Map) {
+                {
+                  ReferrerData = new Dictionary<THAppOpenSource, Dictionary<THAppOpenKey, string>>();
+                  TMap _map61 = iprot.ReadMapBegin();
+                  for( int _i62 = 0; _i62 < _map61.Count; ++_i62)
+                  {
+                    THAppOpenSource _key63;
+                    Dictionary<THAppOpenKey, string> _val64;
+                    _key63 = (THAppOpenSource)iprot.ReadI32();
+                    {
+                      _val64 = new Dictionary<THAppOpenKey, string>();
+                      TMap _map65 = iprot.ReadMapBegin();
+                      for( int _i66 = 0; _i66 < _map65.Count; ++_i66)
+                      {
+                        THAppOpenKey _key67;
+                        string _val68;
+                        _key67 = (THAppOpenKey)iprot.ReadI32();
+                        _val68 = iprot.ReadString();
+                        _val64[_key67] = _val68;
+                      }
+                      iprot.ReadMapEnd();
+                    }
+                    ReferrerData[_key63] = _val64;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.Map) {
+                {
+                  DeviceInfo = new Dictionary<string, string>();
+                  TMap _map69 = iprot.ReadMapBegin();
+                  for( int _i70 = 0; _i70 < _map69.Count; ++_i70)
+                  {
+                    string _key71;
+                    string _val72;
+                    _key71 = iprot.ReadString();
+                    _val72 = iprot.ReadString();
+                    DeviceInfo[_key71] = _val72;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THProcessAppOpenRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Fingerprint != null && __isset.fingerprint) {
+          field.Name = "fingerprint";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Fingerprint.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (Referrer != null && __isset.referrer) {
+          field.Name = "referrer";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Referrer);
+          oprot.WriteFieldEnd();
+        }
+        if (DeepLinkUrl != null && __isset.deepLinkUrl) {
+          field.Name = "deepLinkUrl";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(DeepLinkUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isNewInstall) {
+          field.Name = "isNewInstall";
+          field.Type = TType.Bool;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsNewInstall);
+          oprot.WriteFieldEnd();
+        }
+        if (Referrers != null && __isset.referrers) {
+          field.Name = "referrers";
+          field.Type = TType.Map;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.I32, TType.String, Referrers.Count));
+            foreach (THAppOpenSource _iter73 in Referrers.Keys)
+            {
+              oprot.WriteI32((int)_iter73);
+              oprot.WriteString(Referrers[_iter73]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (ReferrerData != null && __isset.referrerData) {
+          field.Name = "referrerData";
+          field.Type = TType.Map;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.I32, TType.Map, ReferrerData.Count));
+            foreach (THAppOpenSource _iter74 in ReferrerData.Keys)
+            {
+              oprot.WriteI32((int)_iter74);
+              {
+                oprot.WriteMapBegin(new TMap(TType.I32, TType.String, ReferrerData[_iter74].Count));
+                foreach (THAppOpenKey _iter75 in ReferrerData[_iter74].Keys)
+                {
+                  oprot.WriteI32((int)_iter75);
+                  oprot.WriteString(ReferrerData[_iter74][_iter75]);
+                }
+                oprot.WriteMapEnd();
+              }
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (DeviceInfo != null && __isset.deviceInfo) {
+          field.Name = "deviceInfo";
+          field.Type = TType.Map;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, DeviceInfo.Count));
+            foreach (string _iter76 in DeviceInfo.Keys)
+            {
+              oprot.WriteString(_iter76);
+              oprot.WriteString(DeviceInfo[_iter76]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THProcessAppOpenRequest(");
+      bool __first = true;
       if (Fingerprint != null && __isset.fingerprint) {
-        field.Name = "fingerprint";
-        field.Type = TType.Struct;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        Fingerprint.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Fingerprint: ");
+        __sb.Append(Fingerprint== null ? "<null>" : Fingerprint.ToString());
       }
       if (Referrer != null && __isset.referrer) {
-        field.Name = "referrer";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Referrer);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Referrer: ");
+        __sb.Append(Referrer);
       }
       if (DeepLinkUrl != null && __isset.deepLinkUrl) {
-        field.Name = "deepLinkUrl";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(DeepLinkUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DeepLinkUrl: ");
+        __sb.Append(DeepLinkUrl);
       }
       if (__isset.isNewInstall) {
-        field.Name = "isNewInstall";
-        field.Type = TType.Bool;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IsNewInstall);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsNewInstall: ");
+        __sb.Append(IsNewInstall);
       }
       if (Referrers != null && __isset.referrers) {
-        field.Name = "referrers";
-        field.Type = TType.Map;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.I32, TType.String, Referrers.Count));
-          foreach (THAppOpenSource _iter64 in Referrers.Keys)
-          {
-            oprot.WriteI32((int)_iter64);
-            oprot.WriteString(Referrers[_iter64]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Referrers: ");
+        __sb.Append(Referrers.ToDebugString());
       }
       if (ReferrerData != null && __isset.referrerData) {
-        field.Name = "referrerData";
-        field.Type = TType.Map;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.I32, TType.Map, ReferrerData.Count));
-          foreach (THAppOpenSource _iter65 in ReferrerData.Keys)
-          {
-            oprot.WriteI32((int)_iter65);
-            {
-              oprot.WriteMapBegin(new TMap(TType.I32, TType.String, ReferrerData[_iter65].Count));
-              foreach (THAppOpenKey _iter66 in ReferrerData[_iter65].Keys)
-              {
-                oprot.WriteI32((int)_iter66);
-                oprot.WriteString(ReferrerData[_iter65][_iter66]);
-              }
-              oprot.WriteMapEnd();
-            }
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ReferrerData: ");
+        __sb.Append(ReferrerData.ToDebugString());
       }
       if (DeviceInfo != null && __isset.deviceInfo) {
-        field.Name = "deviceInfo";
-        field.Type = TType.Map;
-        field.ID = 7;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, DeviceInfo.Count));
-          foreach (string _iter67 in DeviceInfo.Keys)
-          {
-            oprot.WriteString(_iter67);
-            oprot.WriteString(DeviceInfo[_iter67]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DeviceInfo: ");
+        __sb.Append(DeviceInfo.ToDebugString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THProcessAppOpenRequest(");
-    bool __first = true;
-    if (Fingerprint != null && __isset.fingerprint) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Fingerprint: ");
-      __sb.Append(Fingerprint== null ? "<null>" : Fingerprint.ToString());
-    }
-    if (Referrer != null && __isset.referrer) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Referrer: ");
-      __sb.Append(Referrer);
-    }
-    if (DeepLinkUrl != null && __isset.deepLinkUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("DeepLinkUrl: ");
-      __sb.Append(DeepLinkUrl);
-    }
-    if (__isset.isNewInstall) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IsNewInstall: ");
-      __sb.Append(IsNewInstall);
-    }
-    if (Referrers != null && __isset.referrers) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Referrers: ");
-      __sb.Append(Referrers);
-    }
-    if (ReferrerData != null && __isset.referrerData) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ReferrerData: ");
-      __sb.Append(ReferrerData);
-    }
-    if (DeviceInfo != null && __isset.deviceInfo) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("DeviceInfo: ");
-      __sb.Append(DeviceInfo);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

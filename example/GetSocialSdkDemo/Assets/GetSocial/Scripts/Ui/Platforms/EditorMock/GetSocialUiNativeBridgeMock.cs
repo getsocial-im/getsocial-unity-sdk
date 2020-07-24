@@ -1,8 +1,6 @@
 using System.Reflection;
 using GetSocialSdk.Core;
 
-#if USE_GETSOCIAL_UI
-
 namespace GetSocialSdk.Ui
 {
     sealed class GetSocialUiNativeBridgeMock : IGetSocialUiNativeBridge
@@ -57,4 +55,3 @@ namespace GetSocialSdk.Ui
         #endregion
     }
 }
-#endif

@@ -16,110 +16,117 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class FollowEntitiesResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _totalFollowedEntitiesCount;
 
-  public int TotalFollowedEntitiesCount
-  {
-    get
-    {
-      return _totalFollowedEntitiesCount;
-    }
-    set
-    {
-      __isset.totalFollowedEntitiesCount = true;
-      this._totalFollowedEntitiesCount = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool totalFollowedEntitiesCount;
-  }
-
-  public FollowEntitiesResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class FollowEntitiesResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
+    private int _totalFollowedEntitiesCount;
+
+    public int TotalFollowedEntitiesCount
     {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
+      get
       {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
+        return _totalFollowedEntitiesCount;
+      }
+      set
+      {
+        __isset.totalFollowedEntitiesCount = true;
+        this._totalFollowedEntitiesCount = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool totalFollowedEntitiesCount;
+    }
+
+    public FollowEntitiesResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          case 1:
-            if (field.Type == TType.I32) {
-              TotalFollowedEntitiesCount = iprot.ReadI32();
-            } else { 
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                TotalFollowedEntitiesCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
               TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        iprot.ReadFieldEnd();
+        iprot.ReadStructEnd();
       }
-      iprot.ReadStructEnd();
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
     }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
-    {
-      TStruct struc = new TStruct("FollowEntitiesResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("FollowEntitiesResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.totalFollowedEntitiesCount) {
+          field.Name = "totalFollowedEntitiesCount";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(TotalFollowedEntitiesCount);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("FollowEntitiesResponse(");
+      bool __first = true;
       if (__isset.totalFollowedEntitiesCount) {
-        field.Name = "totalFollowedEntitiesCount";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(TotalFollowedEntitiesCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("TotalFollowedEntitiesCount: ");
+        __sb.Append(TotalFollowedEntitiesCount);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("FollowEntitiesResponse(");
-    bool __first = true;
-    if (__isset.totalFollowedEntitiesCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("TotalFollowedEntitiesCount: ");
-      __sb.Append(TotalFollowedEntitiesCount);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

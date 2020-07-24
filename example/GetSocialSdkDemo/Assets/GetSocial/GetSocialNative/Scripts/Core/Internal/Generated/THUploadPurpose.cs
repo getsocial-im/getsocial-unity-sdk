@@ -6,18 +6,24 @@
  *  @generated
  */
 
-public enum THUploadPurpose
+namespace GetSocialSdk.Core 
 {
-  ACTIVITY_FEED = 0,
-  CHAT = 1,
-  LANDING_PAGE = 2,
-  THUMB_LANDING_PAGE = 3,
-  INVITE_IMAGE = 4,
-  APP_ICON = 5,
-  CUSTOM_INVITE_IMAGE = 6,
-  STICKY_ACTIVITY = 7,
-  USER_AVATAR = 8,
-  CUSTOM_LANDING_PAGE_IMAGE = 9,
-  NOTIFICATION_MEDIA = 10,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THUploadPurpose
+  {
+    ACTIVITY_FEED = 0,
+    CHAT = 1,
+    LANDING_PAGE = 2,
+    THUMB_LANDING_PAGE = 3,
+    INVITE_IMAGE = 4,
+    APP_ICON = 5,
+    CUSTOM_INVITE_IMAGE = 6,
+    STICKY_ACTIVITY = 7,
+    USER_AVATAR = 8,
+    CUSTOM_LANDING_PAGE_IMAGE = 9,
+    NOTIFICATION_MEDIA = 10,
+  }
 }
 #endif

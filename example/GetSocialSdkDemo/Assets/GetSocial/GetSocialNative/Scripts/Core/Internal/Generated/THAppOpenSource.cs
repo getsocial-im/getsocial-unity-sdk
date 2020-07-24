@@ -6,15 +6,21 @@
  *  @generated
  */
 
-public enum THAppOpenSource
+namespace GetSocialSdk.Core 
 {
-  Facebook = 0,
-  Google = 1,
-  DeepLink = 2,
-  API = 3,
   /// <summary>
-  /// or copy/paste code from a landing page (e.g 79rd3e)
+  /// #sdk6 #sdk7
   /// </summary>
-  Manual = 4,
+  public enum THAppOpenSource
+  {
+    Facebook = 0,
+    Google = 1,
+    DeepLink = 2,
+    API = 3,
+    /// <summary>
+    /// or copy/paste code from a landing page (e.g 79rd3e)
+    /// </summary>
+    Manual = 4,
+  }
 }
 #endif

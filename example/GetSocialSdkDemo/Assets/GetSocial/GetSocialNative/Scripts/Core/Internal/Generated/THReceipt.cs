@@ -16,167 +16,174 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THReceipt : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<THReceiptItem> _items;
-  private string _checkpoint;
-
-  public List<THReceiptItem> Items
-  {
-    get
-    {
-      return _items;
-    }
-    set
-    {
-      __isset.items = true;
-      this._items = value;
-    }
-  }
 
   /// <summary>
-  /// sent back with the parseIAP RPC.
+  /// #sdk6 #sdk7
   /// </summary>
-  public string Checkpoint
-  {
-    get
-    {
-      return _checkpoint;
-    }
-    set
-    {
-      __isset.checkpoint = true;
-      this._checkpoint = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool items;
-    public bool checkpoint;
-  }
-
-  public THReceipt() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THReceipt : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                Items = new List<THReceiptItem>();
-                TList _list0 = iprot.ReadListBegin();
-                for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
-                {
-                  THReceiptItem _elem2;
-                  _elem2 = new THReceiptItem();
-                  _elem2.Read(iprot);
-                  Items.Add(_elem2);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              Checkpoint = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<THReceiptItem> _items;
+    private string _checkpoint;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<THReceiptItem> Items
     {
-      TStruct struc = new TStruct("THReceipt");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Items != null && __isset.items) {
-        field.Name = "items";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _items;
+      }
+      set
+      {
+        __isset.items = true;
+        this._items = value;
+      }
+    }
+
+    /// <summary>
+    /// sent back with the parseIAP RPC.
+    /// </summary>
+    public string Checkpoint
+    {
+      get
+      {
+        return _checkpoint;
+      }
+      set
+      {
+        __isset.checkpoint = true;
+        this._checkpoint = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool items;
+      public bool checkpoint;
+    }
+
+    public THReceipt() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.Struct, Items.Count));
-          foreach (THReceiptItem _iter3 in Items)
-          {
-            _iter3.Write(oprot);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  Items = new List<THReceiptItem>();
+                  TList _list0 = iprot.ReadListBegin();
+                  for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                  {
+                    THReceiptItem _elem2;
+                    _elem2 = new THReceiptItem();
+                    _elem2.Read(iprot);
+                    Items.Add(_elem2);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                Checkpoint = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THReceipt");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Items != null && __isset.items) {
+          field.Name = "items";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Items.Count));
+            foreach (THReceiptItem _iter3 in Items)
+            {
+              _iter3.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Checkpoint != null && __isset.checkpoint) {
+          field.Name = "checkpoint";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Checkpoint);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THReceipt(");
+      bool __first = true;
+      if (Items != null && __isset.items) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Items: ");
+        __sb.Append(Items.ToDebugString());
       }
       if (Checkpoint != null && __isset.checkpoint) {
-        field.Name = "checkpoint";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Checkpoint);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Checkpoint: ");
+        __sb.Append(Checkpoint);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THReceipt(");
-    bool __first = true;
-    if (Items != null && __isset.items) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Items: ");
-      __sb.Append(Items);
-    }
-    if (Checkpoint != null && __isset.checkpoint) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Checkpoint: ");
-      __sb.Append(Checkpoint);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

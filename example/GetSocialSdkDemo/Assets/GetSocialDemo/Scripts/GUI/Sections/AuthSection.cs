@@ -85,7 +85,7 @@ public class AuthSection : DemoMenuSection
 
         DemoGuiUtils.DrawButton("Log Out", () =>
         {
-            GetSocial.User.Reset(() =>
+            GetSocial.ResetUser(() =>
                 {
                     _console.LogD("User has been successfully logged out.");
                     demoController.FetchCurrentUserData();
@@ -105,7 +105,7 @@ public class AuthSection : DemoMenuSection
         DrawBatchSection("Public", _batchUpdatePublicProperties);
         DrawBatchSection("Private", _batchUpdatePrivateProperties);
         
-        DemoGuiUtils.DrawButton("Update User", () => GetSocial.User.SetUserDetails(GetUpdateForUser(),
+        DemoGuiUtils.DrawButton("Update User", () => GetSocial.GetCurrentUser().UpdateDetails(GetUpdateForUser(),
             () =>
             {
                 _console.LogD("User updated");
@@ -123,7 +123,7 @@ public class AuthSection : DemoMenuSection
         var providerUserIds = new List<string>();
         providerUserIds.Add(_customUserId);
         DemoGuiUtils.DrawButton("Get Users By Auth Identities", () => {
-            GetSocial.GetUsersByAuthIdentities(CustomProviderId, providerUserIds, users => {
+            Communities.GetUsers(UserIdList.CreateWithProvider(CustomProviderId, providerUserIds), users => {
                 _console.LogD("GetUsersByAuthIdentities result: " + users.ToDebugString());
             }, error => {
                 _console.LogE("Failed to get users by auth identities: " + error);
@@ -164,23 +164,25 @@ public class AuthSection : DemoMenuSection
         
         DemoGuiUtils.DrawButton("Add", () =>
         {
-            if (GetSocial.User.HasPublicProperty(_key))
+            if (GetSocial.GetCurrentUser().PublicProperties.ContainsKey(_key))
             {
-                _console.LogW("Property already exists " + _key + "=" + GetSocial.User.GetPublicProperty(_key) +
+                _console.LogW("Property already exists " + _key + "=" + GetSocial.GetCurrentUser().PublicProperties[_key] +
                               ", remove old one if you're really want to override it.");
             }
             else
             {
-                GetSocial.User.SetPublicProperty(_key, _val,
+                var update = new UserUpdate().AddPublicProperty(_key, _val);
+                GetSocial.GetCurrentUser().UpdateDetails(update,
                     () => _console.LogD(
-                        "Property added for key: " + _key + "=" + GetSocial.User.GetPublicProperty(_key)),
+                        "Property added for key: " + _key + "=" + GetSocial.GetCurrentUser().PublicProperties[_key]),
                     error => _console.LogE("Failed to add property for key: " + _key + ", error: " + error)
                 );
             }
         }, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Remove", () =>
         {
-            GetSocial.User.RemovePublicProperty(_key,
+            var update = new UserUpdate().RemovePublicProperty(_key);
+            GetSocial.GetCurrentUser().UpdateDetails(update,
                 () => _console.LogD("Property removed for key: " + _key),
                 error => _console.LogE("Failed to remove property for key: " + _key + ", error: " + error)
             );
@@ -195,24 +197,26 @@ public class AuthSection : DemoMenuSection
 
         DemoGuiUtils.DrawButton("Add", () =>
         {
-            if (GetSocial.User.HasPrivateProperty(_keyPrivate))
+            if (GetSocial.GetCurrentUser().PrivateProperties.ContainsKey(_keyPrivate))
             {
                 _console.LogW("Property already exists " + _keyPrivate + "=" +
-                              GetSocial.User.GetPrivateProperty(_keyPrivate) +
+                              GetSocial.GetCurrentUser().PrivateProperties[_keyPrivate] +
                               ", remove old one if you're really want to override it.");
             }
             else
             {
-                GetSocial.User.SetPrivateProperty(_keyPrivate, _valPrivate,
+                var update = new UserUpdate().AddPrivateProperty(_key, _val);
+                GetSocial.GetCurrentUser().UpdateDetails(update, 
                     () => _console.LogD("Property added for key: " + _keyPrivate + "=" +
-                                        GetSocial.User.GetPrivateProperty(_keyPrivate)),
+                                        GetSocial.GetCurrentUser().PrivateProperties[_keyPrivate]),
                     error => _console.LogE("Failed to add property for key: " + _keyPrivate + ", error: " + error)
                 );
             }
         }, true, GSStyles.Button);
         DemoGuiUtils.DrawButton("Remove", () =>
         {
-            GetSocial.User.RemovePrivateProperty(_keyPrivate,
+            var update = new UserUpdate().RemovePrivateProperty(_key);
+            GetSocial.GetCurrentUser().UpdateDetails(update,
                 () => _console.LogD("Property removed for key: " + _keyPrivate),
                 error => _console.LogE("Failed to remove property for key: " + _keyPrivate + ", error: " + error)
             );
@@ -242,7 +246,7 @@ public class AuthSection : DemoMenuSection
         // user display name
         GUILayout.BeginHorizontal();
         GUILayout.Label("User DisplayName: ", GSStyles.NormalLabelText, GUILayout.Width(300f));
-        DemoGuiUtils.DrawButton("Change Display Name", () => GetSocial.User.SetDisplayName(GetDisplayNameForUser(),
+        DemoGuiUtils.DrawButton("Change Display Name", () => GetSocial.GetCurrentUser().UpdateDetails(new UserUpdate{DisplayName = GetDisplayNameForUser()},
             () =>
             {
                 _console.LogD("User display name has been changed");
@@ -253,7 +257,7 @@ public class AuthSection : DemoMenuSection
         //user avatar
         GUILayout.BeginHorizontal();
         GUILayout.Label("User Avatar: ", GSStyles.NormalLabelText, GUILayout.Width(100f));
-        DemoGuiUtils.DrawButton("Change Avatar URL", () => GetSocial.User.SetAvatarUrl(GetAvatarUrlForUser(), () =>
+        DemoGuiUtils.DrawButton("Change Avatar URL", () => GetSocial.GetCurrentUser().UpdateDetails(new UserUpdate {AvatarUrl = GetAvatarUrlForUser()}, () =>
         {
             _console.LogD("User avatar url has been changed");
             demoController.FetchCurrentUserData();
@@ -261,7 +265,7 @@ public class AuthSection : DemoMenuSection
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
-        DemoGuiUtils.DrawButton("Change Avatar", () => GetSocial.User.SetAvatar(GetAvatarForUser(), () =>
+        DemoGuiUtils.DrawButton("Change Avatar", () => GetSocial.GetCurrentUser().UpdateDetails(new UserUpdate{Avatar = GetAvatarForUser()}, () =>
         {
             _console.LogD("User avatar has been changed");
             demoController.FetchCurrentUserData();
@@ -345,7 +349,7 @@ public class AuthSection : DemoMenuSection
     void SwitchToFacebookUserInternal()
     {
         _console.LogD(string.Format("Switching to FB user, token: {0}", AccessToken.CurrentAccessToken.TokenString));
-        GetSocial.User.SwitchUser(AuthIdentity.CreateFacebookIdentity(AccessToken.CurrentAccessToken.TokenString),
+        GetSocial.SwitchUser(Identity.Facebook(AccessToken.CurrentAccessToken.TokenString),
             () =>
             {
                 _console.LogD("Successfully switched to FB user");
@@ -389,15 +393,15 @@ public class AuthSection : DemoMenuSection
     void AddFacebookUserIdentityInternal()
     {
         _console.LogD(string.Format("Adding FB identity, token: {0}", AccessToken.CurrentAccessToken.TokenString));
-        GetSocial.User.AddAuthIdentity(AuthIdentity.CreateFacebookIdentity(AccessToken.CurrentAccessToken.TokenString),
+        GetSocial.GetCurrentUser().AddIdentity(Identity.Facebook(AccessToken.CurrentAccessToken.TokenString),
             () =>
             {
                 _console.LogD("Successfully added Facebook Identity");
                 demoController.FetchCurrentUserData();
                 SetFacebookUserDetails();
-            },
-            error => _console.LogE("Adding Facebook identity failed, reason: " + error),
-            OnAddUserIdentityConflict);
+            }, OnAddUserIdentityConflict, 
+            error => _console.LogE("Adding Facebook identity failed, reason: " + error)
+            );
     }
 
     void RemoveFacebookUserIdentity()
@@ -414,7 +418,7 @@ public class AuthSection : DemoMenuSection
 
     void RemoveFacebookUserIdentityInternal()
     {
-        GetSocial.User.RemoveAuthIdentity(AuthIdentityProvider.Facebook,
+        GetSocial.GetCurrentUser().RemoveIdentity(AuthIdentityProvider.Facebook,
             () =>
             {
                 _console.LogD("Successfully removed Facebook user identity");
@@ -429,21 +433,21 @@ public class AuthSection : DemoMenuSection
 
     void AddCustomUserIdentity()
     {
-        GetSocial.User.AddAuthIdentity(
-            AuthIdentity.CreateCustomIdentity(CustomProviderId, _customUserId, _customProviderToken),
+        GetSocial.GetCurrentUser().AddIdentity(
+            Identity.Custom(CustomProviderId, _customUserId, _customProviderToken),
             () =>
             {
                 _console.LogD("Successfully added custom identity");
                 demoController.FetchCurrentUserData();
-            },
+            }, OnAddUserIdentityConflict, 
             error => _console.LogE(string.Format("Failed to add user identity '{0}', reason: {1}", CustomProviderId,
-                error)),
-            OnAddUserIdentityConflict);
+                error))
+            );
     }
 
     void RemoveCustomUserIdentity()
     {
-        GetSocial.User.RemoveAuthIdentity(CustomProviderId,
+        GetSocial.GetCurrentUser().RemoveIdentity(CustomProviderId,
             () =>
             {
                 _console.LogD(string.Format("Successfully removed user identity '{0}'", CustomProviderId));
@@ -456,8 +460,8 @@ public class AuthSection : DemoMenuSection
 
     void SwitchToCustomIdentityUser()
     {
-        GetSocial.User.SwitchUser(
-            AuthIdentity.CreateCustomIdentity(CustomProviderId, _customUserId, _customProviderToken),
+        GetSocial.SwitchUser(
+            Identity.Custom(CustomProviderId, _customUserId, _customProviderToken),
             () =>
             {
                 _console.LogD("Successfully switched to Custom provider user");
@@ -482,30 +486,26 @@ public class AuthSection : DemoMenuSection
             var pictureDictionary = (IDictionary<string, object>) dictionary["picture"];
             var dataDictionary = (IDictionary<string, object>) pictureDictionary["data"];
             var pictureUrl = dataDictionary["url"].ToString();
-            GetSocial.User.SetDisplayName(displayName,
-                () =>
-                {
-                    _console.LogD("Display name is set to:" + displayName);
-                    demoController.FetchCurrentUserData();
-                },
-                error => _console.LogE("Failed to set Facebook user name")
-            );
-            GetSocial.User.SetAvatarUrl(pictureUrl,
-                () =>
-                {
-                    _console.LogD("User avatar is set to:" + pictureUrl);
-                    demoController.FetchCurrentUserData();
-                },
-                error => _console.LogE("Failed to set Facebook user avatar")
-            );
+            var update = new UserUpdate
+            {
+                DisplayName = displayName, AvatarUrl = pictureUrl
+            };
+            GetSocial.GetCurrentUser().UpdateDetails(update, () =>
+            {
+                _console.LogD("Display name is set to:" + displayName + ", avatar set to " + pictureUrl);
+                demoController.FetchCurrentUserData();
+            }, error =>
+            {
+                _console.LogE("Failed to set Facebook details");
+            });
         });
     }
 
     static string GetAvatarUrlForUser()
     {
         var randomStr = RandomString(5);
-        int index = randomStr.GetHashCode() % 10;
-        return string.Format("http://api.adorable.io/avatars/150/{0}", index);
+        var index = randomStr.GetHashCode() % 10;
+        return $"http://api.adorable.io/avatars/150/{index}";
     }
 
     static Texture2D GetAvatarForUser()
@@ -537,16 +537,15 @@ public class AuthSection : DemoMenuSection
 
     UserUpdate GetUpdateForUser()
     {
-        var updateBuilder = UserUpdate.CreateBuilder()
-            .UpdateDisplayName(GetDisplayNameForUser());
+        var updateBuilder = new UserUpdate {DisplayName = GetDisplayNameForUser()};
 
         if (_useAvatarUrl)
         {
-            updateBuilder.UpdateAvatarUrl(GetAvatarUrlForUser());
+            updateBuilder.AvatarUrl = GetAvatarUrlForUser();
         }
         else
         {
-            updateBuilder.UpdateAvatar(GetAvatarForUser());
+            updateBuilder.Avatar = GetAvatarForUser();
         }
         
         foreach (var propertyUpdate in _batchUpdatePrivateProperties)
@@ -557,7 +556,7 @@ public class AuthSection : DemoMenuSection
             }
             else
             {
-                updateBuilder.SetPrivateProperty(propertyUpdate.Key, propertyUpdate.Value);
+                updateBuilder.AddPrivateProperty(propertyUpdate.Key, propertyUpdate.Value);
             }
         }
         
@@ -569,11 +568,11 @@ public class AuthSection : DemoMenuSection
             }
             else
             {
-                updateBuilder.SetPublicProperty(propertyUpdate.Key, propertyUpdate.Value);
+                updateBuilder.AddPublicProperty(propertyUpdate.Key, propertyUpdate.Value);
             }
         }
 
-        return updateBuilder.Build();
+        return updateBuilder;
     }
 
     static string RandomString(int length)

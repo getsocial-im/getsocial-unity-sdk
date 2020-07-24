@@ -19,11 +19,11 @@ namespace GetSocialSdk.Core
         /// Implementation MUST guarantee that exactly one of the callbacks is eventually called. (i.e. either onComplete, onCancel or onFailure)
         /// </summary>
         /// <param name="inviteChannel">Invite channel.</param>
-        /// <param name="invitePackage">Invite package containg invite being sent.</param>
+        /// <param name="invite">Invite package containg invite being sent.</param>
         /// <param name="onComplete">On complete callback.</param>
         /// <param name="onCancel">On cancel callback.</param>
         /// <param name="onFailure">On failure callback.</param>
-        void PresentChannelInterface(InviteChannel inviteChannel, InvitePackage invitePackage,
+        void PresentChannelInterface(InviteChannel inviteChannel, Invite invite,
                                       Action onComplete, Action onCancel, Action<GetSocialError> onFailure);
     }
 }

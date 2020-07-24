@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using GetSocialSdk.MiniJSON;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,13 +36,13 @@ namespace GetSocialSdk.Core
         bool _disableFacebookReferralCheck = false;
         
         [SerializeField]
-        bool _useGetSocialUi = true;
-
-        [SerializeField]
         string _getSocialCustomConfigurationFilePath = string.Empty;
 
         [SerializeField]
         string _getSocialDefaultConfigurationFilePath = string.Empty;
+
+        [SerializeField] 
+        string _iosPushEnvironment = string.Empty;
 
         [SerializeField] 
         List<string> _deeplinkingDomains = new List<string>();
@@ -109,16 +110,6 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public static bool UseGetSocialUi
-        {
-            get { return Instance._useGetSocialUi; }
-            set
-            {
-                Instance._useGetSocialUi = value;
-                MarkAssetDirty();
-            }
-        }
-
         public static bool IsAutoRegisrationForPushesEnabled
         {
             get { return Instance._isAutoRegisrationForPushesEnabled; }
@@ -166,6 +157,16 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._disableFacebookReferralCheck = value;
+                MarkAssetDirty();
+            }
+        }
+
+        public static string IosPushEnvironment
+        {
+            get { return Instance._iosPushEnvironment; }
+            set
+            {
+                Instance._iosPushEnvironment= value;
                 MarkAssetDirty();
             }
         }
@@ -335,7 +336,45 @@ namespace GetSocialSdk.Core
         {
 #if UNITY_EDITOR
             EditorUtility.SetDirty(Instance);
+            UpdateConfigsFile();
 #endif
+        }
+
+        public static void UpdateConfigsFile()
+        {
+            var pathToConfig = Path.Combine(Application.streamingAssetsPath, "getsocial.json");
+            var dictionary = File.Exists(pathToConfig) 
+            ? GSJson.Deserialize(File.ReadAllText(pathToConfig)) as Dictionary<string, object>
+            : new Dictionary<string, object>();
+            
+            dictionary["runtime"] = new Dictionary<string, object> 
+            {
+                {"name", "UNITY"},
+                {"version", Application.unityVersion}, 
+                {"wrapper", BuildConfig.UnitySdkVersion}
+            };
+            dictionary["appId"] = GetSocialSettings.AppId;
+            dictionary["autoInit"] = GetSocialSettings.IsAutoInitEnabled;
+            dictionary["disableFacebookReferralCheck"] = GetSocialSettings.IsFacebookReferralCheckDisabled;
+            dictionary["pushNotifications"] = new Dictionary<string, object> 
+            {
+                {"autoRegister", GetSocialSettings.IsAutoRegisrationForPushesEnabled},
+                {"customListener", GetSocialSettings.ShouldWaitForPushListener}, 
+                {"foreground", GetSocialSettings.IsForegroundNotificationsEnabled} 
+            };
+            var customPath = GetSocialSettings.UiConfigurationCustomFilePath;
+            dictionary["uiConfig"] = string.IsNullOrEmpty(customPath) ? null : customPath;
+            // add basic formatting, maybe lets add some pretty print in future
+            if (!Directory.Exists(Application.streamingAssetsPath))
+            {
+                Directory.CreateDirectory(Application.streamingAssetsPath);
+            }
+            File.WriteAllText(pathToConfig, 
+                GSJson.Serialize(dictionary)
+                .Replace(",", "," + Environment.NewLine)
+                .Replace("}", Environment.NewLine + "}")
+                .Replace("{", Environment.NewLine + "{" + Environment.NewLine)
+            );
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿#if UNITY_ANDROID && USE_GETSOCIAL_UI
+﻿#if UNITY_ANDROID 
 using System;
 using System.Diagnostics.CodeAnalysis;
 using GetSocialSdk.Core;
@@ -9,9 +9,9 @@ namespace GetSocialSdk.Ui
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     public class AvatarClickListenerProxy : JavaInterfaceProxy
     {
-        readonly Action<PublicUser> _avatarClickListener;
+        readonly Action<User> _avatarClickListener;
 
-        public AvatarClickListenerProxy(Action<PublicUser> avatarClickListener)
+        public AvatarClickListenerProxy(Action<User> avatarClickListener)
             : base("im.getsocial.sdk.ui.AvatarClickListener")
         {
             _avatarClickListener = avatarClickListener;
@@ -19,8 +19,7 @@ namespace GetSocialSdk.Ui
 
         void onAvatarClicked(AndroidJavaObject publicUserAjo)
         {
-            Debug.Log(">>>>>>> XXXX");
-            var publicUser = new PublicUser().ParseFromAJO(publicUserAjo);
+            var publicUser = AndroidAJOConverter.Convert<User>(publicUserAjo);
             ExecuteOnMainThread(() => _avatarClickListener(publicUser));
         }
     }

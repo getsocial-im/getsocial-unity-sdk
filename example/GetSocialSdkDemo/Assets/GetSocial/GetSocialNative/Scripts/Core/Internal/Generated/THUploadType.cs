@@ -6,9 +6,15 @@
  *  @generated
  */
 
-public enum THUploadType
+namespace GetSocialSdk.Core 
 {
-  IMAGE = 0,
-  VIDEO = 1,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THUploadType
+  {
+    IMAGE = 0,
+    VIDEO = 1,
+  }
 }
 #endif

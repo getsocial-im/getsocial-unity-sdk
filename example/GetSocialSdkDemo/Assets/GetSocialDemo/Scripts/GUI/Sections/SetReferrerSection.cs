@@ -93,7 +93,7 @@ public class SetReferrerSection : DemoMenuSection
         customData[_key1] = _value1;
         customData[_key2] = _value2;
         customData[_key3] = _value3;
-        GetSocial.SetReferrer(_referrerId, _eventName, customData, () => {
+        Invites.SetReferrer(UserId.Create(_referrerId), _eventName, customData, () => {
             _console.LogD("Referrer was set");
         }, (error) => {
             _console.LogD("Failed to set referrer: " + error);

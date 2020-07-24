@@ -16,183 +16,190 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THCreator : TBase
+namespace GetSocialSdk.Core 
 {
-  private bool _isApp;
-  private bool _isVerified;
-  private THPublicUser _publicUser;
 
-  public bool IsApp
-  {
-    get
-    {
-      return _isApp;
-    }
-    set
-    {
-      __isset.isApp = true;
-      this._isApp = value;
-    }
-  }
-
-  public bool IsVerified
-  {
-    get
-    {
-      return _isVerified;
-    }
-    set
-    {
-      __isset.isVerified = true;
-      this._isVerified = value;
-    }
-  }
-
-  public THPublicUser PublicUser
-  {
-    get
-    {
-      return _publicUser;
-    }
-    set
-    {
-      __isset.publicUser = true;
-      this._publicUser = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool isApp;
-    public bool isVerified;
-    public bool publicUser;
-  }
-
-  public THCreator() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THCreator : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.Bool) {
-              IsApp = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Bool) {
-              IsVerified = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Struct) {
-              PublicUser = new THPublicUser();
-              PublicUser.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private bool _isApp;
+    private bool _isVerified;
+    private THPublicUser _publicUser;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public bool IsApp
     {
-      TStruct struc = new TStruct("THCreator");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _isApp;
+      }
+      set
+      {
+        __isset.isApp = true;
+        this._isApp = value;
+      }
+    }
+
+    public bool IsVerified
+    {
+      get
+      {
+        return _isVerified;
+      }
+      set
+      {
+        __isset.isVerified = true;
+        this._isVerified = value;
+      }
+    }
+
+    public THPublicUser PublicUser
+    {
+      get
+      {
+        return _publicUser;
+      }
+      set
+      {
+        __isset.publicUser = true;
+        this._publicUser = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool isApp;
+      public bool isVerified;
+      public bool publicUser;
+    }
+
+    public THCreator() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Bool) {
+                IsApp = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Bool) {
+                IsVerified = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Struct) {
+                PublicUser = new THPublicUser();
+                PublicUser.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THCreator");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.isApp) {
+          field.Name = "isApp";
+          field.Type = TType.Bool;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsApp);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isVerified) {
+          field.Name = "isVerified";
+          field.Type = TType.Bool;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsVerified);
+          oprot.WriteFieldEnd();
+        }
+        if (PublicUser != null && __isset.publicUser) {
+          field.Name = "publicUser";
+          field.Type = TType.Struct;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          PublicUser.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THCreator(");
+      bool __first = true;
       if (__isset.isApp) {
-        field.Name = "isApp";
-        field.Type = TType.Bool;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IsApp);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsApp: ");
+        __sb.Append(IsApp);
       }
       if (__isset.isVerified) {
-        field.Name = "isVerified";
-        field.Type = TType.Bool;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IsVerified);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsVerified: ");
+        __sb.Append(IsVerified);
       }
       if (PublicUser != null && __isset.publicUser) {
-        field.Name = "publicUser";
-        field.Type = TType.Struct;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        PublicUser.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PublicUser: ");
+        __sb.Append(PublicUser== null ? "<null>" : PublicUser.ToString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THCreator(");
-    bool __first = true;
-    if (__isset.isApp) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IsApp: ");
-      __sb.Append(IsApp);
-    }
-    if (__isset.isVerified) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IsVerified: ");
-      __sb.Append(IsVerified);
-    }
-    if (PublicUser != null && __isset.publicUser) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PublicUser: ");
-      __sb.Append(PublicUser== null ? "<null>" : PublicUser.ToString());
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

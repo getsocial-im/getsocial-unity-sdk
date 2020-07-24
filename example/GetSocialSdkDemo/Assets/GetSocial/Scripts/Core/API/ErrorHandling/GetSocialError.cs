@@ -1,21 +1,15 @@
-using System;
-
-#if UNITY_ANDROID
-using UnityEngine;
-#endif
-
-#if UNITY_IOS
-using System.Collections.Generic;
-#endif
+using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
 {
     /// <summary>
     /// Error object containing detailed information about error that happened.
     /// </summary>
-    public sealed class GetSocialError : IConvertableFromNative<GetSocialError>
+    public sealed class GetSocialError 
     {
+        [JsonSerializationKey("code")]
         public int ErrorCode { get; private set; }
+        [JsonSerializationKey("message")]
         public string Message { get; private set; }
 
         public GetSocialError(int errorCode, string message)
@@ -32,30 +26,5 @@ namespace GetSocialSdk.Core
         {
             return string.Format("Error code: {0}. Message: {1}", ErrorCode, Message);
         }
-
-#if UNITY_ANDROID
-        public GetSocialError ParseFromAJO(AndroidJavaObject ajo)
-        {
-            using (ajo)
-            {
-                ErrorCode = ajo.CallInt("getErrorCode");
-                Message = ajo.CallStr("getMessage");
-            }
-            return this;
-        }
-#elif UNITY_IOS
-        public GetSocialError ParseFromJson(string json)
-        {
-            return ParseFromJson(json.ToDict());
-        }
-
-        public GetSocialError ParseFromJson(Dictionary<string, object> jsonDic)
-        {
-            Message = jsonDic["Message"] as string;
-            ErrorCode = (int)(long) jsonDic["ErrorCode"];
-
-            return this;
-        }
-#endif
     }
 }

@@ -16,182 +16,189 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THAttachment : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _imageUrl;
-  private string _videoUrl;
-  private string _gifUrl;
 
-  public string ImageUrl
-  {
-    get
-    {
-      return _imageUrl;
-    }
-    set
-    {
-      __isset.imageUrl = true;
-      this._imageUrl = value;
-    }
-  }
-
-  public string VideoUrl
-  {
-    get
-    {
-      return _videoUrl;
-    }
-    set
-    {
-      __isset.videoUrl = true;
-      this._videoUrl = value;
-    }
-  }
-
-  public string GifUrl
-  {
-    get
-    {
-      return _gifUrl;
-    }
-    set
-    {
-      __isset.gifUrl = true;
-      this._gifUrl = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool imageUrl;
-    public bool videoUrl;
-    public bool gifUrl;
-  }
-
-  public THAttachment() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THAttachment : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              ImageUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              VideoUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              GifUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _imageUrl;
+    private string _videoUrl;
+    private string _gifUrl;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string ImageUrl
     {
-      TStruct struc = new TStruct("THAttachment");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _imageUrl;
+      }
+      set
+      {
+        __isset.imageUrl = true;
+        this._imageUrl = value;
+      }
+    }
+
+    public string VideoUrl
+    {
+      get
+      {
+        return _videoUrl;
+      }
+      set
+      {
+        __isset.videoUrl = true;
+        this._videoUrl = value;
+      }
+    }
+
+    public string GifUrl
+    {
+      get
+      {
+        return _gifUrl;
+      }
+      set
+      {
+        __isset.gifUrl = true;
+        this._gifUrl = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool imageUrl;
+      public bool videoUrl;
+      public bool gifUrl;
+    }
+
+    public THAttachment() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                ImageUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                VideoUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                GifUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THAttachment");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (ImageUrl != null && __isset.imageUrl) {
+          field.Name = "imageUrl";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ImageUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (VideoUrl != null && __isset.videoUrl) {
+          field.Name = "videoUrl";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(VideoUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (GifUrl != null && __isset.gifUrl) {
+          field.Name = "gifUrl";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(GifUrl);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THAttachment(");
+      bool __first = true;
       if (ImageUrl != null && __isset.imageUrl) {
-        field.Name = "imageUrl";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ImageUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ImageUrl: ");
+        __sb.Append(ImageUrl);
       }
       if (VideoUrl != null && __isset.videoUrl) {
-        field.Name = "videoUrl";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(VideoUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("VideoUrl: ");
+        __sb.Append(VideoUrl);
       }
       if (GifUrl != null && __isset.gifUrl) {
-        field.Name = "gifUrl";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(GifUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("GifUrl: ");
+        __sb.Append(GifUrl);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THAttachment(");
-    bool __first = true;
-    if (ImageUrl != null && __isset.imageUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ImageUrl: ");
-      __sb.Append(ImageUrl);
-    }
-    if (VideoUrl != null && __isset.videoUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("VideoUrl: ");
-      __sb.Append(VideoUrl);
-    }
-    if (GifUrl != null && __isset.gifUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("GifUrl: ");
-      __sb.Append(GifUrl);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

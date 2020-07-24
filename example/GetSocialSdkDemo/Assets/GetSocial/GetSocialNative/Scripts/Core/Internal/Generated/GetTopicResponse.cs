@@ -16,111 +16,118 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetTopicResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private SGTopic _topic;
 
-  public SGTopic Topic
-  {
-    get
-    {
-      return _topic;
-    }
-    set
-    {
-      __isset.topic = true;
-      this._topic = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool topic;
-  }
-
-  public GetTopicResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetTopicResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
+    private SGTopic _topic;
+
+    public SGTopic Topic
     {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
+      get
       {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
+        return _topic;
+      }
+      set
+      {
+        __isset.topic = true;
+        this._topic = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool topic;
+    }
+
+    public GetTopicResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          case 1:
-            if (field.Type == TType.Struct) {
-              Topic = new SGTopic();
-              Topic.Read(iprot);
-            } else { 
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Topic = new SGTopic();
+                Topic.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
               TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        iprot.ReadFieldEnd();
+        iprot.ReadStructEnd();
       }
-      iprot.ReadStructEnd();
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
     }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
-    {
-      TStruct struc = new TStruct("GetTopicResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetTopicResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Topic != null && __isset.topic) {
+          field.Name = "topic";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Topic.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetTopicResponse(");
+      bool __first = true;
       if (Topic != null && __isset.topic) {
-        field.Name = "topic";
-        field.Type = TType.Struct;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        Topic.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Topic: ");
+        __sb.Append(Topic== null ? "<null>" : Topic.ToString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetTopicResponse(");
-    bool __first = true;
-    if (Topic != null && __isset.topic) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Topic: ");
-      __sb.Append(Topic== null ? "<null>" : Topic.ToString());
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

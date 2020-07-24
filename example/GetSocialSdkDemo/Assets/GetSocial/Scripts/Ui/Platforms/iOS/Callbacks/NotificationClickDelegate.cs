@@ -1,4 +1,4 @@
-﻿#if UNITY_IOS && USE_GETSOCIAL_UI
+﻿#if UNITY_IOS 
 
 using System;
 using GetSocialSdk.Core;
@@ -6,22 +6,27 @@ using GetSocialSdk.Core;
 namespace GetSocialSdk.Ui
 {
     
-    delegate bool OnNotificationClick(IntPtr onNotificationClickedPtr, string serializedNotification);
+    delegate void OnNotificationClick(IntPtr onNotificationClickedPtr, string serializedNotification, string serializedNotificationContext);
     
     public static class NotificationClickDelegate
     {
         [AOT.MonoPInvokeCallback(typeof(OnNotificationClick))]
-        public static bool OnNotificationClick(IntPtr onNotificationClickedPtr, string serializedNotification)
+        public static void OnNotificationClick(IntPtr onNotificationClickedPtr, string serializedNotification, string serializedNotificationContext)
         {
-            GetSocialDebugLogger.D(string.Format("OnNotificationClick for notification: {0}", serializedNotification));
+            GetSocialDebugLogger.D(string.Format("OnNotificationClick for notification: {0}, context: {1}", serializedNotification, serializedNotificationContext));
 
             if (onNotificationClickedPtr != IntPtr.Zero)
             {
-                var notification = new Notification().ParseFromJson(serializedNotification.ToDict());
-                return onNotificationClickedPtr.Cast<NotificationCenterViewBuilder.NotificationClickListener>().Invoke(notification);
+                var notification = GetSocialJsonBridge.FromJson<Notification>(serializedNotification);
+                GetSocialDebugLogger.D("Notification: " + notification);
+                NotificationContext context = null;
+                if (serializedNotification != null)
+                {
+                    context = GetSocialJsonBridge.FromJson<NotificationContext>(serializedNotificationContext);
+                }
+                GetSocialDebugLogger.D("Context: " + context);
+                onNotificationClickedPtr.Cast<NotificationCenterViewBuilder.NotificationClickListener>().Invoke(notification, context);
             }
-
-            return false;
         }
         
     }

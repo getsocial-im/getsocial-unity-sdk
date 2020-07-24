@@ -18,9 +18,10 @@ namespace GetSocialSdk.Core
 
         bool isAvailableForDevice(AndroidJavaObject inviteChannelAJO)
         {
-            var inviteChannel = new InviteChannel().ParseFromAJO(inviteChannelAJO);
-
-            return _invitePlugin.IsAvailableForDevice(inviteChannel);
+            // var inviteChannel = new InviteChannel().ParseFromAJO(inviteChannelAJO);
+            //
+            // return _invitePlugin.IsAvailableForDevice(inviteChannel);
+            return false;
         }
 
         void presentChannelInterface(
@@ -30,8 +31,8 @@ namespace GetSocialSdk.Core
         {
             ExecuteOnMainThread(() =>
             {
-                var inviteChannel = new InviteChannel().ParseFromAJO(inviteChannelAJO);
-                var invitePackage = new InvitePackage().ParseFromAJO(invitePackageAJO);
+                // var inviteChannel = new InviteChannel().ParseFromAJO(inviteChannelAJO);
+                // var invitePackage = new InvitePackage().ParseFromAJO(invitePackageAJO);
 
                 Action onComplete = () => { callbackAJO.Call("onComplete"); };
                 Action onCancel = () => { callbackAJO.Call("onCancel"); };
@@ -42,8 +43,8 @@ namespace GetSocialSdk.Core
 
                 try
                 {
-                    _invitePlugin.PresentChannelInterface(inviteChannel, invitePackage, onComplete, onCancel,
-                        onFailure);
+                    // _invitePlugin.PresentChannelInterface(inviteChannel, invitePackage, onComplete, onCancel,
+                    //     onFailure);
                 }
                 catch (Exception e)
                 {

@@ -6,144 +6,152 @@
  *  @generated
  */
 
-public enum THErrorCode
+namespace GetSocialSdk.Core 
 {
   /// <summary>
-  /// Used for unknown errors, in case of uncaught exceptions etc.
+  /// #sdk6 #sdk7
   /// </summary>
-  UnknownError = 0,
-  MissingFields = 1,
-  InvalidSession = 2,
-  IdentityAlreadyExists = 3,
-  InvalidUserOrPassword = 4,
-  PasswordsDontMatch = 5,
-  InvalidToken = 6,
-  PlatformNotEnabled = 7,
-  AppSignatureMismatch = 8,
-  MissingEmailAddress = 9,
-  RateLimited = 10,
-  /// <summary>
-  /// In-app purchases
-  /// </summary>
-  InvalidIAPReceipt = 100,
-  /// <summary>
-  /// Thrown if validateIAP is called when IAP is disabled.
-  /// </summary>
-  IAPNotSupported = 101,
-  /// <summary>
-  /// Entity Manager
-  /// </summary>
-  EMFieldCannotBeNull = 1000,
-  EMFieldHasInvalidLength = 1010,
-  EMInvalidProperties = 1020,
-  EMInvalidEnumGiven = 1030,
-  EMInvalidData = 1060,
-  EMOther = 1099,
-  EMResourceAlreadyExists = 5000,
-  EMNotAuthenticated = 5040,
-  EMFieldMismatch = 5050,
-  EMUnauthorized = 5060,
-  EMNotFound = 5070,
-  EMFieldMustBeUnique = 5080,
-  EMNeedsSDK6Migration = 5090,
-  EMFacebookError = 5100,
-  EMInvalidVATNumber = 5110,
-  /// <summary>
-  /// Activity Feed
-  /// </summary>
-  AFOlderXorNewer = 6001,
-  AFInvalidNewer = 6002,
-  AFInvalidOlder = 6003,
-  AFInvalidLanguage = 6004,
-  AFInvalidUser = 6005,
-  AFInvalidImageUrl = 6006,
-  AFNotEnoughPermissions = 6007,
-  AFActivityNotFound = 6008,
-  AFAuthorActivityNotFound = 6009,
-  AFRelatedActivityNotFound = 6010,
-  AFBanForbidden = 6011,
-  AFInvalidVideoUrl = 6012,
-  AFStickyDatesMissing = 6013,
-  AFStickyDatesBadRange = 6014,
-  AFStickyComment = 6015,
-  AFStickyPostsFeed = 6016,
-  AFInvalidParam = 6017,
-  /// <summary>
-  /// Apollo (Social Graph)
-  /// </summary>
-  SGInvalidParam = 7001,
-  SGInvalidData = 7002,
-  SGInvalidJson = 7003,
-  SGRequiredParam = 7004,
-  SGUnathorized = 7005,
-  SGNotFound = 7006,
-  SGGraphLoop = 7007,
-  SGMethodNotAllowed = 7008,
-  SGInvalidProvider = 7009,
-  SGProviderError = 7010,
-  /// <summary>
-  /// Smart Invites
-  /// </summary>
-  SIErrBadRequest = 8001,
-  SIErrUnknownError = 8002,
-  SIErrInvalidApp = 8003,
-  SIErrResourceNotFound = 8004,
-  SIErrCampaignAlreadyExists = 8050,
-  SIErrMissingCampaignID = 8051,
-  SIErrMarketingTokenExists = 8052,
-  SIErrMissingMarketingLinkFields = 8053,
-  SIErrInvalidCampaignID = 8054,
-  SIErrProcessAppOpenNoMatch = 8055,
-  SIErrInsufficientPermissions = 8056,
-  SIErrInvalidToken = 8057,
-  /// <summary>
-  /// Smart Codes
-  /// </summary>
-  SIErrPromoCodeExists = 8058,
-  SIErrPromoCodeExpired = 8059,
-  SIErrPromoCodeNotYetValid = 8060,
-  SIErrPromoCodeInvalid = 8061,
-  SIErrPromoCodeDisabled = 8062,
-  SIErrPromoCodeReachedClaimCount = 8063,
-  SIErrPromoCodeAlreadyClaimed = 8064,
-  SIErrPromoCodeInvalidArguments = 8065,
-  SIErrPromoCodeCantDelete = 8066,
-  /// <summary>
-  /// Iris
-  /// </summary>
-  IrisInvalidPlatfromCreds = 9001,
-  IrisIOSCertProblem = 9002,
-  IrisRegWrongPlatform = 9003,
-  IrisNotValidInput = 9004,
-  IrisIOSCertValidationProblem = 9005,
-  IrisIOSSandboxCertForProd = 9006,
-  IrisIOSCertBadBundleID = 9007,
-  /// <summary>
-  /// Iris Smart Targetting
-  /// </summary>
-  IrisTNDuplicateName = 9011,
-  IrisTNPayloadTooBig = 9012,
-  IrisTNInProgress = 9013,
-  /// <summary>
-  /// Iris Templates
-  /// </summary>
-  IrisInvalidLanguage = 9021,
-  IrisDefaultLangTextIsMissing = 9022,
-  IrisDuplicateTemplate = 9023,
-  IrisReservedNameTemplate = 9024,
-  IrisNotificationTemplateNotFound = 9025,
-  IrisSenderDoesNotExist = 9026,
-  IrisNotificationTargetUsersEmpty = 9027,
-  IrisNotificationNoText = 9028,
-  IrisSendPNUsersLimit = 9029,
-  IrisAllTemplateFeaturesDisabled = 9030,
-  /// <summary>
-  /// Talos
-  /// </summary>
-  TalosRequestError = 10001,
-  /// <summary>
-  /// Mercury
-  /// </summary>
-  MercuryStripeError = 110001,
+  public enum THErrorCode
+  {
+    /// <summary>
+    /// Used for unknown errors, in case of uncaught exceptions etc.
+    /// </summary>
+    UnknownError = 0,
+    MissingFields = 1,
+    InvalidSession = 2,
+    IdentityAlreadyExists = 3,
+    InvalidUserOrPassword = 4,
+    PasswordsDontMatch = 5,
+    InvalidToken = 6,
+    PlatformNotEnabled = 7,
+    AppSignatureMismatch = 8,
+    MissingEmailAddress = 9,
+    RateLimited = 10,
+    /// <summary>
+    /// In-app purchases
+    /// </summary>
+    InvalidIAPReceipt = 100,
+    /// <summary>
+    /// Thrown if validateIAP is called when IAP is disabled.
+    /// </summary>
+    IAPNotSupported = 101,
+    /// <summary>
+    /// Entity Manager
+    /// </summary>
+    EMFieldCannotBeNull = 1000,
+    EMFieldHasInvalidLength = 1010,
+    EMInvalidProperties = 1020,
+    EMInvalidEnumGiven = 1030,
+    EMInvalidData = 1060,
+    EMOther = 1099,
+    EMResourceAlreadyExists = 5000,
+    EMNotAuthenticated = 5040,
+    EMFieldMismatch = 5050,
+    EMUnauthorized = 5060,
+    EMNotFound = 5070,
+    EMFieldMustBeUnique = 5080,
+    EMNeedsSDK6Migration = 5090,
+    EMFacebookError = 5100,
+    EMInvalidVATNumber = 5110,
+    /// <summary>
+    /// Activity Feed
+    /// </summary>
+    AFOlderXorNewer = 6001,
+    AFInvalidNewer = 6002,
+    AFInvalidOlder = 6003,
+    AFInvalidLanguage = 6004,
+    AFInvalidUser = 6005,
+    AFInvalidImageUrl = 6006,
+    AFNotEnoughPermissions = 6007,
+    AFActivityNotFound = 6008,
+    AFAuthorActivityNotFound = 6009,
+    AFRelatedActivityNotFound = 6010,
+    AFBanForbidden = 6011,
+    AFInvalidVideoUrl = 6012,
+    AFStickyDatesMissing = 6013,
+    AFStickyDatesBadRange = 6014,
+    AFStickyComment = 6015,
+    AFStickyPostsFeed = 6016,
+    AFInvalidParam = 6017,
+    AFActivityRejected = 6018,
+    AFFeedNotFound = 6019,
+    /// <summary>
+    /// Apollo (Social Graph)
+    /// </summary>
+    SGInvalidParam = 7001,
+    SGInvalidData = 7002,
+    SGInvalidJson = 7003,
+    SGRequiredParam = 7004,
+    SGUnathorized = 7005,
+    SGNotFound = 7006,
+    SGGraphLoop = 7007,
+    SGMethodNotAllowed = 7008,
+    SGInvalidProvider = 7009,
+    SGProviderError = 7010,
+    /// <summary>
+    /// Smart Invites
+    /// </summary>
+    SIErrBadRequest = 8001,
+    SIErrUnknownError = 8002,
+    SIErrInvalidApp = 8003,
+    SIErrResourceNotFound = 8004,
+    SIErrCampaignAlreadyExists = 8050,
+    SIErrMissingCampaignID = 8051,
+    SIErrMarketingTokenExists = 8052,
+    SIErrMissingMarketingLinkFields = 8053,
+    SIErrInvalidCampaignID = 8054,
+    SIErrProcessAppOpenNoMatch = 8055,
+    SIErrInsufficientPermissions = 8056,
+    SIErrInvalidToken = 8057,
+    /// <summary>
+    /// Smart Codes
+    /// </summary>
+    SIErrPromoCodeExists = 8058,
+    SIErrPromoCodeExpired = 8059,
+    SIErrPromoCodeNotYetValid = 8060,
+    SIErrPromoCodeInvalid = 8061,
+    SIErrPromoCodeDisabled = 8062,
+    SIErrPromoCodeReachedClaimCount = 8063,
+    SIErrPromoCodeAlreadyClaimed = 8064,
+    SIErrPromoCodeInvalidArguments = 8065,
+    SIErrPromoCodeCantDelete = 8066,
+    /// <summary>
+    /// Iris
+    /// </summary>
+    IrisInvalidPlatfromCreds = 9001,
+    IrisIOSCertProblem = 9002,
+    IrisRegWrongPlatform = 9003,
+    IrisNotValidInput = 9004,
+    IrisIOSCertValidationProblem = 9005,
+    IrisIOSSandboxCertForProd = 9006,
+    IrisIOSCertBadBundleID = 9007,
+    /// <summary>
+    /// Iris Smart Targetting
+    /// </summary>
+    IrisTNDuplicateName = 9011,
+    IrisTNPayloadTooBig = 9012,
+    IrisTNInProgress = 9013,
+    /// <summary>
+    /// Iris Templates
+    /// </summary>
+    IrisInvalidLanguage = 9021,
+    IrisDefaultLangTextIsMissing = 9022,
+    IrisDuplicateTemplate = 9023,
+    IrisReservedNameTemplate = 9024,
+    IrisNotificationTemplateNotFound = 9025,
+    IrisSenderDoesNotExist = 9026,
+    IrisNotificationTargetUsersEmpty = 9027,
+    IrisNotificationNoText = 9028,
+    IrisSendPNUsersLimit = 9029,
+    IrisAllTemplateFeaturesDisabled = 9030,
+    /// <summary>
+    /// Talos
+    /// </summary>
+    TalosRequestError = 10001,
+    /// <summary>
+    /// Mercury
+    /// </summary>
+    MercuryStripeError = 110001,
+  }
 }
 #endif

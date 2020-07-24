@@ -6,9 +6,15 @@
  *  @generated
  */
 
-public enum THPushNotificationOptions
+namespace GetSocialSdk.Core 
 {
-  Enabled = 0,
-  Disabled = 1,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THPushNotificationOptions
+  {
+    Enabled = 0,
+    Disabled = 1,
+  }
 }
 #endif

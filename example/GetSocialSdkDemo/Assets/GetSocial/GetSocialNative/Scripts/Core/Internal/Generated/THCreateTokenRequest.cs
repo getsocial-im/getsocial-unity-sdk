@@ -16,207 +16,214 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THCreateTokenRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _providerId;
-  private THInviteType _type;
-  private Dictionary<string, string> _linkParams;
-
-  public string ProviderId
-  {
-    get
-    {
-      return _providerId;
-    }
-    set
-    {
-      __isset.providerId = true;
-      this._providerId = value;
-    }
-  }
 
   /// <summary>
-  /// e.g facebook
-  /// 
-  /// <seealso cref="THInviteType"/>
+  /// #sdk6 #sdk7
   /// </summary>
-  public THInviteType Type
-  {
-    get
-    {
-      return _type;
-    }
-    set
-    {
-      __isset.type = true;
-      this._type = value;
-    }
-  }
-
-  public Dictionary<string, string> LinkParams
-  {
-    get
-    {
-      return _linkParams;
-    }
-    set
-    {
-      __isset.linkParams = true;
-      this._linkParams = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool providerId;
-    public bool type;
-    public bool linkParams;
-  }
-
-  public THCreateTokenRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THCreateTokenRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              ProviderId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I32) {
-              Type = (THInviteType)iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                LinkParams = new Dictionary<string, string>();
-                TMap _map0 = iprot.ReadMapBegin();
-                for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
-                {
-                  string _key2;
-                  string _val3;
-                  _key2 = iprot.ReadString();
-                  _val3 = iprot.ReadString();
-                  LinkParams[_key2] = _val3;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _providerId;
+    private THInviteType _type;
+    private Dictionary<string, string> _linkParams;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string ProviderId
     {
-      TStruct struc = new TStruct("THCreateTokenRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _providerId;
+      }
+      set
+      {
+        __isset.providerId = true;
+        this._providerId = value;
+      }
+    }
+
+    /// <summary>
+    /// e.g facebook
+    /// 
+    /// <seealso cref="THInviteType"/>
+    /// </summary>
+    public THInviteType Type
+    {
+      get
+      {
+        return _type;
+      }
+      set
+      {
+        __isset.type = true;
+        this._type = value;
+      }
+    }
+
+    public Dictionary<string, string> LinkParams
+    {
+      get
+      {
+        return _linkParams;
+      }
+      set
+      {
+        __isset.linkParams = true;
+        this._linkParams = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool providerId;
+      public bool type;
+      public bool linkParams;
+    }
+
+    public THCreateTokenRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                ProviderId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I32) {
+                Type = (THInviteType)iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  LinkParams = new Dictionary<string, string>();
+                  TMap _map0 = iprot.ReadMapBegin();
+                  for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
+                  {
+                    string _key2;
+                    string _val3;
+                    _key2 = iprot.ReadString();
+                    _val3 = iprot.ReadString();
+                    LinkParams[_key2] = _val3;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THCreateTokenRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (ProviderId != null && __isset.providerId) {
+          field.Name = "providerId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ProviderId);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.type) {
+          field.Name = "type";
+          field.Type = TType.I32;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32((int)Type);
+          oprot.WriteFieldEnd();
+        }
+        if (LinkParams != null && __isset.linkParams) {
+          field.Name = "linkParams";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, LinkParams.Count));
+            foreach (string _iter4 in LinkParams.Keys)
+            {
+              oprot.WriteString(_iter4);
+              oprot.WriteString(LinkParams[_iter4]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THCreateTokenRequest(");
+      bool __first = true;
       if (ProviderId != null && __isset.providerId) {
-        field.Name = "providerId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ProviderId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ProviderId: ");
+        __sb.Append(ProviderId);
       }
       if (__isset.type) {
-        field.Name = "type";
-        field.Type = TType.I32;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32((int)Type);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Type: ");
+        __sb.Append(Type);
       }
       if (LinkParams != null && __isset.linkParams) {
-        field.Name = "linkParams";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, LinkParams.Count));
-          foreach (string _iter4 in LinkParams.Keys)
-          {
-            oprot.WriteString(_iter4);
-            oprot.WriteString(LinkParams[_iter4]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("LinkParams: ");
+        __sb.Append(LinkParams.ToDebugString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THCreateTokenRequest(");
-    bool __first = true;
-    if (ProviderId != null && __isset.providerId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ProviderId: ");
-      __sb.Append(ProviderId);
-    }
-    if (__isset.type) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Type: ");
-      __sb.Append(Type);
-    }
-    if (LinkParams != null && __isset.linkParams) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("LinkParams: ");
-      __sb.Append(LinkParams);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

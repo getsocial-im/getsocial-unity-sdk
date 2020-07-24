@@ -16,146 +16,153 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THBadge : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _value;
-  private int _increase;
 
-  public int Value
-  {
-    get
-    {
-      return _value;
-    }
-    set
-    {
-      __isset.@value = true;
-      this._value = value;
-    }
-  }
-
-  public int Increase
-  {
-    get
-    {
-      return _increase;
-    }
-    set
-    {
-      __isset.increase = true;
-      this._increase = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool @value;
-    public bool increase;
-  }
-
-  public THBadge() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THBadge : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              Value = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I32) {
-              Increase = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _value;
+    private int _increase;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int Value
     {
-      TStruct struc = new TStruct("THBadge");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _value;
+      }
+      set
+      {
+        __isset.@value = true;
+        this._value = value;
+      }
+    }
+
+    public int Increase
+    {
+      get
+      {
+        return _increase;
+      }
+      set
+      {
+        __isset.increase = true;
+        this._increase = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool @value;
+      public bool increase;
+    }
+
+    public THBadge() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                Value = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I32) {
+                Increase = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THBadge");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.@value) {
+          field.Name = "value";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Value);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.increase) {
+          field.Name = "increase";
+          field.Type = TType.I32;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Increase);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THBadge(");
+      bool __first = true;
       if (__isset.@value) {
-        field.Name = "value";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Value);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Value: ");
+        __sb.Append(Value);
       }
       if (__isset.increase) {
-        field.Name = "increase";
-        field.Type = TType.I32;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Increase);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Increase: ");
+        __sb.Append(Increase);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THBadge(");
-    bool __first = true;
-    if (__isset.@value) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Value: ");
-      __sb.Append(Value);
-    }
-    if (__isset.increase) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Increase: ");
-      __sb.Append(Increase);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

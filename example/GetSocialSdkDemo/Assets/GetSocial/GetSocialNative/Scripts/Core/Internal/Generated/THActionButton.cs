@@ -16,146 +16,153 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THActionButton : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _title;
-  private string _actionId;
 
-  public string Title
-  {
-    get
-    {
-      return _title;
-    }
-    set
-    {
-      __isset.title = true;
-      this._title = value;
-    }
-  }
-
-  public string ActionId
-  {
-    get
-    {
-      return _actionId;
-    }
-    set
-    {
-      __isset.actionId = true;
-      this._actionId = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool title;
-    public bool actionId;
-  }
-
-  public THActionButton() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THActionButton : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              Title = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              ActionId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _title;
+    private string _actionId;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string Title
     {
-      TStruct struc = new TStruct("THActionButton");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _title;
+      }
+      set
+      {
+        __isset.title = true;
+        this._title = value;
+      }
+    }
+
+    public string ActionId
+    {
+      get
+      {
+        return _actionId;
+      }
+      set
+      {
+        __isset.actionId = true;
+        this._actionId = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool title;
+      public bool actionId;
+    }
+
+    public THActionButton() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                Title = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                ActionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THActionButton");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Title != null && __isset.title) {
+          field.Name = "title";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Title);
+          oprot.WriteFieldEnd();
+        }
+        if (ActionId != null && __isset.actionId) {
+          field.Name = "actionId";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ActionId);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THActionButton(");
+      bool __first = true;
       if (Title != null && __isset.title) {
-        field.Name = "title";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Title);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Title: ");
+        __sb.Append(Title);
       }
       if (ActionId != null && __isset.actionId) {
-        field.Name = "actionId";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ActionId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActionId: ");
+        __sb.Append(ActionId);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THActionButton(");
-    bool __first = true;
-    if (Title != null && __isset.title) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Title: ");
-      __sb.Append(Title);
-    }
-    if (ActionId != null && __isset.actionId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ActionId: ");
-      __sb.Append(ActionId);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

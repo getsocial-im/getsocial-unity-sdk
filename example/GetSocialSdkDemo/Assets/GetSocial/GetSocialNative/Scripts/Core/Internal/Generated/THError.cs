@@ -16,206 +16,209 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THError : TBase
+namespace GetSocialSdk.Core 
 {
-  private THErrorCode _errorCode;
-  private string _errorMsg;
-  private Dictionary<string, string> _context;
 
   /// <summary>
-  /// 
-  /// <seealso cref="THErrorCode"/>
+  /// #sdk6 #sdk7
   /// </summary>
-  public THErrorCode ErrorCode
-  {
-    get
-    {
-      return _errorCode;
-    }
-    set
-    {
-      __isset.errorCode = true;
-      this._errorCode = value;
-    }
-  }
-
-  public string ErrorMsg
-  {
-    get
-    {
-      return _errorMsg;
-    }
-    set
-    {
-      __isset.errorMsg = true;
-      this._errorMsg = value;
-    }
-  }
-
-  public Dictionary<string, string> Context
-  {
-    get
-    {
-      return _context;
-    }
-    set
-    {
-      __isset.context = true;
-      this._context = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool errorCode;
-    public bool errorMsg;
-    public bool context;
-  }
-
-  public THError() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THError : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I32) {
-              ErrorCode = (THErrorCode)iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              ErrorMsg = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                Context = new Dictionary<string, string>();
-                TMap _map0 = iprot.ReadMapBegin();
-                for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
-                {
-                  string _key2;
-                  string _val3;
-                  _key2 = iprot.ReadString();
-                  _val3 = iprot.ReadString();
-                  Context[_key2] = _val3;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private int _errorCode;
+    private string _errorMsg;
+    private Dictionary<string, string> _context;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public int ErrorCode
     {
-      TStruct struc = new TStruct("THError");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _errorCode;
+      }
+      set
+      {
+        __isset.errorCode = true;
+        this._errorCode = value;
+      }
+    }
+
+    public string ErrorMsg
+    {
+      get
+      {
+        return _errorMsg;
+      }
+      set
+      {
+        __isset.errorMsg = true;
+        this._errorMsg = value;
+      }
+    }
+
+    public Dictionary<string, string> Context
+    {
+      get
+      {
+        return _context;
+      }
+      set
+      {
+        __isset.context = true;
+        this._context = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool errorCode;
+      public bool errorMsg;
+      public bool context;
+    }
+
+    public THError() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                ErrorCode = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                ErrorMsg = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  Context = new Dictionary<string, string>();
+                  TMap _map0 = iprot.ReadMapBegin();
+                  for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
+                  {
+                    string _key2;
+                    string _val3;
+                    _key2 = iprot.ReadString();
+                    _val3 = iprot.ReadString();
+                    Context[_key2] = _val3;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THError");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.errorCode) {
+          field.Name = "errorCode";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(ErrorCode);
+          oprot.WriteFieldEnd();
+        }
+        if (ErrorMsg != null && __isset.errorMsg) {
+          field.Name = "errorMsg";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ErrorMsg);
+          oprot.WriteFieldEnd();
+        }
+        if (Context != null && __isset.context) {
+          field.Name = "context";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Context.Count));
+            foreach (string _iter4 in Context.Keys)
+            {
+              oprot.WriteString(_iter4);
+              oprot.WriteString(Context[_iter4]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THError(");
+      bool __first = true;
       if (__isset.errorCode) {
-        field.Name = "errorCode";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32((int)ErrorCode);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ErrorCode: ");
+        __sb.Append(ErrorCode);
       }
       if (ErrorMsg != null && __isset.errorMsg) {
-        field.Name = "errorMsg";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ErrorMsg);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ErrorMsg: ");
+        __sb.Append(ErrorMsg);
       }
       if (Context != null && __isset.context) {
-        field.Name = "context";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Context.Count));
-          foreach (string _iter4 in Context.Keys)
-          {
-            oprot.WriteString(_iter4);
-            oprot.WriteString(Context[_iter4]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Context: ");
+        __sb.Append(Context.ToDebugString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THError(");
-    bool __first = true;
-    if (__isset.errorCode) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ErrorCode: ");
-      __sb.Append(ErrorCode);
-    }
-    if (ErrorMsg != null && __isset.errorMsg) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ErrorMsg: ");
-      __sb.Append(ErrorMsg);
-    }
-    if (Context != null && __isset.context) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Context: ");
-      __sb.Append(Context);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

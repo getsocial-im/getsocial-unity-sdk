@@ -43,7 +43,6 @@ namespace GetSocialSdk.Editor
                 EmbedFrameworks(project, target);
 #endif
                 AddStripFrameworksScriptBuildPhase(project, projectPath, target);
-                RemoveUiPluginFiles(project, target);
                 if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
                 {
                     AddNotificationExtension(project, projectPath);
@@ -52,16 +51,8 @@ namespace GetSocialSdk.Editor
 
             PBXProjectUtils.ModifyPlist(projectPath, (plistDocument) =>
             {
-                AddGetSocialAppId(plistDocument);
-                AddAnalyticsSuperPropertiesMetaData(plistDocument);
                 WhitelistApps(plistDocument);
-                SetAutoRegisterForPushTag(plistDocument);
-                SetForegroundNotifications(plistDocument);
-                SetShouldWaitForPushListener(plistDocument);
-                SetAutoInitSdk(plistDocument);
-                SetDisableFacebookReferralCheck(plistDocument);
                 SetUiBackgroundModes(plistDocument);
-                SetCustomUiConfigurationFilePathTag(plistDocument);
                 DisableViewControllerBasedStatusBar(plistDocument);
             });
         }
@@ -100,7 +91,7 @@ namespace GetSocialSdk.Editor
             var frameworksPath =
                 GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
             
-            var relativeExtensionFrameworkPath = "Frameworks/" + frameworksPath + "/Plugins/iOS/GetSocialExtension.framework";
+            var relativeExtensionFrameworkPath = "Frameworks/" + frameworksPath + "/Plugins/iOS/GetSocialNotificationExtension.framework";
 
             project.AddFileToBuild(appExtensionTarget, project.FindFileGuidByProjectPath(relativeExtensionFrameworkPath));
             
@@ -164,31 +155,6 @@ namespace GetSocialSdk.Editor
             entitlements.WriteToFile(entitlementsFilePath);
         }
 
-        static void RemoveUiPluginFiles(PBXProject project, string target)
-        {
-            if (GetSocialSettings.UseGetSocialUi)
-            {
-                return;
-            }
-
-#if !UNITY_CLOUD_BUILD
-            Debug.Log("GetSocial: Removing GetSocial UI files from build as Native UI is disabled");
-#endif
-            var uiBridgeGuid =
-                project.FindFileGuidByProjectPath(
-                    "Libraries/GetSocial/Editor/iOS/GetSocialUI/GetSocialUIUnityBridge.mm");
-            if (uiBridgeGuid == null)
-            {
-#if !UNITY_CLOUD_BUILD
-                Debug.Log("GetSocial: GetSocialUIUnityBridge.mm not found in the project.");
-#endif                
-                return;
-            }
-
-            project.RemoveFileFromBuild(target, uiBridgeGuid);
-            project.RemoveFile(uiBridgeGuid);
-        }
-
         static void AddOtherLinkerFlags(PBXProject project, string target)
         {
             project.UpdateBuildProperty(target, "OTHER_LDFLAGS", new[]
@@ -203,22 +169,13 @@ namespace GetSocialSdk.Editor
         {
             // remove previous script versions
             project.RemoveShellScript(target, "GetSocial.framework/strip_frameworks.sh");
-            
-            const string script = "bash ./strip_frameworks.sh";
-            var pluginDir = GetSocialSettings.GetPluginPath();
-            var scriptFilePath = Path.Combine(pluginDir, "Editor");
-            scriptFilePath = Path.Combine(scriptFilePath, "iOS");
-            scriptFilePath = Path.Combine(scriptFilePath, "Postprocessing");
-            scriptFilePath = Path.Combine(scriptFilePath, "strip_frameworks.sh");
-            File.Copy(scriptFilePath, Path.Combine(projectPath, "strip_frameworks.sh"), true);
-            project.AddShellScript(target, script);
         }
 
         static void EmbedFrameworks(PBXProject project, string target)
         {
-            const string coreFrameworkName = "GetSocial.framework";
+            const string coreFrameworkName = "GetSocialSDK.framework";
             const string uiFrameworkName = "GetSocialUI.framework";
-            const string extensionFrameworkName = "GetSocialExtension.framework";
+            const string extensionFrameworkName = "GetSocialNotificationExtension.framework";
 
             var frameworksPath =
                 GetSocialSettings.GetPluginPath().Substring(GetSocialSettings.GetPluginPath().IndexOf("/") + 1);  
@@ -230,14 +187,7 @@ namespace GetSocialSdk.Editor
             
             project.AddDynamicFrameworkToProject(target, relativeCoreFrameworkPath);
             project.AddDynamicFrameworkToProject(target, relativeExtensionFrameworkPath);
-            if (GetSocialSettings.UseGetSocialUi)
-            {
-                project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
-            }
-            else
-            {
-                project.RemoveDynamicFramework(target, relativeUiFrameworkPath);
-            }
+            project.AddDynamicFrameworkToProject(target, relativeUiFrameworkPath);
             
 #if !UNITY_CLOUD_BUILD
             Debug.Log("GetSocial: GetSocial Dynamic Frameworks added to Embedded binaries.");
@@ -357,9 +307,14 @@ namespace GetSocialSdk.Editor
             var currentPushSettings = entitlements.ContainsKey("aps-environment")
                 ? entitlements.root["aps-environment"].AsString()
                 : null;
+            if (currentPushSettings != null && !GetSocialSettings.IosPushEnvironment.Equals(currentPushSettings))
+            {
+                // show warning
+                Debug.LogWarning("[GetSocial] Push notification settings are different, check the settings in the GetSocial Dashboard at http://dashboard.getsocial.im .");
+            }
             if (currentPushSettings == null)
             {
-                entitlements.root.SetString("aps-environment", "development");
+                entitlements.root.SetString("aps-environment", GetSocialSettings.IosPushEnvironment);
             }
         }
 
@@ -370,18 +325,6 @@ namespace GetSocialSdk.Editor
             plistDocument.root.SetString("UIViewControllerBasedStatusBarAppearance", "NO");
         }
         
-        private static void AddGetSocialAppId(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetString("im.getsocial.sdk.AppId", GetSocialSettings.AppId);
-        }
-
-        private static void AddAnalyticsSuperPropertiesMetaData(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetString("im.getsocial.sdk.Runtime", "UNITY");
-            plistDocument.root.SetString("im.getsocial.sdk.RuntimeVersion", Application.unityVersion);
-            plistDocument.root.SetString("im.getsocial.sdk.WrapperVersion", BuildConfig.UnitySdkVersion);
-        }
-
         static void WhitelistApps(PlistDocument plistInfoFile)
         {
             const string LSApplicationQueriesSchemes = "LSApplicationQueriesSchemes";
@@ -422,50 +365,15 @@ namespace GetSocialSdk.Editor
             otherApps.ToList().ForEach(appsArray.AddString);
         }
 
-        private static void SetAutoRegisterForPushTag(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetBoolean("im.getsocial.sdk.AutoRegisterForPush", GetSocialSettings.IsAutoRegisrationForPushesEnabled);
-        }
-
-        private static void SetForegroundNotifications(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetBoolean("im.getsocial.sdk.ShowNotificationInForeground", GetSocialSettings.IsForegroundNotificationsEnabled);
-        }
-
-        private static void SetShouldWaitForPushListener(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetBoolean("im.getsocial.sdk.ShouldWaitForPushNotificationListener", GetSocialSettings.ShouldWaitForPushListener);
-        }
-
-        private static void SetAutoInitSdk(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetBoolean("im.getsocial.sdk.AutoInitSdk", GetSocialSettings.IsAutoInitEnabled);
-        }
-
-        private static void SetDisableFacebookReferralCheck(PlistDocument plistDocument)
-        {
-            plistDocument.root.SetBoolean("im.getsocial.sdk.DisableFacebookReferralCheck", GetSocialSettings.IsFacebookReferralCheckDisabled);
-        }
-
         private static void SetUiBackgroundModes(PlistDocument plistDocument)
         {
             var backgroundModesArray = plistDocument.root.CreateArray("UIBackgroundModes");
             backgroundModesArray.AddString("remote-notification");
         }
 
-        private static void SetCustomUiConfigurationFilePathTag(PlistDocument plistDocument)
-        {
-            var fullPath = string.Empty;
-            if (!string.IsNullOrEmpty(GetSocialSettings.UiConfigurationCustomFilePath))
-            {
-                fullPath = "Data/Raw/" + GetSocialSettings.UiConfigurationCustomFilePath;
-            }
-            plistDocument.root.SetString("im.getsocial.sdk.UiConfigurationFile", fullPath);
-        }
-        
         private static void CheckIosVersion()
         {
-            var targetIosVersion = PlayerSettingsCompat.targetOSVersion;
+            var targetIosVersion = PlayerSettings.iOS.targetOSVersionString;
 
             try
             {

@@ -6,9 +6,15 @@
  *  @generated
  */
 
-public enum SGAction
+namespace GetSocialSdk.Core 
 {
-  FEED_POST = 0,
-  FEED_POST_INTERACT = 1,
+  /// <summary>
+  /// #sdk7
+  /// </summary>
+  public enum SGAction
+  {
+    FEED_POST = 0,
+    FEED_POST_INTERACT = 1,
+  }
 }
 #endif

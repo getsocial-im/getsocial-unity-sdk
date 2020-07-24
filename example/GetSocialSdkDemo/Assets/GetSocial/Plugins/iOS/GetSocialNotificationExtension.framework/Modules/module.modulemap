@@ -1,0 +1,4 @@
+framework module GetSocialNotificationExtension {
+  header "GetSocialNotificationExtension.h"
+  requires objc
+}

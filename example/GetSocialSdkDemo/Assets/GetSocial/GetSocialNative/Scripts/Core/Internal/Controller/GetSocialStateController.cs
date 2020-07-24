@@ -1,32 +1,36 @@
 #if UNITY_STANDALONE_WIN || UNITY_STANDALONE_OSX || UNITY_EDITOR
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
 {
     internal class GetSocialStateController
     {
+        public static THApplicationInfo Info;
         private readonly ILocalStorage _localStorage = Dependencies.GetLocalStorage();
         private readonly IMetaDataReader _metaDataReader = Dependencies.GetMetaDataReader();
 
         private string _sdkLanguage;
+        private readonly List<ListenerWrapper> _onUserChangesListeners = new List<ListenerWrapper>();
+        private int _counter = 0;
         public string SdkLanguage
         {
             get { return _sdkLanguage; }
             set { _sdkLanguage = Localization.ValidateLanguageCode(value); }
         }
         public List<THInviteProvider> InviteChannels;
-        public Action OnInit;
-        public Action OnUserChanged;
-        public Action<GetSocialError> OnError;
-        public THPrivateUser User;
+        public readonly Stack<Action> OnInitializeListeners = new Stack<Action>();
+        public CurrentUser User;
 
         public string SessionId { get; private set; }
 
         public bool IsInitialized { get; private set; }
 
         public long ServerTimeDiff { get; private set; }
+
+        internal string UploadEndpoint { get; private set; }
 
         /// <summary>
         /// !IMPORTANT! Call from the UI thread only.
@@ -82,22 +86,6 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public bool IsNewInstall
-        {
-            get
-            {
-                const string isNewInstallKey = "is_new_install";
-                var isNewInstall = _localStorage.GetString(isNewInstallKey) != null;
-                if (isNewInstall)
-                {
-                    _localStorage.Set(isNewInstallKey, true.ToString().ToLower());
-                }
-
-                //TODO add system change when merged
-                return isNewInstall;
-            }
-        }
-
         public GetSocialStateController()
         {
             SdkLanguage = Application.systemLanguage.ToLanguageCode();
@@ -110,13 +98,16 @@ namespace GetSocialSdk.Core
 
         public void Initialized(THSdkAuthResponseAllInOne response, string appId)
         {
+            Info = response.SdkAuthResponse.ApplicationInfo;
             ServerTimeDiff = response.SdkAuthResponse.ServerTime - DateTime.Now.ToUnixTimestamp();
             IsInitialized = true;
             AppId = appId;
-            SaveSession(response.SdkAuthResponse.SessionId, response.SdkAuthResponse.User);
+            SaveSession(response.SdkAuthResponse.SessionId, response.SdkAuthResponse.User, response.SdkAuthResponse.UploadEndpoint);
             InviteChannels = response.InviteProviders.Providers;
-            OnInit.SafeCall();
-            OnInit = null;
+            while (OnInitializeListeners.Any())
+            {
+                OnInitializeListeners.Pop().SafeCall();
+            }
         }
 
         /// <summary>
@@ -124,15 +115,20 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <param name="sessionId"></param>
         /// <param name="user"></param>
-        public void SaveSession(string sessionId, THPrivateUser user)
+        public void SaveSession(string sessionId, THPrivateUser user, string uploadEndpoint)
         {
             SessionId = sessionId;
-            User = user;
+            User = user.ToCurrentUser();
 
             _localStorage.Set(LocalStorageKeys.UserId, user.Id);
             _localStorage.Set(LocalStorageKeys.UserPassword, user.Password);
 
-            OnUserChanged.SafeCall();
+            foreach (var listener in _onUserChangesListeners)
+            {
+               listener.Listener.Invoke(User); 
+            }
+
+            UploadEndpoint = uploadEndpoint;
         }
 
         public UserCredentials LoadUserCredentials(string appId)
@@ -169,6 +165,24 @@ namespace GetSocialSdk.Core
         {
             return _localStorage.GetString(LocalStorageKeys.AppId);
         }
+
+        public string AddOnUserChangesListener(OnCurrentUserChangedListener listener)
+        {
+            var key = (_counter++).ToString();
+            _onUserChangesListeners.Add(new ListenerWrapper { Listener = listener, Key = key});
+            return key;
+        }
+
+        public void RemoveOnUserChangedListener(string listenerId)
+        {
+            _onUserChangesListeners.RemoveAll(wrapper => wrapper.Key.Equals(listenerId));
+        }
+        private class ListenerWrapper
+        {
+            public OnCurrentUserChangedListener Listener { get; set; }
+            public string Key { get; set; }
+        }
     }
+
 }
 #endif

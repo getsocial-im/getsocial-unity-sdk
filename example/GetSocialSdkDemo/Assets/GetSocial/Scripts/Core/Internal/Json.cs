@@ -1,3 +1,6 @@
+using System.Linq;
+using System.Reflection;
+using GetSocialSdk.Core;
 using UnityEngine;
 
 namespace GetSocialSdk.MiniJSON
@@ -67,6 +70,11 @@ namespace GetSocialSdk.MiniJSON
                 return null;
             }
 
+            if (json.Length == 0)
+            {
+                return null;
+            }
+
             return Parser.Parse(json);
         }
 
@@ -117,6 +125,103 @@ namespace GetSocialSdk.MiniJSON
             return Convert.ToBase64String(byteArray);
         }
 
+        public static T ToObject<T>(object json)
+        {
+            var obj = ToObject(json, typeof(T));
+            return (T) obj;
+        }
+
+        private static object ToObject(object json, Type type)
+        {
+            if (json == null || type == typeof(string))
+            {
+                return json;
+            }
+
+            if (type.IsPrimitive)
+            {
+                if (type == typeof(bool))
+                {
+                    return json;
+                }
+
+                return Convert.ChangeType(json, type);
+            }
+
+            if (type.IsEnum)
+            {
+                return Enum.ToObject(type, Convert.ChangeType(json, typeof(int)));
+            }
+
+            if (type.IsGenericList())
+            {
+                var listType = typeof(List<>);
+                var genericType = type.GetGenericArguments()[0];
+                var constructedListType = listType.MakeGenericType(genericType);
+
+                var instance = (IList) Activator.CreateInstance(constructedListType);
+                foreach (var item in (List<object>) json)
+                {
+                    instance.Add(GSJson.ToObject(item, genericType));
+                }
+
+                return instance;
+            }
+
+            if (type.IsGenericDictionary())
+            {
+                var dictionaryType = typeof(Dictionary<,>);
+                var keyType = type.GetGenericArguments()[0];
+                var valueType = type.GetGenericArguments()[1];
+                
+                var constructedDictionaryType = dictionaryType.MakeGenericType(keyType, valueType);
+
+                var instance = (IDictionary) Activator.CreateInstance(constructedDictionaryType);
+                foreach (var item in (Dictionary<string, object>) json)
+                {
+                    var key = GSJson.ToObject(item.Key, keyType);
+                    instance[key] = GSJson.ToObject(item.Value, valueType);
+                }
+
+                return instance;
+            }
+
+            var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] {}, null);
+            if (constructor == null)
+            {
+                constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] {}, null);
+            }
+            var res = constructor.Invoke(new object[]{});
+            var dictionary = (Dictionary<string, object>) json;
+            Action<FieldInfo> attrField = field =>
+            {
+                var attrs = (JsonSerializationKey[]) field.GetCustomAttributes
+                    (typeof(JsonSerializationKey), false);
+                if (attrs.Length != 0)
+                {
+                    var value = GSJson.ToObject(
+                        dictionary.ContainsKey(attrs[0].Name) ? dictionary[attrs[0].Name] : null, field.FieldType);
+                    field.SetValue(res, value);
+                }
+            };
+            Action<PropertyInfo> attrProperty = property =>
+            {
+                var attrs = (JsonSerializationKey[]) property.GetCustomAttributes
+                    (typeof(JsonSerializationKey), false);
+                if (attrs.Length != 0)
+                {
+                    var value = GSJson.ToObject(
+                        dictionary.ContainsKey(attrs[0].Name) ? dictionary[attrs[0].Name] : null, property.PropertyType);
+                    property.SetValue(res, value);
+                }
+            };
+            type.GetFields().ToList().ForEach(attrField);
+            type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).ToList().ForEach(attrField);
+            type.GetProperties().ToList().ForEach(attrProperty);
+            type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic).ToList().ForEach(attrProperty);
+
+            return res;
+        }
         
         private sealed class Parser : IDisposable
         {
@@ -625,11 +730,62 @@ namespace GetSocialSdk.MiniJSON
                 {
                     this.builder.Append(value.ToString());
                 }
-                else
+                else if (value.GetType().IsEnum)
                 {
-                    this.SerializeString(value.ToString());
+                    this.builder.Append((int) value);
+                }
+                else {
+                    var toJson = value.GetType().GetMethod("ToJson", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (toJson == null)
+                    {
+                        this.SerializeObject(ToDictionary(value));
+                    }
+                    else
+                    {
+                        this.SerializeOther(toJson.Invoke(value, new object[]{}));
+                    }
                 }
             }
+
+            private static IDictionary ToDictionary(object value)
+            {
+                var type = value.GetType();
+                var dictionary = new Dictionary<string, object>();
+                Action<FieldInfo> attrField = field =>
+                {
+                    var attrs = (JsonSerializationKey[]) field.GetCustomAttributes
+                        (typeof(JsonSerializationKey), false);
+                    foreach (var attr in attrs)
+                    {
+                        dictionary[attr.Name] = field.GetValue(value);
+                    }
+                };
+                Action<PropertyInfo> attrProperty = field =>
+                {
+                    var attrs = (JsonSerializationKey[]) field.GetCustomAttributes
+                        (typeof(JsonSerializationKey), false);
+                    foreach (var attr in attrs)
+                    {
+                        dictionary[attr.Name] = field.GetValue(value);
+                    }
+                };
+                type.GetFields().ToList().ForEach(attrField);
+                type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic).ToList().ForEach(attrField);
+                type.GetProperties().ToList().ForEach(attrProperty);
+                type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic).ToList().ForEach(attrProperty);
+
+                return dictionary;
+            }
+
+
+        }
+        public static bool IsGenericList(this Type oType)
+        {
+            return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(List<>)));
+        }
+        public static bool IsGenericDictionary(this Type oType)
+        {
+            return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(Dictionary<,>)));
         }
     }
 }

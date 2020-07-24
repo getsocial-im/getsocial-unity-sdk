@@ -16,143 +16,126 @@ namespace GetSocialSdk.Core
 
         public static ConflictUser ToConflictUser(this THPrivateUser conflictUser)
         {
-            return new ConflictUser(
-                publicProperties: conflictUser.PublicProperties, 
-                id: conflictUser.Id, 
-                displayName:conflictUser.DisplayName, 
-                avatarUrl:conflictUser.AvatarUrl, 
-                identities:IdentitiesToDictionary(conflictUser.Identities)
-                );
+            return new ConflictUser
+            {
+                PublicProperties = conflictUser.PublicProperties,
+                Id = conflictUser.Id,
+                Identities = IdentitiesToDictionary(conflictUser.Identities),
+                Verified = false,
+                AvatarUrl = conflictUser.AvatarUrl,
+                DisplayName = conflictUser.DisplayName,
+                BanInfo = ConvertBanInfo(conflictUser.InternalPrivateProperties),
+                PrivateProperties = conflictUser.PrivateProperties
+            };
+        }
+
+        public static CurrentUser ToCurrentUser(this THPrivateUser currentUser)
+        {
+            return new CurrentUser
+            {
+                PublicProperties = currentUser.PublicProperties,
+                Id = currentUser.Id,
+                Identities = IdentitiesToDictionary(currentUser.Identities),
+                Verified = false,
+                AvatarUrl = currentUser.AvatarUrl,
+                DisplayName = currentUser.DisplayName,
+                BanInfo = ConvertBanInfo(currentUser.InternalPrivateProperties),
+                PrivateProperties = currentUser.PrivateProperties
+            };
+        }
+
+        private static BanInfo ConvertBanInfo(Dictionary<string, string> privateProperties)
+        {
+            if (privateProperties == null)
+            {
+                return null;
+            }
+
+            if (!privateProperties.ContainsKey("expiry"))
+            {
+                return null;
+            }
+
+            var expiry = long.Parse(privateProperties["ban_expiry"]);
+            var reason = privateProperties.ContainsKey("ban_reason") ? privateProperties["ban_reason"] : null;
+            return new BanInfo
+            {
+                Expiration = expiry,
+                Reason = reason
+            };
+        }
+
+        public static THPrivateUser ToRPC(this UserUpdate userUpdate)
+        {
+            // todo add media
+            return new THPrivateUser
+            {
+                AvatarUrl = userUpdate.AvatarUrl,
+                DisplayName = userUpdate.DisplayName,
+                PublicProperties = userUpdate._publicProperties,
+                PrivateProperties = userUpdate._privateProperties,
+            };
         }
 
         public static SuggestedFriend ToSuggestedFriend(this THSuggestedFriend suggestedFriend)
         {
-            return new SuggestedFriend(
-                publicProperties: suggestedFriend.User.PublicProperties, 
-                id: suggestedFriend.User.Id, 
-                displayName:suggestedFriend.User.DisplayName, 
-                avatarUrl:suggestedFriend.User.AvatarUrl, 
-                identities:IdentitiesToDictionary(suggestedFriend.User.Identities),
-                mutualFriendsCount: suggestedFriend.MutualFriends
-                );
-        }
-        
-        public static PublicUser ToPublicUser(this THPublicUser publicUser)
-        {
-            return new PublicUser(
-                publicProperties: publicUser.PublicProperties, 
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl, 
-                identities:IdentitiesToDictionary(publicUser.Identities)
-                );
-        }
-
-        public static PublicUser ToPublicUser(this THPostAuthor publicUser)
-        {
-            return new PublicUser(
-                publicProperties: publicUser.PublicProperties, 
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl, 
-                identities:IdentitiesToDictionary(publicUser.Identities)
-                );
-        }
-
-        public static PostAuthor ToPostAuthor(this THPostAuthor publicUser)
-        {
-            return new PostAuthor(
-                publicProperties: publicUser.PublicProperties, 
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl, 
-                identities:IdentitiesToDictionary(publicUser.Identities),
-                isVerified: publicUser.IsApp
-                );
-        }
-
-        public static UserReference ToUserReference(this THPostAuthor publicUser)
-        {
-            return new UserReference(
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl
-                );
-        }
-        
-        public static UserReference ToUserReference(this THUserReference publicUser)
-        {
-            return new UserReference(
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl
-                );
-        }
-
-        public static ReferredUser ToReferredUser(this THPublicUser publicUser)
-        {
-            return new ReferredUser(
-                publicProperties: publicUser.PublicProperties, 
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl, 
-                identities:IdentitiesToDictionary(publicUser.Identities),
-                installationDate: DateUtils.FromUnixTime(long.Parse(publicUser.InstallDate)),
-                installationChannel: publicUser.InstallProvider
-            );
-        }
-        public static ReferralUser ToReferralUser(this THReferralUser referralUser)
-        {
-            var publicUser = referralUser.User;
-            return new ReferralUser(
-                publicProperties: publicUser.PublicProperties, 
-                id: publicUser.Id, 
-                displayName:publicUser.DisplayName, 
-                avatarUrl:publicUser.AvatarUrl, 
-                identities:IdentitiesToDictionary(publicUser.Identities),
-                eventDate: DateUtils.FromUnixTime(long.Parse(referralUser.EventDate)),
-                eventName: referralUser.Event,
-                eventData: referralUser.CustomData
-            );
-        }
-        
-        public static THIdentity ToRpcModel(this AuthIdentity authIdentity)
-        {
-            return new THIdentity
-            {
-                Provider = authIdentity.ProviderId,
-                ProviderId = authIdentity.ProviderUserId,
-                AccessToken = authIdentity.AccessToken
+            var user = suggestedFriend.User;
+            return new SuggestedFriend {
+                PublicProperties = user.PublicProperties,
+                Id = user.Id,
+                Identities = IdentitiesToDictionary(user.Identities),
+                Verified = false,
+                AvatarUrl = user.AvatarUrl,
+                DisplayName = user.DisplayName,
+                MutualFriendsCount = suggestedFriend.MutualFriends
             };
         }
 
-        public static ReferralData ToReferralData(this THTokenInfo thTokenInfo)
+        public static PagingResult<T> ToPagingResult<T>(List<T> entries, int offset, int limit)
         {
-            var linkParams = new Dictionary<string, string>(thTokenInfo.LinkParams);
-            var originalLinkParams = new Dictionary<string, string>(thTokenInfo.OriginalData);
+            var next = entries.Count < limit ? "" : (offset + limit).ToString();
+            return new PagingResult<T>
+            {
+                Entries = entries,
+                NextCursor = next
+            };
+        }
 
-            var token = thTokenInfo.LinkParams.GetOrDefault("$token", null);
-            var provider = thTokenInfo.LinkParams.GetOrDefault("$channel", null);
-            var firstMatch = bool.Parse(thTokenInfo.LinkParams.GetOrDefault("$first_match", null));
-            var guaranteedMatch = bool.Parse(thTokenInfo.LinkParams.GetOrDefault("$guaranteed_match", null));
-            var reinstall = bool.Parse(thTokenInfo.LinkParams.GetOrDefault("$reinstall", null));
-            var firstMatchLink = bool.Parse(thTokenInfo.LinkParams.GetOrDefault("$first_match_link", null));
-            var referrerUserId = thTokenInfo.LinkParams.GetOrDefault("$referrer_user_guid", null);
-            
-#pragma warning disable 0618
-            return new ReferralData(token, referrerUserId, provider, firstMatch, guaranteedMatch, reinstall, firstMatchLink, new CustomReferralData(linkParams), linkParams, new CustomReferralData(originalLinkParams), originalLinkParams);
-#pragma warning restore 0618
+        public static ReferralUser FromRPCModel(this THReferralUser thReferralUser)
+        {
+            var user = thReferralUser.User;
+            return new ReferralUser
+            {
+                PublicProperties = user.PublicProperties,
+                Id = user.Id,
+                Identities = IdentitiesToDictionary(user.Identities),
+                Verified = false,
+                AvatarUrl = user.AvatarUrl,
+                DisplayName = user.DisplayName,
+                EventData = thReferralUser.CustomData ?? new Dictionary<string, string>(), 
+                Event = thReferralUser.Event,
+                EventDate = long.Parse(thReferralUser.EventDate),
+            };
+        }
+
+        public static THIdentity ToRpcModel(this Identity identity)
+        {
+            return new THIdentity
+            {
+                Provider = identity.ProviderId,
+                ProviderId = identity.ProviderUserId,
+                AccessToken = identity.AccessToken
+            };
         }
 
         public static InviteChannel FromRpcModel(this THInviteProvider provider, string language)
         {
-            return new InviteChannel(
-                id: provider.ProviderId,
-                name: provider.Name.GetOrDefault(language, provider.Name[LanguageCodes.DefaultLanguage]),
-                iconImageUrl: provider.IconUrl,
-                displayOrder: provider.DisplayOrder,
-                isEnabled: provider.Enabled
-            );
+            return new InviteChannel{
+                Id = provider.ProviderId,
+                IconImageUrl = provider.IconUrl,
+                DisplayOrder = provider.DisplayOrder,
+                Name = provider.Name.ContainsKey(language) ? provider.Name[language] : provider.Name[LanguageCodes.DefaultLanguage]
+            };
         }
 
         public static THAnalyticsBaseEvent ToRpcModel(this AnalyticsEvent e)
@@ -162,6 +145,7 @@ namespace GetSocialSdk.Core
                 Id = e.Id,
                 Name = e.Name,
                 CustomProperties = e.Properties,
+                DeviceTimeType = THDeviceTimeType.SERVER_TIME,
                 DeviceTime = e.CreatedAt.ToUnixTimestamp(),
                 RetryCount = 0
             };
@@ -184,9 +168,7 @@ namespace GetSocialSdk.Core
 
         public static GetSocialAction FromRpcModel(this THAction thAction)
         {
-            return thAction == null ? null : GetSocialAction.CreateBuilder(thAction.Type)
-                    .AddActionData(thAction.Data)
-                    .Build();
+            return GetSocialAction.Create(thAction.Type, thAction.Data ?? new Dictionary<string, string>());
         }
 
         public static THAction ToRpcModel(this GetSocialAction thAction)
@@ -196,51 +178,6 @@ namespace GetSocialSdk.Core
                 Type = thAction.Type,
                 Data = thAction.Data
             };
-        }
-
-        public static THNotificationsQuery ToRpcModel(this NotificationsQuery query) 
-        {
-            return new THNotificationsQuery
-            {
-                Limit = query._limit,
-                Older = query._filter == NotificationsQuery.Filter.Older ? query._notificationId : null,
-                Newer = query._filter == NotificationsQuery.Filter.Newer ? query._notificationId : null,
-                Statuses = query._statuses.ToList(),
-                Types = query._types.ToList(),
-                Actions = query._actions.ToList()
-            };
-        }
-
-        public static THNotificationsQuery ToRpcModel(this NotificationsCountQuery query) 
-        {
-            return new THNotificationsQuery
-            {
-                Statuses = query._statuses.ToList(),
-                Types = query._types.ToList(),
-                Actions = query._actions.ToList()
-            };
-        }
-
-        public static Notification FromRpcModel(this THNotification thNotification)
-        {
-            return new Notification(
-                id: thNotification.Id,
-                notificationAction: thNotification.Action.FromRpcModel(),
-
-#pragma warning disable 0618
-                action: (Notification.Type) thNotification.ActionType,
-#pragma warning restore 0618
-                status: thNotification.Status,
-                notificationType: thNotification.TypeStr,
-                createdAt: thNotification.CreatedAt,
-                title: thNotification.Title,
-                text: thNotification.Text,
-                imageUrl: thNotification.Image,
-                videoUrl: thNotification.Video,
-                sender: thNotification.Origin.ToUserReference(),
-                actionButtons: thNotification.ActionButtons.ConvertAll(actionButton => actionButton.FromRpcModel()),
-                customization: FromRpcModel(thNotification.Media)
-            );
         }
 
         public static NotificationCustomization FromRpcModel(
@@ -259,156 +196,9 @@ namespace GetSocialSdk.Core
                 .WithTitleColor(titleColor);
         }
 
-        // public static THNotificationContent ToRpcModel(this NotificationContent thNotification)
-        // {
-        //     return THNotification {
-
-        //     }
-        // }
-        public static THUsersQuery ToRpcModel(this UsersQuery query)
+        public static THBadge ToRpcModel(this Badge badge)
         {
-            return new THUsersQuery
-            {
-                Name = query._query,
-                Limit = query._limit
-            };
-        }
-        
-        public static THReportingReason ToRpcModel(this ReportingReason reportingReason)
-        {
-            switch(reportingReason) 
-            {
-                case ReportingReason.InappropriateContent: return THReportingReason.INAPPROPRIATE_CONTENT;
-                case ReportingReason.Spam: return THReportingReason.SPAM;
-                default: return THReportingReason.SPAM;
-            }
-        }
-
-        public static ActivityPost FromRpcModel(this THActivityPost post)
-        {
-            return new ActivityPost(
-                id: post.Id,
-                text: post.Content.Text,
-                imageUrl: post.Content.ImageUrl,
-                createdAt: DateUtils.FromUnixTime(post.CreatedAt),
-                buttonTitle: post.Content.Button != null ? post.Content.Button.ButtonTitle : null,
-                buttonAction: post.Content.Button != null ? post.Content.Button.ButtonAction: null,
-                action: post.Content.Button != null ? post.Content.Button.Action.FromRpcModel(): null,
-                author: post.Author.ToPostAuthor(),
-                commentsCount: post.CommentsCount,
-                likesCount: post.LikesCount,
-                isLikedByMe: post.LikedByMe,
-                stickyStart: DateUtils.FromUnixTime(post.StickyStart),
-                stickyEnd: DateUtils.FromUnixTime(post.StickyEnd),
-                mentions: post.Mentions.ConvertAll(mention => mention.FromRpcModel()),
-                feedId: GetFeedNameFromRPC(post.FeedId)
-            );
-        }
-
-        private static string GetFeedNameFromRPC(string feedName)
-        {
-            return ActivitiesQuery.GlobalFeed.Equals(feedName) ? feedName : feedName.Substring(2);
-        }
-
-        public static THActivityPostContent ToRpcModel(this ActivityPostContent content)
-        {
-            var media = content._mediaAttachment;
-            if (!media.IsSupported()) {
-                GetSocialLogs.W("Uploading Texture2D or video is not supported in Editor yet");
-            }
-            return new THActivityPostContent
-            {
-                Text = content._text,
-                ButtonTitle = content._buttonTitle,
-                ButtonAction = content._buttonAction,
-                Language = GetSocial.GetLanguage(),
-                ImageUrl = media.GetImageUrl(),
-                VideoUrl = media.GetVideoUrl(),
-                Action = content._action.ToRpcModel()
-            };
-        }
-
-        public static Mention FromRpcModel(this THMention mention)
-        {
-            return new Mention(
-                userId: mention.UserId,
-                startIndex: mention.StartIdx,
-                endIndex: mention.EndIdx,
-                type: mention.Type
-            );
-        }
-
-        public static THActivitiesQuery ToRpcModel(this ActivitiesQuery query)
-        {
-            return new THActivitiesQuery
-            {
-                Limit = query._limit,
-                BeforeId = query._filter == ActivitiesQuery.Filter.Older ? query._filteringActivityId : null,
-                AfterId = query._filter == ActivitiesQuery.Filter.Newer ? query._filteringActivityId : null,
-                UserId = query._filterUserId,
-                FriendsFeed = query._isFriendsFeed,
-                Tags = query._tags.ToList()
-            };
-        }
-
-        public static THPromoCode ToRpcModel(this PromoCodeBuilder builder)
-        {
-            var promoCode = new THPromoCode 
-            {
-                Code = builder._code,
-                MaxClaims = (int) builder._maxClaimCount,
-                CustomData = builder._data
-            };
-            if (builder._startDate != null) 
-            {
-                promoCode.ValidFrom = builder._startDate.Value.ToUnixTimestamp();
-            }
-            if (builder._endDate != null) 
-            {
-                promoCode.ValidUntil = builder._endDate.Value.ToUnixTimestamp();
-            }
-            return promoCode;
-        }
-
-        public static PromoCode FromRpcModel(this THPromoCode rpc)
-        {
-            DateTime? endDate = rpc.__isset.validUntil ? DateUtils.FromUnixTime(rpc.ValidUntil) : (DateTime?) null;
-            return new PromoCode(
-                code: rpc.Code,
-                data: rpc.CustomData,
-                maxClaimCount: (uint) rpc.MaxClaims,
-                startDate: DateUtils.FromUnixTime(rpc.ValidFrom),
-                endDate: endDate,
-                creator: rpc.Creator.ToUserReference(),
-                claimCount: (uint) rpc.NumClaims,
-                enabled: rpc.Enabled,
-                claimable: rpc.Claimable
-           );
-        }
-
-        public static THCustomNotification ToRpcModel(this NotificationContent content)
-        {
-            var media = content._mediaAttachment;
-            if (!media.IsSupported()) {
-                GetSocialLogs.W("Uploading Texture2D or video is not supported in Editor yet");
-            }
-            return new THCustomNotification
-            {
-                Title = content._title,
-                Text = content._text,
-                TemplateName = content._templateName,
-                TemplateData = content._templatePlaceholders,
-                NewAction = content._action.ToRpcModel(),
-                Image = media.GetImageUrl(),
-                Video = media.GetVideoUrl(),
-                ActionButtons = content._actionButtons.ConvertAll(button => button.ToRpcModel()),
-                Badge = content._badge.ToRpcModel()
-            };
-        }
-
-        public static THBadge ToRpcModel(this Badge badge) 
-        {
-            if (badge == null) 
+            if (badge == null)
             {
                 return null;
             }
@@ -419,39 +209,794 @@ namespace GetSocialSdk.Core
             return new THBadge { Value = badge.Value };
         }
 
-        public static THActionButton ToRpcModel(this ActionButton button)
+        public static THActionButton ToRpcModel(this NotificationButton button)
         {
             return new THActionButton
             {
                 Title = button.Title,
-                ActionId = button.Id
+                ActionId = button.ActionId
             };
         }
 
-        public static ActionButton FromRpcModel(this THActionButton button)
+        public static NotificationButton FromRpcModel(this THActionButton button)
         {
-            return ActionButton.Create(button.Title, button.ActionId);
+            return NotificationButton.Create(button.Title, button.ActionId);
         }
 
-        public static NotificationsSummary FromRpcModel(this THNotificationsSummary summary)
+        #region SDK7
+
+        public static GetUsersRequest ToRpc(this PagingQuery<UsersQuery> query)
         {
-            return new NotificationsSummary(summary.SuccessCount);
+            var request = query.Query.ToRpc();
+            request.Pagination = query.ToPagination();
+            return request;
         }
 
-        public static bool IsSupported(this MediaAttachment media)
+        public static GetActivitiesV2Request ToRpc(this PagingQuery<ActivitiesQuery> query)
         {
-            return media == null || media._method.Equals("imageUrl") || media._method.Equals("videoUrl");
+            var request = query.Query.ToRpc();
+            request.Pagination = query.ToPagination();
+            return request;
+        }
+        
+        public static GetAnnouncementsRequest ToRpc(this AnnouncementsQuery query)
+        {
+            return new GetAnnouncementsRequest
+            {
+                Target = query.Ids.ToRpc()
+            };
+        }
+        public static GetReactionsRequest ToRpc(this PagingQuery<ReactionsQuery> query)
+        {
+            var request = query.Query.ToRpc();
+            request.Pagination = query.ToPagination();
+            return request;
         }
 
-        public static string GetImageUrl(this MediaAttachment media)
+        public static GetReactionsRequest ToRpc(this ReactionsQuery query)
         {
-            return media != null && media._method.Equals("imageUrl") ? media._object as string : null;;
+            return new GetReactionsRequest
+            {
+                Reaction = query.Reaction, Target = query.Ids.ToRpc()
+            };
         }
 
-        public static string GetVideoUrl(this MediaAttachment media)
+        public static FindTagsRequest ToRpc(this TagsQuery query)
         {
-            return media != null && media._method.Equals("videoUrl") ? media._object as string : null;
+            return new FindTagsRequest
+            {
+                SearchTerm = query.Query,
+                Target = query.Target?.Ids.ToRpc()
+            };
         }
+
+        public static GetActivitiesV2Request ToRpc(this ActivitiesQuery query)
+        {
+            return new GetActivitiesV2Request
+            {
+                Target = query.Ids.ToRpc()
+            };
+        }
+
+        public static AFButton ToRpc(this ActivityButton button)
+        {
+            return new AFButton
+            {
+                Action = button.Action.ToRpcModel(),
+                ButtonTitle = button.Title
+            };
+        }
+
+        public static CreateActivityRequest ToRpc(this ActivityContent content, string lang, PostActivityTarget target)
+        {
+            return new CreateActivityRequest
+            {
+                Target = target.Ids.ToRpc(),
+                Properties = content.Properties,
+                Content = new Dictionary<string, AFContent>
+                {
+                    {lang, new AFContent
+                    {
+                        Text = content.Text,
+                        Button = content.Button?.ToRpc(),
+                        Attachments = content.Attachments.ConvertAll(it => it.ToRpc())
+                    }}
+                }
+            };
+        }
+
+        public static UpdateActivityRequest ToUpdateRpc(this ActivityContent content, string lang, string activityId)
+        {
+            return new UpdateActivityRequest
+            {
+                ActivityId = activityId,
+                Properties = content.Properties,
+                Content = new Dictionary<string, AFContent>
+                {
+                    {lang, new AFContent
+                    {
+                        Text = content.Text,
+                        Button = content.Button?.ToRpc(),
+                        Attachments = content.Attachments.ConvertAll(it => it.ToRpc())
+                    }}
+                }
+            };
+        }
+        public static MediaAttachment FromRpc(this AFAttachment attachment)
+        {
+            return new MediaAttachment
+            {
+                ImageUrl = attachment.ImageUrl,
+                VideoUrl = attachment.VideoUrl
+            };
+        }
+        public static AFAttachment ToRpc(this MediaAttachment attachment)
+        {
+            return new AFAttachment
+            {
+                ImageUrl = attachment.ImageUrl,
+                VideoUrl = attachment.VideoUrl
+            };
+        }
+        
+        public static GetFriendsRequest ToRpc(this PagingQuery<FriendsQuery> query)
+        {
+            var request = query.Query.ToRpc();
+            request.Pagination = query.ToPagination();
+            return request;
+        }
+
+        public static GetFriendsRequest ToRpc(this FriendsQuery query)
+        {
+            return new GetFriendsRequest
+            {
+                UserId = query.UserId.ToRpc()
+            };
+        }
+
+        public static SGEntity ToRpc(this CommunitiesIds ids)
+        {
+            if (ids == null || ids.Type == null)
+            {
+                return null;
+            }
+            return new SGEntity
+            {
+                EntityType = (int) ids.Type, Id = ids.Ids[0]
+            };
+        }
+
+        public static SuggestedFriend FromRPCModel(this THSuggestedFriend friend)
+        {
+            var user = friend.User;
+            return new SuggestedFriend
+            {
+                PublicProperties = user.PublicProperties,
+                Id = user.Id,
+                Identities = IdentitiesToDictionary(user.Identities),
+                Verified = false,
+                AvatarUrl = user.AvatarUrl,
+                DisplayName = user.DisplayName, 
+                MutualFriendsCount = friend.MutualFriends
+            };
+        }
+        public static PagingResult<SuggestedFriend> FromRPCModel(this GetSuggestedFriendsResponse response)
+        {
+            return FromRPCModel(response.Users, response.NextCursor, FromRPCModel);
+        }
+        
+        public static PagingResult<User> FromRPCModel(this GetFriendsResponse response)
+        {
+            return FromRPCModel(response.Users, response.NextCursor, FromRPCModel);
+        }
+
+        public static PagingResult<User> FromRPCModel(this GetUsersResponse response)
+        {
+            return FromRPCModel(response.Users, response.NextCursor, FromRPCModel);
+        }
+        
+        public static PagingResult<Activity> FromRPCModel(this GetActivitiesV2Response response)
+        {
+            var users = response.Authors;
+            var sources = response.EntityDetails;
+            return FromRPCModel(response.Data, response.NextCursor, af =>
+            {
+                var id = af.Author.PublicUser?.Id;
+                var user = id != null && users.ContainsKey(id) ? users[id] : null;
+                var source = FindSource(sources, af.Source);
+                return FromRPCModel(af, user, source);
+            });
+        }
+
+        private static AFEntityReference FindSource(List<AFEntityReference> list, AFEntityReference source)
+        {
+            if (source == null || source.Id == null)
+            {
+                return null;
+            }
+
+            foreach (var reference in list) 
+            {
+                if (source.Id.Id.Equals(reference.Id.Id) && source.Id.EntityType == reference.Id.EntityType)
+                {
+                    return reference;
+                }
+            }
+
+            return source;
+        }
+
+        public static Activity FromRPCModel(this AFActivity activity, THPublicUser user = null, AFEntityReference source = null)
+        {
+            var content = activity.Content.FirstValue(new AFContent());
+            return new Activity
+            {
+                Id = activity.Id,
+                Type = activity.ContentType, 
+                Announcement = activity.IsAnnouncement, 
+                Button = content.Button.FromRPCModel(), 
+                Author = activity.Author.FromRPCModel(user),
+                Properties = activity.Properties ?? new Dictionary<string, string>(),
+                CreatedAt = activity.CreatedAt,
+                ViewCount = activity.Reactions.ViewCount,
+                CommentsCount = activity.Reactions.CommentCount,
+                MediaAttachments = (content.Attachments ?? new List<AFAttachment>()).ConvertAll(FromRpc),
+                Text = content.Text,
+                ReactionsCount = activity.Reactions.ReactionCount,
+                MyReactionsList = activity.Reactions.MyReactions ?? new List<string>(), 
+                Mentions = activity.Mentions.FirstValue(new List<AFMention>()).ConvertAll(FromRPCModel), 
+                Source = (source ?? activity.Source).FromRPCModel()
+            };
+        }
+
+        public static CommunitiesEntity FromRPCModel(this AFEntityReference source)
+        {
+            return new CommunitiesEntity
+            {
+                Type = (CommunitiesEntityType) source.Id.EntityType, 
+                Id = source.Id.Id,
+                Title = source.Title.FirstValue(),
+                AvatarUrl = source.AvatarUrl,
+                FollowersCount = source.FollowersCount,
+                IsFollower = source.IsFollower,
+                AvailableActions = ConvertAllowableActions(source.AllowedActions)
+            };
+        }
+
+        public static T FirstValue<K, T>(this Dictionary<K, T> dictionary, T def)
+        {
+            return dictionary == null || dictionary.Count == 0 ? def : dictionary.First().Value;
+        }
+
+        public static string FirstValue<K>(this Dictionary<K, string> dictionary)
+        {
+            return dictionary.FirstValue("");
+        }
+
+        public static Mention FromRPCModel(this AFMention mention)
+        {
+            return new Mention {UserId = mention.UserId, StartIndex = mention.StartIdx, EndIndex = mention.EndIdx, Type = mention.MentionType == 0 ? Mention.MentionType.App : Mention.MentionType.User};
+        }
+
+        public static ActivityButton FromRPCModel(this AFButton button)
+        {
+            if (button == null)
+            {
+                return null;
+            }
+            return ActivityButton.Create(button.ButtonTitle, button.Action.FromRpcModel());
+        }
+
+        public static User FromRPCModel(this THPublicUser user)
+        {
+            return new User
+            {
+                PublicProperties = user.PublicProperties,
+                Id = user.Id,
+                Identities = IdentitiesToDictionary(user.Identities),
+                Verified = false,
+                AvatarUrl = user.AvatarUrl,
+                DisplayName = user.DisplayName
+            };
+        }
+        
+        public static User FromRPCModel(this THCreator creator, THPublicUser user = null)
+        {
+            if (creator.IsApp)
+            {
+                return new User
+                {
+                    Id = "app",
+                    AvatarUrl = GetSocialStateController.Info.IconUrl,
+                    DisplayName = GetSocialStateController.Info.Name,
+                    Identities = new Dictionary<string, string>(),
+                    Verified = true,
+                    PublicProperties = new Dictionary<string, string>()
+                };
+            }
+
+            if (user == null)
+            {
+                user = creator.PublicUser;
+            }
+
+            if (user == null)
+            {
+                return null;
+            }
+            return new User
+            {
+                PublicProperties = user.PublicProperties,
+                Id = user.Id,
+                Identities = IdentitiesToDictionary(user.Identities),
+                Verified = creator.IsVerified,
+                AvatarUrl = user.AvatarUrl,
+                DisplayName = user.DisplayName
+            };
+        }
+
+        public static GetUsersRequest ToRpc(this UsersQuery query)
+        {
+            return new GetUsersRequest
+            {
+                SearchTerm = query.Query,
+                FollowedByUserId = query.FollowedBy.ToRpc()
+            };
+        }
+
+        public static string ToRpc(this UserId userId)
+        {
+            return userId?.AsString();
+        }
+
+        public static CommunitiesAction[] CommunitiesActionFromRPC(int rawValue)
+        {
+            switch (rawValue)
+            {
+                case 0:
+                    return new CommunitiesAction[] { CommunitiesAction.Post };
+                default:
+                    return new CommunitiesAction[] { CommunitiesAction.Comment, CommunitiesAction.React };
+            }
+        }
+
+        public static CommunitiesSettings FromRPC(this SGSettings rpcSettings)
+        {
+            return new CommunitiesSettings
+            {
+                Properties = rpcSettings.Properties,
+                AllowedActions = ConvertAllowableActions(rpcSettings.AllowedActions)
+            };
+        }
+
+        public static Dictionary<CommunitiesAction, bool> ConvertAllowableActions(this Dictionary<int, bool> actions)
+        {
+            var allowedActions = new Dictionary<CommunitiesAction, bool>();
+            foreach (var action in actions)
+            {
+                var convertedActions = CommunitiesActionFromRPC(action.Key);
+                for (int i = 0; i<convertedActions.Length; i++)
+                {
+                    allowedActions[convertedActions[i]] = action.Value;
+                }
+            }
+
+            return allowedActions;
+        }
+
+        public static GetTopicsRequest ToRPC(this TopicsQuery query)
+        {
+            var request = new GetTopicsRequest();
+            request.FollowedByUserId = query.FollowerId.ToRpc();
+            request.SearchTerm = query.SearchTerm;
+            return request;
+        }
+
+        public static GetTopicsRequest ToRPC(this PagingQuery<TopicsQuery> pagingQuery)
+        {
+            var request = pagingQuery.Query.ToRPC();
+            request.Pagination = CreatePagination(pagingQuery);
+            return request;
+        }
+        
+        public static GetNotificationsRequest ToRPC(this PagingQuery<NotificationsQuery> pagingQuery)
+        {
+            var request = pagingQuery.Query.ToRPC();
+            request.Pagination = CreatePagination(pagingQuery);
+            return request;
+        }
+
+        public static GetNotificationsRequest ToRPC(this NotificationsQuery query)
+        {
+            return new GetNotificationsRequest
+            {
+                Statuses = query.Statuses,
+                Actions = query.Actions,
+                Types = query.Types
+            };
+        }
+
+        public static GetGroupMembersRequest ToRPC(this PagingQuery<GroupMembersQuery> pagingQuery)
+        {
+            var request = pagingQuery.Query.ToRPC();
+            request.Pagination = CreatePagination(pagingQuery);
+            return request;
+        }
+
+        public static GetGroupMembersRequest ToRPC(this GroupMembersQuery query)
+        {
+            var request = new GetGroupMembersRequest();
+            request.GroupId = query.GroupId;
+            request.Info = new SGMembershipInfo();
+            request.Info.Status = (int)query.Status;
+            request.Info.Role = (int)query.Role;
+            return request;
+        }
+
+        public static GetGroupsRequest ToRPC(this PagingQuery<GroupsQuery> pagingQuery)
+        {
+            var request = pagingQuery.Query.ToRPC();
+            request.Pagination = CreatePagination(pagingQuery);
+            return request;
+        }
+
+        public static GetGroupsRequest ToRPC(this GroupsQuery query)
+        {
+            var request = new GetGroupsRequest();
+            request.FollowedByUserId = query.FollowerId.ToRpc();
+            request.MemberUserId = query.MemberId.ToRpc();
+            request.SearchTerm = query.SearchTerm;
+            return request;
+        }
+
+        public static UpdateMembersRequest ToRPC(this UpdateGroupMembersQuery query)
+        {
+            var request = new UpdateMembersRequest();
+            request.GroupId = query.GroupId;
+            request.Info = new SGMembershipInfo();
+            request.Info.Status = (int)query.Status;
+            request.UserIds = query.UserIdList.AsString();
+            return request;
+        }
+
+        public static RemoveMembersRequest ToRPC(this RemoveGroupMembersQuery query)
+        {
+            var request = new RemoveMembersRequest();
+            request.GroupId = query.GroupId;
+            request.UserIds = query.UserIdList.AsString();
+            return request;
+        }
+
+        public static FollowEntitiesRequest ToRPC(this FollowQuery query)
+        {
+            var request = new FollowEntitiesRequest();
+            request.EntityIds = new Thrift.Collections.THashSet<string>();
+            request.EntityIds.AddAll(query.Ids.Ids);
+            request.EntityType = (int)query.Ids.Type;
+            return request;
+        }
+
+        public static UnfollowEntitiesRequest ToUnfollowRPC(this FollowQuery query)
+        {
+            var request = new UnfollowEntitiesRequest();
+            request.EntityIds = new Thrift.Collections.THashSet<string>();
+            request.EntityIds.AddAll(query.Ids.Ids);
+            request.EntityType = (int)query.Ids.Type;
+            return request;
+        }
+
+
+        public static IsFollowingRequest ToIsFollowingRPC(this FollowQuery query)
+        {
+            var request = new IsFollowingRequest();
+            request.EntityIds = new Thrift.Collections.THashSet<string>();
+            request.EntityIds.AddAll(query.Ids.Ids);
+            request.EntityType = (int)query.Ids.Type;
+            return request;
+        }
+
+        public static GetEntityFollowersRequest ToRPC(this PagingQuery<FollowersQuery> pagingQuery)
+        {
+            var request = pagingQuery.Query.ToRPC();
+            request.Pagination = CreatePagination(pagingQuery);
+            return request;
+        }
+
+        public static GetEntityFollowersRequest ToRPC(this FollowersQuery query)
+        {
+            var request = new GetEntityFollowersRequest();
+            request.Id = new SGEntity();
+            request.Id.Id = query.Ids.Ids.First() ;
+            request.Id.EntityType = (int)query.Ids.Type;
+            return request;
+        }
+
+        public static Pagination CreatePagination<T>(PagingQuery<T> pagingQuery)
+
+        {
+            var pagination = new Pagination();
+            pagination.Limit = pagingQuery.Limit;
+            pagination.NextCursor = pagingQuery.NextCursor;
+            return pagination;
+        }
+
+        public static Topic FromRPCModel(this SGTopic rpcTopic)
+        {
+            var topic = new Topic();
+            topic.Id = rpcTopic.Id;
+            topic.AvatarUrl = rpcTopic.AvatarUrl;
+            topic.CreatedAt = rpcTopic.CreatedAt;
+            topic.Description =  new LocalizableText(rpcTopic.TopicDescription).LocalizedValue();
+            topic.FollowersCount = rpcTopic.FollowersCount;
+            topic.IsFollowedByMe = rpcTopic.IsFollower;
+            topic.Title = new LocalizableText(rpcTopic.Title).LocalizedValue();
+            topic.Settings = rpcTopic.Settings.FromRPC();
+            topic.UpdatedAt = rpcTopic.UpdatedAt;
+            return topic;
+        }
+
+        public static CreateGroupRequest ToRPC(this GroupContent content)
+        {
+            var request = new CreateGroupRequest();
+            request.Id = content.Id;
+            // FIXME: use proper locale
+            request.Title = new Dictionary<string, string> { { "en", content.Title } };
+            request.GroupDescription = new Dictionary<string, string> { { "en", content.Description } };
+            request.AvatarUrl = content.AvatarUrl;
+            request.IsDiscoverable = content.IsDiscoverable;
+            request.IsPrivate = content.IsPrivate;
+            var permissions = new Dictionary<int, int>();
+            foreach (var entry in content.Permissions)
+            {
+                permissions[(int)entry.Key] = (int)entry.Value;
+            }
+            request.Permissions = permissions;
+            request.Properties = content.Properties;
+            return request;
+        }
+
+        public static UpdateGroupRequest ToUpdateRPC(this GroupContent content)
+        {
+            var request = new UpdateGroupRequest();
+            request.Id = content.Id;
+            // FIXME: use proper locale
+            request.Title = new Dictionary<string, string> { { "en", content.Title } };
+            request.GroupDescription = new Dictionary<string, string> { { "en", content.Description } };
+            request.AvatarUrl = content.AvatarUrl;
+            request.IsDiscoverable = content.IsDiscoverable;
+            request.IsPrivate = content.IsPrivate;
+            var permissions = new Dictionary<int, int>();
+            foreach (var entry in content.Permissions)
+            {
+                permissions[(int)entry.Key] = (int)entry.Value;
+            }
+            request.Permissions = permissions;
+            request.Properties = content.Properties;
+            return request;
+        }
+
+        public static Group FromRPCModel(this SGGroup rpcGroup)
+        {
+            var group = new Group();
+            group.Id = rpcGroup.Id;
+            group.AvatarUrl = rpcGroup.AvatarUrl;
+            group.CreatedAt = rpcGroup.CreatedAt;
+            group.Description = new LocalizableText(rpcGroup.GroupDescription).LocalizedValue();
+            group.FollowersCount = rpcGroup.FollowersCount;
+            group.IsFollowedByMe = rpcGroup.IsFollower;
+            group.MembersCount = rpcGroup.MembersCount;
+            group.Membership = rpcGroup.Membership.FromRPCModel();
+            group.Settings = rpcGroup.Settings.FromRPC();
+            group.Title = new LocalizableText(rpcGroup.Title).LocalizedValue();
+            group.UpdatedAt = rpcGroup.UpdatedAt;
+            return group;
+        }
+
+        public static GroupMember FromRPCModel(this SGGroupMember rpcGroupMember)
+        {
+            var member = (GroupMember)(rpcGroupMember.User.FromRPCModel());
+            member.Membership = rpcGroupMember.Membership.FromRPCModel();
+            return member;
+        }
+
+        public static Pagination ToPagination<T>(this PagingQuery<T> query)
+        {
+            return new Pagination
+            {
+                Limit = query.Limit,
+                NextCursor = query.NextCursor
+            };
+        }
+
+        public static PagingResult<T> FromRPCModel<R, T>(List<R> entries, string next, Converter<R, T> convert)
+        {
+            return new PagingResult<T>
+            {
+                Entries = (entries ?? new List<R>()).ConvertAll(convert), NextCursor = next ?? ""
+            };
+        }
+
+        public static PagingResult<Notification> FromRPCModel(this GetNotificationsResponse response)
+        {
+            var users = response.Authors;
+            return FromRPCModel(response.Notifications, response.NextCursor, notification =>
+            {
+                var id = notification.Sender.PublicUser?.Id;
+                var user = id != null && users.ContainsKey(id) ? users[id] : null;
+                return FromRPCModel(notification, user);
+            });
+        }
+
+        private static Notification FromRPCModel(PNNotification notification, THPublicUser user)
+        {
+            if (user == null)
+            {
+                user = notification.Sender.PublicUser;
+            }
+
+            return new Notification
+            {
+                Id = notification.Id,
+                Customization = new NotificationCustomization
+                {
+                    BackgroundImageConfiguration = notification.Media?.BackgroundImage,
+                    TextColor = notification.Media?.TextColor,
+                    TitleColor = notification.Media?.TitleColor
+                },
+                ActionButtons = (notification.ActionButtons ?? new List<THActionButton>()).ConvertAll(it => it.FromRpcModel()),
+                Attachment = null, // todo
+                CreatedAt = notification.CreatedAt,
+                Action = notification.Action?.FromRpcModel(),
+                Sender = user.FromRPCModel(),
+                Type = notification.Type,
+                Status = notification.Status,
+                Text = notification.Text,
+                Title = notification.Title
+            };
+        }
+
+        public static PagingResult<Topic> FromRPCModel(this GetTopicsResponse response)
+        {
+            return FromRPCModel(response.Topics, response.NextCursor, FromRPCModel);
+        }
+
+        public static PagingResult<GroupMember> FromRPCModel(this GetGroupMembersResponse response)
+        {
+            return FromRPCModel(response.Members, response.NextCursor, FromRPCModel);
+        }
+
+        public static PagingResult<Group> FromRPCModel(this GetGroupsResponse response)
+        {
+            return FromRPCModel(response.Groups, response.NextCursor, FromRPCModel);
+        }
+
+        public static PagingResult<User> FromRPCModel(this GetEntityFollowersResponse response)
+        {
+            return FromRPCModel(response.Followers, response.NextCursor, FromRPCModel);
+        }
+        
+        public static PagingResult<UserReactions> FromRPCModel(this GetReactionsResponse response)
+        {
+            return FromRPCModel(response.Reactions, response.NextCursor, FromRPCModel);
+        }
+
+        public static UserReactions FromRPCModel(this AFReaction reaction)
+        {
+            return new UserReactions { User = reaction.Creator.FromRPCModel(), ReactionsList = reaction.Reactions};
+        }
+
+        public static MembershipInfo FromRPCModel(this SGMembershipInfo rpcMembership)
+        {
+            var info = new MembershipInfo();
+            info.CreatedAt = rpcMembership.CreatedAt;
+            info.InvitationToken = rpcMembership.InvitationToken;
+            info.Role = MembershipRoleFromRPCModel(rpcMembership.Role);
+            info.Status = MembershipStatusFromRPCModel(rpcMembership.Status);
+            return info;
+        }
+
+        public static MembershipRole MembershipRoleFromRPCModel(int rawValue)
+        {
+            switch (rawValue)
+            {
+                case 0:
+                    return MembershipRole.Owner;
+                case 1:
+                    return MembershipRole.Admin;
+                case 2:
+                    return MembershipRole.Member;
+                default:
+                    return MembershipRole.Unknown;
+            }
+        }
+
+        public static MembershipStatus MembershipStatusFromRPCModel(int rawValue)
+        {
+            switch (rawValue)
+            {
+                case 0:
+                    return MembershipStatus.ApprovalPending;
+                case 1:
+                    return MembershipStatus.InvitationPending;
+                case 2:
+                    return MembershipStatus.CompleteMember;
+                default:
+                    return MembershipStatus.Unknown;
+            }
+        }
+
+        public static Dictionary<string, MembershipRole> FromRPCModel(this AreMembersResponse response)
+        {
+            var result = new Dictionary<string, MembershipRole>();
+            foreach (var entry in response.Result)
+            {
+                result[entry.Key] = MembershipRoleFromRPCModel(entry.Value.Role);
+            }
+            return result;
+        }
+
+        public static Dictionary<string, bool> FromRPCModel(this IsFollowingResponse response)
+        {
+            return response.Result;
+        }
+
+        #endregion
+
+        #region Promo codes
+
+        public static CreatePromoCodeRequest ToRPC(this PromoCodeContent content)
+        {
+            var request = new CreatePromoCodeRequest();
+
+            var code = new SIPromoCode();
+            code.MaxClaims = (int)content.MaxClaimCount;
+            code.Code = content.Code;
+            code.Properties = content.Data;
+            if (content._startDate != 0) 
+            {
+                code.ValidFrom = content._startDate;
+            }
+            if (content._endDate != 0) 
+            {
+                code.ValidUntil = content._endDate;
+            }
+
+            request.Code = code;
+            return request;
+        }
+
+        public static PromoCode FromRPC(this CreatePromoCodeResponse response)
+        {
+            return response.Code.FromRPC();
+        }
+
+        public static PromoCode FromRPC(this GetPromoCodeResponse response)
+        {
+            return response.Code.FromRPC();
+        }
+
+        public static PromoCode FromRPC(this ClaimPromoCodeResponse response)
+        {
+            return response.Code.FromRPC();
+        }
+
+        public static PromoCode FromRPC(this SIPromoCode promoCode)
+        {
+            var result = new PromoCode();
+            result.Code = promoCode.Code;
+            result.Creator = promoCode.Creator.FromRPCModel();
+            result.Properties = promoCode.Properties;
+            result.StartDate = promoCode.ValidFrom;
+            result.EndDate = promoCode.ValidUntil;
+            result.IsClaimable = promoCode.Claimable;
+            result.IsEnabled = promoCode.Enabled;
+            result.ClaimCount = (uint)promoCode.NumClaims;
+            result.MaxClaimCount = (uint)promoCode.MaxClaims;
+
+            return result;
+        }
+
+        #endregion
     }
 }
 #endif

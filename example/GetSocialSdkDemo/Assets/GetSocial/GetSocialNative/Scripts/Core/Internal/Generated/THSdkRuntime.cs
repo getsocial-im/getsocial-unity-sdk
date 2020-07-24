@@ -6,13 +6,19 @@
  *  @generated
  */
 
-public enum THSdkRuntime
+namespace GetSocialSdk.Core 
 {
-  NATIVE = 0,
-  UNITY = 1,
-  MARMALADE = 2,
-  CORDOVA = 3,
-  REACTNATIVE = 4,
-  API = 5,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THSdkRuntime
+  {
+    NATIVE = 0,
+    UNITY = 1,
+    MARMALADE = 2,
+    CORDOVA = 3,
+    REACTNATIVE = 4,
+    API = 5,
+  }
 }
 #endif

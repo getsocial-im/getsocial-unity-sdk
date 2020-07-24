@@ -6,18 +6,24 @@
  *  @generated
  */
 
-public enum THDeviceOs
+namespace GetSocialSdk.Core 
 {
-  ANDROID = 0,
-  IOS = 1,
-  API = 2,
-  WEB_ANDROID = 3,
-  WEB_IOS = 4,
-  WEB_DESKTOP = 5,
-  OTHER = 6,
-  DESKTOP_WINDOWS = 7,
-  DESKTOP_MAC = 8,
-  DESKTOP_LINUX = 9,
-  UNITY_EDITOR = 10,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum THDeviceOs
+  {
+    ANDROID = 0,
+    IOS = 1,
+    API = 2,
+    WEB_ANDROID = 3,
+    WEB_IOS = 4,
+    WEB_DESKTOP = 5,
+    OTHER = 6,
+    DESKTOP_WINDOWS = 7,
+    DESKTOP_MAC = 8,
+    DESKTOP_LINUX = 9,
+    UNITY_EDITOR = 10,
+  }
 }
 #endif

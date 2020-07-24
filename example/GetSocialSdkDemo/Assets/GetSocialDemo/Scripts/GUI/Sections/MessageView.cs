@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 
 
 public class MessageView : DemoMenuSection
 {
 
-    public PublicUser Receiver;
+    public User Receiver;
     private string _message;
     
-    private List<ActivityPost> _messages;
+    private List<Activity> _messages;
     
     protected override void DrawSectionBody()
     {
@@ -33,14 +31,14 @@ public class MessageView : DemoMenuSection
     protected override void GoBack()
     {
         enabled = false;
-        GetComponentInParent<SocialGraphSection>().enabled = true;
+        // GetComponentInParent<SocialGraphSection>().enabled = true;
     }
 
-    private static Action DrawMessage(ActivityPost message)
+    private static Action DrawMessage(Activity message)
     {
         return () =>
         {
-            if (message.Author.Id.Equals(GetSocial.User.Id))
+            if (message.Author.Id.Equals(GetSocial.GetCurrentUser().Id))
             {
                 GUILayout.Label(message.Text, GSStyles.RightAlignedChatText);
             }
@@ -58,7 +56,7 @@ public class MessageView : DemoMenuSection
 
     private void Awake()
     {
-        _messages = new List<ActivityPost>();
+        _messages = new List<Activity>();
     }
 
     private static string GenerateChatId(string[] userIds)
@@ -69,53 +67,55 @@ public class MessageView : DemoMenuSection
 
     public void LoadMessages()
     {
-        var chatId = GenerateChatId(new[] {GetSocial.User.Id, Receiver.Id});
-        var query = ActivitiesQuery.PostsForFeed(chatId);
-        GetSocial.GetActivities(query, list =>
-        {
-            _messages = list;
-            _messages.Reverse();
-        }, error =>
-        {
-            _console.LogE("Failed to get messages, error: " + error);
-        });
+        // var chatId = GenerateChatId(new[] {GetSocial.GetCurrentUser().Id, Receiver.Id});
+        // var query = ActivitiesQuery.ActivitiesInTopic(chatId);
+        // GetSocial.GetActivities(query, list =>
+        // {
+        //     _messages = list;
+        //     _messages.Reverse();
+        // }, error =>
+        // {
+        //     _console.LogE("Failed to get messages, error: " + error);
+        // });
     }
 
     private void SendChatMessage(string message)
     {
-        var feedId = GenerateChatId(new[] {GetSocial.User.Id, Receiver.Id});
-        var messageContentBuilder = ActivityPostContent.CreateBuilder()
-            .WithText(message);
-        MNP.ShowPreloader("Sending message", "Please wait...");
-        GetSocial.PostActivityToFeed(feedId, messageContentBuilder.Build(), post =>
-        {
-            SendNotification(message, Receiver.Id);
-            LoadMessages();
-        }, error =>
-        {
-            MNP.HidePreloader();
-            _console.LogE("Failed to send message, error: " + error);
-        });
+        // var feedId = GenerateChatId(new[] {GetSocial.GetCurrentUser().Id, Receiver.Id});
+        // var messageContentBuilder = new ActivityContent
+        // {
+        //     Text = message
+        // };
+        // MNP.ShowPreloader("Sending message", "Please wait...");
+        // GetSocial.PostActivityToFeed(feedId, messageContentBuilder.Build(), post =>
+        // {
+        //     SendNotification(message, Receiver.Id);
+        //     LoadMessages();
+        // }, error =>
+        // {
+        //     MNP.HidePreloader();
+        //     _console.LogE("Failed to send message, error: " + error);
+        // });
     }
 
     private void SendNotification(string message, string recepientId)
     {
-        var messageData = new Dictionary<string, string> {{"open_messages_for_id", GetSocial.User.Id}};
+        // var messageData = new Dictionary<string, string> {{"open_messages_for_id", GetSocial.GetCurrentUser().Id}};
 
-        var builder = GetSocialAction.CreateBuilder("open_chat_message");
-        builder.AddActionData(messageData);
-
-        var notificationContent = NotificationContent.NotificationWithText(message)
-            .WithTitle(GetSocial.User.DisplayName)
-            .WithAction(builder.Build());
-
-        var recepients = new List<string> {recepientId};
-        GetSocial.User.SendNotification(recepients, notificationContent, summary =>
-        {
-            MNP.HidePreloader();
-        }, error =>
-        {
-            MNP.HidePreloader();
-        });
+        // var builder = GetSocialAction.CreateBuilder("open_chat_message");
+        // builder.AddActionData(messageData);
+        //
+        // var notificationContent = NotificationContent.NotificationWithText(message)
+        //     .WithTitle(GetSocial.GetCurrentUser().DisplayName)
+        //     .WithAction(builder.Build());
+        //
+        // var recepients = new List<string> {recepientId};
+        // GetSocial.GetCurrentUser().SendNotification(recepients, notificationContent, summary =>
+        // {
+        //     MNP.HidePreloader();
+        // }, error =>
+        // {
+        //     MNP.HidePreloader();
+        // });
     }
 }

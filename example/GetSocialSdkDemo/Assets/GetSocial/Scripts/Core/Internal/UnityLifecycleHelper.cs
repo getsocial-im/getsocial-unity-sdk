@@ -13,7 +13,7 @@ namespace GetSocialSdk.Core
         
         void Start()
         {
-            GetSocialFactory.Instance.HandleOnStartUnityEvent();
+            GetSocialFactory.Bridge.HandleOnStartUnityEvent();
         }
     }
 }

@@ -14,21 +14,24 @@ using Thrift;
 using Thrift.Collections;
 using System.Runtime.Serialization;
 
-public static class irisConstants
+namespace GetSocialSdk.Core 
 {
-  public const string IrisNotificationsTypeComment = "comment";
-  public const string IrisNotificationsTypeLikeActivity = "activity_like";
-  public const string IrisNotificationsTypeLikeComment = "comment_like";
-  /// <summary>
-  /// now this numbers are vacant for some other notifications types
-  /// </summary>
-  public const string IrisNotificationsTypeRelatedComment = "related_comment";
-  public const string IrisNotificationsTypeNewFriendship = "friends_add";
-  public const string IrisNotificationsTypeInviteAccepted = "invite_accept";
-  public const string IrisNotificationsTypeMentionComment = "comment_mention";
-  public const string IrisNotificationsTypeMentionActivity = "activity_mention";
-  public const string IrisNotificationsTypeReplyComment = "comment_reply";
-  public const string IrisNotificationsTypeTargeting = "targeting";
-  public const string IrisNotificationsTypeDirect = "direct";
+  public static class irisConstants
+  {
+    public const string IrisNotificationsTypeComment = "comment";
+    public const string IrisNotificationsTypeLikeActivity = "activity_like";
+    public const string IrisNotificationsTypeLikeComment = "comment_like";
+    /// <summary>
+    /// now this numbers are vacant for some other notifications types
+    /// </summary>
+    public const string IrisNotificationsTypeRelatedComment = "related_comment";
+    public const string IrisNotificationsTypeNewFriendship = "friends_add";
+    public const string IrisNotificationsTypeInviteAccepted = "invite_accept";
+    public const string IrisNotificationsTypeMentionComment = "comment_mention";
+    public const string IrisNotificationsTypeMentionActivity = "activity_mention";
+    public const string IrisNotificationsTypeReplyComment = "comment_reply";
+    public const string IrisNotificationsTypeTargeting = "targeting";
+    public const string IrisNotificationsTypeDirect = "direct";
+  }
 }
 #endif

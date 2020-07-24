@@ -3,15 +3,17 @@
     public static class GetSocialActionKeys
     {
         /// <summary>
-        /// FeedName and ActivityId are mutually exclusive.
+        /// TopicId, UserId and ActivityId are mutually exclusive. 
+        /// If present TopicId - open topic feed. If UserId - open users feed. If ActivityID - open activity.
         /// CommendId is optional and could be addition to ActivityId only.
         /// </summary>
         public static class OpenActivity
         {
             public const string ActivityId = "$activity_id";
             public const string CommentId = "$comment_id";
-            
-            public const string FeedName = "$feed_name";
+            public const string TopicId = "$topic_id";
+            public const string UserId = "$user_id";
+
         }
 
         public static class OpenProfile

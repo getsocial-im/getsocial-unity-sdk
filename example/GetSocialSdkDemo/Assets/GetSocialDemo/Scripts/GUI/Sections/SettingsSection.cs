@@ -27,13 +27,8 @@ public class SettingsSection : DemoMenuSection
         ChooseLanguage
     }
 
-    public bool PnEnabled
-    {
-        get { return _pnEnabled; }
-        set { _pnEnabled = value; }
-    }
+    public bool PnEnabled;
 
-    private bool _pnEnabled = true;
     protected SettingsSubSection _currentSection = SettingsSubSection.Main;
 
     static readonly string[] _supportedLanguagesRow1 = {"da", "de", "en", "es"};
@@ -56,6 +51,7 @@ public class SettingsSection : DemoMenuSection
 
     protected override void InitGuiElements()
     {
+        Notifications.ArePushNotificationsEnabled (isEnabled => PnEnabled = isEnabled, error => Debug.LogError ("Failed to get PN status " + error));
         InitLanguageButtonsRow(_languageButtonsRow1, _supportedLanguagesRow1);
         InitLanguageButtonsRow(_languageButtonsRow2, _supportedLanguagesRow2);
         InitLanguageButtonsRow(_languageButtonsRow3, _supportedLanguagesRow3);
@@ -86,36 +82,10 @@ public class SettingsSection : DemoMenuSection
 
     void DrawMainSection()
     {
-        DemoGuiUtils.DrawButton(_pnEnabled ? "Disable Push Notifications" : "Enable Push Notifications", TogglePNEnabled, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton(PnEnabled ? "Disable Push Notifications" : "Enable Push Notifications", TogglePNEnabled, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Change Language", () => _currentSection = SettingsSubSection.ChooseLanguage,
             style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Print Device Identifier", () => _console.LogD("Device ID: " + GetSocial.Device.Identifier), style: GSStyles.Button);
-        DemoGuiUtils.DrawButton("Set Global Error Listener", () =>
-            {
-                var result = GetSocial.SetGlobalErrorListener(OnGlobalError);
-                if (result)
-                {
-                    _console.LogD("Successfully set global error listener");
-                }
-                else
-                {
-                    _console.LogE("Failed to set global error listener");
-                }
-            },
-            style: GSStyles.Button);
-        DemoGuiUtils.DrawButton("Remove Global Error Listener", () =>
-            {
-                var result = GetSocial.RemoveGlobalErrorListener();
-                if (result)
-                {
-                    _console.LogD("Successfully removed global error listener");
-                }
-                else
-                {
-                    _console.LogE("Failed to remove global error listener");
-                }
-            },
-            style: GSStyles.Button);
     }
 
     void OnGlobalError(GetSocialError ex)
@@ -138,7 +108,7 @@ public class SettingsSection : DemoMenuSection
     void TogglePNEnabled()
     {
         var pnStatus = !PnEnabled;
-        GetSocial.User.SetPushNotificationsEnabled(pnStatus, () => { PnEnabled = pnStatus; }, error => Debug.LogError("Failed to change status" + error));
+        Notifications.SetPushNotificationsEnabled(pnStatus, () => { PnEnabled = pnStatus; }, error => Debug.LogError("Failed to change status" + error));
     }
 
     #region set_language

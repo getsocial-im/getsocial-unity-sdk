@@ -16,182 +16,189 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THIdentity : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _provider;
-  private string _providerId;
-  private string _accessToken;
 
-  public string Provider
-  {
-    get
-    {
-      return _provider;
-    }
-    set
-    {
-      __isset.provider = true;
-      this._provider = value;
-    }
-  }
-
-  public string ProviderId
-  {
-    get
-    {
-      return _providerId;
-    }
-    set
-    {
-      __isset.providerId = true;
-      this._providerId = value;
-    }
-  }
-
-  public string AccessToken
-  {
-    get
-    {
-      return _accessToken;
-    }
-    set
-    {
-      __isset.accessToken = true;
-      this._accessToken = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool provider;
-    public bool providerId;
-    public bool accessToken;
-  }
-
-  public THIdentity() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THIdentity : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              Provider = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              ProviderId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              AccessToken = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _provider;
+    private string _providerId;
+    private string _accessToken;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string Provider
     {
-      TStruct struc = new TStruct("THIdentity");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _provider;
+      }
+      set
+      {
+        __isset.provider = true;
+        this._provider = value;
+      }
+    }
+
+    public string ProviderId
+    {
+      get
+      {
+        return _providerId;
+      }
+      set
+      {
+        __isset.providerId = true;
+        this._providerId = value;
+      }
+    }
+
+    public string AccessToken
+    {
+      get
+      {
+        return _accessToken;
+      }
+      set
+      {
+        __isset.accessToken = true;
+        this._accessToken = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool provider;
+      public bool providerId;
+      public bool accessToken;
+    }
+
+    public THIdentity() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                Provider = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                ProviderId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                AccessToken = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THIdentity");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Provider != null && __isset.provider) {
+          field.Name = "provider";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Provider);
+          oprot.WriteFieldEnd();
+        }
+        if (ProviderId != null && __isset.providerId) {
+          field.Name = "providerId";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ProviderId);
+          oprot.WriteFieldEnd();
+        }
+        if (AccessToken != null && __isset.accessToken) {
+          field.Name = "accessToken";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AccessToken);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THIdentity(");
+      bool __first = true;
       if (Provider != null && __isset.provider) {
-        field.Name = "provider";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Provider);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Provider: ");
+        __sb.Append(Provider);
       }
       if (ProviderId != null && __isset.providerId) {
-        field.Name = "providerId";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ProviderId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ProviderId: ");
+        __sb.Append(ProviderId);
       }
       if (AccessToken != null && __isset.accessToken) {
-        field.Name = "accessToken";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AccessToken);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AccessToken: ");
+        __sb.Append(AccessToken);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THIdentity(");
-    bool __first = true;
-    if (Provider != null && __isset.provider) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Provider: ");
-      __sb.Append(Provider);
-    }
-    if (ProviderId != null && __isset.providerId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ProviderId: ");
-      __sb.Append(ProviderId);
-    }
-    if (AccessToken != null && __isset.accessToken) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AccessToken: ");
-      __sb.Append(AccessToken);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

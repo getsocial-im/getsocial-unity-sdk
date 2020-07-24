@@ -16,111 +16,118 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class CreateAnnouncementResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private AFAnnouncement _announcement;
 
-  public AFAnnouncement Announcement
-  {
-    get
-    {
-      return _announcement;
-    }
-    set
-    {
-      __isset.announcement = true;
-      this._announcement = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool announcement;
-  }
-
-  public CreateAnnouncementResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class CreateAnnouncementResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
+    private AFAnnouncement _announcement;
+
+    public AFAnnouncement Announcement
     {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
+      get
       {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
+        return _announcement;
+      }
+      set
+      {
+        __isset.announcement = true;
+        this._announcement = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool announcement;
+    }
+
+    public CreateAnnouncementResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          case 1:
-            if (field.Type == TType.Struct) {
-              Announcement = new AFAnnouncement();
-              Announcement.Read(iprot);
-            } else { 
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                Announcement = new AFAnnouncement();
+                Announcement.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
               TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        iprot.ReadFieldEnd();
+        iprot.ReadStructEnd();
       }
-      iprot.ReadStructEnd();
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
     }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
-    {
-      TStruct struc = new TStruct("CreateAnnouncementResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("CreateAnnouncementResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Announcement != null && __isset.announcement) {
+          field.Name = "announcement";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          Announcement.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("CreateAnnouncementResponse(");
+      bool __first = true;
       if (Announcement != null && __isset.announcement) {
-        field.Name = "announcement";
-        field.Type = TType.Struct;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        Announcement.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Announcement: ");
+        __sb.Append(Announcement== null ? "<null>" : Announcement.ToString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("CreateAnnouncementResponse(");
-    bool __first = true;
-    if (Announcement != null && __isset.announcement) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Announcement: ");
-      __sb.Append(Announcement== null ? "<null>" : Announcement.ToString());
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

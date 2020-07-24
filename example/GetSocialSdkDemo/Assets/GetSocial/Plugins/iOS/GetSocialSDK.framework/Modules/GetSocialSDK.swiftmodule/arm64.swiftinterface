@@ -1,0 +1,1898 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.1 (swiftlang-1100.0.270.13 clang-1100.0.33.7)
+// swift-module-flags: -target arm64-apple-ios8.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name GetSocialSDK
+import AVFoundation
+import AdSupport
+import CommonCrypto
+import CoreFoundation
+import CoreTelephony
+import Dispatch
+import Foundation
+import LinkPresentation
+import MessageUI
+import Social
+import StoreKit
+import Swift
+import SystemConfiguration
+import UIKit
+import UserNotifications
+import os
+@objcMembers @objc(GetSocialInviteContentPlaceholders) public class InviteContentPlaceholders : ObjectiveC.NSObject {
+  @objc public static var inviteUrl: Swift.String
+  @objc public static var userName: Swift.String
+  @objc public static var promoCode: Swift.String
+  @objc public static var appPackageName: Swift.String
+  @objc public static var inviteSubject: Swift.String
+  @objc public static var inviteText: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialProductType) public enum ProductType : Swift.Int, Swift.Codable {
+  case Item = 0
+  case Subscription
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objcMembers @objc(GetSocialPurchaseData) final public class PurchaseData : ObjectiveC.NSObject {
+  @objc final public var productId: Swift.String
+  @objc final public var productType: GetSocialSDK.ProductType
+  @objc final public var productTitle: Swift.String
+  @objc final public var price: Swift.Float
+  @objc final public var priceCurrency: Swift.String?
+  @objc final public var purchaseDate: Foundation.Date?
+  @objc final public var transactionIdentifier: Swift.String
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PurchaseData : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc @objcMembers public class PrivateTrackAnalyticsEventUseCase : GetSocialSDK.UseCase {
+  @objc public func private_trackUIEvent(_ eventName: Swift.String, properties: [Swift.String : Swift.String]? = nil)
+  @objc public func private_trackUIError(_ error: Foundation.NSError)
+  @objc public func private_trackAppDidBecomeInactive()
+  @objc public func private_trackAppSessionEvent()
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialPagingResult) public class PagingResult : ObjectiveC.NSObject {
+  @objc final public let nextCursor: Swift.String
+  @objc public var isLastPage: Swift.Bool {
+    @objc get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialJSONBridge) public class JSONBridge : ObjectiveC.NSObject {
+  @objc(decodeNotificationsQuery:) public static func decodeNotificationsQuery(_ json: Swift.String) -> GetSocialSDK.NotificationsQuery?
+  @objc(decodeActivitiesQuery:) public static func decodeActivitiesQuery(_ json: Swift.String) -> GetSocialSDK.ActivitiesQuery?
+  @objc(decodeInviteContent:) public static func decodeInviteContent(_ json: Swift.String) -> GetSocialSDK.InviteContent?
+  @objc public static func encodeAny(_ any: ObjectiveC.NSObject) -> Swift.String?
+  @objc(callSyncMethod:with:) public static func callSync(method: Swift.String, parameter: Swift.String) -> Swift.String
+  @objc(callAsyncMethod:with:success:failure:) public static func callAsync(method: Swift.String, parameter: Swift.String, success: @escaping ((Swift.String) -> Swift.Void), failure: @escaping ((Swift.String) -> Swift.Void))
+  @objc(addListener:listener:) public static func addListener(method: Swift.String, success: @escaping ((Swift.String) -> Swift.Void)) -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension JSONBridge {
+  public static func encode<Type>(_ result: Type) -> Swift.String? where Type : Swift.Encodable
+  public static func decode<Type>(_ parameter: Swift.String, failure: ((Swift.String) -> Swift.Void)?) -> Type? where Type : Swift.Decodable
+}
+public struct SendNotificationBody : Swift.Decodable {
+  public init(from decoder: Swift.Decoder) throws
+}
+@objc @objcMembers public class AnalyticsEventNames : ObjectiveC.NSObject {
+  @objc public static var appSessionStart: Swift.String
+  @objc public static var appSessionEnd: Swift.String
+  @objc public static var uiContentSession: Swift.String
+  @objc public static var uiError: Swift.String
+  @objc public static var sdkError: Swift.String
+  @objc public static var sdkLog: Swift.String
+  @objc public static var inviteSent: Swift.String
+  @objc public static var inviteCanceled: Swift.String
+  @objc public static var inviteFailed: Swift.String
+  @objc public static var uiInviteClicked: Swift.String
+  @objc public static var installReferrerReceivedAfterInit: Swift.String
+  @objc public static var uiUserActivityActionClick: Swift.String
+  @objc public static var uiUserActivityPlayVideoClick: Swift.String
+  @objc public static var pushNotificationReceived: Swift.String
+  @objc public static var pushNotificationClicked: Swift.String
+  @objc public static var inappPurchase: Swift.String
+  @objc public static var uiNotificationsClick: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class AnalyticsEventProperties : ObjectiveC.NSObject {
+  @objc public static var action: Swift.String
+  @objc public static var activitiesSource: Swift.String
+  @objc public static var activityLikersSource: Swift.String
+  @objc public static var activityId: Swift.String
+  @objc public static var commentLikersSource: Swift.String
+  @objc public static var commentsSource: Swift.String
+  @objc public static var content: Swift.String
+  @objc public static var duration: Swift.String
+  @objc public static var errorKey: Swift.String
+  @objc public static var errorMessage: Swift.String
+  @objc public static var errorSeverity: Swift.String
+  @objc public static var errorSource: Swift.String
+  @objc public static var invitesSource: Swift.String
+  @objc public static var isOnline: Swift.String
+  @objc public static var notificationActionButtonId: Swift.String
+  @objc public static var notificationActionType: Swift.String
+  @objc public static var notificationId: Swift.String
+  @objc public static var notificationsClickActionButton: Swift.String
+  @objc public static var notificationsClickListItem: Swift.String
+  @objc public static var notificationsClickMarkAsReadButton: Swift.String
+  @objc public static var notificationsClickMarkAllAsReadButton: Swift.String
+  @objc public static var notificationsClickRemoveButton: Swift.String
+  @objc public static var notificationsClickRemoveAllButton: Swift.String
+  @objc public static var notificationsClickSource: Swift.String
+  @objc public static var notificationsSource: Swift.String
+  @objc public static var price: Swift.String
+  @objc public static var priceCurrency: Swift.String
+  @objc public static var provider: Swift.String
+  @objc public static var productId: Swift.String
+  @objc public static var productTitle: Swift.String
+  @objc public static var productType: Swift.String
+  @objc public static var purchaseDataAuto: Swift.String
+  @objc public static var purchaseDataManual: Swift.String
+  @objc public static var purchaseDate: Swift.String
+  @objc public static var purchaseId: Swift.String
+  @objc public static var purchaseState: Swift.String
+  @objc public static var source: Swift.String
+  @objc public static var sourceValueUser: Swift.String
+  @objc public static var subProvider: Swift.String
+  @objc public static var title: Swift.String
+  @objc public static var tokenKey: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialReferralUsersPagingResult) final public class ReferralUsersPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let users: [GetSocialSDK.ReferralUser]
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension ReferralUsersPagingResult : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialAnalytics) public class Analytics : ObjectiveC.NSObject {
+  @discardableResult
+  @objc(trackPurchase:) public static func trackPurchase(_ data: GetSocialSDK.PurchaseData) -> Swift.Bool
+  @discardableResult
+  @objc(trackCustomEvent:properties:) public static func trackCustomEvent(_ event: Swift.String, properties: [Swift.String : Swift.String]?) -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialFriendsPagingResult) public class FriendsPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let friends: [GetSocialSDK.User]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension FriendsPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialActivitiesPagingQuery) final public class ActivitiesPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.ActivitiesQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.ActivitiesQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ActivitiesPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc(GetSocialInviteChannelPluginProtocol) public protocol InviteChannelPlugin {
+  @objc(isAvailableForDevice:) func isAvailableForDevice(inviteChannel: GetSocialSDK.InviteChannel) -> Swift.Bool
+  @objc(presentPluginWithInviteChannel:invite:onViewController:success:cancel:failure:) func presentPluginWithInviteChannel(inviteChannel: GetSocialSDK.InviteChannel, invite: GetSocialSDK.Invite, onViewController: UIKit.UIViewController, success: @escaping ([Swift.String : Swift.String]) -> Swift.Void, cancel: @escaping ([Swift.String : Swift.String]) -> Swift.Void, failure: @escaping (Swift.Error, [Swift.String : Swift.String]) -> Swift.Void)
+}
+@objcMembers @objc(GetSocialSuggestedFriendsPagingQuery) final public class SuggestedFriendsPagingQuery : GetSocialSDK.PagingQuery {
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension SuggestedFriendsPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc @objcMembers public class ReferralDataUseCase : GetSocialSDK.UseCase {
+  @objc public func clear()
+  @objc public func onPause()
+  @objc public func onResume(sourceApplication: Swift.String?, referrer: Foundation.URL?) -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class GetSocialLoggerObjc : ObjectiveC.NSObject {
+  @objc public static func log(level: Swift.String, message: Swift.String)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialLanguageCodes) public class LanguageCodes : ObjectiveC.NSObject {
+  @objc public static var bengali: Swift.String
+  @objc public static var bhojpuri: Swift.String
+  @objc public static var chinese_simplified: Swift.String
+  @objc public static var chinese_traditional: Swift.String
+  @objc public static var danish: Swift.String
+  @objc public static var dutch: Swift.String
+  @objc public static var english: Swift.String
+  @objc public static var french: Swift.String
+  @objc public static var german: Swift.String
+  @objc public static var gujarati: Swift.String
+  @objc public static var hindi: Swift.String
+  @objc public static var icelandic: Swift.String
+  @objc public static var indonesian: Swift.String
+  @objc public static var italian: Swift.String
+  @objc public static var japanese: Swift.String
+  @objc public static var kannada: Swift.String
+  @objc public static var korean: Swift.String
+  @objc public static var latin_american_spanish: Swift.String
+  @objc public static var malay: Swift.String
+  @objc public static var malayalam: Swift.String
+  @objc public static var marathi: Swift.String
+  @objc public static var norwegian: Swift.String
+  @objc public static var polish: Swift.String
+  @objc public static var portuguese: Swift.String
+  @objc public static var portuguese_brazillian: Swift.String
+  @objc public static var punjabi: Swift.String
+  @objc public static var russian: Swift.String
+  @objc public static var spanish: Swift.String
+  @objc public static var swedish: Swift.String
+  @objc public static var tagalog: Swift.String
+  @objc public static var tamil: Swift.String
+  @objc public static var telugu: Swift.String
+  @objc public static var thai: Swift.String
+  @objc public static var turkish: Swift.String
+  @objc public static var ukrainian: Swift.String
+  @objc public static var vietnamese: Swift.String
+  @objc public static var defaultLanguage: Swift.String
+  @objc public static func all() -> [Swift.String : Swift.String]
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialFollowersQuery) @objcMembers final public class FollowersQuery : ObjectiveC.NSObject {
+  @objc(ofTopicWithId:) public static func ofTopic(_ id: Swift.String) -> GetSocialSDK.FollowersQuery
+  @objc(ofUserWithId:) public static func ofUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.FollowersQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension FollowersQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+public enum InstallPlatform : Swift.String {
+  case Android
+  case iOS
+  case API
+  case Web_Android
+  case Web_iOS
+  case Web_Desktop
+  case Desktop_Windows
+  case Desktop_Mac
+  case Desktop_Linux
+  case Other
+  public init(_ fromRawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objcMembers @objc(GetSocialTopicsPagingResult) public class TopicsPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let topics: [GetSocialSDK.Topic]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension TopicsPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialErrorCode) public class ErrorCode : ObjectiveC.NSObject {
+  @objc public static var Unknown: Swift.Int
+  @objc public static var GenericCommunicationError: Swift.Int
+  @objc public static var NullAppID: Swift.Int
+  @objc public static var InvalidAppID: Swift.Int
+  @objc public static var InvalidThriftResponse: Swift.Int
+  @objc public static var UncaughtException: Swift.Int
+  @objc public static var ActionDenied: Swift.Int
+  @objc public static var SdkInitializationFailed: Swift.Int
+  @objc public static var IllegalArgument: Swift.Int
+  @objc public static var IllegalState: Swift.Int
+  @objc public static var InvalidOptionalValue: Swift.Int
+  @objc public static var SdkNotInitialized: Swift.Int
+  @objc public static var ActivityNotFound: Swift.Int
+  @objc public static var UserIsBanned: Swift.Int
+  @objc public static var PlatformDisabled: Swift.Int
+  @objc public static var AppSignatureMismatch: Swift.Int
+  @objc public static var UserIdTokenMismatch: Swift.Int
+  @objc public static var UserConflict: Swift.Int
+  @objc public static var NoReferrerMatch: Swift.Int
+  @objc public static var ActivityRejected: Swift.Int
+  @objc public static var ConnectionTimeout: Swift.Int
+  @objc public static var NoInternet: Swift.Int
+  @objc public static var JsonBridge: Swift.Int
+  @objc public static var JsonEncode: Swift.Int
+  @objc public static var JsonDecode: Swift.Int
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialPagingQuery) public class PagingQuery : ObjectiveC.NSObject {
+  @objc public static var defaultLimit: Swift.Int
+  @objc public var nextCursor: Swift.String?
+  @objc public var limit: Swift.Int
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialReferralData) final public class ReferralData : ObjectiveC.NSObject {
+  @objc final public var token: Swift.String {
+    get
+    }
+  @objc final public var referrerUserId: Swift.String? {
+    get
+    }
+  @objc final public var referrerChannelId: Swift.String {
+    get
+    }
+  @objc final public var isFirstMatch: Swift.Bool {
+    get
+    }
+  @objc final public var isGuaranteedMatch: Swift.Bool {
+    get
+    }
+  @objc final public var isReinstall: Swift.Bool {
+    get
+    }
+  @objc final public var isFirstMatchLink: Swift.Bool {
+    get
+    }
+  @objc final public var linkParams: [Swift.String : Swift.String] {
+    get
+    }
+  @objc final public var originalLinkParams: [Swift.String : Swift.String] {
+    get
+    }
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ReferralData : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialTopicsQuery) final public class TopicsQuery : ObjectiveC.NSObject {
+  @objc(find:) public static func find(_ searchTerm: Swift.String) -> GetSocialSDK.TopicsQuery
+  @objc(all) public static func all() -> GetSocialSDK.TopicsQuery
+  @objc(followedByUserWithId:) final public func followedBy(_ id: GetSocialSDK.UserId) -> GetSocialSDK.TopicsQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension TopicsQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialFollowersPagingResult) public class FollowersPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let followers: [GetSocialSDK.User]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension FollowersPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialActivitiesQuery) final public class ActivitiesQuery : ObjectiveC.NSObject {
+  @objc final public var byUser: GetSocialSDK.UserId? {
+    get
+    }
+  @objc final public var tag: Swift.String? {
+    get
+    }
+  @objc(feedOfUserWithId:) public static func feedOf(_ id: GetSocialSDK.UserId) -> GetSocialSDK.ActivitiesQuery
+  @objc(inTopicWithId:) public static func inTopic(_ id: Swift.String) -> GetSocialSDK.ActivitiesQuery
+  @objc(inAllTopics) public static func inAllTopics() -> GetSocialSDK.ActivitiesQuery
+  @objc public static func timeline() -> GetSocialSDK.ActivitiesQuery
+  @objc public static func everywhere() -> GetSocialSDK.ActivitiesQuery
+  @objc(byUserWithId:) final public func byUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.ActivitiesQuery
+  @objc(withTag:) final public func withTag(_ tag: Swift.String) -> GetSocialSDK.ActivitiesQuery
+  @objc final public func asPostTarget() -> GetSocialSDK.PostActivityTarget?
+  @objc final public func asAnnouncementsQuery() -> GetSocialSDK.AnnouncementsQuery?
+  @objc(commentsToActivityWithId:) public static func commentsToActivity(_ id: Swift.String) -> GetSocialSDK.ActivitiesQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ActivitiesQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc public class SwiftComponentHelper : ObjectiveC.NSObject {
+  @objc public static var mediaUploader: Swift.String
+  @objc public static var reachability: Swift.String
+  @objc public static var atomicIntegerProvider: Swift.String
+  @objc public static func reset()
+  @objc public static func registerComponents(objcComponents: [Swift.String : Any] = [:])
+  @objc public static func registerTestComponents()
+  @objc public static func setPushRegistrator(_ block: @escaping () -> Swift.Void)
+  public static func setIsInitialized()
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias OnCurrentUserChangedListener = (GetSocialSDK.CurrentUser) -> Swift.Void
+public typealias OnInitializedListener = () -> Swift.Void
+public typealias SuccessCallback = () -> Swift.Void
+public typealias CancelCallback = GetSocialSDK.SuccessCallback
+public typealias FailureCallback = (Swift.Error) -> Swift.Void
+public typealias ResultCallback<Result> = (Result) -> Swift.Void
+@objc @objcMembers public class GetSocial : ObjectiveC.NSObject {
+  @objc public static func sdkVersion() -> Swift.String
+  @objc public static func isTestDevice() -> Swift.Bool
+  @objc public static func deviceIdentifier() -> Swift.String
+  @objc public static func initSdk()
+  @objc(initSdkWithAppId:) public static func initSdk(appId: Swift.String)
+  @objc public static func addOnInitializedListener(_ listener: @escaping GetSocialSDK.OnInitializedListener)
+  @objc public static func isInitialized() -> Swift.Bool
+  @objc public static func currentUser() -> GetSocialSDK.CurrentUser?
+  @objc @discardableResult
+  public static func addOnCurrentUserChangedListener(_ listener: @escaping GetSocialSDK.OnCurrentUserChangedListener) -> Swift.String
+  @objc public static func removeOnCurrentUserChangedListener(_ id: Swift.String)
+  @discardableResult
+  @objc(setLanguage:) public static func setLanguage(_ languageCode: Swift.String) -> Swift.Bool
+  @objc public static func language() -> Swift.String
+  @objc(handleAction:) public static func handle(_ action: GetSocialSDK.Action)
+  @objc(resetUserWithSuccess:failure:) public static func resetUser(success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(switchUserToIdentity:success:failure:) public static func switchUser(to identity: GetSocialSDK.Identity, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias OnNotificationClickedListener = (GetSocialSDK.GetSocialNotification, GetSocialSDK.NotificationContext) -> Swift.Void
+public typealias OnNotificationReceivedListener = (GetSocialSDK.GetSocialNotification) -> Swift.Void
+public typealias OnTokenReceivedListener = (Swift.String) -> Swift.Void
+@objc(GetSocialNotifications) @objcMembers public class Notifications : ObjectiveC.NSObject {
+  @objc(getWithQuery:success:failure:) public static func get(_ query: GetSocialSDK.NotificationsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.NotificationsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(countWithQuery:success:failure:) public static func count(_ query: GetSocialSDK.NotificationsQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(setStatusTo:notificationIds:success:failure:) public static func setStatus(_ newStatus: Swift.String, notificationIds: [Swift.String], success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(setPushNotificationsEnabled:success:failure:) public static func setPushNotificationsEnabled(_ enabled: Swift.Bool, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(arePushNotificationsEnabledWithSuccess:failure:) public static func arePushNotificationsEnabled(success: @escaping GetSocialSDK.ResultCallback<Swift.Bool>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(sendNotificationContent:target:success:failure:) public static func send(_ content: GetSocialSDK.NotificationContent, target: GetSocialSDK.SendNotificationTarget, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(registerDevice) public static func registerDevice()
+  @objc(setOnNotificationClickedListener:) public static func setOnNotificationClickedListener(_ listener: @escaping GetSocialSDK.OnNotificationClickedListener)
+  @objc(setOnNotificationReceivedListener:) public static func setOnNotificationReceivedListener(_ listener: @escaping GetSocialSDK.OnNotificationReceivedListener)
+  @objc(setOnTokenReceivedListener:) public static func setOnTokenReceivedListener(_ listener: @escaping GetSocialSDK.OnTokenReceivedListener)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialInviteProperties) final public class InviteProperties : ObjectiveC.NSObject {
+  @objc final public var action: Swift.String? {
+    get
+    }
+  final public var availableFields: [GetSocialSDK.AvailableField] {
+    get
+    }
+  @objc final public var contentType: Swift.String? {
+    get
+    }
+  @objc final public var packageName: Swift.String? {
+    get
+    }
+  @objc final public var urlScheme: Swift.String? {
+    get
+    }
+  @objc final public var className: Swift.String? {
+    get
+    }
+  @objc final public var data: Swift.String? {
+    get
+    }
+  @objc override dynamic public init()
+  @objc deinit
+}
+public enum AvailableField : Swift.Int, Swift.Codable {
+  case extraSubject
+  case extraText
+  case extraStream
+  case extraGif
+  case extraVideo
+  case extraTest
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension InviteProperties : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialReactionsPagingQuery) final public class ReactionsPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.ReactionsQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.ReactionsQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ReactionsPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialReferralUsersQuery) final public class ReferralUsersQuery : GetSocialSDK.PagingQuery {
+  @objc(allUsers) public static func allUsers() -> GetSocialSDK.ReferralUsersQuery
+  @objc(usersForEvent:) public static func usersForEvent(_ event: Swift.String) -> GetSocialSDK.ReferralUsersQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ReferralUsersQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialInvite) public class Invite : ObjectiveC.NSObject {
+  @objc public var subject: Swift.String? {
+    get
+    }
+  @objc public var text: Swift.String? {
+    get
+    }
+  @objc public var userName: Swift.String? {
+    get
+    }
+  @objc public var imageUrl: Swift.String? {
+    get
+    }
+  @objc public var image: UIKit.UIImage? {
+    get
+    }
+  @objc public var gifUrl: Swift.String? {
+    get
+    }
+  @objc public var videoUrl: Swift.String? {
+    get
+    }
+  @objc public var referralUrl: Swift.String? {
+    get
+    }
+  @objc public var linkParams: [Swift.String : Swift.String] {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Invite : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialAnnouncementsPagingResult) public class AnnouncementsPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let activities: [GetSocialSDK.Activity]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension AnnouncementsPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialTopicsPagingQuery) final public class TopicsPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.TopicsQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.TopicsQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension TopicsPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialInviteContent) final public class InviteContent : ObjectiveC.NSObject {
+  @objc final public var subject: Swift.String?
+  @objc final public var text: Swift.String?
+  @objc final public var mediaAttachment: GetSocialSDK.MediaAttachment?
+  @objc final public var linkParams: [Swift.String : ObjectiveC.NSObject]
+  @objc(setLinkParameterValue:forKey:) final public func setLinkParameter(value: ObjectiveC.NSObject, forKey: Swift.String)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension InviteContent : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialFollowQuery) final public class FollowQuery : ObjectiveC.NSObject {
+  @objc(topicsWithIds:) public static func topics(_ ids: [Swift.String]) -> GetSocialSDK.FollowQuery
+  @objc(usersWithIds:) public static func users(_ ids: GetSocialSDK.UserIdList) -> GetSocialSDK.FollowQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension FollowQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialBanInfo) public class BanInfo : ObjectiveC.NSObject {
+  public var expiration: Swift.Int64? {
+    get
+    }
+  @objc public var reason: Swift.String? {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension BanInfo : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialNotificationReceiverPlaceholders) public class NotificationReceiverPlaceholders : ObjectiveC.NSObject {
+  @objc public static var friends: Swift.String
+  @objc public static var referredUsers: Swift.String
+  @objc public static var referrer: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialSendNotificationTarget) final public class SendNotificationTarget : ObjectiveC.NSObject {
+  @objc(usersWithIds:) public static func users(_ ids: GetSocialSDK.UserIdList) -> GetSocialSDK.SendNotificationTarget
+  @objc(addReceiverPlaceholder:) final public func addReceiver(_ placeholder: Swift.String) -> GetSocialSDK.SendNotificationTarget
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension SendNotificationTarget : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialUserId) final public class UserId : ObjectiveC.NSObject {
+  @objc public init(_ userId: Swift.String, providerId: Swift.String? = nil)
+  @objc(create:) public static func create(_ id: Swift.String) -> GetSocialSDK.UserId
+  @objc(createWithProvider:id:) public static func create(provider: Swift.String, id: Swift.String) -> GetSocialSDK.UserId
+  @objc(currentUser) public static func currentUser() -> GetSocialSDK.UserId
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UserId : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialCurrentUser) public class CurrentUser : GetSocialSDK.PrivateUser {
+  @objc(updateDetailsWith:success:failure:) public func updateDetails(_ userUpdate: GetSocialSDK.UserUpdate, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc public func isAnonymous() -> Swift.Bool
+  @objc(addIdentity:success:conflict:failure:) public func addIdentity(_ identity: GetSocialSDK.Identity, success: @escaping GetSocialSDK.SuccessCallback, conflict: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ConflictUser>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(removeIdentityByProviderId:success:failure:) public func removeIdentity(_ providerId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialAnnouncementsQuery) final public class AnnouncementsQuery : ObjectiveC.NSObject {
+  @objc(forFeedOfUserWithId:) public static func forFeedOf(_ id: GetSocialSDK.UserId) -> GetSocialSDK.AnnouncementsQuery
+  @objc(inTopicWithId:) public static func inTopic(_ id: Swift.String) -> GetSocialSDK.AnnouncementsQuery
+  @objc public static func timeline() -> GetSocialSDK.AnnouncementsQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension AnnouncementsQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialInviteChannel) public class InviteChannel : ObjectiveC.NSObject {
+  @objc public var channelId: Swift.String {
+    get
+    }
+  @objc public var name: Swift.String? {
+    @objc get
+  }
+  @objc public var iconUrl: Swift.String {
+    get
+    }
+  @objc public var isEnabled: Swift.Bool {
+    get
+    }
+  @objc public var displayOrder: Swift.Int32 {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension InviteChannel : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objc public protocol AtomicIntegerProvider {
+  @objc func incrementAndGet() -> Swift.Int
+}
+@objc @objcMembers public class DebugLogsUseCase : GetSocialSDK.UseCase {
+  @objc public func changeStatus(newSetting: Swift.String?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+public enum KeychainItemAccessibility {
+  case afterFirstUnlock
+  case afterFirstUnlockThisDeviceOnly
+  case always
+  @available(iOS 8, *)
+  case whenPasscodeSetThisDeviceOnly
+  case alwaysThisDeviceOnly
+  case whenUnlocked
+  case whenUnlockedThisDeviceOnly
+  public static func == (a: GetSocialSDK.KeychainItemAccessibility, b: GetSocialSDK.KeychainItemAccessibility) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+public class ComponentResolver {
+  @objc deinit
+}
+@objc @objcMembers public class PrivateInternetConnectedUseCase : GetSocialSDK.UseCase {
+  @objc public func isInternetConnected() -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialCommunitiesEntityType) public enum CommunitiesEntityType : Swift.Int, Swift.CustomStringConvertible, Swift.Codable {
+  case unknown = 0
+  case app = 1
+  case topic = 2
+  case group = 3
+  case user = 4
+  case activity = 6
+  public var description: Swift.String {
+    get
+  }
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objcMembers @objc(GetSocialCommunitiesEntity) public class CommunitiesEntity : ObjectiveC.NSObject {
+  @objc public var id: Swift.String {
+    get
+    }
+  @objc public var type: GetSocialSDK.CommunitiesEntityType {
+    get
+    }
+  @objc public var title: Swift.String? {
+    @objc get
+  }
+  @objc public var avatarUrl: Swift.String? {
+    get
+    }
+  @objc public var followersCount: Swift.Int {
+    get
+    }
+  @objc public var isFollowedByMe: Swift.Bool {
+    get
+    }
+  @objc public func isActionAllowed(action: GetSocialSDK.CommunitiesAction) -> Swift.Bool
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension CommunitiesEntity : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialFriendsQuery) final public class FriendsQuery : ObjectiveC.NSObject {
+  @objc(ofUserWithId:) public static func ofUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.FriendsQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension FriendsQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialPromoCodes) public class PromoCodes : ObjectiveC.NSObject {
+  @objc(createWithContent:success:failure:) public static func create(_ content: GetSocialSDK.PromoCodeContent, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.PromoCode>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(getWithCode:success:failure:) public static func get(_ code: Swift.String, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.PromoCode>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(claimWithCode:success:failure:) public static func claim(_ code: Swift.String, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.PromoCode>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class InvokePendingInviteCallbackUseCase : GetSocialSDK.UseCase {
+  @objc public func invoke()
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class InitSdkUseCase : GetSocialSDK.UseCase {
+  @objc public func execute(with appId: Swift.String?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public class UseCase : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialUsersPagingQuery) @objcMembers final public class UsersPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.UsersQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.UsersQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UsersPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+open class KeychainWrapper {
+  @available(*, deprecated, message: "KeychainWrapper.defaultKeychainWrapper is deprecated since version 2.2.1, use KeychainWrapper.standard instead")
+  public static var defaultKeychainWrapper: GetSocialSDK.KeychainWrapper
+  public static var standard: GetSocialSDK.KeychainWrapper
+  public var serviceName: Swift.String {
+    get
+    }
+  public var accessGroup: Swift.String? {
+    get
+    }
+  public init(serviceName: Swift.String, accessGroup: Swift.String? = nil)
+  open func hasValue(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  open func accessibilityOfKey(_ key: Swift.String) -> GetSocialSDK.KeychainItemAccessibility?
+  open func allKeys() -> Swift.Set<Swift.String>
+  open func integer(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Int?
+  open func float(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Float?
+  open func double(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Double?
+  open func bool(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool?
+  open func string(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.String?
+  open func object(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Foundation.NSCoding?
+  open func data(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Foundation.Data?
+  open func dataRef(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Foundation.Data?
+  @discardableResult
+  open func set(_ value: Swift.Int, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func set(_ value: Swift.Float, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func set(_ value: Swift.Double, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func set(_ value: Swift.Bool, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func set(_ value: Swift.String, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func set(_ value: Foundation.NSCoding, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func set(_ value: Foundation.Data, forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @available(*, deprecated, message: "remove is deprecated since version 2.2.1, use removeObject instead")
+  @discardableResult
+  open func remove(key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func removeObject(forKey key: Swift.String, withAccessibility accessibility: GetSocialSDK.KeychainItemAccessibility? = nil) -> Swift.Bool
+  @discardableResult
+  open func removeAllKeys() -> Swift.Bool
+  open class func wipeKeychain()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialActivity) public class Activity : ObjectiveC.NSObject {
+  @objc(activityId) public var id: Swift.String {
+    get
+    }
+  @objc public var text: Swift.String? {
+    get
+    }
+  @objc public var author: GetSocialSDK.User {
+    get
+    }
+  @objc public var mediaAttachments: [GetSocialSDK.MediaAttachment] {
+    get
+    }
+  @objc public var button: GetSocialSDK.ActivityButton? {
+    get
+    }
+  @objc public var type: Swift.String? {
+    get
+    }
+  @objc public var isAnnouncement: Swift.Bool {
+    get
+    }
+  @objc public var commentsCount: Swift.Int {
+    get
+    }
+  @objc public var reactionsCount: [Swift.String : Swift.Int] {
+    get
+    }
+  @objc public var myReactions: [Swift.String] {
+    get
+    }
+  @objc public var reactions: [GetSocialSDK.UserReactions] {
+    get
+    }
+  @objc public var commenters: [GetSocialSDK.User] {
+    get
+    }
+  @objc public var properties: [Swift.String : Swift.String] {
+    get
+    }
+  @objc public var createdAt: Swift.Int64 {
+    get
+    }
+  @objc public var mentions: [GetSocialSDK.Mention] {
+    get
+    }
+  @objc public var viewCount: Swift.Int {
+    get
+    }
+  @objc public var source: GetSocialSDK.CommunitiesEntity? {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Activity : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialActivityButton) final public class ActivityButton : ObjectiveC.NSObject {
+  @objc final public var title: Swift.String {
+    get
+    }
+  @objc final public var action: GetSocialSDK.Action {
+    get
+    }
+  @objc public static func create(title: Swift.String, action: GetSocialSDK.Action) -> GetSocialSDK.ActivityButton
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ActivityButton : Swift.Codable {
+  final public func encode(to encoder: Swift.Encoder) throws
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialPrivateTopicBuilder) public class PrivateTopicBuilder : ObjectiveC.NSObject {
+  @objc(updateTopic:isFollowed:) public static func updateTopic(topic: GetSocialSDK.Topic, isFollowed: Swift.Bool)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialTopic) @objcMembers public class Topic : ObjectiveC.NSObject {
+  @objc(topicId) public var id: Swift.String {
+    get
+    }
+  @objc public var title: Swift.String? {
+    @objc get
+  }
+  @objc public var topicDescription: Swift.String? {
+    @objc get
+  }
+  @objc public var avatarUrl: Swift.String? {
+    get
+    }
+  @objc public var createdAt: Swift.Int64 {
+    get
+    }
+  @objc public var updatedAt: Swift.Int64 {
+    get
+    }
+  @objc public var settings: GetSocialSDK.CommunitiesSettings {
+    get
+    }
+  @objc public var followersCount: Swift.Int {
+    get
+    }
+  @objc public var isFollowedByMe: Swift.Bool {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Topic : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialSuggestedFriendsPagingResult) public class SuggestedFriendsPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let suggestedFriends: [GetSocialSDK.SuggestedFriend]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension SuggestedFriendsPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialActionType) public class ActionType : ObjectiveC.NSObject {
+  @objc public static var openProfile: Swift.String
+  @objc public static var openActivity: Swift.String
+  @objc public static var openInvites: Swift.String
+  @objc public static var openUrl: Swift.String
+  @objc public static var addFriend: Swift.String
+  @objc public static var claimPromoCode: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialActionDataKey) public class ActionDataKey : ObjectiveC.NSObject {
+  @objc public static var openActivity_ActivityId: Swift.String
+  @objc public static var openActivity_CommentId: Swift.String
+  @objc public static var openActivity_TopicId: Swift.String
+  @objc public static var openActivity_UserId: Swift.String
+  @objc public static var openProfile_UserId: Swift.String
+  @objc public static var addFriend_UserId: Swift.String
+  @objc public static var openUrl_Url: Swift.String
+  @objc public static var claimPromoCode_PromoCode: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialAction) final public class Action : ObjectiveC.NSObject {
+  @objc final public let type: Swift.String
+  @objc final public var data: [Swift.String : Swift.String] {
+    get
+    }
+  @objc(actionWithType:data:) public static func create(type: Swift.String, data: [Swift.String : Swift.String] = [:]) -> GetSocialSDK.Action
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Action : Swift.Codable {
+  final public func encode(to encoder: Swift.Encoder) throws
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc(GetSocialMentionType) public enum MentionType : Swift.Int, Swift.CustomStringConvertible, Swift.Codable {
+  case app = 0
+  case user = 1
+  public var description: Swift.String {
+    get
+  }
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objcMembers @objc(GetSocialMention) final public class Mention : ObjectiveC.NSObject {
+  @objc final public var userId: Swift.String?
+  @objc final public var startIndex: Swift.Int
+  @objc final public var endIndex: Swift.Int
+  @objc final public var type: GetSocialSDK.MentionType
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Mention : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialPostActivityTarget) final public class PostActivityTarget : ObjectiveC.NSObject {
+  @objc(topicWithId:) public static func topic(_ id: Swift.String) -> GetSocialSDK.PostActivityTarget
+  @objc(timeline) public static func timeline() -> GetSocialSDK.PostActivityTarget
+  @objc public static func comment(to activityId: Swift.String) -> GetSocialSDK.PostActivityTarget
+  @objc final public func type() -> GetSocialSDK.CommunitiesEntityType
+  @objc final public func targetId() -> Swift.String
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PostActivityTarget : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialPrivateNotificationBuilder) public class PrivateNotificationBuilder : ObjectiveC.NSObject {
+  @objc(updateNotification:newStatus:) public static func updateStatus(notification: GetSocialSDK.GetSocialNotification, newStatus: Swift.String) -> GetSocialSDK.GetSocialNotification
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialNotificationsPagingQuery) final public class NotificationsPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.NotificationsQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.NotificationsQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationsPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialNotificationsQuery) final public class NotificationsQuery : ObjectiveC.NSObject {
+  @objc final public var types: [Swift.String]
+  @objc final public var statuses: [Swift.String]
+  @objc final public var actions: [Swift.String]
+  @objc public static func withStatuses(_ statuses: [Swift.String]) -> GetSocialSDK.NotificationsQuery
+  @objc public static func withAllStatuses() -> GetSocialSDK.NotificationsQuery
+  @objc(appendType:) final public func appendType(_ type: Swift.String) -> GetSocialSDK.NotificationsQuery
+  @objc(appendStatus:) final public func appendStatus(_ status: Swift.String) -> GetSocialSDK.NotificationsQuery
+  @objc(appendAction:) final public func appendAction(_ action: Swift.String) -> GetSocialSDK.NotificationsQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationsQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialNotificationButton) final public class NotificationButton : ObjectiveC.NSObject {
+  @objc public static var actionIdConsume: Swift.String
+  @objc public static var actionIdIgnore: Swift.String
+  @objc final public let actionId: Swift.String
+  @objc final public let title: Swift.String
+  @objc(createWithTitle:actionId:) public static func create(title: Swift.String, actionId: Swift.String) -> GetSocialSDK.NotificationButton
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationButton : Swift.Codable {
+  final public func encode(to encoder: Swift.Encoder) throws
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialNotificationContentPlaceholders) public class NotificationContentPlaceholders : ObjectiveC.NSObject {
+  @objc public static var senderDisplayName: Swift.String
+  @objc public static var receiverDisplayName: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialNotificationContent) @objcMembers final public class NotificationContent : ObjectiveC.NSObject {
+  @objc final public var text: Swift.String?
+  @objc final public var title: Swift.String?
+  @objc final public var actionButtons: [GetSocialSDK.NotificationButton]
+  @objc final public var action: GetSocialSDK.Action?
+  @objc final public var templateName: Swift.String?
+  @objc final public var templatePlaceholders: [Swift.String : Swift.String]
+  @objc final public var mediaAttachment: GetSocialSDK.MediaAttachment?
+  @objc final public var customization: GetSocialSDK.NotificationCustomization?
+  @objc final public var badge: GetSocialSDK.NotificationBadge?
+  @objc(withText:) public static func withText(_ text: Swift.String) -> GetSocialSDK.NotificationContent
+  @objc(withTemplateName:) public static func withTemplate(_ name: Swift.String) -> GetSocialSDK.NotificationContent
+  @objc(appendActionButton:) final public func appendActionButton(_ actionButton: GetSocialSDK.NotificationButton)
+  @objc(setTemplatePlaceholderValue:forKey:) final public func setTemplatePlaceholder(value: Swift.String, forKey: Swift.String)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationContent : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc(GetSocialNotificationCustomization) @objcMembers final public class NotificationCustomization : ObjectiveC.NSObject {
+  @objc final public var backgroundImageConfiguration: Swift.String?
+  @objc final public var titleColor: Swift.String?
+  @objc final public var textColor: Swift.String?
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationCustomization : Swift.Codable {
+  final public func encode(to encoder: Swift.Encoder) throws
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc public protocol InternetConnectivity {
+  @objc func isConnected() -> Swift.Bool
+}
+@objcMembers @objc(GetSocialActivityContent) final public class ActivityContent : ObjectiveC.NSObject {
+  @objc final public var text: Swift.String?
+  @objc final public var attachments: [GetSocialSDK.MediaAttachment]
+  @objc final public var button: GetSocialSDK.ActivityButton?
+  @objc final public var properties: [Swift.String : Swift.String]
+  @objc(setPropertyValue:forKey:) final public func setProperty(value: Swift.String, forKey: Swift.String)
+  @objc(appendMediaAttachment:) final public func appendMediaAttachment(_ attachment: GetSocialSDK.MediaAttachment)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ActivityContent : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialMediaAttachment) final public class MediaAttachment : ObjectiveC.NSObject {
+  @objc final public var videoUrl: Swift.String? {
+    get
+    }
+  @objc final public var imageUrl: Swift.String? {
+    get
+    }
+  @objc(withImageUrl:) public static func imageUrl(_ imageUrl: Swift.String) -> GetSocialSDK.MediaAttachment
+  @objc(withImage:) public static func image(_ image: UIKit.UIImage) -> GetSocialSDK.MediaAttachment
+  @objc(withVideoUrl:) public static func videoUrl(_ videoUrl: Swift.String) -> GetSocialSDK.MediaAttachment
+  @objc(withVideo:) public static func video(_ video: Foundation.Data) -> GetSocialSDK.MediaAttachment
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension MediaAttachment : Swift.Codable {
+  public convenience init(from decoder: Swift.Decoder) throws
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialReferralUser) public class ReferralUser : GetSocialSDK.User {
+  @objc public var eventDate: Swift.UInt {
+    get
+    }
+  @objc public var event: Swift.String? {
+    get
+    }
+  @objc public var eventData: [Swift.String : Swift.String] {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  override public func encode(to encoder: Swift.Encoder) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialTagsQuery) final public class TagsQuery : ObjectiveC.NSObject {
+  @objc final public var inTarget: GetSocialSDK.PostActivityTarget?
+  @objc(find:) public static func find(_ searchTerm: Swift.String) -> GetSocialSDK.TagsQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension TagsQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc public class PrivateUser : GetSocialSDK.User {
+  @objc public var privateProperties: [Swift.String : Swift.String] {
+    get
+    }
+  @objc public var banInfo: GetSocialSDK.BanInfo? {
+    get
+    }
+  @objc public var isBanned: Swift.Bool {
+    @objc get
+  }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  override public func encode(to encoder: Swift.Encoder) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialUser) @objcMembers public class User : ObjectiveC.NSObject, Swift.Encodable {
+  @objc public var userId: Swift.String {
+    get
+    }
+  @objc public var displayName: Swift.String {
+    get
+    }
+  @objc public var avatarUrl: Swift.String? {
+    get
+    }
+  @objc public var identities: [Swift.String : Swift.String] {
+    get
+    }
+  @objc public var publicProperties: [Swift.String : Swift.String] {
+    get
+    }
+  @objc public var isApp: Swift.Bool {
+    get
+    }
+  @objc public var isVerified: Swift.Bool {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  public func encode(to encoder: Swift.Encoder) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialNotificationsPagingResult) final public class NotificationsPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let notifications: [GetSocialSDK.GetSocialNotification]
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension NotificationsPagingResult : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialUserUpdate) final public class UserUpdate : ObjectiveC.NSObject {
+  @objc final public var displayName: Swift.String?
+  @objc final public var avatarUrl: Swift.String? {
+    @objc get
+    @objc set(newValue)
+  }
+  @objc final public var avatar: UIKit.UIImage? {
+    @objc get
+    @objc set(newValue)
+  }
+  @objc final public var publicProperties: [Swift.String : Swift.String]
+  @objc final public var privateProperties: [Swift.String : Swift.String]
+  @objc(removePublicPropertyWithKey:) final public func removePublicProperty(forKey: Swift.String)
+  @objc(setPublicPropertyValue:forKey:) final public func setPublicProperty(value: Swift.String, forKey: Swift.String)
+  @objc(setPrivatePropertyValue:forKey:) final public func setPrivateProperty(value: Swift.String, forKey: Swift.String)
+  @objc(removePrivatePropertyWithKey:) final public func removePrivateProperty(forKey: Swift.String)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UserUpdate : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialReactionsQuery) final public class ReactionsQuery : ObjectiveC.NSObject {
+  @objc final public var reaction: Swift.String?
+  @objc(forActivityWithId:) public static func forActivity(_ id: Swift.String) -> GetSocialSDK.ReactionsQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ReactionsQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc(GetSocialMediaUploader) public protocol MediaUploader {
+  @objc func uploadMedia(_ media: Foundation.Data, to url: Foundation.URL, withMetadata metadata: [Swift.String : Swift.String]) -> Swift.String?
+}
+@objcMembers @objc(GetSocialIdentityProviderIds) public class IdentityProviderIds : ObjectiveC.NSObject {
+  @objc public static var facebook: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialIdentity) @objcMembers final public class Identity : ObjectiveC.NSObject {
+  @objc(facebookIdentityWithAccessToken:) public static func facebook(withAccessToken accessToken: Swift.String) -> GetSocialSDK.Identity
+  @objc(customIdentityWithProviderId:userId:accessToken:) public static func custom(providerId: Swift.String, userId: Swift.String, accessToken: Swift.String) -> GetSocialSDK.Identity
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Identity : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialConflictUser) public class ConflictUser : GetSocialSDK.PrivateUser {
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  override public func encode(to encoder: Swift.Encoder) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias OnReferralDataReceivedListener = (GetSocialSDK.ReferralData) -> Swift.Void
+@objcMembers @objc(GetSocialLinkParams) public class LinkParams : ObjectiveC.NSObject {
+  @objc public static var customTitle: Swift.String
+  @objc public static var customDescription: Swift.String
+  @objc public static var customImage: Swift.String
+  @objc public static var customYouTubeVideo: Swift.String
+  @objc public static var customPromoCode: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialInvites) public class Invites : ObjectiveC.NSObject {
+  @objc(availableChannelsWithSuccess:failure:) public static func availableChannels(success: ([GetSocialSDK.InviteChannel]) -> Swift.Void, failure: (Swift.Error) -> Swift.Void)
+  @objc(sendInviteContent:onChannel:success:cancel:failure:) public static func send(_ content: GetSocialSDK.InviteContent?, onChannel: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, cancel: @escaping GetSocialSDK.CancelCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(createInviteWithContent:success:failure:) public static func create(_ content: GetSocialSDK.InviteContent?, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Invite>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(createInviteURLWithContent:success:failure:) public static func createURL(_ content: GetSocialSDK.InviteContent?, success: @escaping GetSocialSDK.ResultCallback<Swift.String>, failure: @escaping GetSocialSDK.FailureCallback)
+  @discardableResult
+  @objc(registerPlugin:forChannel:) public static func register(_ plugin: GetSocialSDK.InviteChannelPlugin, forChannel: Swift.String) -> Swift.Bool
+  @objc(setOnReferralDataReceivedListener:) public static func setOnReferralDataReceivedListener(_ listener: @escaping GetSocialSDK.OnReferralDataReceivedListener)
+  @objc(referredUsersWithQuery:success:failure:) public static func referredUsers(_ query: GetSocialSDK.ReferralUsersPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ReferralUsersPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(referrerUsersWithQuery:success:failure:) public static func referrerUsers(_ query: GetSocialSDK.ReferralUsersPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ReferralUsersPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(setReferrerWithId:event:customData:success:failure:) public static func setReferrer(_ id: GetSocialSDK.UserId, event: Swift.String, customData: [Swift.String : Swift.String]?, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialReactionsPagingResult) public class ReactionsPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let reactions: [GetSocialSDK.UserReactions]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension ReactionsPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objc(GetSocialUsersQuery) @objcMembers final public class UsersQuery : ObjectiveC.NSObject {
+  @objc(find:) public static func find(_ searchTerm: Swift.String) -> GetSocialSDK.UsersQuery
+  @objc public static func followedBy(_ id: GetSocialSDK.UserId) -> GetSocialSDK.UsersQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UsersQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialNotificationContext) final public class NotificationContext : ObjectiveC.NSObject {
+  @objc final public var action: Swift.String?
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationContext : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialUserReference) final public class UserReference : ObjectiveC.NSObject {
+  @objc final public var userId: Swift.String? {
+    get
+    }
+  @objc final public var displayName: Swift.String {
+    get
+    }
+  @objc final public var avatarUrl: Swift.String? {
+    get
+    }
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UserReference : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objc(GetSocialCommunitiesAction) public enum CommunitiesAction : Swift.Int, Swift.Codable {
+  case post
+  case react
+  case comment
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objcMembers @objc(GetSocialCommunitiesSettings) public class CommunitiesSettings : ObjectiveC.NSObject {
+  @objc public var properties: [Swift.String : Swift.String] {
+    get
+    }
+  @objc public func isActionAllowed(action: GetSocialSDK.CommunitiesAction) -> Swift.Bool
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension CommunitiesSettings : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialReferralUsersPagingQuery) final public class ReferralUsersPagingQuery : GetSocialSDK.PagingQuery {
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.ReferralUsersQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension ReferralUsersPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc(GetSocialSuggestedFriend) public class SuggestedFriend : GetSocialSDK.User {
+  @objc public var mutualFriendsCount: Swift.Int {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  override public func encode(to encoder: Swift.Encoder) throws
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialActivitiesPagingResult) public class ActivitiesPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let activities: [GetSocialSDK.Activity]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension ActivitiesPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objc(GetSocialFollowersPagingQuery) @objcMembers final public class FollowersPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.FollowersQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.FollowersQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension FollowersPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialCommunities) public class Communities : ObjectiveC.NSObject {
+  @objc(addFriendsWithIds:success:failure:) public static func addFriends(_ ids: GetSocialSDK.UserIdList, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(removeFriendsWithIds:success:failure:) public static func removeFriends(_ ids: GetSocialSDK.UserIdList, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(areFriendsWithIds:success:failure:) public static func areFriends(_ ids: GetSocialSDK.UserIdList, success: @escaping GetSocialSDK.ResultCallback<[Swift.String : Swift.Bool]>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(isFriendWithId:success:failure:) public static func isFriend(_ id: GetSocialSDK.UserId, success: @escaping GetSocialSDK.ResultCallback<Swift.Bool>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(friendsCountWithQuery:success:failure:) public static func friendsCount(_ query: GetSocialSDK.FriendsQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(friendsWithQuery:success:failure:) public static func friends(_ query: GetSocialSDK.FriendsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.FriendsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(suggestedFriendsWithQuery:success:failure:) public static func suggestedFriends(_ query: GetSocialSDK.SuggestedFriendsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.SuggestedFriendsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(setFriendsWithIds:success:failure:) public static func setFriends(_ ids: GetSocialSDK.UserIdList, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(usersWithQuery:success:failure:) public static func users(_ query: GetSocialSDK.UsersPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.UsersPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(usersWithIds:success:failure:) public static func users(_ ids: GetSocialSDK.UserIdList, success: @escaping GetSocialSDK.ResultCallback<[Swift.String : GetSocialSDK.User]>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(userWithId:success:failure:) public static func user(_ id: GetSocialSDK.UserId, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.User>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(usersCountWithQuery:success:failure:) public static func usersCount(_ query: GetSocialSDK.UsersQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(followWithQuery:success:failure:) public static func follow(_ query: GetSocialSDK.FollowQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(unfollowWithQuery:success:failure:) public static func unfollow(_ query: GetSocialSDK.FollowQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(isFollowingWithUserId:query:success:failure:) public static func isFollowing(_ id: GetSocialSDK.UserId, query: GetSocialSDK.FollowQuery, success: @escaping GetSocialSDK.ResultCallback<[Swift.String : Swift.Bool]>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(followersWithQuery:success:failure:) public static func followers(_ query: GetSocialSDK.FollowersPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.UsersPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(followersCountWithQuery:success:failure:) public static func followersCount(_ query: GetSocialSDK.FollowersQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(announcementsWithQuery:success:failure:) public static func announcements(_ query: GetSocialSDK.AnnouncementsQuery, success: @escaping GetSocialSDK.ResultCallback<[GetSocialSDK.Activity]>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(activitiesWithQuery:success:failure:) public static func activities(_ query: GetSocialSDK.ActivitiesPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ActivitiesPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(activityWithId:success:failure:) public static func activity(_ id: Swift.String, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Activity>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(postActivityContent:target:success:failure:) public static func postActivity(_ content: GetSocialSDK.ActivityContent, target: GetSocialSDK.PostActivityTarget, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Activity>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(updateActivityWithId:content:success:failure:) public static func updateActivity(_ id: Swift.String, content: GetSocialSDK.ActivityContent, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Activity>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(addReaction:toActivityWithId:success:failure:) public static func addReaction(_ reaction: Swift.String, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(removeReaction:fromActivityWithId:success:failure:) public static func removeReaction(_ reaction: Swift.String, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(reactionsWithQuery:success:failure:) public static func reactions(_ query: GetSocialSDK.ReactionsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ReactionsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(reportActivityWithId:reason:explanation:success:failure:) public static func reportActivity(_ id: Swift.String, reason: GetSocialSDK.ReportingReason, explanation: Swift.String?, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(removeActivitiesWithQuery:success:failure:) public static func removeActivities(_ query: GetSocialSDK.RemoveActivitiesQuery, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(tagsWithQuery:success:failure:) public static func tags(_ query: GetSocialSDK.TagsQuery, success: @escaping GetSocialSDK.ResultCallback<[Swift.String]>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(topicWithId:success:failure:) public static func topic(_ id: Swift.String, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Topic>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(topicsWithQuery:success:failure:) public static func topics(_ query: GetSocialSDK.TopicsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.TopicsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(topicsCountWithQuery:success:failure:) public static func topicsCount(_ query: GetSocialSDK.TopicsQuery, success: @escaping GetSocialSDK.ResultCallback<Swift.Int>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public class OldInviteContent : ObjectiveC.NSObject {
+  public var subject: Swift.String? {
+    get
+  }
+  public var text: Swift.String? {
+    get
+  }
+  public var image: UIKit.UIImage? {
+    get
+    }
+  public var imageUrl: Swift.String? {
+    get
+    }
+  public var videoUrl: Swift.String? {
+    get
+    }
+  public var gifUrl: Swift.String? {
+    get
+    }
+  public var linkParams: [Swift.String : ObjectiveC.NSObject] {
+    get
+    }
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialNotificationType) public class NotificationType : ObjectiveC.NSObject {
+  @objc public static var comment: Swift.String
+  @objc public static var likeActivity: Swift.String
+  @objc public static var likeComment: Swift.String
+  @objc public static var relatedComment: Swift.String
+  @objc public static var newFriendship: Swift.String
+  @objc public static var inviteAccepted: Swift.String
+  @objc public static var mentionInComment: Swift.String
+  @objc public static var mentionInActivity: Swift.String
+  @objc public static var replyToComment: Swift.String
+  @objc public static var targeting: Swift.String
+  @objc public static var direct: Swift.String
+  @objc public static var sdk: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialNotificationStatus) public class NotificationStatus : ObjectiveC.NSObject {
+  @objc public static var read: Swift.String
+  @objc public static var unread: Swift.String
+  @objc public static var consumed: Swift.String
+  @objc public static var ignored: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers final public class GetSocialNotification : ObjectiveC.NSObject {
+  @objc final public var type: Swift.String? {
+    get
+    }
+  @objc final public var status: Swift.String? {
+    get
+    }
+  @objc final public var createdAt: Swift.Int64 {
+    get
+    }
+  @objc final public var notificationId: Swift.String {
+    get
+    }
+  @objc final public var text: Swift.String? {
+    get
+    }
+  @objc final public var title: Swift.String? {
+    get
+    }
+  @objc final public var mediaAttachment: GetSocialSDK.MediaAttachment?
+  @objc final public var notificationAction: GetSocialSDK.Action? {
+    get
+    }
+  @objc final public var actionButtons: [GetSocialSDK.NotificationButton] {
+    get
+    }
+  @objc final public var sender: GetSocialSDK.User {
+    get
+    }
+  @objc final public var customization: GetSocialSDK.NotificationCustomization? {
+    get
+    }
+  @objc final public var wasRead: Swift.Bool {
+    @objc get
+  }
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension GetSocialNotification : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objc @objcMembers public class RegisterOnPushServerUseCase : GetSocialSDK.UseCase {
+  @objc public func execute(token: Swift.String, sandbox: Swift.Bool)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialFriendsPagingQuery) final public class FriendsPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.FriendsQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.FriendsQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension FriendsPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialUserIdList) final public class UserIdList : ObjectiveC.NSObject {
+  @objc(create:) public static func create(_ ids: [Swift.String]) -> GetSocialSDK.UserIdList
+  @objc(createWithProvider:ids:) public static func create(provider: Swift.String, ids: [Swift.String]) -> GetSocialSDK.UserIdList
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UserIdList : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialRemoveActivitiesQuery) final public class RemoveActivitiesQuery : ObjectiveC.NSObject {
+  @objc(activitiesWithIds:) public static func activityIds(_ ids: [Swift.String]) -> GetSocialSDK.RemoveActivitiesQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension RemoveActivitiesQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialInviteChannelIds) public class InviteChannelIds : ObjectiveC.NSObject {
+  @objc public static var generic: Swift.String
+  @objc public static var email: Swift.String
+  @objc public static var facebook: Swift.String
+  @objc public static var instagramDirect: Swift.String
+  @objc public static var kakao: Swift.String
+  @objc public static var kik: Swift.String
+  @objc public static var line: Swift.String
+  @objc public static var facebookMessenger: Swift.String
+  @objc public static var nativeShare: Swift.String
+  @objc public static var snapchat: Swift.String
+  @objc public static var sms: Swift.String
+  @objc public static var twitter: Swift.String
+  @objc public static var telegram: Swift.String
+  @objc public static var viber: Swift.String
+  @objc public static var vk: Swift.String
+  @objc public static var whatsApp: Swift.String
+  @objc public static var instagramStories: Swift.String
+  @objc public static var facebookStories: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialReactions) public class Reactions : ObjectiveC.NSObject {
+  @objc public static var like: Swift.String
+  @objc public static var love: Swift.String
+  @objc public static var haha: Swift.String
+  @objc public static var wow: Swift.String
+  @objc public static var sad: Swift.String
+  @objc public static var angry: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialUserReactions) final public class UserReactions : ObjectiveC.NSObject {
+  @objc final public let user: GetSocialSDK.User
+  @objc final public let reactions: [Swift.String]
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UserReactions : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objc @objcMembers public class NotificationRepresentation : ObjectiveC.NSObject {
+  @objc public var isSilent: Swift.Bool
+  @objc public static func fromInfo(_ info: [Swift.String : Any]?) -> GetSocialSDK.NotificationRepresentation?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class PushNotificationInteractionUseCase : GetSocialSDK.UseCase {
+  @objc public func trackReceivedNotification(notification: GetSocialSDK.NotificationRepresentation)
+  @objc public func trackNotificationClick(notification: GetSocialSDK.NotificationRepresentation)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class PrivateSessionStateHandlerUseCase : GetSocialSDK.UseCase {
+  @objc public func isInitialized() -> Swift.Bool
+  @objc public func isInitializing() -> Swift.Bool
+  @objc public func addOnInitializeListener(_ listener: @escaping () -> Swift.Void)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class PrivateMetaDataUseCase : GetSocialSDK.UseCase {
+  @objc public static func shouldAutoInitSdk() -> Swift.Bool
+  @objc public static func uiConfigurationFile() -> Swift.String?
+  @objc public static func disablePushNotifications() -> Swift.Bool
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class PrivateSetUIActionListenerUseCase : GetSocialSDK.UseCase {
+  @objc public static func setUIActionListener(_ listener: @escaping (GetSocialSDK.Action) -> Swift.Bool)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialPrivateActivityBuilder) public class PrivateActivityBuilder : ObjectiveC.NSObject {
+  @objc(likeActivity:isLiked:) public static func likeActivity(activity: GetSocialSDK.Activity, isLiked: Swift.Bool)
+  @objc(commentActivity:) public static func commentActivity(activity: GetSocialSDK.Activity) -> GetSocialSDK.Activity
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialPromoCode) final public class PromoCode : ObjectiveC.NSObject {
+  @objc final public var code: Swift.String {
+    get
+    }
+  @objc final public var properties: [Swift.String : Swift.String] {
+    get
+    }
+  @objc final public var maxClaimCount: Swift.Int {
+    get
+    }
+  @objc final public var startDate: Swift.Int64 {
+    get
+    }
+  @objc final public var endDate: Swift.Int64 {
+    get
+    }
+  @objc final public var creator: GetSocialSDK.User {
+    get
+    }
+  @objc final public var claimCount: Swift.Int {
+    get
+    }
+  @objc final public var isEnabled: Swift.Bool {
+    get
+    }
+  @objc final public var isClaimable: Swift.Bool {
+    get
+    }
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PromoCode : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
+@objc(GetSocialReportingReason) public enum ReportingReason : Swift.Int, Swift.Decodable {
+  case spam
+  case inappropriateContent
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objcMembers @objc(GetSocialPromoCodeContent) final public class PromoCodeContent : ObjectiveC.NSObject {
+  @objc final public var code: Swift.String?
+  @objc final public var properties: [Swift.String : Swift.String]
+  @objc final public var startDate: Foundation.Date?
+  @objc final public var endDate: Foundation.Date?
+  @objc final public var maxClaims: Swift.Int
+  @objc public static func withRandomCode() -> GetSocialSDK.PromoCodeContent
+  @objc(withCode:) public static func withCode(_ code: Swift.String) -> GetSocialSDK.PromoCodeContent
+  @objc(setTimeLimitWithStartDate:endDate:) final public func setTimeLimit(startDate: Foundation.Date?, endDate: Foundation.Date?)
+  @objc(setPropertyValue:forKey:) final public func setProperty(value: Swift.String, forKey: Swift.String)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PromoCodeContent : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
+@objc @objcMembers public class SetNotificationsStatusUpdateListenerUseCase : GetSocialSDK.UseCase {
+  @objc public static func setNotificationsStatusUpdateListener(_ listener: (([Swift.String], Swift.String) -> Swift.Void)?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc @objcMembers public class GetApplicationInfoUseCase : GetSocialSDK.UseCase {
+  @objc public static var appName: Swift.String? {
+    @objc get
+  }
+  @objc public static var appAvatar: Swift.String? {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objcMembers @objc(GetSocialUsersPagingResult) public class UsersPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let users: [GetSocialSDK.User]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension UsersPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objc @objcMembers public class PrivateStartPendingHandlersInvokerUseCase : GetSocialSDK.UseCase {
+  @objc public func private_execute()
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(GetSocialNotificationBadge) final public class NotificationBadge : ObjectiveC.NSObject {
+  @objc(increaseBy:) public static func increase(_ by: Swift.Int32) -> GetSocialSDK.NotificationBadge
+  @objc(setTo:) public static func set(_ to: Swift.Int32) -> GetSocialSDK.NotificationBadge
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension NotificationBadge : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}

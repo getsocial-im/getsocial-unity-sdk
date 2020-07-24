@@ -6,9 +6,15 @@
  *  @generated
  */
 
-public enum AFMentionType
+namespace GetSocialSdk.Core 
 {
-  APP = 0,
-  USER = 1,
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
+  public enum AFMentionType
+  {
+    APP = 0,
+    USER = 1,
+  }
 }
 #endif

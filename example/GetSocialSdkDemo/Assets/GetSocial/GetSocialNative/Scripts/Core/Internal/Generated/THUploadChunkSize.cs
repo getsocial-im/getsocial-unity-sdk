@@ -16,221 +16,228 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THUploadChunkSize : TBase
+namespace GetSocialSdk.Core 
 {
-  private long _wifi;
-  private long _lte;
-  private long _tg;
-  private long _other;
-
-  public long Wifi
-  {
-    get
-    {
-      return _wifi;
-    }
-    set
-    {
-      __isset.wifi = true;
-      this._wifi = value;
-    }
-  }
-
-  public long Lte
-  {
-    get
-    {
-      return _lte;
-    }
-    set
-    {
-      __isset.lte = true;
-      this._lte = value;
-    }
-  }
-
-  public long Tg
-  {
-    get
-    {
-      return _tg;
-    }
-    set
-    {
-      __isset.tg = true;
-      this._tg = value;
-    }
-  }
 
   /// <summary>
-  /// 3G
+  /// #sdk6 #sdk7
   /// </summary>
-  public long Other
-  {
-    get
-    {
-      return _other;
-    }
-    set
-    {
-      __isset.other = true;
-      this._other = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool wifi;
-    public bool lte;
-    public bool tg;
-    public bool other;
-  }
-
-  public THUploadChunkSize() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THUploadChunkSize : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I64) {
-              Wifi = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I64) {
-              Lte = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.I64) {
-              Tg = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.I64) {
-              Other = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private long _wifi;
+    private long _lte;
+    private long _tg;
+    private long _other;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public long Wifi
     {
-      TStruct struc = new TStruct("THUploadChunkSize");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _wifi;
+      }
+      set
+      {
+        __isset.wifi = true;
+        this._wifi = value;
+      }
+    }
+
+    public long Lte
+    {
+      get
+      {
+        return _lte;
+      }
+      set
+      {
+        __isset.lte = true;
+        this._lte = value;
+      }
+    }
+
+    public long Tg
+    {
+      get
+      {
+        return _tg;
+      }
+      set
+      {
+        __isset.tg = true;
+        this._tg = value;
+      }
+    }
+
+    /// <summary>
+    /// 3G
+    /// </summary>
+    public long Other
+    {
+      get
+      {
+        return _other;
+      }
+      set
+      {
+        __isset.other = true;
+        this._other = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool wifi;
+      public bool lte;
+      public bool tg;
+      public bool other;
+    }
+
+    public THUploadChunkSize() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I64) {
+                Wifi = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I64) {
+                Lte = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I64) {
+                Tg = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.I64) {
+                Other = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THUploadChunkSize");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.wifi) {
+          field.Name = "wifi";
+          field.Type = TType.I64;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(Wifi);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.lte) {
+          field.Name = "lte";
+          field.Type = TType.I64;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(Lte);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.tg) {
+          field.Name = "tg";
+          field.Type = TType.I64;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(Tg);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.other) {
+          field.Name = "other";
+          field.Type = TType.I64;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(Other);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THUploadChunkSize(");
+      bool __first = true;
       if (__isset.wifi) {
-        field.Name = "wifi";
-        field.Type = TType.I64;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(Wifi);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Wifi: ");
+        __sb.Append(Wifi);
       }
       if (__isset.lte) {
-        field.Name = "lte";
-        field.Type = TType.I64;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(Lte);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Lte: ");
+        __sb.Append(Lte);
       }
       if (__isset.tg) {
-        field.Name = "tg";
-        field.Type = TType.I64;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(Tg);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Tg: ");
+        __sb.Append(Tg);
       }
       if (__isset.other) {
-        field.Name = "other";
-        field.Type = TType.I64;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(Other);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Other: ");
+        __sb.Append(Other);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THUploadChunkSize(");
-    bool __first = true;
-    if (__isset.wifi) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Wifi: ");
-      __sb.Append(Wifi);
-    }
-    if (__isset.lte) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Lte: ");
-      __sb.Append(Lte);
-    }
-    if (__isset.tg) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Tg: ");
-      __sb.Append(Tg);
-    }
-    if (__isset.other) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Other: ");
-      __sb.Append(Other);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

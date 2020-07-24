@@ -1,0 +1,4 @@
+framework module GetSocialSDK {
+  header "GetSocialSDK.h"
+  requires objc
+}

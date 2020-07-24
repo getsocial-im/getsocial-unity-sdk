@@ -40,7 +40,7 @@ public abstract class DemoMenuSection : MonoBehaviour
 
     protected virtual void GoBack()
     {
-        GetComponentInParent<GetSocialDemoController>().ShowMainMenu();
+        demoController.PopMenuSection();
     }
 
     protected virtual bool IsBackButtonActive()
@@ -78,6 +78,11 @@ public abstract class DemoMenuSection : MonoBehaviour
         this.demoController = demoController;
         this._console = console;
         InitGuiElements();
+    }
+
+    public ActionDialog Dialog()
+    {
+        return demoController.Dialog();
     }
 
     void DrawBody()

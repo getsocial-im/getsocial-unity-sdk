@@ -6,14 +6,20 @@
  *  @generated
  */
 
-public enum SGEntityType
+namespace GetSocialSdk.Core 
 {
-  UNKNOWN = 0,
-  APP = 1,
-  TOPIC = 2,
-  GROUP = 3,
-  USER = 4,
-  CHAT = 5,
-  ACTIVITY = 6,
+  /// <summary>
+  /// #sdk7
+  /// </summary>
+  public enum SGEntityType
+  {
+    UNKNOWN = 0,
+    APP = 1,
+    TOPIC = 2,
+    GROUP = 3,
+    USER = 4,
+    CHAT = 5,
+    ACTIVITY = 6,
+  }
 }
 #endif

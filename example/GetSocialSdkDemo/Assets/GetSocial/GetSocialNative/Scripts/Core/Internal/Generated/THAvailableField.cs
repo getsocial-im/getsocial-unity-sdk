@@ -6,16 +6,22 @@
  *  @generated
  */
 
-public enum THAvailableField
+namespace GetSocialSdk.Core 
 {
-  ExtraSubject = 0,
-  ExtraText = 1,
-  ExtraStream = 2,
-  ExtraGif = 3,
-  ExtraVideo = 4,
   /// <summary>
-  /// used for tests only
+  /// #sdk6 #sdk7
   /// </summary>
-  ExtraTest = -1000,
+  public enum THAvailableField
+  {
+    ExtraSubject = 0,
+    ExtraText = 1,
+    ExtraStream = 2,
+    ExtraGif = 3,
+    ExtraVideo = 4,
+    /// <summary>
+    /// used for tests only
+    /// </summary>
+    ExtraTest = -1000,
+  }
 }
 #endif

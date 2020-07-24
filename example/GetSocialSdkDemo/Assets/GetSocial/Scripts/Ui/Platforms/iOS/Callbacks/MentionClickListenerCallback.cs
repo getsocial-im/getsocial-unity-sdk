@@ -1,4 +1,4 @@
-﻿#if UNITY_IOS && USE_GETSOCIAL_UI
+﻿#if UNITY_IOS 
 using System;
 using GetSocialSdk.Core;
 
@@ -9,9 +9,9 @@ namespace GetSocialSdk.Ui
     public class MentionClickListenerCallback
     {
         [AOT.MonoPInvokeCallback(typeof(MentionClickListenerDelegate))]
-        public static void OnMentionClicled(IntPtr mentionClickListenerPtr, string mention)
+        public static void OnMentionClicked(IntPtr mentionClickListenerPtr, string mention)
         {
-            GetSocialDebugLogger.D(string.Format("OnMentionClicled for user {0}", mention));
+            GetSocialDebugLogger.D(string.Format("OnMentionClicked for user {0}", mention));
 
             if (mentionClickListenerPtr != IntPtr.Zero)
             {

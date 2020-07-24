@@ -16,239 +16,246 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THAnalyticsEvent : TBase
+namespace GetSocialSdk.Core 
 {
-  private THSuperProperties _superProperties;
-  private Dictionary<string, string> _customProperties;
-  private long _deviceTime;
-  private string _name;
 
-  public THSuperProperties SuperProperties
-  {
-    get
-    {
-      return _superProperties;
-    }
-    set
-    {
-      __isset.superProperties = true;
-      this._superProperties = value;
-    }
-  }
-
-  public Dictionary<string, string> CustomProperties
-  {
-    get
-    {
-      return _customProperties;
-    }
-    set
-    {
-      __isset.customProperties = true;
-      this._customProperties = value;
-    }
-  }
-
-  public long DeviceTime
-  {
-    get
-    {
-      return _deviceTime;
-    }
-    set
-    {
-      __isset.deviceTime = true;
-      this._deviceTime = value;
-    }
-  }
-
-  public string Name
-  {
-    get
-    {
-      return _name;
-    }
-    set
-    {
-      __isset.name = true;
-      this._name = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool superProperties;
-    public bool customProperties;
-    public bool deviceTime;
-    public bool name;
-  }
-
-  public THAnalyticsEvent() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THAnalyticsEvent : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.Struct) {
-              SuperProperties = new THSuperProperties();
-              SuperProperties.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Map) {
-              {
-                CustomProperties = new Dictionary<string, string>();
-                TMap _map0 = iprot.ReadMapBegin();
-                for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
-                {
-                  string _key2;
-                  string _val3;
-                  _key2 = iprot.ReadString();
-                  _val3 = iprot.ReadString();
-                  CustomProperties[_key2] = _val3;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.I64) {
-              DeviceTime = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              Name = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private THSuperProperties _superProperties;
+    private Dictionary<string, string> _customProperties;
+    private long _deviceTime;
+    private string _name;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public THSuperProperties SuperProperties
     {
-      TStruct struc = new TStruct("THAnalyticsEvent");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _superProperties;
+      }
+      set
+      {
+        __isset.superProperties = true;
+        this._superProperties = value;
+      }
+    }
+
+    public Dictionary<string, string> CustomProperties
+    {
+      get
+      {
+        return _customProperties;
+      }
+      set
+      {
+        __isset.customProperties = true;
+        this._customProperties = value;
+      }
+    }
+
+    public long DeviceTime
+    {
+      get
+      {
+        return _deviceTime;
+      }
+      set
+      {
+        __isset.deviceTime = true;
+        this._deviceTime = value;
+      }
+    }
+
+    public string Name
+    {
+      get
+      {
+        return _name;
+      }
+      set
+      {
+        __isset.name = true;
+        this._name = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool superProperties;
+      public bool customProperties;
+      public bool deviceTime;
+      public bool name;
+    }
+
+    public THAnalyticsEvent() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Struct) {
+                SuperProperties = new THSuperProperties();
+                SuperProperties.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Map) {
+                {
+                  CustomProperties = new Dictionary<string, string>();
+                  TMap _map0 = iprot.ReadMapBegin();
+                  for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
+                  {
+                    string _key2;
+                    string _val3;
+                    _key2 = iprot.ReadString();
+                    _val3 = iprot.ReadString();
+                    CustomProperties[_key2] = _val3;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.I64) {
+                DeviceTime = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                Name = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THAnalyticsEvent");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SuperProperties != null && __isset.superProperties) {
+          field.Name = "superProperties";
+          field.Type = TType.Struct;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          SuperProperties.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (CustomProperties != null && __isset.customProperties) {
+          field.Name = "customProperties";
+          field.Type = TType.Map;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, CustomProperties.Count));
+            foreach (string _iter4 in CustomProperties.Keys)
+            {
+              oprot.WriteString(_iter4);
+              oprot.WriteString(CustomProperties[_iter4]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.deviceTime) {
+          field.Name = "deviceTime";
+          field.Type = TType.I64;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(DeviceTime);
+          oprot.WriteFieldEnd();
+        }
+        if (Name != null && __isset.name) {
+          field.Name = "name";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Name);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THAnalyticsEvent(");
+      bool __first = true;
       if (SuperProperties != null && __isset.superProperties) {
-        field.Name = "superProperties";
-        field.Type = TType.Struct;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        SuperProperties.Write(oprot);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SuperProperties: ");
+        __sb.Append(SuperProperties== null ? "<null>" : SuperProperties.ToString());
       }
       if (CustomProperties != null && __isset.customProperties) {
-        field.Name = "customProperties";
-        field.Type = TType.Map;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, CustomProperties.Count));
-          foreach (string _iter4 in CustomProperties.Keys)
-          {
-            oprot.WriteString(_iter4);
-            oprot.WriteString(CustomProperties[_iter4]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CustomProperties: ");
+        __sb.Append(CustomProperties.ToDebugString());
       }
       if (__isset.deviceTime) {
-        field.Name = "deviceTime";
-        field.Type = TType.I64;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(DeviceTime);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DeviceTime: ");
+        __sb.Append(DeviceTime);
       }
       if (Name != null && __isset.name) {
-        field.Name = "name";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Name);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Name: ");
+        __sb.Append(Name);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THAnalyticsEvent(");
-    bool __first = true;
-    if (SuperProperties != null && __isset.superProperties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SuperProperties: ");
-      __sb.Append(SuperProperties== null ? "<null>" : SuperProperties.ToString());
-    }
-    if (CustomProperties != null && __isset.customProperties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("CustomProperties: ");
-      __sb.Append(CustomProperties);
-    }
-    if (__isset.deviceTime) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("DeviceTime: ");
-      __sb.Append(DeviceTime);
-    }
-    if (Name != null && __isset.name) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Name: ");
-      __sb.Append(Name);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

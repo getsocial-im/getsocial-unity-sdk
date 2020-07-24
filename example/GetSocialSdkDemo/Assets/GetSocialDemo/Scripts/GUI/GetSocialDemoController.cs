@@ -18,13 +18,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Assets.GetSocialDemo.Scripts.Utils;
-using com.adjust.sdk;
 using Facebook.Unity;
 using GetSocialDemo.Scripts.GUI.Sections;
 using GetSocialSdk.Core;
-using GetSocialSdk.MiniJSON;
 using GetSocialSdk.Ui;
 using UnityEngine;
+using GetSocialSdk.MiniJSON;
 
 public class GetSocialDemoController : MonoBehaviour {
     const string MainMenuTitle = "Main Menu";
@@ -38,14 +37,13 @@ public class GetSocialDemoController : MonoBehaviour {
     Vector2 _scrollPos;
     DemoAppConsole _console;
 
-    List<DemoMenuSection> _menuSections;
-
     public string CurrentViewTitle { set; get; }
     private string _latestReferralData;
     private string _latestChatId;
+    private bool _isTestDevice;
 
     // store user info to avoid constant calls to native
-    CurrentUserInfo _currentUserInfo = new CurrentUserInfo ();
+    private CurrentUser _currentUser;
 
     #region lifecycle
 
@@ -54,10 +52,9 @@ public class GetSocialDemoController : MonoBehaviour {
         // change default framerate
         Application.targetFrameRate = 100;
         _console = gameObject.GetComponent<DemoAppConsole> ().Init ();
-        Adjust.start (new AdjustConfig ("suzggk2586io", AdjustEnvironment.Production));
         SetupAppsFlyer ();
-        SetupGetSocial ();
-        SetupMenuSections ();
+        ShowMainMenu();
+        SetupGetSocial();
 #if UNITY_IOS
         OnApplicationPause (false);
 #endif
@@ -81,71 +78,14 @@ public class GetSocialDemoController : MonoBehaviour {
 
     private void OnApplicationPause (bool pauseStatus) {
         if (!pauseStatus) {
-            GetSocial.WhenInitialized (() => {
+            GetSocial.AddOnInitializedListener (() => {
                 if (_latestChatId != null) {
                     ShowChat ();
-                } else {
-                    GetSocial.GetReferralData (
-                        data => {
-                            var referralToken = "";
-                            var message = "Referral data: " + data;
-                            string promoCode = null;
-                            if (data == null) {
-                                message = "No referral data";
-                            } else {
-                                promoCode = data.ReferralLinkParams.ContainsKey (LinkParams.KeyPromoCode) ? data.ReferralLinkParams[LinkParams.KeyPromoCode] : null;
-                                referralToken = data.Token;
-                            }
-
-                            if (!referralToken.Equals (_latestReferralData)) {
-                                // show popup only if chat is not shown
-                                if (_latestChatId == null) {
-                                    if (promoCode != null) {
-                                        message += "\n\nPROMO CODE: " + promoCode;
-                                    }
-                                    var popup = new MNPopup ("Referral Data", message);
-                                    popup.AddAction ("OK", () => { });
-                                    if (promoCode != null) {
-                                        popup.AddAction ("Claim Promo Code", () => PromoCodesSection.ClaimPromoCode (promoCode));
-                                    }
-                                    popup.Show ();
-                                }
-                                _console.LogD (message);
-                                _latestReferralData = referralToken;
-                            }
-                        },
-                        error => _console.LogE ("Failed to get referral data: " + error.Message)
-                    );
-                }
+                } 
             });
         } else {
             GetSocialUi.CloseView (false);
         }
-    }
-
-    void SetupMenuSections () {
-        _menuSections = new List<DemoMenuSection> {
-            GetComponentInChildren<AuthSection> (),
-            GetComponentInChildren<SmartInvitesApiSection> (),
-            GetComponentInChildren<ActivityFeedApiSection> (),
-            GetComponentInChildren<SocialGraphSection> (),
-            GetComponentInChildren<NotificationsApiSection> (),
-            GetComponentInChildren<InAppPurchaseApiSection> (),
-            GetComponentInChildren<SendNotificationSection> (),
-            GetComponentInChildren<PromoCodesSection> (),
-            GetComponentInChildren<CustomAnalyticsEventSection> (),
-            GetComponentInChildren<SetReferrerSection> (),
-#if USE_GETSOCIAL_UI
-            GetComponentInChildren<SmartInvitesUiSection> (),
-            GetComponentInChildren<ActivityFeedUiSection> (),
-            GetComponentInChildren<NotificationUiSection> (),
-            GetComponentInChildren<UiCustomizationSection> (),
-#endif
-            GetComponentInChildren<SettingsSection> ()
-        };
-
-        _menuSections.ForEach (section => section.Initialize (this, _console));
-        ShowMainMenu ();
     }
 
     protected virtual void Start () {
@@ -161,7 +101,7 @@ public class GetSocialDemoController : MonoBehaviour {
             _notification = null;
             var popup = new MNPopup (notification.Title, notification.Text);
             notification.ActionButtons.ForEach (button => {
-                popup.AddAction (button.Title, () => { ProcessAction (button.Id, notification); });
+                popup.AddAction (button.Title, () => { ProcessAction (button.ActionId, notification); });
             });
             popup.AddAction ("Dismiss", () => { });
             popup.Show ();
@@ -203,60 +143,80 @@ public class GetSocialDemoController : MonoBehaviour {
     #region methods
 
     public void SetupGetSocial () {
-        GetSocial.SetPushNotificationTokenListener (deviceToken => {
+        Notifications.SetOnTokenReceivedListener (deviceToken => {
             _console.LogD (string.Format ("DeviceToken: {0}", deviceToken), false);
         });
-        GetSocial.SetNotificationListener ((notification, wasClicked) => {
+        Notifications.SetOnNotificationReceivedListener(notification => {
             // handle chat message
-            if (notification.NotificationAction.Type.Equals ("open_chat_message")) {
-                _latestChatId = notification.NotificationAction.Data["open_messages_for_id"];
-                if (GetSocial.IsInitialized) {
-                    ShowChat ();
+            if (notification.Action.Type.Equals("open_chat_message"))
+            {
+                _latestChatId = notification.Action.Data["open_messages_for_id"];
+                if (GetSocial.IsInitialized)
+                {
+                    ShowChat();
                 }
-                return true;
             }
-            if (notification.NotificationAction.Type.Equals (GetSocialActionType.AddFriend)) {
-                ShowPopup (notification);
-                return true;
+            if (notification.Action.Type.Equals(GetSocialActionType.AddFriend))
+            {
+                ShowPopup(notification);
             }
-            _console.LogD (string.Format ("Notification(wasClicked : {0}): {1}", wasClicked, notification));
-            if (!wasClicked) {
-                return false;
-            }
-
-            return HandleAction (notification.NotificationAction);
+            _console.LogD(string.Format("Notification received : {0}", notification));
         });
-
-        // Set custom listener for global errors
-        GetSocial.SetGlobalErrorListener (error => {
-            _console.LogE ("Global error listener invoked with message: " + error.Message);
+        Notifications.SetOnNotificationClickedListener((notification, context) => {
+            _console.LogD(string.Format("Notification wasClicked : {0}", notification));
+            HandleAction (notification.Action);
         });
 
         _console.LogD ("Setting up GetSocial...");
         _getSocialUnitySdkVersion = GetSocial.UnitySdkVersion;
         _getSocialUnderlyingNativeSdkVersion = GetSocial.NativeSdkVersion;
 
-        RegisterInvitePlugins ();
+        GetSocialFBMessengerPluginHelper.RegisterFBMessengerPlugin ();
+        if (GetSocial.IsInitialized)
+        {
+            _console.LogD("GetSocial is initialized and user is retrieved");
+            _currentUser = GetSocial.GetCurrentUser();
+            _isTestDevice = GetSocial.Device.IsTestDevice;
+            FetchCurrentUserData();
+        } else
+        {
+            GetSocial.AddOnCurrentUserChangedListener(user => {
+                _console.LogD("GetSocial is initialized and user is retrieved");
+                _currentUser = user;
+                _isTestDevice = GetSocial.Device.IsTestDevice;
+                FetchCurrentUserData();
+            });
+        }
 
-        GetSocial.User.SetOnUserChangedListener (() => {
-            _console.LogD ("GetSocial is initialized and user is retrieved");
-            GetSocial.User.IsPushNotificationsEnabled (isEnabled => ((SettingsSection) _menuSections.Find (section => section is SettingsSection)).PnEnabled = isEnabled, error => Debug.LogError ("Failed to get PN status " + error));
-            FetchCurrentUserData ();
+        Invites.SetOnReferralDataReceivedListener((referralData) => {
+            var logMessage = string.Empty;
+
+            if (referralData != null)
+            {
+                logMessage += string.Format("Token: {0}\n", referralData.Token);
+                logMessage += string.Format("Referrer user id: {0}\n", referralData.ReferrerUserId);
+                logMessage += string.Format("Referrer channel: {0}\n", referralData.ReferrerChannelId);
+                logMessage += string.Format("Is first match: {0}\n", referralData.IsFirstMatch);
+                logMessage += string.Format("Is guarateed match: {0}\n", referralData.IsGuaranteedMatch);
+                logMessage += "Referral Link params:\n" + referralData.LinkParams.ToDebugString();
+            }
+            _console.LogD("Referral data: \n" + logMessage);
         });
     }
 
     private void ShowChat () {
         MainThreadExecutor.Queue (() => {
-            ShowMenuSection<SocialGraphSection> ();
-            _menuSections.ForEach (section => {
-                if (section is SocialGraphSection) {
-                    ((SocialGraphSection) section).MessageFriend (_latestChatId);
-                    _latestChatId = null;
-                }
-            });
-            if (_console.IsVisible) {
-                _console.Toggle ();
-            }
+            //todo
+            // ShowMenuSection<SocialGraphSection> ();
+            // _menuSections.ForEach (section => {
+            //     if (section is SocialGraphSection) {
+            //         ((SocialGraphSection) section).MessageFriend (_latestChatId);
+            //         _latestChatId = null;
+            //     }
+            // });
+            // if (_console.IsVisible) {
+            //     _console.Toggle ();
+            // }
         });
     }
 
@@ -265,39 +225,24 @@ public class GetSocialDemoController : MonoBehaviour {
     }
 
     public static void ProcessAction (string actionButtonId, Notification notification) {
-        if (actionButtonId.Equals (ActionButton.ConsumeAction)) {
-            GetSocial.User.SetNotificationsStatus (new List<string> { notification.Id }, NotificationStatus.Consumed, () => { }, Debug.LogError);
-            GetSocial.ProcessAction (notification.NotificationAction);
-        } else if (actionButtonId.Equals (ActionButton.IgnoreAction)) {
-            GetSocial.User.SetNotificationsStatus (new List<string> { notification.Id }, NotificationStatus.Ignored, () => { }, Debug.LogError);
+        if (actionButtonId.Equals (NotificationButton.ConsumeAction)) {
+            Notifications.SetStatus (NotificationStatus.Consumed, new List<string> { notification.Id }, () => { }, Debug.LogError);
+            GetSocial.Handle (notification.Action);
+        } else if (actionButtonId.Equals (NotificationButton.IgnoreAction)) {
+            Notifications.SetStatus (NotificationStatus.Ignored, new List<string> { notification.Id }, () => { }, Debug.LogError);
         }
     }
 
-    public bool HandleAction (GetSocialAction action) {
-        if (action.Type == GetSocialActionType.OpenProfile) {
+    public void HandleAction (GetSocialAction action) {
+        _console.LogD("Action: " + action.ToString(), false);
+        if (action.Type == GetSocialActionType.OpenProfile && action.Data.ContainsKey(GetSocialActionKeys.OpenProfile.UserId)) 
+        {
             newFriend (action.Data[GetSocialActionKeys.OpenProfile.UserId]);
-            return true;
-        }
-        return false;
-    }
-
-    void RegisterInvitePlugins () {
-        GetSocialFBMessengerPluginHelper.RegisterFBMessengerPlugin ();
-        RegisterFacebookSharePlugin ();
-    }
-
-    void RegisterFacebookSharePlugin () {
-        var fbResult = GetSocial.RegisterInviteChannelPlugin (InviteChannelIds.Facebook,
-            new FacebookSharePlugin ());
-        if (fbResult) {
-            _console.LogD ("Registered Facebook share plugin.");
-        } else {
-            _console.LogE ("Failed to register Facebook share plugin.");
         }
     }
 
     void newFriend (string userId) {
-        GetSocial.GetUserById (userId, user => {
+        Communities.GetUser(UserId.Create(userId), user => {
             DemoUtils.ShowPopup ("You have a new friend!", user.DisplayName + " is now your friend.");
         }, error => {
             _console.LogE ("Failed to get user: " + error.Message + ", code: " + error.ErrorCode);
@@ -313,9 +258,8 @@ public class GetSocialDemoController : MonoBehaviour {
         GUI.DrawTexture (GUILayoutUtility.GetLastRect (), _avatar ?? Texture2D.blackTexture, ScaleMode.StretchToFill);
         // Click area for avatar
         if (GUI.Button (new Rect (0, 0, 120, 120), string.Empty, GUIStyle.none)) {
-            FetchCurrentUserData ();
-            DemoUtils.ShowPopup ("Info", _currentUserInfo.ToString ());
-            _console.LogD (_currentUserInfo.ToString ());
+            DemoUtils.ShowPopup ("Info", _currentUser.ToString ());
+            _console.LogD (_currentUser.ToString ());
         }
         GUIStyle fpsStyle = new GUIStyle {
             margin = new RectOffset (4, 4, 4, 4),
@@ -326,23 +270,23 @@ public class GetSocialDemoController : MonoBehaviour {
             stretchWidth = true
         };
         GUILayout.Label ("FPS: " + GetFPS (), fpsStyle);
-        if (GetSocial.Device.IsTestDevice)
+        if (_isTestDevice)
         {
             GUILayout.Label("TestDevice", fpsStyle);
         }
         GUILayout.EndVertical ();
 
-        if (!string.IsNullOrEmpty (_currentUserInfo.Guid)) {
+        if (_currentUser != null) {
             DrawUserInfo ();
         }
     }
 
     void DrawUserInfo () {
         GUILayout.BeginVertical ();
-        GUILayout.Label ("GUID: " + _currentUserInfo.Guid, GSStyles.NormalLabelText);
-        GUILayout.Label ("Display Name: " + _currentUserInfo.DisplayName, GSStyles.NormalLabelText);
-        GUILayout.Label ("AvatarUrl: " + _currentUserInfo.AvatarUrl, GSStyles.NormalLabelText);
-        GUILayout.Label ("Is anonymous? " + _currentUserInfo.IsAnonymous, GSStyles.NormalLabelText);
+        GUILayout.Label ("GUID: " + _currentUser.Id, GSStyles.NormalLabelText);
+        GUILayout.Label ("Display Name: " + _currentUser.DisplayName, GSStyles.NormalLabelText);
+        GUILayout.Label ("AvatarUrl: " + _currentUser.AvatarUrl, GSStyles.NormalLabelText);
+        GUILayout.Label ("Is anonymous? " + _currentUser.IsAnonymous, GSStyles.NormalLabelText);
         GUILayout.EndVertical ();
     }
 
@@ -381,26 +325,55 @@ public class GetSocialDemoController : MonoBehaviour {
 
     void DrawMainView () {
         GUILayout.Label ("API", GSStyles.NormalLabelText);
-        Button ("Smart Invites", ShowMenuSection<SmartInvitesApiSection>);
-        Button ("Activity Feed", ShowMenuSection<ActivityFeedApiSection>);
         Button ("User Management", ShowMenuSection<AuthSection>);
-        Button ("Social Graph", ShowMenuSection<SocialGraphSection>);
-        Button ("Notifications Api", ShowMenuSection<NotificationsApiSection>);
         Button ("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
-        Button ("Send Notification", ShowMenuSection<SendNotificationSection>);
         Button ("Promo Codes", ShowMenuSection<PromoCodesSection>);
         Button ("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
+        GUILayout.Space (30f);
+        GUILayout.Label ("Invites", GSStyles.NormalLabelText);
+        Button ("Smart Invites", ShowMenuSection<SmartInvitesApiSection>);
         Button ("Set Referrer", ShowMenuSection<SetReferrerSection>);
-#if USE_GETSOCIAL_UI
+        Button ("Referred Users", ShowMenuSection<ReferredUsersSection>);
+        Button ("Referrer Users", ShowMenuSection<ReferrerUsersSection>);
+        GUILayout.Space (30f);
+        GUILayout.Label ("Notification", GSStyles.NormalLabelText);
+        Button ("Send Notification", ShowMenuSection<SendNotificationSection>);
+        Button ("Notifications", ShowMenuSection<NotificationsSection>);
+        GUILayout.Space (30f);
+        GUILayout.Label ("Communities", GSStyles.NormalLabelText);
+        Button ("Timeline", () => PushMenuSection<ActivitiesSection>(section => section.Query = ActivitiesQuery.Timeline() ));
+        Button ("Find Tags", ShowMenuSection<TagsSection>);
+        Button ("Post to Timeline", () => PushMenuSection<PostActivitySection>(section => section.Target = PostActivityTarget.Timeline() ));
+        Button ("My Friends", () => PushMenuSection<FriendsSection>(section => section.User = UserId.CurrentUser()));
+        Button ("Suggested Friends", ShowMenuSection<SuggestedFriendsSection>);
+        Button ("My Followers", () => PushMenuSection<FollowersSection>(section =>
+        {
+            section.Name = "Me";
+            section.Query = FollowersQuery.OfUser(UserId.CurrentUser());
+        }));
+        Button ("Followed By Me", () => PushMenuSection<FollowingSection>(section =>
+        {
+            section.Name = "Me";
+            section.User = UserId.CurrentUser();
+        }));
+        Button ("Search Topics", ShowMenuSection<TopicsSearchSection>);
+        Button ("My Topics", () => PushMenuSection<FollowedTopicsSection>(section =>
+        {
+            section.User = UserId.CurrentUser();
+        }));
+        Button ("Search Users", ShowMenuSection<UsersSearchSection>);
         GUILayout.Space (30f);
         GUILayout.Label ("UI", GSStyles.NormalLabelText);
-        Button ("Smart Invites", ShowMenuSection<SmartInvitesUiSection>);
         Button ("Activity Feed", ShowMenuSection<ActivityFeedUiSection>);
         Button ("Notification Center", ShowMenuSection<NotificationUiSection>);
         Button ("UI Customization", ShowMenuSection<UiCustomizationSection>);
-#endif
         GUILayout.Space (30f);
         GUILayout.Label ("Other", GSStyles.NormalLabelText);
+        DrawSettings();
+    }
+
+    protected virtual void DrawSettings()
+    {
         Button ("Settings", ShowMenuSection<SettingsSection>);
     }
     #endregion
@@ -409,38 +382,68 @@ public class GetSocialDemoController : MonoBehaviour {
 
     public void ShowMainMenu () {
         _isInMainMenu = true;
-        _menuSections.ForEach (section => section.gameObject.SetActive (false));
         CurrentViewTitle = MainMenuTitle;
     }
 
     public void ShowMenuSection<Menu> () where Menu : DemoMenuSection {
+        PushMenuSection<Menu>(section => { });
+    }
+    
+    Stack<DemoMenuSection> _stack = new Stack<DemoMenuSection>();
+    
+    public void PushMenuSection<Menu>(Action<Menu> onCreate) where Menu : DemoMenuSection
+    {
+        Debug.Log("### PUSHING MENU SECTION " + this);
+        ShowMainMenu();
         _isInMainMenu = false;
-        _menuSections.ForEach (section => section.gameObject.SetActive (section is Menu));
+        if (_stack.Count > 0)
+        {
+            _stack.Peek().gameObject.SetActive(false);
+        }
+
+        var gameObj = new GameObject();
+        gameObj.SetActive(false);
+        var section = gameObj.AddComponent<Menu>();
+        section.enabled = false;
+        onCreate(section);
+        gameObj.transform.parent = gameObject.transform;
+        section.Initialize(this, _console);
+        gameObj.SetActive(true);
+        section.enabled = true;
+        
+        _stack.Push(section);
+    }
+
+    public void PopMenuSection()
+    {
+        var section = _stack.Pop();
+        section.gameObject.SetActive(false); 
+        Destroy(section.gameObject);
+        if (_stack.Count > 0)
+        {
+            _stack.Peek().gameObject.SetActive(true);
+        }
+        else
+        {
+            ShowMainMenu();
+        }
     }
 
     #endregion
 
     #region helpers
 
-    public void FetchCurrentUserData () {
-        _currentUserInfo = new CurrentUserInfo {
-            Guid = GetSocial.User.Id,
-            DisplayName = GetSocial.User.DisplayName,
-            AvatarUrl = GetSocial.User.AvatarUrl,
-            IsAnonymous = GetSocial.User.IsAnonymous,
-            Identities = GetSocial.User.AuthIdentities,
-            PublicProperties = GetSocial.User.AllPublicProperties,
-            PrivateProperties = GetSocial.User.AllPrivateProperties
-        };
-
+    public void FetchCurrentUserData ()
+    {
+        _currentUser = GetSocial.GetCurrentUser();
         _avatar = Resources.Load<Texture2D> ("GUI/default_demo_avatar");
-        if (!string.IsNullOrEmpty (_currentUserInfo.AvatarUrl)) {
-            StartCoroutine (DownloadAvatar (_currentUserInfo.AvatarUrl));
+        if (!string.IsNullOrEmpty (_currentUser.AvatarUrl)) {
+            StartCoroutine (DownloadAvatar (_currentUser.AvatarUrl));
         }
     }
 
     public bool HasIdentity (string provider) {
-        return _currentUserInfo.Identities.ContainsKey (provider);
+        return _currentUser.Identities.ContainsKey (provider);
     }
 
 #pragma warning disable 0618
@@ -455,8 +458,13 @@ public class GetSocialDemoController : MonoBehaviour {
     }
 #pragma warning restore 0618
 
-    static void Button (string text, Action onClickCallback, bool isEnabled = true) {
+    protected static void Button (string text, Action onClickCallback, bool isEnabled = true) {
         DemoGuiUtils.DrawButton (text, onClickCallback, isEnabled, GSStyles.Button);
+    }
+
+    public ActionDialog Dialog()
+    {
+        return GetComponentInChildren<ActionDialog>();
     }
 
     static void PauseGame () {
@@ -467,31 +475,6 @@ public class GetSocialDemoController : MonoBehaviour {
     static void ResumeGame () {
         Debug.Log ("Resuming game");
         Time.timeScale = 1;
-    }
-    #endregion
-
-    #region helper classes
-    // container class to store current user info
-    class CurrentUserInfo {
-        public string DisplayName;
-        public string AvatarUrl;
-        public string Guid;
-        public bool IsAnonymous;
-        public Dictionary<string, string> Identities = new Dictionary<string, string> ();
-        public Dictionary<string, string> PublicProperties = new Dictionary<string, string> ();
-        public Dictionary<string, string> PrivateProperties = new Dictionary<string, string> ();
-
-        public override string ToString () {
-            var dict = new Dictionary<string, object> { { "DisplayName", DisplayName },
-                    { "AvatarUrl", AvatarUrl },
-                    { "Guid", Guid },
-                    { "IsAnonymous", IsAnonymous },
-                    { "Identities", Identities },
-                    { "PublicProperties", PublicProperties },
-                    { "PrivateProperties", PrivateProperties }
-                };
-            return GSJson.Serialize (dict);
-        }
     }
     #endregion
 }

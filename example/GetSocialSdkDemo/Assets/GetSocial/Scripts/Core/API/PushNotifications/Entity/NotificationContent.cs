@@ -1,31 +1,58 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-
-#if UNITY_IOS
 using GetSocialSdk.MiniJSON;
-#endif
 
 namespace GetSocialSdk.Core
 {
-    public sealed class NotificationContent : IConvertableToNative
+
+    public sealed class NotificationContentPlaceholders
     {
-        
-#pragma warning disable 414      
+        /// <summary>
+        ///  Will be replaced with your actual display name in the notification text.
+        /// </summary>
+        public const string SenderDisplayName = "[SENDER_DISPLAY_NAME]";
+
+        /// <summary>
+        /// Will be replaced with received actual display name in the notification text.
+        /// </summary>
+        public const string ReceiverDisplayName = "[RECEIVER_DISPLAY_NAME]";
+    }
+
+    public sealed class NotificationContent
+    {
+
+#pragma warning disable 414
+        [JsonSerializationKey("text")]
         internal string _text;
+
+        [JsonSerializationKey("title")]
         internal string _title;
+
+        [JsonSerializationKey("templateName")]
         internal string _templateName;
+
+        [JsonSerializationKey("mediaAttachment")]
         internal MediaAttachment _mediaAttachment;
+
+        [JsonSerializationKey("templatePlaceholders")]
         internal readonly Dictionary<string, string> _templatePlaceholders;
+
+        [JsonSerializationKey("action")]
         internal GetSocialAction _action;
-        internal readonly List<ActionButton> _actionButtons;
+
+        [JsonSerializationKey("actionButtons")]
+        internal readonly List<NotificationButton> _actionButtons;
+
+        [JsonSerializationKey("customization")]
         internal NotificationCustomization _customization;
+
+        [JsonSerializationKey("badge")]
         internal Badge _badge;
 #pragma warning restore 414
 
         private NotificationContent()
         {
             _templatePlaceholders = new Dictionary<string, string>();
-            _actionButtons = new List<ActionButton>();
+            _actionButtons = new List<NotificationButton>();
         }
 
         public override string ToString()
@@ -42,7 +69,7 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <param name="text">text text to be displayed to receivers.</param>
         /// <returns>new notification content.</returns>
-        public static NotificationContent NotificationWithText(string text)
+        public static NotificationContent CreateWithText(string text)
         {
             return new NotificationContent().WithText(text);
         }
@@ -52,7 +79,7 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <param name="templateName">name of the template on the GetSocial Dashboard. Case-sensitive.</param>
         /// <returns>new notification content.</returns>
-        public static NotificationContent NotificationFromTemplate(string templateName)
+        public static NotificationContent CreateWithTemplate(string templateName)
         {
             return new NotificationContent().WithTemplateName(templateName);
         }
@@ -129,13 +156,13 @@ namespace GetSocialSdk.Core
             return this;
         }
 
-        public NotificationContent AddActionButton(ActionButton actionButton)
+        public NotificationContent AddActionButton(NotificationButton actionButton)
         {
             _actionButtons.Add(actionButton);
             return this;
         }
 
-        public NotificationContent AddActionButtons(IEnumerable<ActionButton> actionButton)
+        public NotificationContent AddActionButtons(IEnumerable<NotificationButton> actionButton)
         {
             _actionButtons.AddAll(actionButton);
             return this;
@@ -163,56 +190,5 @@ namespace GetSocialSdk.Core
             _customization = customization;
             return this;
         }
-
-#if UNITY_ANDROID
-        public AndroidJavaObject ToAjo()
-        {
-            var notificationContentClass =
-                new AndroidJavaClass("im.getsocial.sdk.pushnotifications.NotificationContent");
-            var notificationContent = notificationContentClass.CallStaticAJO("notificationWithText", _text)
-                .CallAJO("withTitle", _title)
-                .CallAJO("withTemplateName", _templateName)
-                .CallAJO("addTemplatePlaceholders", _templatePlaceholders.ToJavaHashMap())
-                .CallAJO("addActionButtons", _actionButtons.ConvertAll(item => item.ToAjo()).ToJavaList());
-            
-            if (_action != null) 
-            {
-                notificationContent.CallAJO("withAction", _action.ToAjo());
-            }
-
-            if (_mediaAttachment != null)
-            {
-                notificationContent.CallAJO("withMediaAttachment", _mediaAttachment.ToAjo());
-            }
-
-            if (_customization != null) 
-            {
-                notificationContent.CallAJO("withCustomization", _customization.ToAjo());
-            }
-            if (_badge != null)
-            {
-                notificationContent.CallAJO("withBadge", _badge.ToAjo());
-            }
-            
-            return notificationContent;
-        }
-#elif UNITY_IOS
-        public string ToJson()
-        {
-            var json = new Dictionary<string, object>
-            {
-                {"Title", _title},
-                {"Text", _text},
-                {"Action", _action == null ? "" : _action.ToJson()},
-                {"Template", _templateName},
-                {"TemplatePlaceholders", _templatePlaceholders},
-                {"MediaAttachment", _mediaAttachment == null ? "" : _mediaAttachment.ToJson()},
-                {"ActionButtons", _actionButtons.ConvertAll(item => item.ToJson())},
-                {"Customization", _customization == null ? "" : _customization.ToJson()},
-                {"Badge", _badge == null ? "" : _badge.ToJson()}
-            };
-            return GSJson.Serialize(json);
-        }
-#endif
     }
 }

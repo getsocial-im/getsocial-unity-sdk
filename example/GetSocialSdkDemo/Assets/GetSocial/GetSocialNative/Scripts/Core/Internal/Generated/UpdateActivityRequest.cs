@@ -16,259 +16,266 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class UpdateActivityRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _sessionId;
-  private Dictionary<string, AFContent> _content;
-  private Dictionary<string, string> _properties;
-  private string _activityId;
 
-  public string SessionId
-  {
-    get
-    {
-      return _sessionId;
-    }
-    set
-    {
-      __isset.sessionId = true;
-      this._sessionId = value;
-    }
-  }
-
-  public Dictionary<string, AFContent> Content
-  {
-    get
-    {
-      return _content;
-    }
-    set
-    {
-      __isset.content = true;
-      this._content = value;
-    }
-  }
-
-  public Dictionary<string, string> Properties
-  {
-    get
-    {
-      return _properties;
-    }
-    set
-    {
-      __isset.properties = true;
-      this._properties = value;
-    }
-  }
-
-  public string ActivityId
-  {
-    get
-    {
-      return _activityId;
-    }
-    set
-    {
-      __isset.activityId = true;
-      this._activityId = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool sessionId;
-    public bool content;
-    public bool properties;
-    public bool activityId;
-  }
-
-  public UpdateActivityRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class UpdateActivityRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              SessionId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.Map) {
-              {
-                Content = new Dictionary<string, AFContent>();
-                TMap _map106 = iprot.ReadMapBegin();
-                for( int _i107 = 0; _i107 < _map106.Count; ++_i107)
-                {
-                  string _key108;
-                  AFContent _val109;
-                  _key108 = iprot.ReadString();
-                  _val109 = new AFContent();
-                  _val109.Read(iprot);
-                  Content[_key108] = _val109;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                Properties = new Dictionary<string, string>();
-                TMap _map110 = iprot.ReadMapBegin();
-                for( int _i111 = 0; _i111 < _map110.Count; ++_i111)
-                {
-                  string _key112;
-                  string _val113;
-                  _key112 = iprot.ReadString();
-                  _val113 = iprot.ReadString();
-                  Properties[_key112] = _val113;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              ActivityId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _sessionId;
+    private Dictionary<string, AFContent> _content;
+    private Dictionary<string, string> _properties;
+    private string _activityId;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string SessionId
     {
-      TStruct struc = new TStruct("UpdateActivityRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public Dictionary<string, AFContent> Content
+    {
+      get
+      {
+        return _content;
+      }
+      set
+      {
+        __isset.content = true;
+        this._content = value;
+      }
+    }
+
+    public Dictionary<string, string> Properties
+    {
+      get
+      {
+        return _properties;
+      }
+      set
+      {
+        __isset.properties = true;
+        this._properties = value;
+      }
+    }
+
+    public string ActivityId
+    {
+      get
+      {
+        return _activityId;
+      }
+      set
+      {
+        __isset.activityId = true;
+        this._activityId = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool content;
+      public bool properties;
+      public bool activityId;
+    }
+
+    public UpdateActivityRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.Map) {
+                {
+                  Content = new Dictionary<string, AFContent>();
+                  TMap _map150 = iprot.ReadMapBegin();
+                  for( int _i151 = 0; _i151 < _map150.Count; ++_i151)
+                  {
+                    string _key152;
+                    AFContent _val153;
+                    _key152 = iprot.ReadString();
+                    _val153 = new AFContent();
+                    _val153.Read(iprot);
+                    Content[_key152] = _val153;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  Properties = new Dictionary<string, string>();
+                  TMap _map154 = iprot.ReadMapBegin();
+                  for( int _i155 = 0; _i155 < _map154.Count; ++_i155)
+                  {
+                    string _key156;
+                    string _val157;
+                    _key156 = iprot.ReadString();
+                    _val157 = iprot.ReadString();
+                    Properties[_key156] = _val157;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                ActivityId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("UpdateActivityRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (Content != null && __isset.content) {
+          field.Name = "content";
+          field.Type = TType.Map;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
+            foreach (string _iter158 in Content.Keys)
+            {
+              oprot.WriteString(_iter158);
+              Content[_iter158].Write(oprot);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Properties != null && __isset.properties) {
+          field.Name = "properties";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
+            foreach (string _iter159 in Properties.Keys)
+            {
+              oprot.WriteString(_iter159);
+              oprot.WriteString(Properties[_iter159]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (ActivityId != null && __isset.activityId) {
+          field.Name = "activityId";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ActivityId);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("UpdateActivityRequest(");
+      bool __first = true;
       if (SessionId != null && __isset.sessionId) {
-        field.Name = "sessionId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(SessionId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
       }
       if (Content != null && __isset.content) {
-        field.Name = "content";
-        field.Type = TType.Map;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
-          foreach (string _iter114 in Content.Keys)
-          {
-            oprot.WriteString(_iter114);
-            Content[_iter114].Write(oprot);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Content: ");
+        __sb.Append(Content.ToDebugString());
       }
       if (Properties != null && __isset.properties) {
-        field.Name = "properties";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-          foreach (string _iter115 in Properties.Keys)
-          {
-            oprot.WriteString(_iter115);
-            oprot.WriteString(Properties[_iter115]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Properties: ");
+        __sb.Append(Properties.ToDebugString());
       }
       if (ActivityId != null && __isset.activityId) {
-        field.Name = "activityId";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(ActivityId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActivityId: ");
+        __sb.Append(ActivityId);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("UpdateActivityRequest(");
-    bool __first = true;
-    if (SessionId != null && __isset.sessionId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SessionId: ");
-      __sb.Append(SessionId);
-    }
-    if (Content != null && __isset.content) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Content: ");
-      __sb.Append(Content);
-    }
-    if (Properties != null && __isset.properties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Properties: ");
-      __sb.Append(Properties);
-    }
-    if (ActivityId != null && __isset.activityId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("ActivityId: ");
-      __sb.Append(ActivityId);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

@@ -16,1064 +16,1071 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THAppPlatformProperties : TBase
+namespace GetSocialSdk.Core 
 {
-  private long _pushNotificationsCertificateExpiresDev;
-  private long _pushNotificationsCertificateExpiresProd;
-  private string _pushNotificationsPrivateKeyDev;
-  private string _pushNotificationsPrivateKeyProd;
-  private string _pushNotificationsCertificateDev;
-  private string _pushNotificationsCertificateProd;
-  private string _pushNotificationsEndpointDev;
-  private string _pushNotificationsEndpointProd;
-  private string _pushNotificationsAppKey;
-  private string _pushNotificationsSenderId;
-  private string _pushNotificationsActiveEnvironment;
-  private bool _pushNotificationsStatus;
-  private string _appleTeamId;
-  private string _appleBundleId;
-  private string _idExt;
-  private string _androidCertificateFingerprint;
-  private bool _enabled;
-  private bool _verifySignature;
-  private bool _pushNotificationsCertificateDevEnabled;
-  private bool _pushNotificationsCertificateProdEnabled;
-  private string _redirectUrl;
-  private string _customLandingPage;
-  private bool _iapEnabled;
-  private bool _iapValidationEnabled;
-  private string _iapPublicKey;
-  private string _iapSharedSecret;
-  private string _iapServiceAccountKey;
-
-  public long PushNotificationsCertificateExpiresDev
-  {
-    get
-    {
-      return _pushNotificationsCertificateExpiresDev;
-    }
-    set
-    {
-      __isset.pushNotificationsCertificateExpiresDev = true;
-      this._pushNotificationsCertificateExpiresDev = value;
-    }
-  }
-
-  public long PushNotificationsCertificateExpiresProd
-  {
-    get
-    {
-      return _pushNotificationsCertificateExpiresProd;
-    }
-    set
-    {
-      __isset.pushNotificationsCertificateExpiresProd = true;
-      this._pushNotificationsCertificateExpiresProd = value;
-    }
-  }
-
-  public string PushNotificationsPrivateKeyDev
-  {
-    get
-    {
-      return _pushNotificationsPrivateKeyDev;
-    }
-    set
-    {
-      __isset.pushNotificationsPrivateKeyDev = true;
-      this._pushNotificationsPrivateKeyDev = value;
-    }
-  }
-
-  public string PushNotificationsPrivateKeyProd
-  {
-    get
-    {
-      return _pushNotificationsPrivateKeyProd;
-    }
-    set
-    {
-      __isset.pushNotificationsPrivateKeyProd = true;
-      this._pushNotificationsPrivateKeyProd = value;
-    }
-  }
-
-  public string PushNotificationsCertificateDev
-  {
-    get
-    {
-      return _pushNotificationsCertificateDev;
-    }
-    set
-    {
-      __isset.pushNotificationsCertificateDev = true;
-      this._pushNotificationsCertificateDev = value;
-    }
-  }
-
-  public string PushNotificationsCertificateProd
-  {
-    get
-    {
-      return _pushNotificationsCertificateProd;
-    }
-    set
-    {
-      __isset.pushNotificationsCertificateProd = true;
-      this._pushNotificationsCertificateProd = value;
-    }
-  }
-
-  public string PushNotificationsEndpointDev
-  {
-    get
-    {
-      return _pushNotificationsEndpointDev;
-    }
-    set
-    {
-      __isset.pushNotificationsEndpointDev = true;
-      this._pushNotificationsEndpointDev = value;
-    }
-  }
-
-  public string PushNotificationsEndpointProd
-  {
-    get
-    {
-      return _pushNotificationsEndpointProd;
-    }
-    set
-    {
-      __isset.pushNotificationsEndpointProd = true;
-      this._pushNotificationsEndpointProd = value;
-    }
-  }
-
-  public string PushNotificationsAppKey
-  {
-    get
-    {
-      return _pushNotificationsAppKey;
-    }
-    set
-    {
-      __isset.pushNotificationsAppKey = true;
-      this._pushNotificationsAppKey = value;
-    }
-  }
-
-  public string PushNotificationsSenderId
-  {
-    get
-    {
-      return _pushNotificationsSenderId;
-    }
-    set
-    {
-      __isset.pushNotificationsSenderId = true;
-      this._pushNotificationsSenderId = value;
-    }
-  }
-
-  public string PushNotificationsActiveEnvironment
-  {
-    get
-    {
-      return _pushNotificationsActiveEnvironment;
-    }
-    set
-    {
-      __isset.pushNotificationsActiveEnvironment = true;
-      this._pushNotificationsActiveEnvironment = value;
-    }
-  }
-
-  public bool PushNotificationsStatus
-  {
-    get
-    {
-      return _pushNotificationsStatus;
-    }
-    set
-    {
-      __isset.pushNotificationsStatus = true;
-      this._pushNotificationsStatus = value;
-    }
-  }
-
-  public string AppleTeamId
-  {
-    get
-    {
-      return _appleTeamId;
-    }
-    set
-    {
-      __isset.appleTeamId = true;
-      this._appleTeamId = value;
-    }
-  }
-
-  public string AppleBundleId
-  {
-    get
-    {
-      return _appleBundleId;
-    }
-    set
-    {
-      __isset.appleBundleId = true;
-      this._appleBundleId = value;
-    }
-  }
-
-  public string IdExt
-  {
-    get
-    {
-      return _idExt;
-    }
-    set
-    {
-      __isset.idExt = true;
-      this._idExt = value;
-    }
-  }
-
-  public string AndroidCertificateFingerprint
-  {
-    get
-    {
-      return _androidCertificateFingerprint;
-    }
-    set
-    {
-      __isset.androidCertificateFingerprint = true;
-      this._androidCertificateFingerprint = value;
-    }
-  }
-
-  public bool Enabled
-  {
-    get
-    {
-      return _enabled;
-    }
-    set
-    {
-      __isset.enabled = true;
-      this._enabled = value;
-    }
-  }
 
   /// <summary>
-  /// whether this platform is enabled or not
+  /// #sdk6 #sdk7
   /// </summary>
-  public bool VerifySignature
-  {
-    get
-    {
-      return _verifySignature;
-    }
-    set
-    {
-      __isset.verifySignature = true;
-      this._verifySignature = value;
-    }
-  }
-
-  /// <summary>
-  /// whether to validate the app signature during SDK authentication
-  /// </summary>
-  public bool PushNotificationsCertificateDevEnabled
-  {
-    get
-    {
-      return _pushNotificationsCertificateDevEnabled;
-    }
-    set
-    {
-      __isset.pushNotificationsCertificateDevEnabled = true;
-      this._pushNotificationsCertificateDevEnabled = value;
-    }
-  }
-
-  public bool PushNotificationsCertificateProdEnabled
-  {
-    get
-    {
-      return _pushNotificationsCertificateProdEnabled;
-    }
-    set
-    {
-      __isset.pushNotificationsCertificateProdEnabled = true;
-      this._pushNotificationsCertificateProdEnabled = value;
-    }
-  }
-
-  /// <summary>
-  /// If set and platform is disabled, redirect to this URL instead getsocial.im.
-  /// </summary>
-  public string RedirectUrl
-  {
-    get
-    {
-      return _redirectUrl;
-    }
-    set
-    {
-      __isset.redirectUrl = true;
-      this._redirectUrl = value;
-    }
-  }
-
-  /// <summary>
-  /// If set, the landing page on this URL will be shown in an iframe from SI.
-  /// </summary>
-  public string CustomLandingPage
-  {
-    get
-    {
-      return _customLandingPage;
-    }
-    set
-    {
-      __isset.customLandingPage = true;
-      this._customLandingPage = value;
-    }
-  }
-
-  public bool IapEnabled
-  {
-    get
-    {
-      return _iapEnabled;
-    }
-    set
-    {
-      __isset.iapEnabled = true;
-      this._iapEnabled = value;
-    }
-  }
-
-  public bool IapValidationEnabled
-  {
-    get
-    {
-      return _iapValidationEnabled;
-    }
-    set
-    {
-      __isset.iapValidationEnabled = true;
-      this._iapValidationEnabled = value;
-    }
-  }
-
-  public string IapPublicKey
-  {
-    get
-    {
-      return _iapPublicKey;
-    }
-    set
-    {
-      __isset.iapPublicKey = true;
-      this._iapPublicKey = value;
-    }
-  }
-
-  /// <summary>
-  /// for Android
-  /// </summary>
-  public string IapSharedSecret
-  {
-    get
-    {
-      return _iapSharedSecret;
-    }
-    set
-    {
-      __isset.iapSharedSecret = true;
-      this._iapSharedSecret = value;
-    }
-  }
-
-  /// <summary>
-  /// for iOS
-  /// </summary>
-  public string IapServiceAccountKey
-  {
-    get
-    {
-      return _iapServiceAccountKey;
-    }
-    set
-    {
-      __isset.iapServiceAccountKey = true;
-      this._iapServiceAccountKey = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool pushNotificationsCertificateExpiresDev;
-    public bool pushNotificationsCertificateExpiresProd;
-    public bool pushNotificationsPrivateKeyDev;
-    public bool pushNotificationsPrivateKeyProd;
-    public bool pushNotificationsCertificateDev;
-    public bool pushNotificationsCertificateProd;
-    public bool pushNotificationsEndpointDev;
-    public bool pushNotificationsEndpointProd;
-    public bool pushNotificationsAppKey;
-    public bool pushNotificationsSenderId;
-    public bool pushNotificationsActiveEnvironment;
-    public bool pushNotificationsStatus;
-    public bool appleTeamId;
-    public bool appleBundleId;
-    public bool idExt;
-    public bool androidCertificateFingerprint;
-    public bool enabled;
-    public bool verifySignature;
-    public bool pushNotificationsCertificateDevEnabled;
-    public bool pushNotificationsCertificateProdEnabled;
-    public bool redirectUrl;
-    public bool customLandingPage;
-    public bool iapEnabled;
-    public bool iapValidationEnabled;
-    public bool iapPublicKey;
-    public bool iapSharedSecret;
-    public bool iapServiceAccountKey;
-  }
-
-  public THAppPlatformProperties() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THAppPlatformProperties : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.I64) {
-              PushNotificationsCertificateExpiresDev = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I64) {
-              PushNotificationsCertificateExpiresProd = iprot.ReadI64();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              PushNotificationsPrivateKeyDev = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              PushNotificationsPrivateKeyProd = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 5:
-            if (field.Type == TType.String) {
-              PushNotificationsCertificateDev = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 6:
-            if (field.Type == TType.String) {
-              PushNotificationsCertificateProd = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 7:
-            if (field.Type == TType.String) {
-              PushNotificationsEndpointDev = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 8:
-            if (field.Type == TType.String) {
-              PushNotificationsEndpointProd = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 9:
-            if (field.Type == TType.String) {
-              PushNotificationsAppKey = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 10:
-            if (field.Type == TType.String) {
-              PushNotificationsSenderId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 11:
-            if (field.Type == TType.String) {
-              PushNotificationsActiveEnvironment = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 12:
-            if (field.Type == TType.Bool) {
-              PushNotificationsStatus = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 13:
-            if (field.Type == TType.String) {
-              AppleTeamId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 14:
-            if (field.Type == TType.String) {
-              AppleBundleId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 15:
-            if (field.Type == TType.String) {
-              IdExt = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 16:
-            if (field.Type == TType.String) {
-              AndroidCertificateFingerprint = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 17:
-            if (field.Type == TType.Bool) {
-              Enabled = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 18:
-            if (field.Type == TType.Bool) {
-              VerifySignature = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 19:
-            if (field.Type == TType.Bool) {
-              PushNotificationsCertificateDevEnabled = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 20:
-            if (field.Type == TType.Bool) {
-              PushNotificationsCertificateProdEnabled = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 21:
-            if (field.Type == TType.String) {
-              RedirectUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 22:
-            if (field.Type == TType.String) {
-              CustomLandingPage = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 23:
-            if (field.Type == TType.Bool) {
-              IapEnabled = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 24:
-            if (field.Type == TType.Bool) {
-              IapValidationEnabled = iprot.ReadBool();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 25:
-            if (field.Type == TType.String) {
-              IapPublicKey = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 26:
-            if (field.Type == TType.String) {
-              IapSharedSecret = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 27:
-            if (field.Type == TType.String) {
-              IapServiceAccountKey = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private long _pushNotificationsCertificateExpiresDev;
+    private long _pushNotificationsCertificateExpiresProd;
+    private string _pushNotificationsPrivateKeyDev;
+    private string _pushNotificationsPrivateKeyProd;
+    private string _pushNotificationsCertificateDev;
+    private string _pushNotificationsCertificateProd;
+    private string _pushNotificationsEndpointDev;
+    private string _pushNotificationsEndpointProd;
+    private string _pushNotificationsAppKey;
+    private string _pushNotificationsSenderId;
+    private string _pushNotificationsActiveEnvironment;
+    private bool _pushNotificationsStatus;
+    private string _appleTeamId;
+    private string _appleBundleId;
+    private string _idExt;
+    private string _androidCertificateFingerprint;
+    private bool _enabled;
+    private bool _verifySignature;
+    private bool _pushNotificationsCertificateDevEnabled;
+    private bool _pushNotificationsCertificateProdEnabled;
+    private string _redirectUrl;
+    private string _customLandingPage;
+    private bool _iapEnabled;
+    private bool _iapValidationEnabled;
+    private string _iapPublicKey;
+    private string _iapSharedSecret;
+    private string _iapServiceAccountKey;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public long PushNotificationsCertificateExpiresDev
     {
-      TStruct struc = new TStruct("THAppPlatformProperties");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _pushNotificationsCertificateExpiresDev;
+      }
+      set
+      {
+        __isset.pushNotificationsCertificateExpiresDev = true;
+        this._pushNotificationsCertificateExpiresDev = value;
+      }
+    }
+
+    public long PushNotificationsCertificateExpiresProd
+    {
+      get
+      {
+        return _pushNotificationsCertificateExpiresProd;
+      }
+      set
+      {
+        __isset.pushNotificationsCertificateExpiresProd = true;
+        this._pushNotificationsCertificateExpiresProd = value;
+      }
+    }
+
+    public string PushNotificationsPrivateKeyDev
+    {
+      get
+      {
+        return _pushNotificationsPrivateKeyDev;
+      }
+      set
+      {
+        __isset.pushNotificationsPrivateKeyDev = true;
+        this._pushNotificationsPrivateKeyDev = value;
+      }
+    }
+
+    public string PushNotificationsPrivateKeyProd
+    {
+      get
+      {
+        return _pushNotificationsPrivateKeyProd;
+      }
+      set
+      {
+        __isset.pushNotificationsPrivateKeyProd = true;
+        this._pushNotificationsPrivateKeyProd = value;
+      }
+    }
+
+    public string PushNotificationsCertificateDev
+    {
+      get
+      {
+        return _pushNotificationsCertificateDev;
+      }
+      set
+      {
+        __isset.pushNotificationsCertificateDev = true;
+        this._pushNotificationsCertificateDev = value;
+      }
+    }
+
+    public string PushNotificationsCertificateProd
+    {
+      get
+      {
+        return _pushNotificationsCertificateProd;
+      }
+      set
+      {
+        __isset.pushNotificationsCertificateProd = true;
+        this._pushNotificationsCertificateProd = value;
+      }
+    }
+
+    public string PushNotificationsEndpointDev
+    {
+      get
+      {
+        return _pushNotificationsEndpointDev;
+      }
+      set
+      {
+        __isset.pushNotificationsEndpointDev = true;
+        this._pushNotificationsEndpointDev = value;
+      }
+    }
+
+    public string PushNotificationsEndpointProd
+    {
+      get
+      {
+        return _pushNotificationsEndpointProd;
+      }
+      set
+      {
+        __isset.pushNotificationsEndpointProd = true;
+        this._pushNotificationsEndpointProd = value;
+      }
+    }
+
+    public string PushNotificationsAppKey
+    {
+      get
+      {
+        return _pushNotificationsAppKey;
+      }
+      set
+      {
+        __isset.pushNotificationsAppKey = true;
+        this._pushNotificationsAppKey = value;
+      }
+    }
+
+    public string PushNotificationsSenderId
+    {
+      get
+      {
+        return _pushNotificationsSenderId;
+      }
+      set
+      {
+        __isset.pushNotificationsSenderId = true;
+        this._pushNotificationsSenderId = value;
+      }
+    }
+
+    public string PushNotificationsActiveEnvironment
+    {
+      get
+      {
+        return _pushNotificationsActiveEnvironment;
+      }
+      set
+      {
+        __isset.pushNotificationsActiveEnvironment = true;
+        this._pushNotificationsActiveEnvironment = value;
+      }
+    }
+
+    public bool PushNotificationsStatus
+    {
+      get
+      {
+        return _pushNotificationsStatus;
+      }
+      set
+      {
+        __isset.pushNotificationsStatus = true;
+        this._pushNotificationsStatus = value;
+      }
+    }
+
+    public string AppleTeamId
+    {
+      get
+      {
+        return _appleTeamId;
+      }
+      set
+      {
+        __isset.appleTeamId = true;
+        this._appleTeamId = value;
+      }
+    }
+
+    public string AppleBundleId
+    {
+      get
+      {
+        return _appleBundleId;
+      }
+      set
+      {
+        __isset.appleBundleId = true;
+        this._appleBundleId = value;
+      }
+    }
+
+    public string IdExt
+    {
+      get
+      {
+        return _idExt;
+      }
+      set
+      {
+        __isset.idExt = true;
+        this._idExt = value;
+      }
+    }
+
+    public string AndroidCertificateFingerprint
+    {
+      get
+      {
+        return _androidCertificateFingerprint;
+      }
+      set
+      {
+        __isset.androidCertificateFingerprint = true;
+        this._androidCertificateFingerprint = value;
+      }
+    }
+
+    public bool Enabled
+    {
+      get
+      {
+        return _enabled;
+      }
+      set
+      {
+        __isset.enabled = true;
+        this._enabled = value;
+      }
+    }
+
+    /// <summary>
+    /// whether this platform is enabled or not
+    /// </summary>
+    public bool VerifySignature
+    {
+      get
+      {
+        return _verifySignature;
+      }
+      set
+      {
+        __isset.verifySignature = true;
+        this._verifySignature = value;
+      }
+    }
+
+    /// <summary>
+    /// whether to validate the app signature during SDK authentication
+    /// </summary>
+    public bool PushNotificationsCertificateDevEnabled
+    {
+      get
+      {
+        return _pushNotificationsCertificateDevEnabled;
+      }
+      set
+      {
+        __isset.pushNotificationsCertificateDevEnabled = true;
+        this._pushNotificationsCertificateDevEnabled = value;
+      }
+    }
+
+    public bool PushNotificationsCertificateProdEnabled
+    {
+      get
+      {
+        return _pushNotificationsCertificateProdEnabled;
+      }
+      set
+      {
+        __isset.pushNotificationsCertificateProdEnabled = true;
+        this._pushNotificationsCertificateProdEnabled = value;
+      }
+    }
+
+    /// <summary>
+    /// If set and platform is disabled, redirect to this URL instead getsocial.im.
+    /// </summary>
+    public string RedirectUrl
+    {
+      get
+      {
+        return _redirectUrl;
+      }
+      set
+      {
+        __isset.redirectUrl = true;
+        this._redirectUrl = value;
+      }
+    }
+
+    /// <summary>
+    /// If set, the landing page on this URL will be shown in an iframe from SI.
+    /// </summary>
+    public string CustomLandingPage
+    {
+      get
+      {
+        return _customLandingPage;
+      }
+      set
+      {
+        __isset.customLandingPage = true;
+        this._customLandingPage = value;
+      }
+    }
+
+    public bool IapEnabled
+    {
+      get
+      {
+        return _iapEnabled;
+      }
+      set
+      {
+        __isset.iapEnabled = true;
+        this._iapEnabled = value;
+      }
+    }
+
+    public bool IapValidationEnabled
+    {
+      get
+      {
+        return _iapValidationEnabled;
+      }
+      set
+      {
+        __isset.iapValidationEnabled = true;
+        this._iapValidationEnabled = value;
+      }
+    }
+
+    public string IapPublicKey
+    {
+      get
+      {
+        return _iapPublicKey;
+      }
+      set
+      {
+        __isset.iapPublicKey = true;
+        this._iapPublicKey = value;
+      }
+    }
+
+    /// <summary>
+    /// for Android
+    /// </summary>
+    public string IapSharedSecret
+    {
+      get
+      {
+        return _iapSharedSecret;
+      }
+      set
+      {
+        __isset.iapSharedSecret = true;
+        this._iapSharedSecret = value;
+      }
+    }
+
+    /// <summary>
+    /// for iOS
+    /// </summary>
+    public string IapServiceAccountKey
+    {
+      get
+      {
+        return _iapServiceAccountKey;
+      }
+      set
+      {
+        __isset.iapServiceAccountKey = true;
+        this._iapServiceAccountKey = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool pushNotificationsCertificateExpiresDev;
+      public bool pushNotificationsCertificateExpiresProd;
+      public bool pushNotificationsPrivateKeyDev;
+      public bool pushNotificationsPrivateKeyProd;
+      public bool pushNotificationsCertificateDev;
+      public bool pushNotificationsCertificateProd;
+      public bool pushNotificationsEndpointDev;
+      public bool pushNotificationsEndpointProd;
+      public bool pushNotificationsAppKey;
+      public bool pushNotificationsSenderId;
+      public bool pushNotificationsActiveEnvironment;
+      public bool pushNotificationsStatus;
+      public bool appleTeamId;
+      public bool appleBundleId;
+      public bool idExt;
+      public bool androidCertificateFingerprint;
+      public bool enabled;
+      public bool verifySignature;
+      public bool pushNotificationsCertificateDevEnabled;
+      public bool pushNotificationsCertificateProdEnabled;
+      public bool redirectUrl;
+      public bool customLandingPage;
+      public bool iapEnabled;
+      public bool iapValidationEnabled;
+      public bool iapPublicKey;
+      public bool iapSharedSecret;
+      public bool iapServiceAccountKey;
+    }
+
+    public THAppPlatformProperties() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I64) {
+                PushNotificationsCertificateExpiresDev = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I64) {
+                PushNotificationsCertificateExpiresProd = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                PushNotificationsPrivateKeyDev = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                PushNotificationsPrivateKeyProd = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.String) {
+                PushNotificationsCertificateDev = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.String) {
+                PushNotificationsCertificateProd = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.String) {
+                PushNotificationsEndpointDev = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.String) {
+                PushNotificationsEndpointProd = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.String) {
+                PushNotificationsAppKey = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.String) {
+                PushNotificationsSenderId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.String) {
+                PushNotificationsActiveEnvironment = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 12:
+              if (field.Type == TType.Bool) {
+                PushNotificationsStatus = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 13:
+              if (field.Type == TType.String) {
+                AppleTeamId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 14:
+              if (field.Type == TType.String) {
+                AppleBundleId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 15:
+              if (field.Type == TType.String) {
+                IdExt = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 16:
+              if (field.Type == TType.String) {
+                AndroidCertificateFingerprint = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 17:
+              if (field.Type == TType.Bool) {
+                Enabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 18:
+              if (field.Type == TType.Bool) {
+                VerifySignature = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 19:
+              if (field.Type == TType.Bool) {
+                PushNotificationsCertificateDevEnabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 20:
+              if (field.Type == TType.Bool) {
+                PushNotificationsCertificateProdEnabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 21:
+              if (field.Type == TType.String) {
+                RedirectUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 22:
+              if (field.Type == TType.String) {
+                CustomLandingPage = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 23:
+              if (field.Type == TType.Bool) {
+                IapEnabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 24:
+              if (field.Type == TType.Bool) {
+                IapValidationEnabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 25:
+              if (field.Type == TType.String) {
+                IapPublicKey = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 26:
+              if (field.Type == TType.String) {
+                IapSharedSecret = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 27:
+              if (field.Type == TType.String) {
+                IapServiceAccountKey = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THAppPlatformProperties");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.pushNotificationsCertificateExpiresDev) {
+          field.Name = "pushNotificationsCertificateExpiresDev";
+          field.Type = TType.I64;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(PushNotificationsCertificateExpiresDev);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsCertificateExpiresProd) {
+          field.Name = "pushNotificationsCertificateExpiresProd";
+          field.Type = TType.I64;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(PushNotificationsCertificateExpiresProd);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsPrivateKeyDev != null && __isset.pushNotificationsPrivateKeyDev) {
+          field.Name = "pushNotificationsPrivateKeyDev";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsPrivateKeyDev);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsPrivateKeyProd != null && __isset.pushNotificationsPrivateKeyProd) {
+          field.Name = "pushNotificationsPrivateKeyProd";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsPrivateKeyProd);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsCertificateDev != null && __isset.pushNotificationsCertificateDev) {
+          field.Name = "pushNotificationsCertificateDev";
+          field.Type = TType.String;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsCertificateDev);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsCertificateProd != null && __isset.pushNotificationsCertificateProd) {
+          field.Name = "pushNotificationsCertificateProd";
+          field.Type = TType.String;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsCertificateProd);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsEndpointDev != null && __isset.pushNotificationsEndpointDev) {
+          field.Name = "pushNotificationsEndpointDev";
+          field.Type = TType.String;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsEndpointDev);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsEndpointProd != null && __isset.pushNotificationsEndpointProd) {
+          field.Name = "pushNotificationsEndpointProd";
+          field.Type = TType.String;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsEndpointProd);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsAppKey != null && __isset.pushNotificationsAppKey) {
+          field.Name = "pushNotificationsAppKey";
+          field.Type = TType.String;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsAppKey);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsSenderId != null && __isset.pushNotificationsSenderId) {
+          field.Name = "pushNotificationsSenderId";
+          field.Type = TType.String;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsSenderId);
+          oprot.WriteFieldEnd();
+        }
+        if (PushNotificationsActiveEnvironment != null && __isset.pushNotificationsActiveEnvironment) {
+          field.Name = "pushNotificationsActiveEnvironment";
+          field.Type = TType.String;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(PushNotificationsActiveEnvironment);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsStatus) {
+          field.Name = "pushNotificationsStatus";
+          field.Type = TType.Bool;
+          field.ID = 12;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(PushNotificationsStatus);
+          oprot.WriteFieldEnd();
+        }
+        if (AppleTeamId != null && __isset.appleTeamId) {
+          field.Name = "appleTeamId";
+          field.Type = TType.String;
+          field.ID = 13;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AppleTeamId);
+          oprot.WriteFieldEnd();
+        }
+        if (AppleBundleId != null && __isset.appleBundleId) {
+          field.Name = "appleBundleId";
+          field.Type = TType.String;
+          field.ID = 14;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AppleBundleId);
+          oprot.WriteFieldEnd();
+        }
+        if (IdExt != null && __isset.idExt) {
+          field.Name = "idExt";
+          field.Type = TType.String;
+          field.ID = 15;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(IdExt);
+          oprot.WriteFieldEnd();
+        }
+        if (AndroidCertificateFingerprint != null && __isset.androidCertificateFingerprint) {
+          field.Name = "androidCertificateFingerprint";
+          field.Type = TType.String;
+          field.ID = 16;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(AndroidCertificateFingerprint);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.enabled) {
+          field.Name = "enabled";
+          field.Type = TType.Bool;
+          field.ID = 17;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(Enabled);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.verifySignature) {
+          field.Name = "verifySignature";
+          field.Type = TType.Bool;
+          field.ID = 18;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(VerifySignature);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsCertificateDevEnabled) {
+          field.Name = "pushNotificationsCertificateDevEnabled";
+          field.Type = TType.Bool;
+          field.ID = 19;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(PushNotificationsCertificateDevEnabled);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsCertificateProdEnabled) {
+          field.Name = "pushNotificationsCertificateProdEnabled";
+          field.Type = TType.Bool;
+          field.ID = 20;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(PushNotificationsCertificateProdEnabled);
+          oprot.WriteFieldEnd();
+        }
+        if (RedirectUrl != null && __isset.redirectUrl) {
+          field.Name = "redirectUrl";
+          field.Type = TType.String;
+          field.ID = 21;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(RedirectUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (CustomLandingPage != null && __isset.customLandingPage) {
+          field.Name = "customLandingPage";
+          field.Type = TType.String;
+          field.ID = 22;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(CustomLandingPage);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.iapEnabled) {
+          field.Name = "iapEnabled";
+          field.Type = TType.Bool;
+          field.ID = 23;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IapEnabled);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.iapValidationEnabled) {
+          field.Name = "iapValidationEnabled";
+          field.Type = TType.Bool;
+          field.ID = 24;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IapValidationEnabled);
+          oprot.WriteFieldEnd();
+        }
+        if (IapPublicKey != null && __isset.iapPublicKey) {
+          field.Name = "iapPublicKey";
+          field.Type = TType.String;
+          field.ID = 25;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(IapPublicKey);
+          oprot.WriteFieldEnd();
+        }
+        if (IapSharedSecret != null && __isset.iapSharedSecret) {
+          field.Name = "iapSharedSecret";
+          field.Type = TType.String;
+          field.ID = 26;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(IapSharedSecret);
+          oprot.WriteFieldEnd();
+        }
+        if (IapServiceAccountKey != null && __isset.iapServiceAccountKey) {
+          field.Name = "iapServiceAccountKey";
+          field.Type = TType.String;
+          field.ID = 27;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(IapServiceAccountKey);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THAppPlatformProperties(");
+      bool __first = true;
       if (__isset.pushNotificationsCertificateExpiresDev) {
-        field.Name = "pushNotificationsCertificateExpiresDev";
-        field.Type = TType.I64;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(PushNotificationsCertificateExpiresDev);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsCertificateExpiresDev: ");
+        __sb.Append(PushNotificationsCertificateExpiresDev);
       }
       if (__isset.pushNotificationsCertificateExpiresProd) {
-        field.Name = "pushNotificationsCertificateExpiresProd";
-        field.Type = TType.I64;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI64(PushNotificationsCertificateExpiresProd);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsCertificateExpiresProd: ");
+        __sb.Append(PushNotificationsCertificateExpiresProd);
       }
       if (PushNotificationsPrivateKeyDev != null && __isset.pushNotificationsPrivateKeyDev) {
-        field.Name = "pushNotificationsPrivateKeyDev";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsPrivateKeyDev);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsPrivateKeyDev: ");
+        __sb.Append(PushNotificationsPrivateKeyDev);
       }
       if (PushNotificationsPrivateKeyProd != null && __isset.pushNotificationsPrivateKeyProd) {
-        field.Name = "pushNotificationsPrivateKeyProd";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsPrivateKeyProd);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsPrivateKeyProd: ");
+        __sb.Append(PushNotificationsPrivateKeyProd);
       }
       if (PushNotificationsCertificateDev != null && __isset.pushNotificationsCertificateDev) {
-        field.Name = "pushNotificationsCertificateDev";
-        field.Type = TType.String;
-        field.ID = 5;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsCertificateDev);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsCertificateDev: ");
+        __sb.Append(PushNotificationsCertificateDev);
       }
       if (PushNotificationsCertificateProd != null && __isset.pushNotificationsCertificateProd) {
-        field.Name = "pushNotificationsCertificateProd";
-        field.Type = TType.String;
-        field.ID = 6;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsCertificateProd);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsCertificateProd: ");
+        __sb.Append(PushNotificationsCertificateProd);
       }
       if (PushNotificationsEndpointDev != null && __isset.pushNotificationsEndpointDev) {
-        field.Name = "pushNotificationsEndpointDev";
-        field.Type = TType.String;
-        field.ID = 7;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsEndpointDev);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsEndpointDev: ");
+        __sb.Append(PushNotificationsEndpointDev);
       }
       if (PushNotificationsEndpointProd != null && __isset.pushNotificationsEndpointProd) {
-        field.Name = "pushNotificationsEndpointProd";
-        field.Type = TType.String;
-        field.ID = 8;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsEndpointProd);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsEndpointProd: ");
+        __sb.Append(PushNotificationsEndpointProd);
       }
       if (PushNotificationsAppKey != null && __isset.pushNotificationsAppKey) {
-        field.Name = "pushNotificationsAppKey";
-        field.Type = TType.String;
-        field.ID = 9;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsAppKey);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsAppKey: ");
+        __sb.Append(PushNotificationsAppKey);
       }
       if (PushNotificationsSenderId != null && __isset.pushNotificationsSenderId) {
-        field.Name = "pushNotificationsSenderId";
-        field.Type = TType.String;
-        field.ID = 10;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsSenderId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsSenderId: ");
+        __sb.Append(PushNotificationsSenderId);
       }
       if (PushNotificationsActiveEnvironment != null && __isset.pushNotificationsActiveEnvironment) {
-        field.Name = "pushNotificationsActiveEnvironment";
-        field.Type = TType.String;
-        field.ID = 11;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(PushNotificationsActiveEnvironment);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsActiveEnvironment: ");
+        __sb.Append(PushNotificationsActiveEnvironment);
       }
       if (__isset.pushNotificationsStatus) {
-        field.Name = "pushNotificationsStatus";
-        field.Type = TType.Bool;
-        field.ID = 12;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(PushNotificationsStatus);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsStatus: ");
+        __sb.Append(PushNotificationsStatus);
       }
       if (AppleTeamId != null && __isset.appleTeamId) {
-        field.Name = "appleTeamId";
-        field.Type = TType.String;
-        field.ID = 13;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AppleTeamId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AppleTeamId: ");
+        __sb.Append(AppleTeamId);
       }
       if (AppleBundleId != null && __isset.appleBundleId) {
-        field.Name = "appleBundleId";
-        field.Type = TType.String;
-        field.ID = 14;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AppleBundleId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AppleBundleId: ");
+        __sb.Append(AppleBundleId);
       }
       if (IdExt != null && __isset.idExt) {
-        field.Name = "idExt";
-        field.Type = TType.String;
-        field.ID = 15;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(IdExt);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IdExt: ");
+        __sb.Append(IdExt);
       }
       if (AndroidCertificateFingerprint != null && __isset.androidCertificateFingerprint) {
-        field.Name = "androidCertificateFingerprint";
-        field.Type = TType.String;
-        field.ID = 16;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(AndroidCertificateFingerprint);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AndroidCertificateFingerprint: ");
+        __sb.Append(AndroidCertificateFingerprint);
       }
       if (__isset.enabled) {
-        field.Name = "enabled";
-        field.Type = TType.Bool;
-        field.ID = 17;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(Enabled);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Enabled: ");
+        __sb.Append(Enabled);
       }
       if (__isset.verifySignature) {
-        field.Name = "verifySignature";
-        field.Type = TType.Bool;
-        field.ID = 18;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(VerifySignature);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("VerifySignature: ");
+        __sb.Append(VerifySignature);
       }
       if (__isset.pushNotificationsCertificateDevEnabled) {
-        field.Name = "pushNotificationsCertificateDevEnabled";
-        field.Type = TType.Bool;
-        field.ID = 19;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(PushNotificationsCertificateDevEnabled);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsCertificateDevEnabled: ");
+        __sb.Append(PushNotificationsCertificateDevEnabled);
       }
       if (__isset.pushNotificationsCertificateProdEnabled) {
-        field.Name = "pushNotificationsCertificateProdEnabled";
-        field.Type = TType.Bool;
-        field.ID = 20;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(PushNotificationsCertificateProdEnabled);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsCertificateProdEnabled: ");
+        __sb.Append(PushNotificationsCertificateProdEnabled);
       }
       if (RedirectUrl != null && __isset.redirectUrl) {
-        field.Name = "redirectUrl";
-        field.Type = TType.String;
-        field.ID = 21;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(RedirectUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("RedirectUrl: ");
+        __sb.Append(RedirectUrl);
       }
       if (CustomLandingPage != null && __isset.customLandingPage) {
-        field.Name = "customLandingPage";
-        field.Type = TType.String;
-        field.ID = 22;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(CustomLandingPage);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CustomLandingPage: ");
+        __sb.Append(CustomLandingPage);
       }
       if (__isset.iapEnabled) {
-        field.Name = "iapEnabled";
-        field.Type = TType.Bool;
-        field.ID = 23;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IapEnabled);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IapEnabled: ");
+        __sb.Append(IapEnabled);
       }
       if (__isset.iapValidationEnabled) {
-        field.Name = "iapValidationEnabled";
-        field.Type = TType.Bool;
-        field.ID = 24;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IapValidationEnabled);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IapValidationEnabled: ");
+        __sb.Append(IapValidationEnabled);
       }
       if (IapPublicKey != null && __isset.iapPublicKey) {
-        field.Name = "iapPublicKey";
-        field.Type = TType.String;
-        field.ID = 25;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(IapPublicKey);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IapPublicKey: ");
+        __sb.Append(IapPublicKey);
       }
       if (IapSharedSecret != null && __isset.iapSharedSecret) {
-        field.Name = "iapSharedSecret";
-        field.Type = TType.String;
-        field.ID = 26;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(IapSharedSecret);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IapSharedSecret: ");
+        __sb.Append(IapSharedSecret);
       }
       if (IapServiceAccountKey != null && __isset.iapServiceAccountKey) {
-        field.Name = "iapServiceAccountKey";
-        field.Type = TType.String;
-        field.ID = 27;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(IapServiceAccountKey);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IapServiceAccountKey: ");
+        __sb.Append(IapServiceAccountKey);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THAppPlatformProperties(");
-    bool __first = true;
-    if (__isset.pushNotificationsCertificateExpiresDev) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsCertificateExpiresDev: ");
-      __sb.Append(PushNotificationsCertificateExpiresDev);
-    }
-    if (__isset.pushNotificationsCertificateExpiresProd) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsCertificateExpiresProd: ");
-      __sb.Append(PushNotificationsCertificateExpiresProd);
-    }
-    if (PushNotificationsPrivateKeyDev != null && __isset.pushNotificationsPrivateKeyDev) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsPrivateKeyDev: ");
-      __sb.Append(PushNotificationsPrivateKeyDev);
-    }
-    if (PushNotificationsPrivateKeyProd != null && __isset.pushNotificationsPrivateKeyProd) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsPrivateKeyProd: ");
-      __sb.Append(PushNotificationsPrivateKeyProd);
-    }
-    if (PushNotificationsCertificateDev != null && __isset.pushNotificationsCertificateDev) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsCertificateDev: ");
-      __sb.Append(PushNotificationsCertificateDev);
-    }
-    if (PushNotificationsCertificateProd != null && __isset.pushNotificationsCertificateProd) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsCertificateProd: ");
-      __sb.Append(PushNotificationsCertificateProd);
-    }
-    if (PushNotificationsEndpointDev != null && __isset.pushNotificationsEndpointDev) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsEndpointDev: ");
-      __sb.Append(PushNotificationsEndpointDev);
-    }
-    if (PushNotificationsEndpointProd != null && __isset.pushNotificationsEndpointProd) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsEndpointProd: ");
-      __sb.Append(PushNotificationsEndpointProd);
-    }
-    if (PushNotificationsAppKey != null && __isset.pushNotificationsAppKey) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsAppKey: ");
-      __sb.Append(PushNotificationsAppKey);
-    }
-    if (PushNotificationsSenderId != null && __isset.pushNotificationsSenderId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsSenderId: ");
-      __sb.Append(PushNotificationsSenderId);
-    }
-    if (PushNotificationsActiveEnvironment != null && __isset.pushNotificationsActiveEnvironment) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsActiveEnvironment: ");
-      __sb.Append(PushNotificationsActiveEnvironment);
-    }
-    if (__isset.pushNotificationsStatus) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsStatus: ");
-      __sb.Append(PushNotificationsStatus);
-    }
-    if (AppleTeamId != null && __isset.appleTeamId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AppleTeamId: ");
-      __sb.Append(AppleTeamId);
-    }
-    if (AppleBundleId != null && __isset.appleBundleId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AppleBundleId: ");
-      __sb.Append(AppleBundleId);
-    }
-    if (IdExt != null && __isset.idExt) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IdExt: ");
-      __sb.Append(IdExt);
-    }
-    if (AndroidCertificateFingerprint != null && __isset.androidCertificateFingerprint) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("AndroidCertificateFingerprint: ");
-      __sb.Append(AndroidCertificateFingerprint);
-    }
-    if (__isset.enabled) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Enabled: ");
-      __sb.Append(Enabled);
-    }
-    if (__isset.verifySignature) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("VerifySignature: ");
-      __sb.Append(VerifySignature);
-    }
-    if (__isset.pushNotificationsCertificateDevEnabled) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsCertificateDevEnabled: ");
-      __sb.Append(PushNotificationsCertificateDevEnabled);
-    }
-    if (__isset.pushNotificationsCertificateProdEnabled) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("PushNotificationsCertificateProdEnabled: ");
-      __sb.Append(PushNotificationsCertificateProdEnabled);
-    }
-    if (RedirectUrl != null && __isset.redirectUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("RedirectUrl: ");
-      __sb.Append(RedirectUrl);
-    }
-    if (CustomLandingPage != null && __isset.customLandingPage) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("CustomLandingPage: ");
-      __sb.Append(CustomLandingPage);
-    }
-    if (__isset.iapEnabled) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IapEnabled: ");
-      __sb.Append(IapEnabled);
-    }
-    if (__isset.iapValidationEnabled) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IapValidationEnabled: ");
-      __sb.Append(IapValidationEnabled);
-    }
-    if (IapPublicKey != null && __isset.iapPublicKey) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IapPublicKey: ");
-      __sb.Append(IapPublicKey);
-    }
-    if (IapSharedSecret != null && __isset.iapSharedSecret) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IapSharedSecret: ");
-      __sb.Append(IapSharedSecret);
-    }
-    if (IapServiceAccountKey != null && __isset.iapServiceAccountKey) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IapServiceAccountKey: ");
-      __sb.Append(IapServiceAccountKey);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

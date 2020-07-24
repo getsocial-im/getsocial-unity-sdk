@@ -16,200 +16,207 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetFriendsResponse : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<THPublicUser> _users;
-  private int _totalNumber;
-  private string _nextCursor;
 
-  public List<THPublicUser> Users
-  {
-    get
-    {
-      return _users;
-    }
-    set
-    {
-      __isset.users = true;
-      this._users = value;
-    }
-  }
-
-  public int TotalNumber
-  {
-    get
-    {
-      return _totalNumber;
-    }
-    set
-    {
-      __isset.totalNumber = true;
-      this._totalNumber = value;
-    }
-  }
-
-  public string NextCursor
-  {
-    get
-    {
-      return _nextCursor;
-    }
-    set
-    {
-      __isset.nextCursor = true;
-      this._nextCursor = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool users;
-    public bool totalNumber;
-    public bool nextCursor;
-  }
-
-  public GetFriendsResponse() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetFriendsResponse : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                Users = new List<THPublicUser>();
-                TList _list43 = iprot.ReadListBegin();
-                for( int _i44 = 0; _i44 < _list43.Count; ++_i44)
-                {
-                  THPublicUser _elem45;
-                  _elem45 = new THPublicUser();
-                  _elem45.Read(iprot);
-                  Users.Add(_elem45);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I32) {
-              TotalNumber = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.String) {
-              NextCursor = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<THPublicUser> _users;
+    private int _totalNumber;
+    private string _nextCursor;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<THPublicUser> Users
     {
-      TStruct struc = new TStruct("GetFriendsResponse");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Users != null && __isset.users) {
-        field.Name = "users";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _users;
+      }
+      set
+      {
+        __isset.users = true;
+        this._users = value;
+      }
+    }
+
+    public int TotalNumber
+    {
+      get
+      {
+        return _totalNumber;
+      }
+      set
+      {
+        __isset.totalNumber = true;
+        this._totalNumber = value;
+      }
+    }
+
+    public string NextCursor
+    {
+      get
+      {
+        return _nextCursor;
+      }
+      set
+      {
+        __isset.nextCursor = true;
+        this._nextCursor = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool users;
+      public bool totalNumber;
+      public bool nextCursor;
+    }
+
+    public GetFriendsResponse() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.Struct, Users.Count));
-          foreach (THPublicUser _iter46 in Users)
-          {
-            _iter46.Write(oprot);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  Users = new List<THPublicUser>();
+                  TList _list43 = iprot.ReadListBegin();
+                  for( int _i44 = 0; _i44 < _list43.Count; ++_i44)
+                  {
+                    THPublicUser _elem45;
+                    _elem45 = new THPublicUser();
+                    _elem45.Read(iprot);
+                    Users.Add(_elem45);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I32) {
+                TotalNumber = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.String) {
+                NextCursor = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetFriendsResponse");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Users != null && __isset.users) {
+          field.Name = "users";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Users.Count));
+            foreach (THPublicUser _iter46 in Users)
+            {
+              _iter46.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.totalNumber) {
+          field.Name = "totalNumber";
+          field.Type = TType.I32;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(TotalNumber);
+          oprot.WriteFieldEnd();
+        }
+        if (NextCursor != null && __isset.nextCursor) {
+          field.Name = "nextCursor";
+          field.Type = TType.String;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(NextCursor);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetFriendsResponse(");
+      bool __first = true;
+      if (Users != null && __isset.users) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Users: ");
+        __sb.Append(Users.ToDebugString());
       }
       if (__isset.totalNumber) {
-        field.Name = "totalNumber";
-        field.Type = TType.I32;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(TotalNumber);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("TotalNumber: ");
+        __sb.Append(TotalNumber);
       }
       if (NextCursor != null && __isset.nextCursor) {
-        field.Name = "nextCursor";
-        field.Type = TType.String;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(NextCursor);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NextCursor: ");
+        __sb.Append(NextCursor);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetFriendsResponse(");
-    bool __first = true;
-    if (Users != null && __isset.users) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Users: ");
-      __sb.Append(Users);
-    }
-    if (__isset.totalNumber) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("TotalNumber: ");
-      __sb.Append(TotalNumber);
-    }
-    if (NextCursor != null && __isset.nextCursor) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NextCursor: ");
-      __sb.Append(NextCursor);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

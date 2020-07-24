@@ -18,14 +18,14 @@ MonoBehaviour:
   _autoInitEnabled: 1
   _disableFacebookReferralCheck: 0
   _useGetSocialUi: 1
-  _getSocialCustomConfigurationFilePath: 
+  _getSocialCustomConfigurationFilePath: getsocial-dark
   _getSocialDefaultConfigurationFilePath: 
   _iosPushEnvironment: development
   _deeplinkingDomains:
-  - unitydemosdk6.gsc.im
-  - unitydemosdk6-gsalt.gsc.im
-  - unitydemosdk6.testing.gsc.im
-  - unitydemosdk6-gsalt.testing.gsc.im
+  - unitydemo.gsc.im
+  - unitydemo-gsalt.gsc.im
+  - unitydemo.testing.gsc.im
+  - unitydemo-gsalt.testing.gsc.im
   _isAndroidEnabled: 1
   _isIosEnabled: 1
   _isIosPushEnabled: 1

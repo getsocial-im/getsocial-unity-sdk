@@ -16,131 +16,138 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetUsersResponseById : TBase
+namespace GetSocialSdk.Core 
 {
-  private Dictionary<string, THPublicUser> _users;
 
-  public Dictionary<string, THPublicUser> Users
-  {
-    get
-    {
-      return _users;
-    }
-    set
-    {
-      __isset.users = true;
-      this._users = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool users;
-  }
-
-  public GetUsersResponseById() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetUsersResponseById : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
+    private Dictionary<string, THPublicUser> _users;
+
+    public Dictionary<string, THPublicUser> Users
     {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
+      get
       {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.Map) {
-              {
-                Users = new Dictionary<string, THPublicUser>();
-                TMap _map59 = iprot.ReadMapBegin();
-                for( int _i60 = 0; _i60 < _map59.Count; ++_i60)
-                {
-                  string _key61;
-                  THPublicUser _val62;
-                  _key61 = iprot.ReadString();
-                  _val62 = new THPublicUser();
-                  _val62.Read(iprot);
-                  Users[_key61] = _val62;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
+        return _users;
       }
-      iprot.ReadStructEnd();
+      set
+      {
+        __isset.users = true;
+        this._users = value;
+      }
     }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool users;
+    }
+
+    public GetUsersResponseById() {
+    }
+
+    public void Read (TProtocol iprot)
     {
-      TStruct struc = new TStruct("GetUsersResponseById");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Users != null && __isset.users) {
-        field.Name = "users";
-        field.Type = TType.Map;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Users.Count));
-          foreach (string _iter63 in Users.Keys)
-          {
-            oprot.WriteString(_iter63);
-            Users[_iter63].Write(oprot);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteMapEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.Map) {
+                {
+                  Users = new Dictionary<string, THPublicUser>();
+                  TMap _map59 = iprot.ReadMapBegin();
+                  for( int _i60 = 0; _i60 < _map59.Count; ++_i60)
+                  {
+                    string _key61;
+                    THPublicUser _val62;
+                    _key61 = iprot.ReadString();
+                    _val62 = new THPublicUser();
+                    _val62.Read(iprot);
+                    Users[_key61] = _val62;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetUsersResponseById(");
-    bool __first = true;
-    if (Users != null && __isset.users) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Users: ");
-      __sb.Append(Users);
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetUsersResponseById");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Users != null && __isset.users) {
+          field.Name = "users";
+          field.Type = TType.Map;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Users.Count));
+            foreach (string _iter63 in Users.Keys)
+            {
+              oprot.WriteString(_iter63);
+              Users[_iter63].Write(oprot);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
     }
-    __sb.Append(")");
-    return __sb.ToString();
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetUsersResponseById(");
+      bool __first = true;
+      if (Users != null && __isset.users) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Users: ");
+        __sb.Append(Users.ToDebugString());
+      }
+      __sb.Append(")");
+      return __sb.ToString();
+    }
+
   }
 
 }

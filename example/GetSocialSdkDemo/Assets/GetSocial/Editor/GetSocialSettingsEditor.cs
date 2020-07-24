@@ -52,43 +52,15 @@ namespace GetSocialSdk.Editor
         private static string _remoteRequestStatusLabel;
         private static UiConfigValidationResult _uiConfigurationValidationResult = new UiConfigValidationResult(true, "");
 
-        private bool _androidFrameworkStatus = true;
-        private bool _iosFrameworkStatus = true;
-
-        private IEnumerator<object> _checkFrameworks;
-        private bool _visible;
         #region lifecycle
         
         void OnEnable()
         {
-            UpdatePlatformLibraries();
-            UpdateDefineSymbols();
             UpdateRemoteConfig();
             UpdateUiConfigFileCheck();
-
-            _visible = true;
-            _checkFrameworks = CheckForFrameworks();
-            EditorCoroutine.Start(_checkFrameworks);
+            AndroidManifestHelper.RemoveSdk6Configs();
         }
 
-        private void OnDisable() 
-        {
-            _visible = false;
-        }
-
-        private IEnumerator<object> CheckForFrameworks()
-        {
-            while (_visible)
-            {
-                if (FileHelper.AndroidDownloadInProgress || FileHelper.IOSDownloadInProgress) 
-                {
-                    Repaint();
-                }
-                _androidFrameworkStatus = FileHelper.CheckAndroidFramework();
-                _iosFrameworkStatus = FileHelper.CheckiOSFramework();
-                yield return null;
-            }
-        }
 
         public override void OnInspectorGUI()
         {
@@ -181,7 +153,7 @@ namespace GetSocialSdk.Editor
         
         static bool IsDemoAppPackage()
         {
-            return PlayerSettingsCompat.bundleIdentifier == DemoAppPackage;
+            return PlayerSettings.applicationIdentifier == DemoAppPackage;
         }
 
         static bool IsDemoAppId(string appId)
@@ -199,7 +171,7 @@ namespace GetSocialSdk.Editor
             var enableForegroundNotifications = new GUIContent("Show Notification In Foreground [?]", "If this setting is checked, all GetSocial push notifications will be shown when app is in foreground. Otherwise, the notification will be delegated to NotificationListener.");
             var isForegroundNotificationEnabled = EditorGUILayout.ToggleLeft(enableForegroundNotifications, GetSocialSettings.IsForegroundNotificationsEnabled);
 
-            var waitForPushListener = new GUIContent("Should Wait For Push Notification Listener[?]", "If this setting is checked, GetSocial will wait for `GetSocial.SetNotificationListener` to be called before process any Push Notification, so you can be sure it won't be called before you set the listener. [!] If you don't set the listener having this setting enabled, Push Notifications will never be processed.");
+            var waitForPushListener = new GUIContent("Has Custom Notification On Click Listener [?]", "If you want to handle notification clicks with `Notifications.SetOnNotificationClickedListener`, set this checked. If it is checked - the default behaviour is not invoked.");
             var shouldWaitForListener = EditorGUILayout.ToggleLeft(waitForPushListener, GetSocialSettings.ShouldWaitForPushListener);
             
             SetAutoRegisterPushEnabled(isAutoRegisrationForPushesEnabled);
@@ -225,7 +197,6 @@ namespace GetSocialSdk.Editor
             {
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 {
-                    DrawAndroidFrameworkStatusSettings();
                     DrawDashboardSettingToogle("Platform status", 
                         GetSocialSettings.IsAndroidEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
                     
@@ -242,51 +213,6 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        private void DrawAndroidFrameworkStatusSettings()
-        {
-            bool frameworkStatus = _androidFrameworkStatus;
-            
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUILayout.LabelField("Framework status", EditorGuiUtils.OneThirdWidth);
-
-                EditorGuiUtils.ColoredBackground(frameworkStatus || FileHelper.AndroidDownloadInProgress ? GUI.backgroundColor : Color.green, 
-                    () =>
-                    {
-                        string buttonText;
-                        if (FileHelper.AndroidDownloadInProgress)
-                        {
-                            buttonText = "... Downloading, please wait ...";
-                        }
-                        else
-                        {
-                            buttonText = frameworkStatus ? "✔ Downloaded" : "✘ Not downloaded";
-                        }
-                            
-                        var style = frameworkStatus ? EditorStyles.label : EditorStyles.miniButton;
-                        
-                        if(GUILayout.Button(buttonText, style, EditorGuiUtils.OneThirdWidth))
-                        {
-                            if (!frameworkStatus && !FileHelper.AndroidDownloadInProgress)
-                            {
-                                FileHelper.DownloadAndroidFramework(() =>
-                                {
-                                    buttonText = "✔ Downloaded";
-                                }, error =>
-                                {
-                                    buttonText = "✘ Not downloaded";
-                                });
-                            }
-                        }
-                        if (FileHelper.AndroidDownloadInProgress)
-                        {
-                            var progress = (int) (FileHelper.AndroidDownloadProgress * 100);
-                            EditorGUILayout.LabelField(string.Format("{0}%", progress), EditorGuiUtils.OneThirdWidth);
-                        }
-                    });
-            }
-        }
-        
         private static void DrawDashboardSettingToogle(string settingText, string status)
         {
             using (new EditorGUILayout.HorizontalScope())
@@ -318,7 +244,6 @@ namespace GetSocialSdk.Editor
             {
                 EditorGUILayout.BeginVertical(GUI.skin.box);
                 {
-                    DrawiOSFrameworkStatusSettings();
                     DrawDashboardSettingToogle("Platform status", 
                         GetSocialSettings.IsIosEnabled ? "✔️ Enabled [?]" : "✘ Disabled [?]");
                     
@@ -339,12 +264,12 @@ namespace GetSocialSdk.Editor
                         var extensionBundleId = EditorGUILayout.TextField(GetSocialSettings.ExtensionBundleId, EditorGuiUtils.OneThirdWidth);
                         if (extensionBundleId.Length == 0)
                         {
-                            extensionBundleId = PlayerSettingsCompat.bundleIdentifier + ".getsocialextension";
+                            extensionBundleId = PlayerSettings.applicationIdentifier + ".getsocialextension";
                         }
                         SetExtensionBundleId(extensionBundleId);
                         if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
                         {
-                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/notifications/setup-push-notifications/unity/#receiving-rich-push-notifications-and-badges-ios-only?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/notifications/setup-push-notifications/unity/#receiving-rich-push-notifications-and-badges-ios-only", BuildConfig.PublishTarget));
                         }
                         EditorGUILayout.EndHorizontal();
 
@@ -356,7 +281,7 @@ namespace GetSocialSdk.Editor
                         SetExtensionProvisioningProfile(extensionProvisioningProfile);
                         if (GUILayout.Button("More info", EditorStyles.miniButton, EditorGuiUtils.OneThirdWidth))
                         {
-                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/notifications/setup-push-notifications/unity/#receiving-rich-push-notifications-and-badges-ios-only?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
+                            Application.OpenURL(string.Format("https://docs.getsocial.im/guides/notifications/setup-push-notifications/unity/#receiving-rich-push-notifications-and-badges-ios-only", BuildConfig.PublishTarget));
                         }
                         EditorGUILayout.EndHorizontal();
 #endif                        
@@ -367,73 +292,21 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        private void DrawiOSFrameworkStatusSettings()
-        {
-            bool frameworkStatus = _iosFrameworkStatus;
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUILayout.LabelField("Framework status", EditorGuiUtils.OneThirdWidth);
-
-                EditorGuiUtils.ColoredBackground(frameworkStatus || FileHelper.IOSDownloadInProgress ? GUI.backgroundColor : Color.green, 
-                    () =>
-                    {
-                        string buttonText;
-                        if (FileHelper.IOSDownloadInProgress)
-                        {
-                            buttonText = "... Downloading, please wait ...";
-                        }
-                        else
-                        {
-                            buttonText = frameworkStatus ? "✔ Downloaded" : "✘ Not downloaded";
-                        }
-                            
-                        var style = frameworkStatus ? EditorStyles.label : EditorStyles.miniButton;
-                        
-                        if(GUILayout.Button(buttonText, style, EditorGuiUtils.OneThirdWidth))
-                        {
-                            if (!frameworkStatus && !FileHelper.IOSDownloadInProgress)
-                            {
-                                FileHelper.DownloadiOSFramework(() =>
-                                {
-                                    buttonText = "✔ Downloaded";
-                                }, error =>
-                                {
-                                    buttonText = "✘ Not downloaded";
-                                });
-                            }
-                        }
-
-                        if (FileHelper.IOSDownloadInProgress)
-                        {
-                            var progress = (int) (FileHelper.IOSDownloadProgress * 100);
-                            EditorGUILayout.LabelField(string.Format("{0}%", progress), EditorGuiUtils.OneThirdWidth);
-                        }
-                    });
-            }
-        }
-
         void DrawUiSettings()
         {
             EditorGUILayout.LabelField("GetSocial UI", EditorStyles.boldLabel);
             
-            var newIsGetSocialUiEnabledValue =
-                EditorGUILayout.ToggleLeft(" Use GetSocial UI", GetSocialSettings.UseGetSocialUi);
-            SetGetSocialUiEnabled(newIsGetSocialUiEnabledValue);
-            
-            EditorGUI.BeginDisabledGroup(!GetSocialSettings.UseGetSocialUi);
+            var uiConfigurationLabel = new GUIContent("UI Configuration File Path [?]", "Path to the UI configuration json relative to StreamingAssets/ folder. \nLeave empty to use default UI configuration.");
+            using (new FixedWidthLabel(uiConfigurationLabel))
             {
-                var uiConfigurationLabel = new GUIContent("UI Configuration File Path [?]", "Path to the UI configuration json relative to StreamingAssets/ folder. \nLeave empty to use default UI configuration.");
-                using (new FixedWidthLabel(uiConfigurationLabel))
-                {
-                    var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationCustomFilePath);
-                    SetUiConfigCustomFilePath(filePath);
-                }
+                var filePath = EditorGUILayout.TextField(GetSocialSettings.UiConfigurationCustomFilePath);
+                SetUiConfigCustomFilePath(filePath);
+            }
 
-                var configCheckResult = _uiConfigurationValidationResult;
-                if (!configCheckResult.Result)
-                {
-                    EditorGUILayout.HelpBox(configCheckResult.Message, MessageType.Error);
-                }
+            var configCheckResult = _uiConfigurationValidationResult;
+            if (!configCheckResult.Result)
+            {
+                EditorGUILayout.HelpBox(configCheckResult.Message, MessageType.Error);
             }
             EditorGUI.EndDisabledGroup();
         }
@@ -616,26 +489,6 @@ namespace GetSocialSdk.Editor
             }
         }
 
-        void SetGetSocialUiEnabled(bool value)
-        {
-            if (GetSocialSettings.UseGetSocialUi != value)
-            {
-                GetSocialSettings.UseGetSocialUi = value;
-                UpdateDefineSymbols();
-                UpdatePlatformLibraries();
-            }
-        }
-
-        static void UpdatePlatformLibraries()
-        {
-            FileHelper.SetGetSocialUiEnabled(GetSocialSettings.UseGetSocialUi);
-        }
-        
-        static void UpdateDefineSymbols()
-        {
-            DefinesToggler.ToggleUseGetSocialUiDefine(GetSocialSettings.UseGetSocialUi);
-        }
-
         void UpdateRemoteConfig()
         {
             _remoteRequestStatusLabel = "Validating App Id...";
@@ -655,6 +508,7 @@ namespace GetSocialSdk.Editor
                         GetSocialSettings.IsAndroidPushEnabled = remoteConfig.Android.IsPushNotificationEnabled;
                         GetSocialSettings.IsIosEnabled = remoteConfig.Ios.IsEnabled;
                         GetSocialSettings.IsIosPushEnabled = remoteConfig.Ios.IsPushNotificationEnabled;
+                        GetSocialSettings.IosPushEnvironment = remoteConfig.Ios.PushEnvironment;
                         GetSocialSettings.DeeplinkingDomains = ExtractDeeplinksFromRemoteConfig(remoteConfig);
                         GetSocialSettings.IsAppIdValidated = true;
 

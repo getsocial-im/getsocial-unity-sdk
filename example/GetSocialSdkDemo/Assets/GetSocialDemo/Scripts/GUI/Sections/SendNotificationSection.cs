@@ -11,8 +11,8 @@ namespace GetSocialDemo.Scripts.GUI.Sections
     public class SendNotificationSection : DemoMenuSection
     {
         private static readonly Dictionary<string, string> Placeholders = new Dictionary<string, string>() {
-            {"Receiver", SendNotificationPlaceholders.CustomText.ReceiverDisplayName},
-            {"Sender", SendNotificationPlaceholders.CustomText.SenderDisplayName}
+            {"Receiver", NotificationContentPlaceholders.ReceiverDisplayName},
+            {"Sender", NotificationContentPlaceholders.SenderDisplayName}
         };
         private string _title;
         private string _text;
@@ -212,59 +212,60 @@ namespace GetSocialDemo.Scripts.GUI.Sections
 
             if (GUILayout.Button("Send", GSStyles.Button))
             {
-                var recipients = _userIds.ConvertAll(user => user.UserIdString);
+                var userIds = _userIds.ConvertAll(user => user.UserIdString);
+                if (_me)
+                {
+                    userIds.Add(GetSocial.GetCurrentUser().Id);
+                }
+                var notificationTarget = new SendNotificationTarget(UserIdList.Create(userIds));
                 if (_referrer)
                 {
-                    recipients.Add(SendNotificationPlaceholders.Receivers.Referrer);
+                    notificationTarget.AddPlaceholder(NotificationReceiverPlaceholders.Referrer);
                 }
                 if (_referredUsers)
                 {
-                    recipients.Add(SendNotificationPlaceholders.Receivers.ReferredUsers);
+                    notificationTarget.AddPlaceholder(NotificationReceiverPlaceholders.ReferredUsers);
                 }
                 if (_friends)
                 {
-                    recipients.Add(SendNotificationPlaceholders.Receivers.Friends);
-                }
-                if (_me)
-                {
-                    recipients.Add(GetSocial.User.Id);
+                    notificationTarget.AddPlaceholder(NotificationReceiverPlaceholders.Friends);
                 }
 
                 if (GetSocialActionType.AddFriend.Equals(_action) && string.IsNullOrEmpty(_text) && string.IsNullOrEmpty(_templateName))
                 {
-                    var addFriend = NotificationContent.NotificationWithText(
-                            SendNotificationPlaceholders.CustomText.SenderDisplayName + " wants to become friends.")
+                    var addFriend = NotificationContent.CreateWithText(
+                            NotificationContentPlaceholders.SenderDisplayName + " wants to become friends.")
                         .WithTitle("Friend request")
-                        .WithAction(GetSocialAction.CreateBuilder(_action)
-                            .AddActionData(GetSocialActionKeys.AddFriend.UserId, GetSocial.User.Id)
-                            .AddActionData("user_name", GetSocial.User.DisplayName)
-                            .Build());
+                        .WithAction(GetSocialAction.Create(_action, new Dictionary<string, string>() {
+                            { GetSocialActionKeys.AddFriend.UserId, GetSocial.GetCurrentUser().Id },
+                            { "user_name", GetSocial.GetCurrentUser().DisplayName }
+                        }));
                 
                
-                    GetSocial.User.SendNotification(recipients, 
-                        addFriend, 
-                        summary => _console.LogD("Sent " + summary.SuccessfullySentCount + " notifications"), 
+                    Notifications.Send(addFriend, 
+                        notificationTarget, 
+                        () => _console.LogD("Notification sending started"), 
                         error => _console.LogE("Error: " + error.Message)
                     );
                     return;
                 }
-                var mediaAttachment = _imageUrl.Length > 0 ? MediaAttachment.ImageUrl(_imageUrl)
-                    : _videoUrl.Length > 0 ? MediaAttachment.VideoUrl(_videoUrl)
-                    : _useCustomImage ? MediaAttachment.Image(Resources.Load<Texture2D>("activityImage"))
-                    : _useCustomVideo ? MediaAttachment.Video(DemoUtils.LoadSampleVideoBytes())
+                var mediaAttachment = _imageUrl.Length > 0 ? MediaAttachment.WithImageUrl(_imageUrl)
+                    : _videoUrl.Length > 0 ? MediaAttachment.WithVideoUrl(_videoUrl)
+                    : _useCustomImage ? MediaAttachment.WithImage(Resources.Load<Texture2D>("activityImage"))
+                    : _useCustomVideo ? MediaAttachment.WithVideo(DemoUtils.LoadSampleVideoBytes())
                     : null;
 
                 var customization = NotificationCustomization
                     .WithBackgroundImageConfiguration(_backgroundImageConfiguration.ToNullIfEmpty())
                     .WithTitleColor(_titleColor.ToNullIfEmpty())
                     .WithTextColor(_textColor.ToNullIfEmpty());
-                var content = NotificationContent.NotificationWithText(_text)
+                var content = NotificationContent.CreateWithText(_text)
                     .WithTitle(_title)
                     .WithTemplateName(_templateName)
                     .AddTemplatePlaceholders(_templatePlaceholders.ToDictionary(data => data.Key, data => data.Val))
                     .WithMediaAttachment(mediaAttachment)
                     .WithCustomization(customization)
-                    .AddActionButtons(_actionButtons.ConvertAll(item => ActionButton.Create(item.Key, item.Val))
+                    .AddActionButtons(_actionButtons.ConvertAll(item => NotificationButton.Create(item.Key, item.Val))
                  );
 
                 if (_sendBadgeValue) 
@@ -277,15 +278,13 @@ namespace GetSocialDemo.Scripts.GUI.Sections
                 
                 if (_action != null)
                 {
-                    var action = GetSocialAction.CreateBuilder(_action)
-                        .AddActionData(_actionData.ToDictionary(data => data.Key, data => data.Val))
-                        .Build();
+                    var action = GetSocialAction.Create(_action, _actionData.ToDictionary(data => data.Key, data => data.Val));
                     content.WithAction(action);
                 }
                 
-                GetSocial.User.SendNotification(recipients, 
-                    content, 
-                    summary => _console.LogD("Sent " + summary.SuccessfullySentCount + " notifications"), 
+                Notifications.Send(content, 
+                    notificationTarget, 
+                    () => _console.LogD("Notifications sending started"), 
                     error => _console.LogE("Error: " + error.Message)
                 );
             }

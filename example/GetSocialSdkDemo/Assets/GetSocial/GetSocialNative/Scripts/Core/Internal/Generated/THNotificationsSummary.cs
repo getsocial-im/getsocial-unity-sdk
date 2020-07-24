@@ -16,110 +16,117 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THNotificationsSummary : TBase
+namespace GetSocialSdk.Core 
 {
-  private int _successCount;
 
-  public int SuccessCount
-  {
-    get
-    {
-      return _successCount;
-    }
-    set
-    {
-      __isset.successCount = true;
-      this._successCount = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool successCount;
-  }
-
-  public THNotificationsSummary() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THNotificationsSummary : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
+    private int _successCount;
+
+    public int SuccessCount
     {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
+      get
       {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
+        return _successCount;
+      }
+      set
+      {
+        __isset.successCount = true;
+        this._successCount = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool successCount;
+    }
+
+    public THNotificationsSummary() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          case 1:
-            if (field.Type == TType.I32) {
-              SuccessCount = iprot.ReadI32();
-            } else { 
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.I32) {
+                SuccessCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
               TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        iprot.ReadFieldEnd();
+        iprot.ReadStructEnd();
       }
-      iprot.ReadStructEnd();
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
     }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
-    {
-      TStruct struc = new TStruct("THNotificationsSummary");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THNotificationsSummary");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (__isset.successCount) {
+          field.Name = "successCount";
+          field.Type = TType.I32;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(SuccessCount);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THNotificationsSummary(");
+      bool __first = true;
       if (__isset.successCount) {
-        field.Name = "successCount";
-        field.Type = TType.I32;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(SuccessCount);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SuccessCount: ");
+        __sb.Append(SuccessCount);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THNotificationsSummary(");
-    bool __first = true;
-    if (__isset.successCount) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SuccessCount: ");
-      __sb.Append(SuccessCount);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

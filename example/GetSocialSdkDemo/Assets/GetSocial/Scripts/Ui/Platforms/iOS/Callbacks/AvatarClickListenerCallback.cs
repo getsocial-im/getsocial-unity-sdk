@@ -1,22 +1,22 @@
-﻿#if UNITY_IOS && USE_GETSOCIAL_UI
+﻿#if UNITY_IOS 
 using System;
 using GetSocialSdk.Core;
 
 namespace GetSocialSdk.Ui
 {
-    delegate void AvatarClickListenerDelegate(IntPtr avatarClickListenerPtr, string serializedPublicUser);
+    delegate void AvatarClickListenerDelegate(IntPtr avatarClickListenerPtr, string serializedUser);
 
     public static class AvatarClickListenerCallback
     {
         [AOT.MonoPInvokeCallback(typeof(AvatarClickListenerDelegate))]
-        public static void OnAvatarClicked(IntPtr onAvatarClickedPtr, string serializedPublicUser)
+        public static void OnAvatarClicked(IntPtr onAvatarClickedPtr, string serializedUser)
         {
-            GetSocialDebugLogger.D(string.Format("OnAvatarClicked for user {0}", serializedPublicUser));
+            GetSocialDebugLogger.D(string.Format("OnAvatarClicked for user {0}", serializedUser));
 
             if (onAvatarClickedPtr != IntPtr.Zero)
             {
-                var publicUser = new PublicUser().ParseFromJson(serializedPublicUser.ToDict());
-                onAvatarClickedPtr.Cast<Action<PublicUser>>().Invoke(publicUser);
+                var user = GetSocialJsonBridge.FromJson<User>(serializedUser);
+                onAvatarClickedPtr.Cast<Action<User>>().Invoke(user);
             }
         }
     }

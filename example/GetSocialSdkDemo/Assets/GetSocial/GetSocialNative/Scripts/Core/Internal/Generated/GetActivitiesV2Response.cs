@@ -16,278 +16,285 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class GetActivitiesV2Response : TBase
+namespace GetSocialSdk.Core 
 {
-  private List<AFActivity> _data;
-  private List<AFEntityReference> _entityDetails;
-  private Dictionary<string, THPublicUser> _authors;
-  private string _nextCursor;
-
-  public List<AFActivity> Data
-  {
-    get
-    {
-      return _data;
-    }
-    set
-    {
-      __isset.data = true;
-      this._data = value;
-    }
-  }
-
-  public List<AFEntityReference> EntityDetails
-  {
-    get
-    {
-      return _entityDetails;
-    }
-    set
-    {
-      __isset.entityDetails = true;
-      this._entityDetails = value;
-    }
-  }
 
   /// <summary>
-  /// if SGEntityType is Activity, it is not included this map
+  /// #sdk7
   /// </summary>
-  public Dictionary<string, THPublicUser> Authors
-  {
-    get
-    {
-      return _authors;
-    }
-    set
-    {
-      __isset.authors = true;
-      this._authors = value;
-    }
-  }
-
-  public string NextCursor
-  {
-    get
-    {
-      return _nextCursor;
-    }
-    set
-    {
-      __isset.nextCursor = true;
-      this._nextCursor = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool data;
-    public bool entityDetails;
-    public bool authors;
-    public bool nextCursor;
-  }
-
-  public GetActivitiesV2Response() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class GetActivitiesV2Response : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.List) {
-              {
-                Data = new List<AFActivity>();
-                TList _list66 = iprot.ReadListBegin();
-                for( int _i67 = 0; _i67 < _list66.Count; ++_i67)
-                {
-                  AFActivity _elem68;
-                  _elem68 = new AFActivity();
-                  _elem68.Read(iprot);
-                  Data.Add(_elem68);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.List) {
-              {
-                EntityDetails = new List<AFEntityReference>();
-                TList _list69 = iprot.ReadListBegin();
-                for( int _i70 = 0; _i70 < _list69.Count; ++_i70)
-                {
-                  AFEntityReference _elem71;
-                  _elem71 = new AFEntityReference();
-                  _elem71.Read(iprot);
-                  EntityDetails.Add(_elem71);
-                }
-                iprot.ReadListEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                Authors = new Dictionary<string, THPublicUser>();
-                TMap _map72 = iprot.ReadMapBegin();
-                for( int _i73 = 0; _i73 < _map72.Count; ++_i73)
-                {
-                  string _key74;
-                  THPublicUser _val75;
-                  _key74 = iprot.ReadString();
-                  _val75 = new THPublicUser();
-                  _val75.Read(iprot);
-                  Authors[_key74] = _val75;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 4:
-            if (field.Type == TType.String) {
-              NextCursor = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private List<AFActivity> _data;
+    private List<AFEntityReference> _entityDetails;
+    private Dictionary<string, THPublicUser> _authors;
+    private string _nextCursor;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public List<AFActivity> Data
     {
-      TStruct struc = new TStruct("GetActivitiesV2Response");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
-      if (Data != null && __isset.data) {
-        field.Name = "data";
-        field.Type = TType.List;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
+      get
+      {
+        return _data;
+      }
+      set
+      {
+        __isset.data = true;
+        this._data = value;
+      }
+    }
+
+    public List<AFEntityReference> EntityDetails
+    {
+      get
+      {
+        return _entityDetails;
+      }
+      set
+      {
+        __isset.entityDetails = true;
+        this._entityDetails = value;
+      }
+    }
+
+    /// <summary>
+    /// if SGEntityType is Activity, it is not included this map
+    /// </summary>
+    public Dictionary<string, THPublicUser> Authors
+    {
+      get
+      {
+        return _authors;
+      }
+      set
+      {
+        __isset.authors = true;
+        this._authors = value;
+      }
+    }
+
+    public string NextCursor
+    {
+      get
+      {
+        return _nextCursor;
+      }
+      set
+      {
+        __isset.nextCursor = true;
+        this._nextCursor = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool data;
+      public bool entityDetails;
+      public bool authors;
+      public bool nextCursor;
+    }
+
+    public GetActivitiesV2Response() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
         {
-          oprot.WriteListBegin(new TList(TType.Struct, Data.Count));
-          foreach (AFActivity _iter76 in Data)
-          {
-            _iter76.Write(oprot);
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
           }
-          oprot.WriteListEnd();
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.List) {
+                {
+                  Data = new List<AFActivity>();
+                  TList _list71 = iprot.ReadListBegin();
+                  for( int _i72 = 0; _i72 < _list71.Count; ++_i72)
+                  {
+                    AFActivity _elem73;
+                    _elem73 = new AFActivity();
+                    _elem73.Read(iprot);
+                    Data.Add(_elem73);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.List) {
+                {
+                  EntityDetails = new List<AFEntityReference>();
+                  TList _list74 = iprot.ReadListBegin();
+                  for( int _i75 = 0; _i75 < _list74.Count; ++_i75)
+                  {
+                    AFEntityReference _elem76;
+                    _elem76 = new AFEntityReference();
+                    _elem76.Read(iprot);
+                    EntityDetails.Add(_elem76);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  Authors = new Dictionary<string, THPublicUser>();
+                  TMap _map77 = iprot.ReadMapBegin();
+                  for( int _i78 = 0; _i78 < _map77.Count; ++_i78)
+                  {
+                    string _key79;
+                    THPublicUser _val80;
+                    _key79 = iprot.ReadString();
+                    _val80 = new THPublicUser();
+                    _val80.Read(iprot);
+                    Authors[_key79] = _val80;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.String) {
+                NextCursor = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
         }
-        oprot.WriteFieldEnd();
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("GetActivitiesV2Response");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Data != null && __isset.data) {
+          field.Name = "data";
+          field.Type = TType.List;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, Data.Count));
+            foreach (AFActivity _iter81 in Data)
+            {
+              _iter81.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (EntityDetails != null && __isset.entityDetails) {
+          field.Name = "entityDetails";
+          field.Type = TType.List;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.Struct, EntityDetails.Count));
+            foreach (AFEntityReference _iter82 in EntityDetails)
+            {
+              _iter82.Write(oprot);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Authors != null && __isset.authors) {
+          field.Name = "authors";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Authors.Count));
+            foreach (string _iter83 in Authors.Keys)
+            {
+              oprot.WriteString(_iter83);
+              Authors[_iter83].Write(oprot);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (NextCursor != null && __isset.nextCursor) {
+          field.Name = "nextCursor";
+          field.Type = TType.String;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(NextCursor);
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("GetActivitiesV2Response(");
+      bool __first = true;
+      if (Data != null && __isset.data) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Data: ");
+        __sb.Append(Data.ToDebugString());
       }
       if (EntityDetails != null && __isset.entityDetails) {
-        field.Name = "entityDetails";
-        field.Type = TType.List;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteListBegin(new TList(TType.Struct, EntityDetails.Count));
-          foreach (AFEntityReference _iter77 in EntityDetails)
-          {
-            _iter77.Write(oprot);
-          }
-          oprot.WriteListEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("EntityDetails: ");
+        __sb.Append(EntityDetails.ToDebugString());
       }
       if (Authors != null && __isset.authors) {
-        field.Name = "authors";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Authors.Count));
-          foreach (string _iter78 in Authors.Keys)
-          {
-            oprot.WriteString(_iter78);
-            Authors[_iter78].Write(oprot);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Authors: ");
+        __sb.Append(Authors.ToDebugString());
       }
       if (NextCursor != null && __isset.nextCursor) {
-        field.Name = "nextCursor";
-        field.Type = TType.String;
-        field.ID = 4;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(NextCursor);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("NextCursor: ");
+        __sb.Append(NextCursor);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("GetActivitiesV2Response(");
-    bool __first = true;
-    if (Data != null && __isset.data) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Data: ");
-      __sb.Append(Data);
-    }
-    if (EntityDetails != null && __isset.entityDetails) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("EntityDetails: ");
-      __sb.Append(EntityDetails);
-    }
-    if (Authors != null && __isset.authors) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Authors: ");
-      __sb.Append(Authors);
-    }
-    if (NextCursor != null && __isset.nextCursor) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("NextCursor: ");
-      __sb.Append(NextCursor);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

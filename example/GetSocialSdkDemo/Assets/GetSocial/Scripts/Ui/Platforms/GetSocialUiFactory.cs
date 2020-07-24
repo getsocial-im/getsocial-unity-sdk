@@ -1,4 +1,3 @@
-#if USE_GETSOCIAL_UI
 namespace GetSocialSdk.Ui
 {
     static class GetSocialUiFactory
@@ -16,4 +15,3 @@ namespace GetSocialSdk.Ui
         }
     }
 }
-#endif

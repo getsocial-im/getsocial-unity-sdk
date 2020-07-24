@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GetSocialSdk.Core;
-using GetSocialSdk.Core.Analytics;
 using UnityEngine;
 
 namespace GetSocialDemo.Scripts.GUI.Sections
@@ -46,7 +45,7 @@ namespace GetSocialDemo.Scripts.GUI.Sections
 
         private void TrackCustomEvent(string eventName, Dictionary<string, string> eventProperties)
         {
-            if (GetSocial.TrackCustomEvent(eventName, eventProperties))
+            if (Analytics.TrackCustomEvent(eventName, eventProperties))
             {
                 _console.LogD("Custom event was tracked");
             } else 

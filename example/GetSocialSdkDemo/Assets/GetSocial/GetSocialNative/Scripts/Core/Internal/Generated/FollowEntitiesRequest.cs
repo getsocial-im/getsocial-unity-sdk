@@ -16,202 +16,209 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class FollowEntitiesRequest : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _sessionId;
-  private int _entityType;
-  private THashSet<string> _entityIds;
-
-  public string SessionId
-  {
-    get
-    {
-      return _sessionId;
-    }
-    set
-    {
-      __isset.sessionId = true;
-      this._sessionId = value;
-    }
-  }
-
-  public int EntityType
-  {
-    get
-    {
-      return _entityType;
-    }
-    set
-    {
-      __isset.entityType = true;
-      this._entityType = value;
-    }
-  }
 
   /// <summary>
-  /// check SGEntityType for possible values
+  /// #sdk7
   /// </summary>
-  public THashSet<string> EntityIds
-  {
-    get
-    {
-      return _entityIds;
-    }
-    set
-    {
-      __isset.entityIds = true;
-      this._entityIds = value;
-    }
-  }
-
-
-  public Isset __isset;
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool sessionId;
-    public bool entityType;
-    public bool entityIds;
-  }
-
-  public FollowEntitiesRequest() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class FollowEntitiesRequest : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              SessionId = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.I32) {
-              EntityType = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Set) {
-              {
-                EntityIds = new THashSet<string>();
-                TSet _set29 = iprot.ReadSetBegin();
-                for( int _i30 = 0; _i30 < _set29.Count; ++_i30)
-                {
-                  string _elem31;
-                  _elem31 = iprot.ReadString();
-                  EntityIds.Add(_elem31);
-                }
-                iprot.ReadSetEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _sessionId;
+    private int _entityType;
+    private THashSet<string> _entityIds;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string SessionId
     {
-      TStruct struc = new TStruct("FollowEntitiesRequest");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _sessionId;
+      }
+      set
+      {
+        __isset.sessionId = true;
+        this._sessionId = value;
+      }
+    }
+
+    public int EntityType
+    {
+      get
+      {
+        return _entityType;
+      }
+      set
+      {
+        __isset.entityType = true;
+        this._entityType = value;
+      }
+    }
+
+    /// <summary>
+    /// check SGEntityType for possible values
+    /// </summary>
+    public THashSet<string> EntityIds
+    {
+      get
+      {
+        return _entityIds;
+      }
+      set
+      {
+        __isset.entityIds = true;
+        this._entityIds = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool sessionId;
+      public bool entityType;
+      public bool entityIds;
+    }
+
+    public FollowEntitiesRequest() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                SessionId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.I32) {
+                EntityType = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Set) {
+                {
+                  EntityIds = new THashSet<string>();
+                  TSet _set77 = iprot.ReadSetBegin();
+                  for( int _i78 = 0; _i78 < _set77.Count; ++_i78)
+                  {
+                    string _elem79;
+                    _elem79 = iprot.ReadString();
+                    EntityIds.Add(_elem79);
+                  }
+                  iprot.ReadSetEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("FollowEntitiesRequest");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (SessionId != null && __isset.sessionId) {
+          field.Name = "sessionId";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SessionId);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.entityType) {
+          field.Name = "entityType";
+          field.Type = TType.I32;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(EntityType);
+          oprot.WriteFieldEnd();
+        }
+        if (EntityIds != null && __isset.entityIds) {
+          field.Name = "entityIds";
+          field.Type = TType.Set;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteSetBegin(new TSet(TType.String, EntityIds.Count));
+            foreach (string _iter80 in EntityIds)
+            {
+              oprot.WriteString(_iter80);
+            }
+            oprot.WriteSetEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("FollowEntitiesRequest(");
+      bool __first = true;
       if (SessionId != null && __isset.sessionId) {
-        field.Name = "sessionId";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(SessionId);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SessionId: ");
+        __sb.Append(SessionId);
       }
       if (__isset.entityType) {
-        field.Name = "entityType";
-        field.Type = TType.I32;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(EntityType);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("EntityType: ");
+        __sb.Append(EntityType);
       }
       if (EntityIds != null && __isset.entityIds) {
-        field.Name = "entityIds";
-        field.Type = TType.Set;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteSetBegin(new TSet(TType.String, EntityIds.Count));
-          foreach (string _iter32 in EntityIds)
-          {
-            oprot.WriteString(_iter32);
-          }
-          oprot.WriteSetEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("EntityIds: ");
+        __sb.Append(EntityIds);
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("FollowEntitiesRequest(");
-    bool __first = true;
-    if (SessionId != null && __isset.sessionId) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("SessionId: ");
-      __sb.Append(SessionId);
-    }
-    if (__isset.entityType) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("EntityType: ");
-      __sb.Append(EntityType);
-    }
-    if (EntityIds != null && __isset.entityIds) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("EntityIds: ");
-      __sb.Append(EntityIds);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

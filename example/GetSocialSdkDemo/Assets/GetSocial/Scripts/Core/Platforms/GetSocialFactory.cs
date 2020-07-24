@@ -1,26 +1,24 @@
-using System;
-using System.Linq;
-using UnityEngine;
-
 namespace GetSocialSdk.Core
 {
     static class GetSocialFactory
     {
-        private static IGetSocialNativeBridge _nativeImplementation;
+        private static IGetSocialBridge _bridge;
 
-        internal static IGetSocialNativeBridge Instance
+        internal static IGetSocialBridge Bridge
         {
-            get { return _nativeImplementation ?? (_nativeImplementation = FindNativeBridge()); }
+            get { return _bridge ?? (_bridge = FindBridge()); }
         }
 
-        private static IGetSocialNativeBridge FindNativeBridge()
+        private static IGetSocialBridge FindBridge()
         {
-#if UNITY_ANDROID && !UNITY_EDITOR
-            return new GetSocialNativeBridgeAndroid();
-#elif UNITY_IOS && !UNITY_EDITOR
-            return new GetSocialNativeBridgeIOS();
-#else
-            return new GetSocialNativeUnityBridge();
+#if UNITY_EDITOR
+            return new GetSocialNativeBridge();
+#elif UNITY_ANDROID
+            return new GetSocialJsonBridge(new MethodCallerAndroid());
+#elif UNITY_IOS
+            return new GetSocialJsonBridge(new MethodCalleriOS());
+#else 
+            return new GetSocialNativeBridge();
 #endif
         }
     }

@@ -36,7 +36,7 @@ namespace GetSocialSdk.Core
                 return;
             }
 
-            GetSocialFactory.Instance.TrackCustomEvent(name, properties);
+            GetSocialFactory.Bridge.TrackCustomEvent(name, properties);
         } 
     }
 }

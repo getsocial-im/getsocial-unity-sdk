@@ -1,4 +1,4 @@
-#import <GetSocial/GetSocial.h>
+#import <GetSocialSDK/GetSocialSDK.h>
 #import "GetSocialFBMessengerInvitePlugin.h"
 
 #pragma clang diagnostic push
@@ -6,7 +6,7 @@
 extern "C" {
     void _gs_registerFBMessengerPlugin()
     {
-        [GetSocial registerInviteChannelPlugin:[GetSocialFBMessengerInvitePlugin new] forChannelId:GetSocial_InviteChannelPluginId_Facebook_Messenger];
+        [GetSocialInvites registerPlugin:[GetSocialFBMessengerInvitePlugin new] forChannel:GetSocialInviteChannelIds.facebookMessenger];
     }
 }
 #pragma clang diagnostic pop

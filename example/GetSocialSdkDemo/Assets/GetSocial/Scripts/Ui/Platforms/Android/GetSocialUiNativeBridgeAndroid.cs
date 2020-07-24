@@ -1,4 +1,4 @@
-#if UNITY_ANDROID && USE_GETSOCIAL_UI
+#if UNITY_ANDROID 
 using GetSocialSdk.Core;
 using UnityEngine;
 

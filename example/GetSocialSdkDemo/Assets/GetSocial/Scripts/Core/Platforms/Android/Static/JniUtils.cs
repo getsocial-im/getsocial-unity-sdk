@@ -147,7 +147,7 @@ namespace GetSocialSdk.Core
 
         public static GetSocialError ToGetSocialError(this AndroidJavaObject getSocialExceptionAJO)
         {
-            return new GetSocialError().ParseFromAJO(getSocialExceptionAJO);
+            return new GetSocialError();//.ParseFromAJO(getSocialExceptionAJO);
         }
 
         public static string GetClassName(this AndroidJavaObject ajo)

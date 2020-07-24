@@ -16,202 +16,209 @@ using System.Runtime.Serialization;
 using Thrift.Protocol;
 using Thrift.Transport;
 
-
-#if !SILVERLIGHT
-[Serializable]
-#endif
-public partial class THApplicationInfo : TBase
+namespace GetSocialSdk.Core 
 {
-  private string _name;
-  private string _iconUrl;
-  private Dictionary<string, string> _properties;
 
-  public string Name
-  {
-    get
-    {
-      return _name;
-    }
-    set
-    {
-      __isset.name = true;
-      this._name = value;
-    }
-  }
-
-  public string IconUrl
-  {
-    get
-    {
-      return _iconUrl;
-    }
-    set
-    {
-      __isset.iconUrl = true;
-      this._iconUrl = value;
-    }
-  }
-
-  public Dictionary<string, string> Properties
-  {
-    get
-    {
-      return _properties;
-    }
-    set
-    {
-      __isset.properties = true;
-      this._properties = value;
-    }
-  }
-
-
-  public Isset __isset;
+  /// <summary>
+  /// #sdk6 #sdk7
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public struct Isset {
-    public bool name;
-    public bool iconUrl;
-    public bool properties;
-  }
-
-  public THApplicationInfo() {
-  }
-
-  public void Read (TProtocol iprot)
+  public partial class THApplicationInfo : TBase
   {
-    iprot.IncrementRecursionDepth();
-    try
-    {
-      TField field;
-      iprot.ReadStructBegin();
-      while (true)
-      {
-        field = iprot.ReadFieldBegin();
-        if (field.Type == TType.Stop) { 
-          break;
-        }
-        switch (field.ID)
-        {
-          case 1:
-            if (field.Type == TType.String) {
-              Name = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 2:
-            if (field.Type == TType.String) {
-              IconUrl = iprot.ReadString();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.Map) {
-              {
-                Properties = new Dictionary<string, string>();
-                TMap _map0 = iprot.ReadMapBegin();
-                for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
-                {
-                  string _key2;
-                  string _val3;
-                  _key2 = iprot.ReadString();
-                  _val3 = iprot.ReadString();
-                  Properties[_key2] = _val3;
-                }
-                iprot.ReadMapEnd();
-              }
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          default: 
-            TProtocolUtil.Skip(iprot, field.Type);
-            break;
-        }
-        iprot.ReadFieldEnd();
-      }
-      iprot.ReadStructEnd();
-    }
-    finally
-    {
-      iprot.DecrementRecursionDepth();
-    }
-  }
+    private string _name;
+    private string _iconUrl;
+    private Dictionary<string, string> _properties;
 
-  public void Write(TProtocol oprot) {
-    oprot.IncrementRecursionDepth();
-    try
+    public string Name
     {
-      TStruct struc = new TStruct("THApplicationInfo");
-      oprot.WriteStructBegin(struc);
-      TField field = new TField();
+      get
+      {
+        return _name;
+      }
+      set
+      {
+        __isset.name = true;
+        this._name = value;
+      }
+    }
+
+    public string IconUrl
+    {
+      get
+      {
+        return _iconUrl;
+      }
+      set
+      {
+        __isset.iconUrl = true;
+        this._iconUrl = value;
+      }
+    }
+
+    public Dictionary<string, string> Properties
+    {
+      get
+      {
+        return _properties;
+      }
+      set
+      {
+        __isset.properties = true;
+        this._properties = value;
+      }
+    }
+
+
+    public Isset __isset;
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public struct Isset {
+      public bool name;
+      public bool iconUrl;
+      public bool properties;
+    }
+
+    public THApplicationInfo() {
+    }
+
+    public void Read (TProtocol iprot)
+    {
+      iprot.IncrementRecursionDepth();
+      try
+      {
+        TField field;
+        iprot.ReadStructBegin();
+        while (true)
+        {
+          field = iprot.ReadFieldBegin();
+          if (field.Type == TType.Stop) { 
+            break;
+          }
+          switch (field.ID)
+          {
+            case 1:
+              if (field.Type == TType.String) {
+                Name = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 2:
+              if (field.Type == TType.String) {
+                IconUrl = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 3:
+              if (field.Type == TType.Map) {
+                {
+                  Properties = new Dictionary<string, string>();
+                  TMap _map0 = iprot.ReadMapBegin();
+                  for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
+                  {
+                    string _key2;
+                    string _val3;
+                    _key2 = iprot.ReadString();
+                    _val3 = iprot.ReadString();
+                    Properties[_key2] = _val3;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            default: 
+              TProtocolUtil.Skip(iprot, field.Type);
+              break;
+          }
+          iprot.ReadFieldEnd();
+        }
+        iprot.ReadStructEnd();
+      }
+      finally
+      {
+        iprot.DecrementRecursionDepth();
+      }
+    }
+
+    public void Write(TProtocol oprot) {
+      oprot.IncrementRecursionDepth();
+      try
+      {
+        TStruct struc = new TStruct("THApplicationInfo");
+        oprot.WriteStructBegin(struc);
+        TField field = new TField();
+        if (Name != null && __isset.name) {
+          field.Name = "name";
+          field.Type = TType.String;
+          field.ID = 1;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Name);
+          oprot.WriteFieldEnd();
+        }
+        if (IconUrl != null && __isset.iconUrl) {
+          field.Name = "iconUrl";
+          field.Type = TType.String;
+          field.ID = 2;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(IconUrl);
+          oprot.WriteFieldEnd();
+        }
+        if (Properties != null && __isset.properties) {
+          field.Name = "properties";
+          field.Type = TType.Map;
+          field.ID = 3;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
+            foreach (string _iter4 in Properties.Keys)
+            {
+              oprot.WriteString(_iter4);
+              oprot.WriteString(Properties[_iter4]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        oprot.WriteFieldStop();
+        oprot.WriteStructEnd();
+      }
+      finally
+      {
+        oprot.DecrementRecursionDepth();
+      }
+    }
+
+    public override string ToString() {
+      StringBuilder __sb = new StringBuilder("THApplicationInfo(");
+      bool __first = true;
       if (Name != null && __isset.name) {
-        field.Name = "name";
-        field.Type = TType.String;
-        field.ID = 1;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(Name);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Name: ");
+        __sb.Append(Name);
       }
       if (IconUrl != null && __isset.iconUrl) {
-        field.Name = "iconUrl";
-        field.Type = TType.String;
-        field.ID = 2;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(IconUrl);
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IconUrl: ");
+        __sb.Append(IconUrl);
       }
       if (Properties != null && __isset.properties) {
-        field.Name = "properties";
-        field.Type = TType.Map;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        {
-          oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-          foreach (string _iter4 in Properties.Keys)
-          {
-            oprot.WriteString(_iter4);
-            oprot.WriteString(Properties[_iter4]);
-          }
-          oprot.WriteMapEnd();
-        }
-        oprot.WriteFieldEnd();
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Properties: ");
+        __sb.Append(Properties.ToDebugString());
       }
-      oprot.WriteFieldStop();
-      oprot.WriteStructEnd();
+      __sb.Append(")");
+      return __sb.ToString();
     }
-    finally
-    {
-      oprot.DecrementRecursionDepth();
-    }
-  }
 
-  public override string ToString() {
-    StringBuilder __sb = new StringBuilder("THApplicationInfo(");
-    bool __first = true;
-    if (Name != null && __isset.name) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Name: ");
-      __sb.Append(Name);
-    }
-    if (IconUrl != null && __isset.iconUrl) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("IconUrl: ");
-      __sb.Append(IconUrl);
-    }
-    if (Properties != null && __isset.properties) {
-      if(!__first) { __sb.Append(", "); }
-      __first = false;
-      __sb.Append("Properties: ");
-      __sb.Append(Properties);
-    }
-    __sb.Append(")");
-    return __sb.ToString();
   }
 
 }

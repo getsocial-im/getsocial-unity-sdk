@@ -1,6 +1,4 @@
-﻿#if USE_GETSOCIAL_UI
-
-namespace GetSocialSdk.Ui
+﻿namespace GetSocialSdk.Ui
 {
     public enum UiAction
     {
@@ -11,5 +9,3 @@ namespace GetSocialSdk.Ui
         LikeComment
     }
 }
-
-#endif

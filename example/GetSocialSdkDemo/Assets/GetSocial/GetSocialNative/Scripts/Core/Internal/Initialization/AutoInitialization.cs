@@ -8,6 +8,7 @@ namespace GetSocialSdk.Core
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Init()
         {
+            NativeBuildConfig.HadesUrl = PlayerPrefs.GetInt("hades", 0) == 0 ? NativeBuildConfig.HadesProductionUrl : NativeBuildConfig.HadesTestingUrl;
             if (Dependencies.GetMetaDataReader().GetBool(MetaDataKeys.AutoInit, defaultValue: true))
             {
                 GetSocial.Init();
