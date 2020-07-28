@@ -202,6 +202,8 @@ public class GetSocialDemoController : MonoBehaviour {
             }
             _console.LogD("Referral data: \n" + logMessage);
         });
+
+        GetSocial.Init();
     }
 
     private void ShowChat () {

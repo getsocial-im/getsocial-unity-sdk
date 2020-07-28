@@ -6,7 +6,7 @@ namespace GetSocialSdk.Core
         /// <summary>
         /// Version of GetSocial Unity SDK
         /// </summary>
-        public const string UnitySdkVersion = "7.1.1";
+        public const string UnitySdkVersion = "7.1.2";
 
         /// <summary>
         /// Publishing target for the unitypackage.

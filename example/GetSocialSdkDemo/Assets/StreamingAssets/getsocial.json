@@ -1,7 +1,7 @@
 
 {
 "appId":"LuDPp7W0J4",
-"autoInit":true,
+"autoInit":false,
 "debug":true,
 "disableFacebookReferralCheck":false,
 "pushNotifications":
@@ -14,7 +14,7 @@
 "runtime":
 {
 "name":"UNITY",
-"version":"2019.4.0f1",
-"wrapper":"7.0.0"
+"version":"2019.4.5f1",
+"wrapper":"7.1.1"
 }
 }

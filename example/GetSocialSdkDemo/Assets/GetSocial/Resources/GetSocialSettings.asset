@@ -15,9 +15,8 @@ MonoBehaviour:
   _appId: LuDPp7W0J4
   _isAutoRegisrationForPushesEnabled: 1
   _isForegroundNotificationsEnabled: 0
-  _autoInitEnabled: 1
+  _autoInitEnabled: 0
   _disableFacebookReferralCheck: 0
-  _useGetSocialUi: 1
   _getSocialCustomConfigurationFilePath: getsocial-dark
   _getSocialDefaultConfigurationFilePath: 
   _iosPushEnvironment: development

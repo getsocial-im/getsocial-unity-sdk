@@ -242,6 +242,7 @@ namespace GetSocialSdk.Editor
 
         static void AddAppEntitlements(string projectPath, PBXProject project, string target)
         {
+            var toCreate = false;
             var existingEntitlementsFiles = project.GetBuildPropertyValues(target, "CODE_SIGN_ENTITLEMENTS");
             if (existingEntitlementsFiles.Count == 0)
             {
@@ -249,24 +250,38 @@ namespace GetSocialSdk.Editor
                     project.AddFile("app.entitlements", "app.entitlements", PBXSourceTree.Source));
                 project.AddBuildProperty(target, "CODE_SIGN_ENTITLEMENTS", "app.entitlements");
                 existingEntitlementsFiles.Add("app.entitlements");
+                toCreate = true;
             }
             foreach (var entitlementsSetting in existingEntitlementsFiles)
             {
-                var entitlementsFilePath = Path.Combine(projectPath, entitlementsSetting); 
-                var entitlements = new PlistDocument();
-                if (File.Exists(entitlementsFilePath))
+                var entitlementsParts = entitlementsSetting.Split(' ');
+                foreach (var entitlementsPart in entitlementsParts) 
                 {
-                    entitlements.ReadFromFile(entitlementsFilePath);
-                }
+                    var entitlementsFilePath = Path.Combine(projectPath, entitlementsSetting); 
+                    if (!File.Exists(entitlementsFilePath) && !toCreate) 
+                    {
+                        if (File.Exists(entitlementsSetting)) 
+                        {
+                            entitlementsFilePath = entitlementsSetting;
+                        } else {
+                            continue;
+                        }
+                    }
+                    var entitlements = new PlistDocument();
+                    if (File.Exists(entitlementsFilePath))
+                    {
+                        entitlements.ReadFromFile(entitlementsFilePath);
+                    }
 
-                if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
-                {
-                    ConfigureAppGroups(entitlements);
-                }
-                ConfigureAssociatedDomains(entitlements);
-                ConfigurePushNotifications(entitlements);
+                    if (GetSocialSettings.IsRichPushNotificationsEnabled && GetSocialSettings.IsIosPushEnabled)
+                    {
+                        ConfigureAppGroups(entitlements);
+                    }
+                    ConfigureAssociatedDomains(entitlements);
+                    ConfigurePushNotifications(entitlements);
                 
-                entitlements.WriteToFile(entitlementsFilePath);
+                    entitlements.WriteToFile(entitlementsFilePath);
+                }
             }
         }
 
