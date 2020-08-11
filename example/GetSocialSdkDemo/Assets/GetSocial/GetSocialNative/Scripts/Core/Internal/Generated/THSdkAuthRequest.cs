@@ -32,6 +32,7 @@ namespace GetSocialSdk.Core
     private string _password;
     private THSuperProperties _sessionProperties;
     private string _appSignatureFingerprint;
+    private THIdentity _identity;
 
     public string AppId
     {
@@ -101,6 +102,22 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// will be present either this or {userId, password}.
+    /// </summary>
+    public THIdentity Identity
+    {
+      get
+      {
+        return _identity;
+      }
+      set
+      {
+        __isset.identity = true;
+        this._identity = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -112,6 +129,7 @@ namespace GetSocialSdk.Core
       public bool password;
       public bool sessionProperties;
       public bool appSignatureFingerprint;
+      public bool identity;
     }
 
     public THSdkAuthRequest() {
@@ -164,6 +182,14 @@ namespace GetSocialSdk.Core
             case 5:
               if (field.Type == TType.String) {
                 AppSignatureFingerprint = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Struct) {
+                Identity = new THIdentity();
+                Identity.Read(iprot);
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -229,6 +255,14 @@ namespace GetSocialSdk.Core
           oprot.WriteString(AppSignatureFingerprint);
           oprot.WriteFieldEnd();
         }
+        if (Identity != null && __isset.identity) {
+          field.Name = "identity";
+          field.Type = TType.Struct;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          Identity.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -270,6 +304,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("AppSignatureFingerprint: ");
         __sb.Append(AppSignatureFingerprint);
+      }
+      if (Identity != null && __isset.identity) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Identity: ");
+        __sb.Append(Identity== null ? "<null>" : Identity.ToString());
       }
       __sb.Append(")");
       return __sb.ToString();

@@ -453,6 +453,7 @@ public typealias ResultCallback<Result> = (Result) -> Swift.Void
   @objc public static func deviceIdentifier() -> Swift.String
   @objc public static func initSdk()
   @objc(initSdkWithAppId:) public static func initSdk(appId: Swift.String)
+  @objc(initSdkWithIdentity:success:failure:) public static func initSdk(identity: GetSocialSDK.Identity, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc public static func addOnInitializedListener(_ listener: @escaping GetSocialSDK.OnInitializedListener)
   @objc public static func isInitialized() -> Swift.Bool
   @objc public static func currentUser() -> GetSocialSDK.CurrentUser?
@@ -464,6 +465,7 @@ public typealias ResultCallback<Result> = (Result) -> Swift.Void
   @objc public static func language() -> Swift.String
   @objc(handleAction:) public static func handle(_ action: GetSocialSDK.Action)
   @objc(resetUserWithSuccess:failure:) public static func resetUser(success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(resetWithSuccess:failure:) public static func reset(_ success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(switchUserToIdentity:success:failure:) public static func switchUser(to identity: GetSocialSDK.Identity, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc override dynamic public init()
   @objc deinit
@@ -831,6 +833,7 @@ extension FriendsQuery : Swift.Decodable {
   @objc deinit
 }
 @objc @objcMembers public class InitSdkUseCase : GetSocialSDK.UseCase {
+  @objc public func execute(with identity: GetSocialSDK.Identity, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc public func execute(with appId: Swift.String?)
   @objc override dynamic public init()
   @objc deinit

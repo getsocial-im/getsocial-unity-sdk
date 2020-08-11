@@ -91,6 +91,13 @@ namespace GetSocialSdk.Core
             SdkLanguage = Application.systemLanguage.ToLanguageCode();
         }
 
+        public void Uninitialize()
+        {
+            _localStorage.Delete(LocalStorageKeys.UserPassword, LocalStorageKeys.UserId);
+            IsInitialized = false;
+            User = null;
+        }
+
         public void ClearUser()
         {
             _localStorage.Delete(LocalStorageKeys.AppId, LocalStorageKeys.UserId, LocalStorageKeys.UserPassword);

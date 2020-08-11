@@ -23,6 +23,10 @@ namespace GetSocialSdk.Core
         {
             CallSync<string>("GetSocial.init", appId);
         }
+        public void Init(Identity identity, Action onSuccess, Action<GetSocialError> onError)
+        {
+            CallAsyncVoid("GetSocial.initWithIdentity", GSJson.Serialize(identity), onSuccess, onError);
+        }
 
         public void Handle(GetSocialAction action)
         {
@@ -83,6 +87,10 @@ namespace GetSocialSdk.Core
         public void ResetUser(Action success, Action<GetSocialError> failure)
         {
             CallAsyncVoid("GetSocial.resetUser",  "", success, failure);
+        }
+        public void ResetUserWithoutInit(Action success, Action<GetSocialError> failure)
+        {
+            CallAsyncVoid("GetSocial.resetUserWithoutInit", "", success, failure);
         }
 
         public void UpdateDetails(UserUpdate userUpdate, Action callback, Action<GetSocialError> failure)

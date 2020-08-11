@@ -70,12 +70,6 @@ namespace GetSocialSdk.Editor
             SettingsIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(_editorGuiPath + "/settings.png", typeof(Texture2D));
             InfoIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(_editorGuiPath + "/icon_info.png", typeof(Texture2D));
             GetSocialIcon = (Texture2D)AssetDatabase.LoadAssetAtPath(_editorGuiPath + "/getsocial.png", typeof(Texture2D));
-
-            #if UNITY_2017_1_OR_NEWER
-            BuildPlayerWindow.RegisterBuildPlayerHandler(ValidateCustomUiConfig);
-            #endif
-
-
         }
 
         static void Initialize()
@@ -287,19 +281,6 @@ namespace GetSocialSdk.Editor
             else
             {
                 return proc.ExitCode == 0;
-            }
-        }
-
-        private static void ValidateCustomUiConfig(BuildPlayerOptions options)
-        {
-            var validationResult = CheckCustomUiConfig();
-            if (!validationResult.Result)
-            {
-                Debug.LogError(validationResult.Message);
-            }
-            else
-            {
-                BuildPipeline.BuildPlayer(options);
             }
         }
 

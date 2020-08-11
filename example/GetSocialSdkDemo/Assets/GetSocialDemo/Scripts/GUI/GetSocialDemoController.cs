@@ -44,6 +44,7 @@ public class GetSocialDemoController : MonoBehaviour {
 
     // store user info to avoid constant calls to native
     private CurrentUser _currentUser;
+    private bool _enterIdentityData;
 
     #region lifecycle
 
@@ -259,7 +260,7 @@ public class GetSocialDemoController : MonoBehaviour {
 
         GUI.DrawTexture (GUILayoutUtility.GetLastRect (), _avatar ?? Texture2D.blackTexture, ScaleMode.StretchToFill);
         // Click area for avatar
-        if (GUI.Button (new Rect (0, 0, 120, 120), string.Empty, GUIStyle.none)) {
+        if (GUI.Button (new Rect (0, 0, 120, 120), string.Empty, GUIStyle.none) && _currentUser != null) {
             DemoUtils.ShowPopup ("Info", _currentUser.ToString ());
             _console.LogD (_currentUser.ToString ());
         }
@@ -325,9 +326,34 @@ public class GetSocialDemoController : MonoBehaviour {
             _getSocialUnitySdkVersion);
     }
 
+    private string _identityId;
+    private string _identityToken;
+
     void DrawMainView () {
         GUILayout.Label ("API", GSStyles.NormalLabelText);
-        Button ("User Management", ShowMenuSection<AuthSection>);
+        if (GetSocial.IsInitialized)
+        {
+            Button ("User Management", ShowMenuSection<AuthSection>);
+        } else
+        {
+            Button ("Init with anonymous", () => GetSocial.Init());
+            if (_enterIdentityData) {
+                DemoGuiUtils.DrawRow(() => 
+                {
+                    _identityId = GUILayout.TextField(_identityId, GSStyles.TextField);
+                    _identityToken = GUILayout.TextField(_identityToken, GSStyles.TextField);
+                });
+                DemoGuiUtils.DrawRow(() => 
+                {
+                    Button("Init", InitWithCustom);
+                    Button("Cancel", () => { _enterIdentityData = false; });
+                });
+            } else 
+            {
+                Button ("Init with custom identity", () => { _enterIdentityData = true; });
+            }
+            Button ("Init with FB", InitWithFacebook);
+        }
         Button ("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
         Button ("Promo Codes", ShowMenuSection<PromoCodesSection>);
         Button ("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
@@ -434,12 +460,90 @@ public class GetSocialDemoController : MonoBehaviour {
     #endregion
 
     #region helpers
+    void InitWithCustom()
+    {
+        GetSocial.Init(
+            Identity.Custom(AuthSection.CustomProviderId, _identityId, _identityToken),
+            () =>
+            {
+                _enterIdentityData = false;
+                _console.LogD("Successfully logged into identity");
+                FetchCurrentUserData();
+            },  
+            error => _console.LogE(string.Format("Failed to log into identity '{0}', reason: {1}", AuthSection.CustomProviderId,
+                error))
+            );
+    }
+
+    void InitWithFacebook() 
+    {
+        if (FB.IsLoggedIn)
+        {
+            SwitchToFacebookUserInternal();
+        }
+        else
+        {
+            FB.LogInWithReadPermissions(AuthSection.FacebookPermissions, result =>
+            {
+                if (result.Cancelled)
+                {
+                    _console.LogE("Facebook login was cancelled");
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(result.Error))
+                {
+                    _console.LogE("Error happened during Facebook login: " + result.Error);
+                    return;
+                }
+
+                _console.LogD("Logged in to Facebook: " + result.RawResult);
+                SwitchToFacebookUserInternal();
+            });
+        }
+    }
+
+
+    private void SwitchToFacebookUserInternal()
+    {
+        GetSocial.Init(Identity.Facebook(AccessToken.CurrentAccessToken.TokenString),
+            () =>
+            {
+                _console.LogD("Successfully initialized with identity");
+                SetFacebookUserDetails();
+            },  
+            error => _console.LogE("Initialize with identity failed:" + error)
+            );
+    }
+    private void SetFacebookUserDetails()
+    {
+        FB.API("me?fields=first_name,last_name,picture", HttpMethod.GET, result =>
+        {
+            var dictionary = result.ResultDictionary;
+            var displayName = dictionary["first_name"] + " " + dictionary["last_name"];
+            var pictureDictionary = (IDictionary<string, object>) dictionary["picture"];
+            var dataDictionary = (IDictionary<string, object>) pictureDictionary["data"];
+            var pictureUrl = dataDictionary["url"].ToString();
+            var update = new UserUpdate
+            {
+                DisplayName = displayName, AvatarUrl = pictureUrl
+            };
+            GetSocial.GetCurrentUser().UpdateDetails(update, () =>
+            {
+                _console.LogD("Display name is set to:" + displayName + ", avatar set to " + pictureUrl);
+                FetchCurrentUserData();
+            }, error =>
+            {
+                _console.LogE("Failed to set Facebook details");
+            });
+        });
+    }
 
     public void FetchCurrentUserData ()
     {
         _currentUser = GetSocial.GetCurrentUser();
         _avatar = Resources.Load<Texture2D> ("GUI/default_demo_avatar");
-        if (!string.IsNullOrEmpty (_currentUser.AvatarUrl)) {
+        if (!string.IsNullOrEmpty (_currentUser?.AvatarUrl)) {
             StartCoroutine (DownloadAvatar (_currentUser.AvatarUrl));
         }
     }

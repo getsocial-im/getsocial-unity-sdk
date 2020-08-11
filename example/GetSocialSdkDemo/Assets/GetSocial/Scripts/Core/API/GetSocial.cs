@@ -68,6 +68,11 @@ namespace GetSocialSdk.Core
         {
             GetSocialFactory.Bridge.Init(appId);
         }
+
+        public static void Init(Identity identity, Action onSuccess, Action<GetSocialError> onError)
+        {
+            GetSocialFactory.Bridge.Init(identity, onSuccess, onError);
+        }
         
         /// <summary>
         /// Set an action, which should be executed after SDK initialized.
@@ -137,6 +142,10 @@ namespace GetSocialSdk.Core
 
         public static void ResetUser(Action success, Action<GetSocialError> failure) {
             GetSocialFactory.Bridge.ResetUser(success, failure);
+        }
+        
+        public static void Reset(Action success, Action<GetSocialError> failure) {
+            GetSocialFactory.Bridge.ResetUserWithoutInit(success, failure);
         }
 
 

@@ -35,6 +35,45 @@ namespace GetSocialSdk.Core
                 SessionProperties = _stateController.SuperProperties
             });
         }
+        public void Init(Identity identity, Action onSuccess, Action<GetSocialError> onError)
+        {
+            if (IsInitialized())
+            {
+                onError(new GetSocialError(ErrorCodes.IllegalState, "Can not call init with identity when SDK is initialized. Call GetSocial.resetUserWithoutInit first."));
+                return;
+            }
+
+            _initCalled = true;
+            
+            var appId = _stateController.LoadAppIdFromMetaData();
+            var request = new THSdkAuthRequest 
+            {
+                AppId = appId,
+                SessionProperties = _stateController.SuperProperties,
+                Identity = identity.ToRpcModel()
+            };
+            LogRequest("authenticateSdk", request);
+            WithHadesClient(client =>
+            {
+                return client.authenticateSdkAllInOne(new THSdkAuthRequestAllInOne 
+                {
+                    SdkAuthRequest = request,
+                    ProcessAppOpenRequest = new THProcessAppOpenRequest
+                    {}
+                });
+            }, response =>
+            {
+                LogResponse("authenticateSdk", response);
+                _stateController.Initialized(response, request.AppId);
+#if !UNITY_EDITOR
+                Track(new AnalyticsEvent() {
+                    Name = AnalyticsEventDetails.AppSessionStart,
+                    CreatedAt = ApplicationStateListener.Instance.AppStartTime
+                });
+#endif
+                onSuccess();
+            }, onError, requireInitialization: false);
+        }
 
         public void Handle(GetSocialAction action)
         {
@@ -142,6 +181,12 @@ namespace GetSocialSdk.Core
                 LogResponse("authenticateSdk", response);
                 Ui(() => _stateController.SaveSession(response.SessionId, response.User, response.UploadEndpoint));
             }, success, failure);
+        }
+        
+        public void ResetUserWithoutInit(Action success, Action<GetSocialError> failure)
+        {
+            _stateController.Uninitialize();
+            success();
         }
 
         public void UpdateDetails(UserUpdate userUpdate, Action callback, Action<GetSocialError> failure)

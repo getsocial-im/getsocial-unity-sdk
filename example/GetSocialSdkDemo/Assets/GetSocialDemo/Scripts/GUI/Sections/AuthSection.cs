@@ -39,8 +39,8 @@ public class AuthSection : DemoMenuSection
         "Captain Linger"
     };
 
-    static readonly string[] FacebookPermissions = {"public_profile", "user_friends"};
-    const string CustomProviderId = "custom";
+    public static readonly string[] FacebookPermissions = {"public_profile", "user_friends"};
+    public const string CustomProviderId = "custom";
 
     string _customUserId = "UnityUser";
     string _customProviderToken = "custom_provider_token";
@@ -92,6 +92,18 @@ public class AuthSection : DemoMenuSection
                 },
                 error => _console.LogE("Failed to log out user, error: " + error)
             );
+        }, true, GSStyles.Button);
+
+        DemoGuiUtils.DrawButton("Reset without init", () => 
+        {
+            GetSocial.Reset(() => 
+            {
+                demoController.PopMenuSection();
+                demoController.FetchCurrentUserData();
+            }, error => 
+            {
+                _console.LogE("Failed to reset user: " + error);
+            });
         }, true, GSStyles.Button);
     }
 

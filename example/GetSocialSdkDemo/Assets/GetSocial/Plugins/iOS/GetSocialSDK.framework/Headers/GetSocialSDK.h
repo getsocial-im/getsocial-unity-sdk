@@ -1514,6 +1514,14 @@ SWIFT_CLASS("_TtC12GetSocialSDK9GetSocial")
 /// \param appId GetSocial App Id, you can find your App Id on GetSocial Dashboard.
 ///
 + (void)initSdkWithAppId:(NSString * _Nonnull)appId SWIFT_METHOD_FAMILY(none);
+/// Initialize the SDK with a specific user. SDK should be uninitialized at that moment.
+/// \param identity Identity of the user.
+///
+/// \param success Called if operation succeeded.
+///
+/// \param failure Called if operation failed.
+///
++ (void)initSdkWithIdentity:(GetSocialIdentity * _Nonnull)identity success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure SWIFT_METHOD_FAMILY(none);
 /// Set listener to be invoked when SDK initialized.
 /// It will be executed immediately, if SDK is already initialized.
 /// \param listener Listener to be invoked.
@@ -1579,6 +1587,12 @@ SWIFT_CLASS("_TtC12GetSocialSDK9GetSocial")
 /// \param failure Called if operation failed.
 ///
 + (void)resetUserWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Reset current user and without creating a new user.
+/// \param success Called if user was reset.
+///
+/// \param failure Called if operation failed.
+///
++ (void)resetWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Switch the current user to another user identified by the provided identity.
 /// \param identity Identity that current user should be switched to.
 ///
@@ -1679,6 +1693,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 
 SWIFT_CLASS("_TtC12GetSocialSDK14InitSdkUseCase")
 @interface InitSdkUseCase : UseCase
+- (void)executeWith:(GetSocialIdentity * _Nonnull)identity success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (void)executeWith:(NSString * _Nullable)appId;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
@@ -5047,6 +5062,14 @@ SWIFT_CLASS("_TtC12GetSocialSDK9GetSocial")
 /// \param appId GetSocial App Id, you can find your App Id on GetSocial Dashboard.
 ///
 + (void)initSdkWithAppId:(NSString * _Nonnull)appId SWIFT_METHOD_FAMILY(none);
+/// Initialize the SDK with a specific user. SDK should be uninitialized at that moment.
+/// \param identity Identity of the user.
+///
+/// \param success Called if operation succeeded.
+///
+/// \param failure Called if operation failed.
+///
++ (void)initSdkWithIdentity:(GetSocialIdentity * _Nonnull)identity success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure SWIFT_METHOD_FAMILY(none);
 /// Set listener to be invoked when SDK initialized.
 /// It will be executed immediately, if SDK is already initialized.
 /// \param listener Listener to be invoked.
@@ -5112,6 +5135,12 @@ SWIFT_CLASS("_TtC12GetSocialSDK9GetSocial")
 /// \param failure Called if operation failed.
 ///
 + (void)resetUserWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Reset current user and without creating a new user.
+/// \param success Called if user was reset.
+///
+/// \param failure Called if operation failed.
+///
++ (void)resetWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Switch the current user to another user identified by the provided identity.
 /// \param identity Identity that current user should be switched to.
 ///
@@ -5212,6 +5241,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 
 SWIFT_CLASS("_TtC12GetSocialSDK14InitSdkUseCase")
 @interface InitSdkUseCase : UseCase
+- (void)executeWith:(GetSocialIdentity * _Nonnull)identity success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (void)executeWith:(NSString * _Nullable)appId;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end

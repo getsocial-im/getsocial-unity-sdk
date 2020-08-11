@@ -11,6 +11,7 @@ namespace GetSocialSdk.Core
         bool IsInitialized();
         void AddOnInitializedListener(Action action);
         void Init(string appId);
+        void Init(Identity identity, Action onSuccess, Action<GetSocialError> onError);
         void Handle(GetSocialAction action);
         bool IsTestDevice();
         string GetDeviceId();
@@ -26,6 +27,7 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> failure);
         void RemoveIdentity(string providerId, Action callback, Action<GetSocialError> failure);
         void ResetUser(Action success, Action<GetSocialError> failure);
+        void ResetUserWithoutInit(Action success, Action<GetSocialError> failure);
         void UpdateDetails(UserUpdate userUpdate, Action callback, Action<GetSocialError> failure);
 
         #endregion
