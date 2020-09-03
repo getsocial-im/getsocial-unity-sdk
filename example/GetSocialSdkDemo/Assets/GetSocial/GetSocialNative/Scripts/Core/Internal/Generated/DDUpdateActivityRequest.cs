@@ -29,6 +29,7 @@ namespace GetSocialSdk.Core
     private Dictionary<string, AFContent> _content;
     private Dictionary<string, string> _properties;
     private SGEntity _id;
+    private string _status;
 
     public string SessionId
     {
@@ -95,6 +96,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public string Status
+    {
+      get
+      {
+        return _status;
+      }
+      set
+      {
+        __isset.status = true;
+        this._status = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -106,6 +120,7 @@ namespace GetSocialSdk.Core
       public bool content;
       public bool properties;
       public bool id;
+      public bool status;
     }
 
     public DDUpdateActivityRequest() {
@@ -187,6 +202,13 @@ namespace GetSocialSdk.Core
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
+            case 6:
+              if (field.Type == TType.String) {
+                Status = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
             default: 
               TProtocolUtil.Skip(iprot, field.Type);
               break;
@@ -264,6 +286,14 @@ namespace GetSocialSdk.Core
           Id.Write(oprot);
           oprot.WriteFieldEnd();
         }
+        if (Status != null && __isset.status) {
+          field.Name = "status";
+          field.Type = TType.String;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Status);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -305,6 +335,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Id: ");
         __sb.Append(Id== null ? "<null>" : Id.ToString());
+      }
+      if (Status != null && __isset.status) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Status: ");
+        __sb.Append(Status);
       }
       __sb.Append(")");
       return __sb.ToString();

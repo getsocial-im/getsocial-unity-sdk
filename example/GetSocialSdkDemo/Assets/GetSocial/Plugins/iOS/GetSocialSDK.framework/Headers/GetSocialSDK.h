@@ -482,6 +482,8 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly) NSInteger viewCount;
 /// Parent of activity.
 @property (nonatomic, readonly, strong) GetSocialCommunitiesEntity * _Nullable source;
+/// Status of activity. For possible values check {ActivityStatus} class.
+@property (nonatomic, readonly, copy) NSString * _Nonnull status;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -544,6 +546,12 @@ SWIFT_CLASS_NAMED("ActivityContent")
 
 
 
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK14ActivityStatus")
+@interface ActivityStatus : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
 
 @class GetSocialPurchaseData;
 
@@ -2659,6 +2667,7 @@ SWIFT_CLASS_NAMED("PrivateActivityBuilder")
 + (void)likeActivity:(GetSocialActivity * _Nonnull)activity isLiked:(BOOL)isLiked;
 /// Private method.
 + (GetSocialActivity * _Nonnull)commentActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
++ (GetSocialActivity * _Nonnull)removeCommentFromActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -4030,6 +4039,8 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly) NSInteger viewCount;
 /// Parent of activity.
 @property (nonatomic, readonly, strong) GetSocialCommunitiesEntity * _Nullable source;
+/// Status of activity. For possible values check {ActivityStatus} class.
+@property (nonatomic, readonly, copy) NSString * _Nonnull status;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -4092,6 +4103,12 @@ SWIFT_CLASS_NAMED("ActivityContent")
 
 
 
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK14ActivityStatus")
+@interface ActivityStatus : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
 
 @class GetSocialPurchaseData;
 
@@ -6207,6 +6224,7 @@ SWIFT_CLASS_NAMED("PrivateActivityBuilder")
 + (void)likeActivity:(GetSocialActivity * _Nonnull)activity isLiked:(BOOL)isLiked;
 /// Private method.
 + (GetSocialActivity * _Nonnull)commentActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
++ (GetSocialActivity * _Nonnull)removeCommentFromActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

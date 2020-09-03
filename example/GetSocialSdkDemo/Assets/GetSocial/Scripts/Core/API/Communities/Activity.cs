@@ -120,6 +120,14 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("source")]
         public CommunitiesEntity Source { get; internal set; }
 
+        /// <summary>
+        /// Status of the activity.
+        /// Check <see cref="ActivityStatus"/> for possible values.
+        /// </summary>
+        /// <value> entity to which the activity was posted.</value>
+        [JsonSerializationKey("source")]
+        public string Status { get; internal set; }
+
         public Activity()
         {
             
@@ -137,7 +145,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Type: {Type}, Announcement: {Announcement}, CommentsCount: {CommentsCount}, ReactionsCount: {ReactionsCount.ToDebugString()}, MyReactions: {MyReactionsList.ToDebugString()},  ViewCount: {ViewCount}, Properties: {Properties.ToDebugString()}, CreatedAt: {CreatedAt}, Mentions: {Mentions.ToDebugString()}, Button: {Button}, Source: {Source}";
+            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Type: {Type}, Announcement: {Announcement}, CommentsCount: {CommentsCount}, ReactionsCount: {ReactionsCount.ToDebugString()}, MyReactions: {MyReactionsList.ToDebugString()},  ViewCount: {ViewCount}, Properties: {Properties.ToDebugString()}, CreatedAt: {CreatedAt}, Mentions: {Mentions.ToDebugString()}, Button: {Button}, Source: {Source}, Status: {Status}";
         }
     }
 }

@@ -47,6 +47,7 @@ namespace GetSocialSdk.Editor
                 {
                     AddNotificationExtension(project, projectPath);
                 }
+                project.CheckRuntimeSearchPath();
             });
 
             PBXProjectUtils.ModifyPlist(projectPath, (plistDocument) =>

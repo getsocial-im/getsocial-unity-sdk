@@ -19,6 +19,9 @@ using Thrift.Transport;
 namespace GetSocialSdk.Core 
 {
 
+  /// <summary>
+  /// approved, rejected, deleted
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif

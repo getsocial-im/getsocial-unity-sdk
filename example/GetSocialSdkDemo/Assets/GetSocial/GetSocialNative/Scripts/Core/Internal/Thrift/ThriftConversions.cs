@@ -445,7 +445,8 @@ namespace GetSocialSdk.Core
                 ReactionsCount = activity.Reactions.ReactionCount,
                 MyReactionsList = activity.Reactions.MyReactions ?? new List<string>(), 
                 Mentions = activity.Mentions.FirstValue(new List<AFMention>()).ConvertAll(FromRPCModel), 
-                Source = (source ?? activity.Source).FromRPCModel()
+                Source = (source ?? activity.Source).FromRPCModel(),
+                Status = activity.Status ?? ""
             };
         }
 

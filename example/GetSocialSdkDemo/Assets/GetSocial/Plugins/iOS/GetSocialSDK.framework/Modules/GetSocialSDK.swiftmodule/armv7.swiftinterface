@@ -900,6 +900,14 @@ open class KeychainWrapper {
   open class func wipeKeychain()
   @objc deinit
 }
+@objc public class ActivityStatus : ObjectiveC.NSObject {
+  public static var pending: Swift.String
+  public static var approved: Swift.String
+  public static var rejected: Swift.String
+  public static var deleted: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
 @objcMembers @objc(GetSocialActivity) public class Activity : ObjectiveC.NSObject {
   @objc(activityId) public var id: Swift.String {
     get
@@ -950,6 +958,9 @@ open class KeychainWrapper {
     get
     }
   @objc public var source: GetSocialSDK.CommunitiesEntity? {
+    get
+    }
+  @objc public var status: Swift.String {
     get
     }
   @objc override dynamic public var description: Swift.String {
@@ -1789,6 +1800,7 @@ extension UserReactions : Swift.Encodable {
 @objcMembers @objc(GetSocialPrivateActivityBuilder) public class PrivateActivityBuilder : ObjectiveC.NSObject {
   @objc(likeActivity:isLiked:) public static func likeActivity(activity: GetSocialSDK.Activity, isLiked: Swift.Bool)
   @objc(commentActivity:) public static func commentActivity(activity: GetSocialSDK.Activity) -> GetSocialSDK.Activity
+  @objc(removeCommentFromActivity:) public static func removeCommentFromActivity(activity: GetSocialSDK.Activity) -> GetSocialSDK.Activity
   @objc override dynamic public init()
   @objc deinit
 }

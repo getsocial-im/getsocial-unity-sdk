@@ -37,6 +37,8 @@ namespace GetSocialSdk.Core
     private bool _isAnnouncement;
     private Dictionary<string, List<AFMention>> _mentions;
     private AFEntityReference _source;
+    private string _status;
+    private long _statusUpdatedAt;
 
     public string Id
     {
@@ -171,6 +173,35 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// Pending post should be returned only to the author.
+    /// </summary>
+    public string Status
+    {
+      get
+      {
+        return _status;
+      }
+      set
+      {
+        __isset.status = true;
+        this._status = value;
+      }
+    }
+
+    public long StatusUpdatedAt
+    {
+      get
+      {
+        return _statusUpdatedAt;
+      }
+      set
+      {
+        __isset.statusUpdatedAt = true;
+        this._statusUpdatedAt = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -187,6 +218,8 @@ namespace GetSocialSdk.Core
       public bool isAnnouncement;
       public bool mentions;
       public bool source;
+      public bool status;
+      public bool statusUpdatedAt;
     }
 
     public AFActivity() {
@@ -328,6 +361,20 @@ namespace GetSocialSdk.Core
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
+            case 12:
+              if (field.Type == TType.String) {
+                Status = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 13:
+              if (field.Type == TType.I64) {
+                StatusUpdatedAt = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
             default: 
               TProtocolUtil.Skip(iprot, field.Type);
               break;
@@ -460,6 +507,22 @@ namespace GetSocialSdk.Core
           Source.Write(oprot);
           oprot.WriteFieldEnd();
         }
+        if (Status != null && __isset.status) {
+          field.Name = "status";
+          field.Type = TType.String;
+          field.ID = 12;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Status);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.statusUpdatedAt) {
+          field.Name = "statusUpdatedAt";
+          field.Type = TType.I64;
+          field.ID = 13;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI64(StatusUpdatedAt);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -531,6 +594,18 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Source: ");
         __sb.Append(Source);
+      }
+      if (Status != null && __isset.status) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Status: ");
+        __sb.Append(Status);
+      }
+      if (__isset.statusUpdatedAt) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("StatusUpdatedAt: ");
+        __sb.Append(StatusUpdatedAt);
       }
       __sb.Append(")");
       return __sb.ToString();

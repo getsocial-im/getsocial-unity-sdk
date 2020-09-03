@@ -71,6 +71,9 @@ namespace GetSocialSdk.Core
     private bool _setReferrerOnAppInstall;
     private bool _addFriendOnAppInstall;
     private bool _isUsingFeeds2;
+    private bool _rejectModeratedActivity;
+    private bool _activityPendingByDefault;
+    private bool _commentPendingByDefault;
 
     public string InviteDomain
     {
@@ -686,6 +689,45 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool RejectModeratedActivity
+    {
+      get
+      {
+        return _rejectModeratedActivity;
+      }
+      set
+      {
+        __isset.rejectModeratedActivity = true;
+        this._rejectModeratedActivity = value;
+      }
+    }
+
+    public bool ActivityPendingByDefault
+    {
+      get
+      {
+        return _activityPendingByDefault;
+      }
+      set
+      {
+        __isset.activityPendingByDefault = true;
+        this._activityPendingByDefault = value;
+      }
+    }
+
+    public bool CommentPendingByDefault
+    {
+      get
+      {
+        return _commentPendingByDefault;
+      }
+      set
+      {
+        __isset.commentPendingByDefault = true;
+        this._commentPendingByDefault = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -739,6 +781,9 @@ namespace GetSocialSdk.Core
       public bool setReferrerOnAppInstall;
       public bool addFriendOnAppInstall;
       public bool isUsingFeeds2;
+      public bool rejectModeratedActivity;
+      public bool activityPendingByDefault;
+      public bool commentPendingByDefault;
     }
 
     public THAppPrivateProperties() {
@@ -1118,6 +1163,27 @@ namespace GetSocialSdk.Core
             case 47:
               if (field.Type == TType.Bool) {
                 IsUsingFeeds2 = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 48:
+              if (field.Type == TType.Bool) {
+                RejectModeratedActivity = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 49:
+              if (field.Type == TType.Bool) {
+                ActivityPendingByDefault = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 50:
+              if (field.Type == TType.Bool) {
+                CommentPendingByDefault = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -1542,6 +1608,30 @@ namespace GetSocialSdk.Core
           oprot.WriteBool(IsUsingFeeds2);
           oprot.WriteFieldEnd();
         }
+        if (__isset.rejectModeratedActivity) {
+          field.Name = "rejectModeratedActivity";
+          field.Type = TType.Bool;
+          field.ID = 48;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(RejectModeratedActivity);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.activityPendingByDefault) {
+          field.Name = "activityPendingByDefault";
+          field.Type = TType.Bool;
+          field.ID = 49;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(ActivityPendingByDefault);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.commentPendingByDefault) {
+          field.Name = "commentPendingByDefault";
+          field.Type = TType.Bool;
+          field.ID = 50;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(CommentPendingByDefault);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -1835,6 +1925,24 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("IsUsingFeeds2: ");
         __sb.Append(IsUsingFeeds2);
+      }
+      if (__isset.rejectModeratedActivity) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("RejectModeratedActivity: ");
+        __sb.Append(RejectModeratedActivity);
+      }
+      if (__isset.activityPendingByDefault) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActivityPendingByDefault: ");
+        __sb.Append(ActivityPendingByDefault);
+      }
+      if (__isset.commentPendingByDefault) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CommentPendingByDefault: ");
+        __sb.Append(CommentPendingByDefault);
       }
       __sb.Append(")");
       return __sb.ToString();

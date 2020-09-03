@@ -15,6 +15,7 @@ namespace GetSocialSdk.Core
     WEB_SIGNUP = 2,
     WEB_OPEN = 3,
     ACTIVITY_CREATE_UPDATE = 4,
+    ACTIVITY_REACT = 5,
   }
 }
 #endif

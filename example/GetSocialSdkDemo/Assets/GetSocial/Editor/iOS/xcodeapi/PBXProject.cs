@@ -320,6 +320,18 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             }
         }
         
+        public void CheckRuntimeSearchPath() {
+            foreach (var buildConfigEntry in buildConfigs.GetEntries())
+            {
+                XCBuildConfigurationData configurationData = buildConfigEntry.Value;
+                configurationData.RemoveProperty("LD_RUNPATH_SEARCH_PATHS");
+                configurationData.AddProperty("LD_RUNPATH_SEARCH_PATHS","$(inherited)");
+                configurationData.AddProperty("LD_RUNPATH_SEARCH_PATHS","/usr/lib/swift");
+                configurationData.AddProperty("LD_RUNPATH_SEARCH_PATHS", "@executable_path/Frameworks");
+                configurationData.AddProperty("LD_RUNPATH_SEARCH_PATHS", "@loader_path/Frameworks");
+            }
+        }
+        
         public void AddDynamicFrameworkToProject(string targetGuid, string frameworkPathInProject)
         {
             var fileGuid = FindFileGuidByProjectPath(frameworkPathInProject);
@@ -363,11 +375,7 @@ namespace UnityEditor.iOS.Xcode.GetSocial
             {
                 targetPhases.AddGUID(embedFrameworksSection.guid);
             }
-            foreach (var buildConfigEntry in buildConfigs.GetEntries())
-            {
-                XCBuildConfigurationData configurationData = buildConfigEntry.Value;
-                configurationData.AddProperty("LD_RUNPATH_SEARCH_PATHS","$(inherited) @executable_path/Frameworks");
-            }
+            CheckRuntimeSearchPath();
         }
 
         internal PBXCopyFilesBuildPhaseData FindEmbeddedFrameworkSection(string targetGuid)

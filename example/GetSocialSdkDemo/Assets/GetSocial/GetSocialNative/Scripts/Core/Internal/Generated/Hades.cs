@@ -723,7 +723,7 @@ namespace GetSocialSdk.Core
       DDFindTagsResponse ddFindTags(DDFindTagsRequest request);
       DDCreateActivityResponse ddCreateActivity(DDCreateActivityRequest request);
       DDUpdateActivityResponse ddUpdateActivity(DDUpdateActivityRequest request);
-      DDDeleteActivitiesResponse ddDeleteActivities(DDDeleteActivitiesRequest request);
+      DDUpdateActivitiesStatusResponse ddUpdateActivitiesStatus(DDUpdateActivitiesStatusRequest request);
       DDGetAnnouncementsResponse ddGetAnnouncements(DDGetAnnouncementsRequest request);
       DDCreateAnnouncementResponse ddCreateAnnouncement(DDCreateAnnouncementRequest request);
       DDUpdateAnnouncementResponse ddUpdateAnnouncement(DDUpdateAnnouncementRequest request);
@@ -731,7 +731,7 @@ namespace GetSocialSdk.Core
       DDCreateReactionsResponse ddCreateReactions(DDCreateReactionsRequest request);
       DDDeleteReactionsResponse ddDeleteReactions(DDDeleteReactionsRequest request);
       DDPurgeActivitiesResponse ddPurgeActivities(DDPurgeActivitiesRequest request);
-      DDGetReportedActivitiesResponse ddGetReportedActivities(DDGetReportedActivitiesRequest request);
+      DDGetActivitiesForModerationResponse ddGetActivitiesForModeration(DDGetActivitiesForModerationRequest request);
       /// <summary>
       /// If query is successfully started, returns queryId string. This can be used to call getETLQueryResult.
       /// </summary>
@@ -8155,23 +8155,23 @@ namespace GetSocialSdk.Core
       }
 
       
-      public DDDeleteActivitiesResponse ddDeleteActivities(DDDeleteActivitiesRequest request)
+      public DDUpdateActivitiesStatusResponse ddUpdateActivitiesStatus(DDUpdateActivitiesStatusRequest request)
       {
-        send_ddDeleteActivities(request);
-        return recv_ddDeleteActivities();
+        send_ddUpdateActivitiesStatus(request);
+        return recv_ddUpdateActivitiesStatus();
 
       }
-      public void send_ddDeleteActivities(DDDeleteActivitiesRequest request)
+      public void send_ddUpdateActivitiesStatus(DDUpdateActivitiesStatusRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("ddDeleteActivities", TMessageType.Call, seqid_));
-        ddDeleteActivities_args args = new ddDeleteActivities_args();
+        oprot_.WriteMessageBegin(new TMessage("ddUpdateActivitiesStatus", TMessageType.Call, seqid_));
+        ddUpdateActivitiesStatus_args args = new ddUpdateActivitiesStatus_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public DDDeleteActivitiesResponse recv_ddDeleteActivities()
+      public DDUpdateActivitiesStatusResponse recv_ddUpdateActivitiesStatus()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -8179,7 +8179,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        ddDeleteActivities_result result = new ddDeleteActivities_result();
+        ddUpdateActivitiesStatus_result result = new ddUpdateActivitiesStatus_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -8188,7 +8188,7 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddDeleteActivities failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddUpdateActivitiesStatus failed: unknown result");
       }
 
       
@@ -8451,23 +8451,23 @@ namespace GetSocialSdk.Core
       }
 
       
-      public DDGetReportedActivitiesResponse ddGetReportedActivities(DDGetReportedActivitiesRequest request)
+      public DDGetActivitiesForModerationResponse ddGetActivitiesForModeration(DDGetActivitiesForModerationRequest request)
       {
-        send_ddGetReportedActivities(request);
-        return recv_ddGetReportedActivities();
+        send_ddGetActivitiesForModeration(request);
+        return recv_ddGetActivitiesForModeration();
 
       }
-      public void send_ddGetReportedActivities(DDGetReportedActivitiesRequest request)
+      public void send_ddGetActivitiesForModeration(DDGetActivitiesForModerationRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("ddGetReportedActivities", TMessageType.Call, seqid_));
-        ddGetReportedActivities_args args = new ddGetReportedActivities_args();
+        oprot_.WriteMessageBegin(new TMessage("ddGetActivitiesForModeration", TMessageType.Call, seqid_));
+        ddGetActivitiesForModeration_args args = new ddGetActivitiesForModeration_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public DDGetReportedActivitiesResponse recv_ddGetReportedActivities()
+      public DDGetActivitiesForModerationResponse recv_ddGetActivitiesForModeration()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -8475,7 +8475,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        ddGetReportedActivities_result result = new ddGetReportedActivities_result();
+        ddGetActivitiesForModeration_result result = new ddGetActivitiesForModeration_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -8484,7 +8484,7 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddGetReportedActivities failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddGetActivitiesForModeration failed: unknown result");
       }
 
       
@@ -10887,7 +10887,7 @@ namespace GetSocialSdk.Core
         processMap_["ddFindTags"] = ddFindTags_Process;
         processMap_["ddCreateActivity"] = ddCreateActivity_Process;
         processMap_["ddUpdateActivity"] = ddUpdateActivity_Process;
-        processMap_["ddDeleteActivities"] = ddDeleteActivities_Process;
+        processMap_["ddUpdateActivitiesStatus"] = ddUpdateActivitiesStatus_Process;
         processMap_["ddGetAnnouncements"] = ddGetAnnouncements_Process;
         processMap_["ddCreateAnnouncement"] = ddCreateAnnouncement_Process;
         processMap_["ddUpdateAnnouncement"] = ddUpdateAnnouncement_Process;
@@ -10895,7 +10895,7 @@ namespace GetSocialSdk.Core
         processMap_["ddCreateReactions"] = ddCreateReactions_Process;
         processMap_["ddDeleteReactions"] = ddDeleteReactions_Process;
         processMap_["ddPurgeActivities"] = ddPurgeActivities_Process;
-        processMap_["ddGetReportedActivities"] = ddGetReportedActivities_Process;
+        processMap_["ddGetActivitiesForModeration"] = ddGetActivitiesForModeration_Process;
         processMap_["runETLQuery"] = runETLQuery_Process;
         processMap_["getETLQueryResults"] = getETLQueryResults_Process;
         processMap_["createCampaign"] = createCampaign_Process;
@@ -17129,23 +17129,23 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
-      public void ddDeleteActivities_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void ddUpdateActivitiesStatus_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        ddDeleteActivities_args args = new ddDeleteActivities_args();
+        ddUpdateActivitiesStatus_args args = new ddUpdateActivitiesStatus_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        ddDeleteActivities_result result = new ddDeleteActivities_result();
+        ddUpdateActivitiesStatus_result result = new ddUpdateActivitiesStatus_result();
         try
         {
           try
           {
-            result.Success = iface_.ddDeleteActivities(args.Request);
+            result.Success = iface_.ddUpdateActivitiesStatus(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("ddDeleteActivities", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("ddUpdateActivitiesStatus", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -17157,7 +17157,7 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("ddDeleteActivities", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("ddUpdateActivitiesStatus", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -17409,23 +17409,23 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
-      public void ddGetReportedActivities_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void ddGetActivitiesForModeration_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        ddGetReportedActivities_args args = new ddGetReportedActivities_args();
+        ddGetActivitiesForModeration_args args = new ddGetActivitiesForModeration_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        ddGetReportedActivities_result result = new ddGetReportedActivities_result();
+        ddGetActivitiesForModeration_result result = new ddGetActivitiesForModeration_result();
         try
         {
           try
           {
-            result.Success = iface_.ddGetReportedActivities(args.Request);
+            result.Success = iface_.ddGetActivitiesForModeration(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("ddGetReportedActivities", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("ddGetActivitiesForModeration", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -17437,7 +17437,7 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("ddGetReportedActivities", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("ddGetActivitiesForModeration", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -71421,11 +71421,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddDeleteActivities_args : TBase
+    public partial class ddUpdateActivitiesStatus_args : TBase
     {
-      private DDDeleteActivitiesRequest _request;
+      private DDUpdateActivitiesStatusRequest _request;
 
-      public DDDeleteActivitiesRequest Request
+      public DDUpdateActivitiesStatusRequest Request
       {
         get
         {
@@ -71447,7 +71447,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public ddDeleteActivities_args() {
+      public ddUpdateActivitiesStatus_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -71467,7 +71467,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new DDDeleteActivitiesRequest();
+                  Request = new DDUpdateActivitiesStatusRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -71491,7 +71491,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddDeleteActivities_args");
+          TStruct struc = new TStruct("ddUpdateActivitiesStatus_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -71512,7 +71512,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddDeleteActivities_args(");
+        StringBuilder __sb = new StringBuilder("ddUpdateActivitiesStatus_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -71530,12 +71530,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddDeleteActivities_result : TBase
+    public partial class ddUpdateActivitiesStatus_result : TBase
     {
-      private DDDeleteActivitiesResponse _success;
+      private DDUpdateActivitiesStatusResponse _success;
       private THErrors _errors;
 
-      public DDDeleteActivitiesResponse Success
+      public DDUpdateActivitiesStatusResponse Success
       {
         get
         {
@@ -71571,7 +71571,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public ddDeleteActivities_result() {
+      public ddUpdateActivitiesStatus_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -71591,7 +71591,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new DDDeleteActivitiesResponse();
+                  Success = new DDUpdateActivitiesStatusResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -71623,7 +71623,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddDeleteActivities_result");
+          TStruct struc = new TStruct("ddUpdateActivitiesStatus_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -71656,7 +71656,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddDeleteActivities_result(");
+        StringBuilder __sb = new StringBuilder("ddUpdateActivitiesStatus_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -73493,11 +73493,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddGetReportedActivities_args : TBase
+    public partial class ddGetActivitiesForModeration_args : TBase
     {
-      private DDGetReportedActivitiesRequest _request;
+      private DDGetActivitiesForModerationRequest _request;
 
-      public DDGetReportedActivitiesRequest Request
+      public DDGetActivitiesForModerationRequest Request
       {
         get
         {
@@ -73519,7 +73519,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public ddGetReportedActivities_args() {
+      public ddGetActivitiesForModeration_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -73539,7 +73539,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new DDGetReportedActivitiesRequest();
+                  Request = new DDGetActivitiesForModerationRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -73563,7 +73563,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddGetReportedActivities_args");
+          TStruct struc = new TStruct("ddGetActivitiesForModeration_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -73584,7 +73584,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddGetReportedActivities_args(");
+        StringBuilder __sb = new StringBuilder("ddGetActivitiesForModeration_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -73602,12 +73602,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddGetReportedActivities_result : TBase
+    public partial class ddGetActivitiesForModeration_result : TBase
     {
-      private DDGetReportedActivitiesResponse _success;
+      private DDGetActivitiesForModerationResponse _success;
       private THErrors _errors;
 
-      public DDGetReportedActivitiesResponse Success
+      public DDGetActivitiesForModerationResponse Success
       {
         get
         {
@@ -73643,7 +73643,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public ddGetReportedActivities_result() {
+      public ddGetActivitiesForModeration_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -73663,7 +73663,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new DDGetReportedActivitiesResponse();
+                  Success = new DDGetActivitiesForModerationResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -73695,7 +73695,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddGetReportedActivities_result");
+          TStruct struc = new TStruct("ddGetActivitiesForModeration_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -73728,7 +73728,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddGetReportedActivities_result(");
+        StringBuilder __sb = new StringBuilder("ddGetActivitiesForModeration_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
