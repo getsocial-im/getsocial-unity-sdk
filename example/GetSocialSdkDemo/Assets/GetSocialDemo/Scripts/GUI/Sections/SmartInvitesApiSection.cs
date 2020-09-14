@@ -169,6 +169,7 @@ public class SmartInvitesApiSection : DemoMenuSection
         DemoGuiUtils.DrawButton("Open Customized Smart Invites", ShowNativeSmartInvitesViewCustomized, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Available Channels Details", PrintAvailableInviteChannelsDetails, style: GSStyles.Button);
         DemoGuiUtils.DrawButton("Get Available Channels", PrintAvailableChannelsList, style: GSStyles.Button);
+        DemoGuiUtils.DrawButton("Register FB Share Plugin", RegisterFBSharePlugin, style: GSStyles.Button);
         DrawCreateInviteLink();
         DrawCustomInviteParamsForm();
 
@@ -205,6 +206,11 @@ public class SmartInvitesApiSection : DemoMenuSection
         }, (error) => {
             _console.LogE("Error while getting invite channels: " + error.Message);
         });
+    }
+    
+    private void RegisterFBSharePlugin()
+    {
+        GetSocialFacebookSharePluginHelper.RegisterFacebookSharePlugin();
     }
     
     private void PrintAvailableChannelsList()

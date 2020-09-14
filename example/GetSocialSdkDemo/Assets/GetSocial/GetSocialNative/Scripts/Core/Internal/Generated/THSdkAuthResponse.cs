@@ -36,6 +36,7 @@ namespace GetSocialSdk.Core
     private string _uploadEndpoint;
     private THUploadChunkSize _uploadChunkSize;
     private long _uploadFileSizeLimit;
+    private string _deviceId;
 
     public string SessionId
     {
@@ -157,6 +158,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public string DeviceId
+    {
+      get
+      {
+        return _deviceId;
+      }
+      set
+      {
+        __isset.deviceId = true;
+        this._deviceId = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -172,6 +186,7 @@ namespace GetSocialSdk.Core
       public bool uploadEndpoint;
       public bool uploadChunkSize;
       public bool uploadFileSizeLimit;
+      public bool deviceId;
     }
 
     public THSdkAuthResponse() {
@@ -255,6 +270,13 @@ namespace GetSocialSdk.Core
             case 9:
               if (field.Type == TType.I64) {
                 UploadFileSizeLimit = iprot.ReadI64();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.String) {
+                DeviceId = iprot.ReadString();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -352,6 +374,14 @@ namespace GetSocialSdk.Core
           oprot.WriteI64(UploadFileSizeLimit);
           oprot.WriteFieldEnd();
         }
+        if (DeviceId != null && __isset.deviceId) {
+          field.Name = "deviceId";
+          field.Type = TType.String;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(DeviceId);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -417,6 +447,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("UploadFileSizeLimit: ");
         __sb.Append(UploadFileSizeLimit);
+      }
+      if (DeviceId != null && __isset.deviceId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DeviceId: ");
+        __sb.Append(DeviceId);
       }
       __sb.Append(")");
       return __sb.ToString();

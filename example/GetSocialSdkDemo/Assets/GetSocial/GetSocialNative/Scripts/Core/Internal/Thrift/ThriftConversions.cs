@@ -573,12 +573,14 @@ namespace GetSocialSdk.Core
         public static Dictionary<CommunitiesAction, bool> ConvertAllowableActions(this Dictionary<int, bool> actions)
         {
             var allowedActions = new Dictionary<CommunitiesAction, bool>();
-            foreach (var action in actions)
-            {
-                var convertedActions = CommunitiesActionFromRPC(action.Key);
-                for (int i = 0; i<convertedActions.Length; i++)
+            if (actions != null) {
+                foreach (var action in actions)
                 {
-                    allowedActions[convertedActions[i]] = action.Value;
+                    var convertedActions = CommunitiesActionFromRPC(action.Key);
+                    for (int i = 0; i<convertedActions.Length; i++)
+                    {
+                        allowedActions[convertedActions[i]] = action.Value;
+                    }
                 }
             }
 

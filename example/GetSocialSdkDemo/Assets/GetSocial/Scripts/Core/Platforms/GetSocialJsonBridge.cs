@@ -66,17 +66,26 @@ namespace GetSocialSdk.Core
 
         public void AddIdentity(Identity identity, Action success, Action<ConflictUser> conflict, Action<GetSocialError> failure)
         {
-            CallAsync<ConflictUser>("CurrentUser.addIdentity", GSJson.Serialize(identity), response =>
-            {
-                if (response == null)
-                {
+            MethodCaller.CallAsync("CurrentUser.addIdentity", GSJson.Serialize(identity), (string result) => {
+                if (result == null || result.Length == 0) {
                     success();
+                } else {
+                    var obj = GSJson.Deserialize(result);
+                    if (obj != null && obj.GetType().IsGenericDictionary())
+                    {
+                        var dictionary = obj as Dictionary<string, object>;
+                        if (dictionary.Count == 1 && dictionary.ContainsKey("result"))
+                        {
+                            success();
+                        } else {
+                            conflict(GSJson.ToObject<ConflictUser>(obj));
+                        }
+                    } else {
+                        conflict(GSJson.ToObject<ConflictUser>(obj));
+                    }
                 }
-                else
-                {
-                    conflict(response);
-                }
-            }, failure);
+
+            }, Json(failure));            
         }
 
         public void RemoveIdentity(string providerId, Action callback, Action<GetSocialError> failure)

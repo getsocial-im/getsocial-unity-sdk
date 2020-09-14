@@ -59,6 +59,7 @@ namespace GetSocialSdk.Core
     private bool _deviceJailbroken;
     private bool _isTestDevice;
     private bool _isEmulator;
+    private string _deviceId;
 
     /// <summary>
     /// Properties set by Hades
@@ -518,6 +519,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public string DeviceId
+    {
+      get
+      {
+        return _deviceId;
+      }
+      set
+      {
+        __isset.deviceId = true;
+        this._deviceId = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -556,6 +570,7 @@ namespace GetSocialSdk.Core
       public bool deviceJailbroken;
       public bool isTestDevice;
       public bool isEmulator;
+      public bool deviceId;
     }
 
     public THSuperProperties() {
@@ -796,6 +811,13 @@ namespace GetSocialSdk.Core
             case 124:
               if (field.Type == TType.Bool) {
                 IsEmulator = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 125:
+              if (field.Type == TType.String) {
+                DeviceId = iprot.ReadString();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -1077,6 +1099,14 @@ namespace GetSocialSdk.Core
           oprot.WriteBool(IsEmulator);
           oprot.WriteFieldEnd();
         }
+        if (DeviceId != null && __isset.deviceId) {
+          field.Name = "deviceId";
+          field.Type = TType.String;
+          field.ID = 125;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(DeviceId);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -1280,6 +1310,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("IsEmulator: ");
         __sb.Append(IsEmulator);
+      }
+      if (DeviceId != null && __isset.deviceId) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DeviceId: ");
+        __sb.Append(DeviceId);
       }
       __sb.Append(")");
       return __sb.ToString();
