@@ -125,7 +125,7 @@ namespace GetSocialSdk.Core
         /// Check <see cref="ActivityStatus"/> for possible values.
         /// </summary>
         /// <value> entity to which the activity was posted.</value>
-        [JsonSerializationKey("source")]
+        [JsonSerializationKey("status")]
         public string Status { get; internal set; }
 
         public Activity()
