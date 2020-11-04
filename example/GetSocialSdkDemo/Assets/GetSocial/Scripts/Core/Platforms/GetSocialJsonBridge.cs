@@ -335,7 +335,7 @@ namespace GetSocialSdk.Core
         public void Send(InviteContent customInviteContent, string channelId, Action success, Action cancel, Action<GetSocialError> failure)
         {
             CallAsync("Invites.send", GSJson.Serialize(new SendInviteBody { ChannelId = channelId, Content = customInviteContent }), (string result) => {
-                if (result.Equals("cancel"))
+                if ("cancel".Equals(result))
                 {
                     cancel();
                 }
