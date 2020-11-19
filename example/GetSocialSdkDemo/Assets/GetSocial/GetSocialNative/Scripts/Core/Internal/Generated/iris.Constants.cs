@@ -30,6 +30,9 @@ namespace GetSocialSdk.Core
     public const string IrisNotificationsTypeMentionComment = "comment_mention";
     public const string IrisNotificationsTypeMentionActivity = "activity_mention";
     public const string IrisNotificationsTypeReplyComment = "comment_reply";
+    public const string IrisNotificationsTypeRequestToJoinGroup = "request_to_join_group";
+    public const string IrisNotificationsTypeInviteToJoinGroup = "invite_to_join_group";
+    public const string IrisNotificationsTypeRequestToJoinGroupApproved = "request_to_join_group_approved";
     public const string IrisNotificationsTypeTargeting = "targeting";
     public const string IrisNotificationsTypeDirect = "direct";
   }

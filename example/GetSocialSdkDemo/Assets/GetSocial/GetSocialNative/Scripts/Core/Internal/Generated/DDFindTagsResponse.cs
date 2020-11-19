@@ -85,12 +85,12 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Set) {
                 {
                   Tags = new THashSet<string>();
-                  TSet _set118 = iprot.ReadSetBegin();
-                  for( int _i119 = 0; _i119 < _set118.Count; ++_i119)
+                  TSet _set122 = iprot.ReadSetBegin();
+                  for( int _i123 = 0; _i123 < _set122.Count; ++_i123)
                   {
-                    string _elem120;
-                    _elem120 = iprot.ReadString();
-                    Tags.Add(_elem120);
+                    string _elem124;
+                    _elem124 = iprot.ReadString();
+                    Tags.Add(_elem124);
                   }
                   iprot.ReadSetEnd();
                 }
@@ -133,9 +133,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteSetBegin(new TSet(TType.String, Tags.Count));
-            foreach (string _iter121 in Tags)
+            foreach (string _iter125 in Tags)
             {
-              oprot.WriteString(_iter121);
+              oprot.WriteString(_iter125);
             }
             oprot.WriteSetEnd();
           }

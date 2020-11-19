@@ -85,13 +85,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Reactions = new List<AFReaction>();
-                  TList _list222 = iprot.ReadListBegin();
-                  for( int _i223 = 0; _i223 < _list222.Count; ++_i223)
+                  TList _list226 = iprot.ReadListBegin();
+                  for( int _i227 = 0; _i227 < _list226.Count; ++_i227)
                   {
-                    AFReaction _elem224;
-                    _elem224 = new AFReaction();
-                    _elem224.Read(iprot);
-                    Reactions.Add(_elem224);
+                    AFReaction _elem228;
+                    _elem228 = new AFReaction();
+                    _elem228.Read(iprot);
+                    Reactions.Add(_elem228);
                   }
                   iprot.ReadListEnd();
                 }
@@ -134,9 +134,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Reactions.Count));
-            foreach (AFReaction _iter225 in Reactions)
+            foreach (AFReaction _iter229 in Reactions)
             {
-              _iter225.Write(oprot);
+              _iter229.Write(oprot);
             }
             oprot.WriteListEnd();
           }

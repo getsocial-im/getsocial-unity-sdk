@@ -15,7 +15,7 @@ namespace GetSocialSdk.Core
   {
     APPROVAL_PENDING = 0,
     INVITATION_PENDING = 1,
-    COMPLETE_MEMBER = 2,
+    APPROVED = 2,
   }
 }
 #endif

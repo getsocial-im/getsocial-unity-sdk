@@ -248,6 +248,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// UserId identifies the source of activity.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openActivity_UserId;)
 + (NSString * _Nonnull)openActivity_UserId SWIFT_WARN_UNUSED_RESULT;
+/// GroupId are mutually exclusive.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openActivity_GroupId;)
++ (NSString * _Nonnull)openActivity_GroupId SWIFT_WARN_UNUSED_RESULT;
 /// ID of user to be opened.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openProfile_UserId;)
 + (NSString * _Nonnull)openProfile_UserId SWIFT_WARN_UNUSED_RESULT;
@@ -260,6 +263,21 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Promo Code to claim.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull claimPromoCode_PromoCode;)
 + (NSString * _Nonnull)claimPromoCode_PromoCode SWIFT_WARN_UNUSED_RESULT;
+/// GroupId.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_GroupId;)
++ (NSString * _Nonnull)addGroupMember_GroupId SWIFT_WARN_UNUSED_RESULT;
+/// User Id.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_UserId;)
++ (NSString * _Nonnull)addGroupMember_UserId SWIFT_WARN_UNUSED_RESULT;
+/// Invitation token.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_InvitationToken;)
++ (NSString * _Nonnull)addGroupMember_InvitationToken SWIFT_WARN_UNUSED_RESULT;
+/// Role.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_Role;)
++ (NSString * _Nonnull)addGroupMember_Role SWIFT_WARN_UNUSED_RESULT;
+/// Status.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_Status;)
++ (NSString * _Nonnull)addGroupMember_Status SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -285,6 +303,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Claim Promo Code action.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull claimPromoCode;)
 + (NSString * _Nonnull)claimPromoCode SWIFT_WARN_UNUSED_RESULT;
+/// Add group member.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember;)
++ (NSString * _Nonnull)addGroupMember SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -382,6 +403,14 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 + (GetSocialActivitiesQuery * _Nonnull)inTopicWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get activities in a specific group.
+/// \param id Group id.
+///
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
++ (GetSocialActivitiesQuery * _Nonnull)inGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get activities from all topics.
 ///
 /// returns:
@@ -552,6 +581,43 @@ SWIFT_CLASS("_TtC12GetSocialSDK14ActivityStatus")
 @interface ActivityStatus : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+
+@class GetSocialUserIdList;
+enum GetSocialMemberRole : NSInteger;
+enum GetSocialMemberStatus : NSInteger;
+
+/// Describe updating group members query.
+SWIFT_CLASS_NAMED("AddGroupMembersQuery")
+@interface GetSocialAddGroupMembersQuery : NSObject
+/// Create a query to add new members to a group. By default users added with role <code>.member</code> and status <code>.member</code>.
+/// \param id Group Id.
+///
+/// \param userIds User ids to add.
+///
+- (nonnull instancetype)initWithId:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds OBJC_DESIGNATED_INITIALIZER;
+/// Sets role to new users.
+/// \param role User role.
+///
+///
+/// returns:
+///
+/// Updated <code>AddGroupMembersQuery</code> instance.
+- (GetSocialAddGroupMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
+/// Sets status to new users.
+/// \param status User status.
+///
+///
+/// returns:
+///
+/// Updated <code>AddGroupMembersQuery</code> instance.
+- (GetSocialAddGroupMembersQuery * _Nonnull)withMemberStatus:(enum GetSocialMemberStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 @class GetSocialPurchaseData;
 
@@ -774,7 +840,6 @@ SWIFT_CLASS_NAMED("BanInfo")
 
 
 
-@class GetSocialUserIdList;
 @class GetSocialFriendsQuery;
 @class GetSocialFriendsPagingQuery;
 @class GetSocialFriendsPagingResult;
@@ -795,6 +860,18 @@ enum GetSocialReportingReason : NSInteger;
 @class GetSocialTopicsPagingQuery;
 @class GetSocialTopicsPagingResult;
 @class GetSocialTopicsQuery;
+@class GetSocialGroupContent;
+@class GetSocialGroup;
+@class GetSocialMembersPagingQuery;
+@class GetSocialGroupMembersPagingResult;
+@class GetSocialGroupsPagingQuery;
+@class GetSocialGroupsPagingResult;
+@class GetSocialGroupsQuery;
+@class GetSocialGroupMember;
+@class GetSocialJoinGroupQuery;
+@class GetSocialUpdateGroupMembersQuery;
+@class RemoveGroupMembersQuery;
+@class Membership;
 
 /// Interface for community related methods.
 SWIFT_CLASS_NAMED("Communities")
@@ -1078,6 +1155,106 @@ SWIFT_CLASS_NAMED("Communities")
 /// \param failure Called if operation failed.
 ///
 + (void)topicsCountWithQuery:(GetSocialTopicsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Creates a new group.
+/// \param content Group content.
+///
+/// \param success Called with created group.
+///
+/// \param failure Called if operation failed.
+///
++ (void)createGroupWithContent:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Updates an existing group.
+/// \param id Existing group id.
+///
+/// \param content New group content.
+///
+/// \param success Called with updated topic.
+///
+/// \param failure Called if operation failed.
+///
++ (void)updateGroupWithId:(NSString * _Nonnull)id content:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Removes groups.
+/// \param ids Group ids to delete.
+///
+/// \param success Called if groups are removed.
+///
+/// \param failure Called if operation failed.
+///
++ (void)removeGroupsWithIds:(NSArray<NSString *> * _Nonnull)ids success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get members of the provided group.
+/// \param query Query parameter.
+///
+/// \param success Called with group members .
+///
+/// \param failure Called if operation failed.
+///
++ (void)membersOfGroupWithQuery:(GetSocialMembersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMembersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get groups.
+/// \param query Query parameter.
+///
+/// \param success Called with groups.
+///
+/// \param failure Called if operation failed.
+///
++ (void)groupsWithQuery:(GetSocialGroupsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get number of groups.
+/// \param query Query parameter.
+///
+/// \param success Called with number of groups .
+///
+/// \param failure Called if operation failed.
+///
++ (void)groupsCountWithQuery:(GetSocialGroupsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get group by id.
+/// \param id Group id.
+///
+/// \param success Called with group .
+///
+/// \param failure Called if operation failed.
+///
++ (void)groupWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Adds user to a group.
+/// \param query Query parameter.
+///
+/// \param success Called with new group member .
+///
+/// \param failure Called if operation failed.
+///
++ (void)addGroupMembersWithQuery:(GetSocialAddGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Current user joins a group.
+/// \param query Query parameter.
+///
+/// \param success Called with new group member.
+///
+/// \param failure Called if operation failed.
+///
++ (void)joinGroupWithQuery:(GetSocialJoinGroupQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMember * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Updates an existing group member.
+/// \param query Query parameter.
+///
+/// \param success Called with updated group member.
+///
+/// \param failure Called if operation failed.
+///
++ (void)updateGroupMembersWithQuery:(GetSocialUpdateGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Removes member from group.
+/// \param query Query parameter.
+///
+/// \param success Called if member removed.
+///
+/// \param failure Called if operation failed.
+///
++ (void)removeGroupMembersWithQuery:(RemoveGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Checks if users are member of group.
+/// \param id Group id.
+///
+/// \param userIds User ids to check.
+///
+/// \param success Called if member statuses.
+///
+/// \param failure Called if operation failed.
+///
++ (void)areGroupMembersOf:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds success:(void (^ _Nonnull)(NSDictionary<NSString *, Membership *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1143,6 +1320,10 @@ SWIFT_CLASS_NAMED("CommunitiesSettings")
 @interface GetSocialCommunitiesSettings : NSObject
 /// Properties.
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Is discoverable.
+@property (nonatomic, readonly) BOOL isDiscovarable;
+/// Is private.
+@property (nonatomic, readonly) BOOL isPrivate;
 /// Check if sepcified action is available or not.
 /// - parameters:
 /// - action:       The action to check.
@@ -1320,6 +1501,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger NoReferrer
 + (NSInteger)NoReferrerMatch SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger ActivityRejected;)
 + (NSInteger)ActivityRejected SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger ActivityRateLimited;)
++ (NSInteger)ActivityRateLimited SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger CommentRateLimited;)
++ (NSInteger)CommentRateLimited SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger ConnectionTimeout;)
 + (NSInteger)ConnectionTimeout SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger NoInternet;)
@@ -1345,6 +1530,14 @@ SWIFT_CLASS_NAMED("FollowQuery")
 ///
 /// New <code>FollowQuery</code> instance.
 + (GetSocialFollowQuery * _Nonnull)topicsWithIds:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
+/// Create query to follow groups.
+/// \param ids List of group ids.
+///
+///
+/// returns:
+///
+/// New <code>FollowQuery</code> instance.
++ (GetSocialFollowQuery * _Nonnull)groupsWithIds:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
 /// Create query to follow users.
 /// \param ids User ids.
 ///
@@ -1412,6 +1605,14 @@ SWIFT_CLASS_NAMED("FollowersQuery")
 ///
 /// New <code>FollowersQuery</code> instance.
 + (GetSocialFollowersQuery * _Nonnull)ofTopicWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create query to get followers of a group.
+/// \param id Group id.
+///
+///
+/// returns:
+///
+/// New <code>FollowersQuery</code> instance.
++ (GetSocialFollowersQuery * _Nonnull)ofGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get followers of a user.
 /// \param id User id.
 ///
@@ -1653,6 +1854,159 @@ SWIFT_CLASS("_TtC12GetSocialSDK21GetSocialNotification")
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+
+
+
+
+/// Describe group object.
+SWIFT_CLASS_NAMED("Group")
+@interface GetSocialGroup : NSObject
+/// Group identifier
+@property (nonatomic, readonly, copy) NSString * _Nonnull groupId;
+/// Group localized title
+@property (nonatomic, readonly, copy) NSString * _Nullable title;
+/// Group localized description
+@property (nonatomic, readonly, copy) NSString * _Nullable groupDescription;
+/// Avatar Url
+@property (nonatomic, readonly, copy) NSString * _Nullable avatarUrl;
+/// Creation date
+@property (nonatomic, readonly) int64_t createdAt;
+/// Last update
+@property (nonatomic, readonly) int64_t updatedAt;
+/// Setting
+@property (nonatomic, readonly, strong) GetSocialCommunitiesSettings * _Nonnull settings;
+/// Number of followers
+@property (nonatomic, readonly) NSInteger followersCount;
+/// Current user is follower or not
+@property (nonatomic, readonly) BOOL isFollowedByMe;
+/// Number of members
+@property (nonatomic, readonly) NSInteger membersCount;
+/// Membership info
+@property (nonatomic, readonly, strong) Membership * _Nullable membership;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Describe group content object.
+SWIFT_CLASS_NAMED("GroupContent")
+@interface GetSocialGroupContent : NSObject
+/// Group id
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+/// Group title
+@property (nonatomic, copy) NSString * _Nullable title;
+/// Group description
+@property (nonatomic, copy) NSString * _Nullable groupDescription;
+/// Group icon
+@property (nonatomic, strong) GetSocialMediaAttachment * _Nullable avatar;
+/// Custom properties
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Create a new group content to create a group.
+/// \param groupId Group id.
+///
+- (nonnull instancetype)initWithGroupId:(NSString * _Nonnull)groupId OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Describe group member object.
+SWIFT_CLASS_NAMED("GroupMember")
+@interface GetSocialGroupMember : GetSocialUser
+/// Membership details
+@property (nonatomic, readonly, strong) Membership * _Nonnull membership;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+/// Result of getting group members method.
+SWIFT_CLASS_NAMED("GroupMembersPagingResult")
+@interface GetSocialGroupMembersPagingResult : GetSocialPagingResult
+/// List of members.
+@property (nonatomic, readonly, copy) NSArray<GetSocialGroupMember *> * _Nonnull members;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe groups paging query.
+SWIFT_CLASS_NAMED("GroupsPagingQuery")
+@interface GetSocialGroupsPagingQuery : GetSocialPagingQuery
+/// Constructor.
+/// \param query <code>GroupsQuery</code> instance.
+///
+///
+/// returns:
+///
+/// New <code>GroupsPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialGroupsQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Result of getting groups method.
+SWIFT_CLASS_NAMED("GroupsPagingResult")
+@interface GetSocialGroupsPagingResult : GetSocialPagingResult
+/// List of groups.
+@property (nonatomic, readonly, copy) NSArray<GetSocialGroup *> * _Nonnull groups;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe query to get group.
+SWIFT_CLASS_NAMED("GroupsQuery")
+@interface GetSocialGroupsQuery : NSObject
+/// Create a query to find a group.
+/// \param searchTerm Search term.
+///
+///
+/// returns:
+///
+/// New <code>TopicsQuery</code> instance.
++ (GetSocialGroupsQuery * _Nonnull)find:(NSString * _Nonnull)searchTerm SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get groups.
+///
+/// returns:
+///
+/// New <code>GroupsQuery</code> instance.
++ (GetSocialGroupsQuery * _Nonnull)all SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups followed by a specific user.
+/// \param id User id.
+///
+- (GetSocialGroupsQuery * _Nonnull)followedByUserWithId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups which a specific user is member of.
+/// \param id User id.
+///
+- (GetSocialGroupsQuery * _Nonnull)byMemberId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 
 
@@ -2006,6 +2360,30 @@ SWIFT_CLASS_NAMED("JSONBridge")
 
 
 
+/// Describe updating group members query.
+SWIFT_CLASS_NAMED("JoinGroupQuery")
+@interface GetSocialJoinGroupQuery : NSObject
+/// Create a query to join to a group.
+/// \param groupId Group Id.
+///
+- (nonnull instancetype)initWithGroupId:(NSString * _Nonnull)groupId OBJC_DESIGNATED_INITIALIZER;
+/// Set invitation token. Use this method if user was invited to join a group.
+/// \param invitationToken Invitation token.
+///
+///
+/// returns:
+///
+/// Updated <code>JoinGroupQuery</code> instance.
+- (GetSocialJoinGroupQuery * _Nonnull)withInvitationToken:(NSString * _Nonnull)invitationToken SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
 SWIFT_CLASS_NAMED("LanguageCodes")
 @interface GetSocialLanguageCodes : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull bengali;)
@@ -2165,6 +2543,85 @@ SWIFT_PROTOCOL_NAMED("MediaUploader")
 @protocol GetSocialMediaUploader
 - (NSString * _Nullable)uploadMedia:(NSData * _Nonnull)media to:(NSURL * _Nonnull)url withMetadata:(NSDictionary<NSString *, NSString *> * _Nonnull)metadata SWIFT_WARN_UNUSED_RESULT;
 @end
+
+typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialMemberStatus, "MemberStatus", open) {
+/// User is not approved yet
+  GetSocialMemberStatusApprovalPending = 0,
+/// User has not accepted the invitation yet
+  GetSocialMemberStatusInvitationPending = 1,
+/// Member
+  GetSocialMemberStatusMember = 2,
+};
+
+@class GetSocialMembersQuery;
+
+/// Describe members paging query.
+SWIFT_CLASS_NAMED("MembersPagingQuery")
+@interface GetSocialMembersPagingQuery : GetSocialPagingQuery
+/// Constructor.
+/// \param query <code>MembersQuery</code> instance.
+///
+///
+/// returns:
+///
+/// New <code>MembersPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialMembersQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Describe query to get members of a group.
+SWIFT_CLASS_NAMED("MembersQuery")
+@interface GetSocialMembersQuery : NSObject
+/// Create a query to get members of a group.
+/// \param id Group Id.
+///
+///
+/// returns:
+///
+/// New <code>MembersQuery</code> instance.
++ (GetSocialMembersQuery * _Nonnull)ofGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters members by role.
+/// \param role Role.
+///
+///
+/// returns:
+///
+/// Query instance.
+- (GetSocialMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
+/// Filters members by status.
+/// \param status Status.
+///
+///
+/// returns:
+///
+/// Query instance.
+- (GetSocialMembersQuery * _Nonnull)withStatus:(enum GetSocialMemberStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK10Membership")
+@interface Membership : NSObject
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 enum GetSocialMentionType : NSInteger;
 
@@ -2637,6 +3094,12 @@ SWIFT_CLASS_NAMED("PostActivityTarget")
 /// - returns:
 /// <code>PostActivityTarget</code> instance.
 + (GetSocialPostActivityTarget * _Nonnull)timeline SWIFT_WARN_UNUSED_RESULT;
+/// Target is a specific group.
+/// - parameters:
+/// - id:       Group id.
+/// - returns:
+/// <code>PostActivityTarget</code> instance.
++ (GetSocialPostActivityTarget * _Nonnull)groupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Target is a specific activity.
 /// - parameters:
 /// - activityId:       Activity id.
@@ -2668,6 +3131,15 @@ SWIFT_CLASS_NAMED("PrivateActivityBuilder")
 /// Private method.
 + (GetSocialActivity * _Nonnull)commentActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
 + (GetSocialActivity * _Nonnull)removeCommentFromActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// Private class.
+SWIFT_CLASS_NAMED("PrivateGroupBuilder")
+@interface GetSocialPrivateGroupBuilder : NSObject
+/// Private method.
++ (void)updateGroup:(GetSocialGroup * _Nonnull)group isFollowed:(BOOL)isFollowed;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -3125,12 +3597,30 @@ SWIFT_CLASS_NAMED("RemoveActivitiesQuery")
 
 
 
+
+SWIFT_CLASS("_TtC12GetSocialSDK23RemoveGroupMembersQuery")
+@interface RemoveGroupMembersQuery : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
 /// Describe reporting reason.
 typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialReportingReason, "ReportingReason", open) {
 /// Spam.
   GetSocialReportingReasonSpam = 0,
 /// Inappropriate content.
   GetSocialReportingReasonInappropriateContent = 1,
+};
+
+typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialMemberRole, "Role", open) {
+/// Owner
+  GetSocialMemberRoleOwner = 0,
+/// Admin
+  GetSocialMemberRoleAdmin = 1,
+/// Member
+  GetSocialMemberRoleMember = 3,
 };
 
 
@@ -3340,6 +3830,50 @@ SWIFT_CLASS_NAMED("TopicsQuery")
 
 
 
+
+
+
+
+
+
+/// Describe updating group members query.
+SWIFT_CLASS_NAMED("UpdateGroupMembersQuery")
+@interface GetSocialUpdateGroupMembersQuery : NSObject
+/// Create a query to update group members.
+/// \param id Group Id.
+///
+/// \param userIds User ids.
+///
+- (nonnull instancetype)initWithId:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds OBJC_DESIGNATED_INITIALIZER;
+/// New status of users.
+/// \param status New member status.
+///
+///
+/// returns:
+///
+/// <ul>
+///   <li>
+///     <code>UpdateGroupMembersQuery</code> instance.
+///   </li>
+/// </ul>
+- (GetSocialUpdateGroupMembersQuery * _Nonnull)withMemberStatus:(enum GetSocialMemberStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// New role of users.
+/// \param role New member role.
+///
+///
+/// returns:
+///
+/// <ul>
+///   <li>
+///     <code>UpdateGroupMembersQuery</code> instance.
+///   </li>
+/// </ul>
+- (GetSocialUpdateGroupMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
 
@@ -3805,6 +4339,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// UserId identifies the source of activity.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openActivity_UserId;)
 + (NSString * _Nonnull)openActivity_UserId SWIFT_WARN_UNUSED_RESULT;
+/// GroupId are mutually exclusive.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openActivity_GroupId;)
++ (NSString * _Nonnull)openActivity_GroupId SWIFT_WARN_UNUSED_RESULT;
 /// ID of user to be opened.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openProfile_UserId;)
 + (NSString * _Nonnull)openProfile_UserId SWIFT_WARN_UNUSED_RESULT;
@@ -3817,6 +4354,21 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Promo Code to claim.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull claimPromoCode_PromoCode;)
 + (NSString * _Nonnull)claimPromoCode_PromoCode SWIFT_WARN_UNUSED_RESULT;
+/// GroupId.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_GroupId;)
++ (NSString * _Nonnull)addGroupMember_GroupId SWIFT_WARN_UNUSED_RESULT;
+/// User Id.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_UserId;)
++ (NSString * _Nonnull)addGroupMember_UserId SWIFT_WARN_UNUSED_RESULT;
+/// Invitation token.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_InvitationToken;)
++ (NSString * _Nonnull)addGroupMember_InvitationToken SWIFT_WARN_UNUSED_RESULT;
+/// Role.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_Role;)
++ (NSString * _Nonnull)addGroupMember_Role SWIFT_WARN_UNUSED_RESULT;
+/// Status.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_Status;)
++ (NSString * _Nonnull)addGroupMember_Status SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -3842,6 +4394,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Claim Promo Code action.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull claimPromoCode;)
 + (NSString * _Nonnull)claimPromoCode SWIFT_WARN_UNUSED_RESULT;
+/// Add group member.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember;)
++ (NSString * _Nonnull)addGroupMember SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -3939,6 +4494,14 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 + (GetSocialActivitiesQuery * _Nonnull)inTopicWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get activities in a specific group.
+/// \param id Group id.
+///
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
++ (GetSocialActivitiesQuery * _Nonnull)inGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get activities from all topics.
 ///
 /// returns:
@@ -4109,6 +4672,43 @@ SWIFT_CLASS("_TtC12GetSocialSDK14ActivityStatus")
 @interface ActivityStatus : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+
+@class GetSocialUserIdList;
+enum GetSocialMemberRole : NSInteger;
+enum GetSocialMemberStatus : NSInteger;
+
+/// Describe updating group members query.
+SWIFT_CLASS_NAMED("AddGroupMembersQuery")
+@interface GetSocialAddGroupMembersQuery : NSObject
+/// Create a query to add new members to a group. By default users added with role <code>.member</code> and status <code>.member</code>.
+/// \param id Group Id.
+///
+/// \param userIds User ids to add.
+///
+- (nonnull instancetype)initWithId:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds OBJC_DESIGNATED_INITIALIZER;
+/// Sets role to new users.
+/// \param role User role.
+///
+///
+/// returns:
+///
+/// Updated <code>AddGroupMembersQuery</code> instance.
+- (GetSocialAddGroupMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
+/// Sets status to new users.
+/// \param status User status.
+///
+///
+/// returns:
+///
+/// Updated <code>AddGroupMembersQuery</code> instance.
+- (GetSocialAddGroupMembersQuery * _Nonnull)withMemberStatus:(enum GetSocialMemberStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 @class GetSocialPurchaseData;
 
@@ -4331,7 +4931,6 @@ SWIFT_CLASS_NAMED("BanInfo")
 
 
 
-@class GetSocialUserIdList;
 @class GetSocialFriendsQuery;
 @class GetSocialFriendsPagingQuery;
 @class GetSocialFriendsPagingResult;
@@ -4352,6 +4951,18 @@ enum GetSocialReportingReason : NSInteger;
 @class GetSocialTopicsPagingQuery;
 @class GetSocialTopicsPagingResult;
 @class GetSocialTopicsQuery;
+@class GetSocialGroupContent;
+@class GetSocialGroup;
+@class GetSocialMembersPagingQuery;
+@class GetSocialGroupMembersPagingResult;
+@class GetSocialGroupsPagingQuery;
+@class GetSocialGroupsPagingResult;
+@class GetSocialGroupsQuery;
+@class GetSocialGroupMember;
+@class GetSocialJoinGroupQuery;
+@class GetSocialUpdateGroupMembersQuery;
+@class RemoveGroupMembersQuery;
+@class Membership;
 
 /// Interface for community related methods.
 SWIFT_CLASS_NAMED("Communities")
@@ -4635,6 +5246,106 @@ SWIFT_CLASS_NAMED("Communities")
 /// \param failure Called if operation failed.
 ///
 + (void)topicsCountWithQuery:(GetSocialTopicsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Creates a new group.
+/// \param content Group content.
+///
+/// \param success Called with created group.
+///
+/// \param failure Called if operation failed.
+///
++ (void)createGroupWithContent:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Updates an existing group.
+/// \param id Existing group id.
+///
+/// \param content New group content.
+///
+/// \param success Called with updated topic.
+///
+/// \param failure Called if operation failed.
+///
++ (void)updateGroupWithId:(NSString * _Nonnull)id content:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Removes groups.
+/// \param ids Group ids to delete.
+///
+/// \param success Called if groups are removed.
+///
+/// \param failure Called if operation failed.
+///
++ (void)removeGroupsWithIds:(NSArray<NSString *> * _Nonnull)ids success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get members of the provided group.
+/// \param query Query parameter.
+///
+/// \param success Called with group members .
+///
+/// \param failure Called if operation failed.
+///
++ (void)membersOfGroupWithQuery:(GetSocialMembersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMembersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get groups.
+/// \param query Query parameter.
+///
+/// \param success Called with groups.
+///
+/// \param failure Called if operation failed.
+///
++ (void)groupsWithQuery:(GetSocialGroupsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get number of groups.
+/// \param query Query parameter.
+///
+/// \param success Called with number of groups .
+///
+/// \param failure Called if operation failed.
+///
++ (void)groupsCountWithQuery:(GetSocialGroupsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get group by id.
+/// \param id Group id.
+///
+/// \param success Called with group .
+///
+/// \param failure Called if operation failed.
+///
++ (void)groupWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Adds user to a group.
+/// \param query Query parameter.
+///
+/// \param success Called with new group member .
+///
+/// \param failure Called if operation failed.
+///
++ (void)addGroupMembersWithQuery:(GetSocialAddGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Current user joins a group.
+/// \param query Query parameter.
+///
+/// \param success Called with new group member.
+///
+/// \param failure Called if operation failed.
+///
++ (void)joinGroupWithQuery:(GetSocialJoinGroupQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMember * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Updates an existing group member.
+/// \param query Query parameter.
+///
+/// \param success Called with updated group member.
+///
+/// \param failure Called if operation failed.
+///
++ (void)updateGroupMembersWithQuery:(GetSocialUpdateGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Removes member from group.
+/// \param query Query parameter.
+///
+/// \param success Called if member removed.
+///
+/// \param failure Called if operation failed.
+///
++ (void)removeGroupMembersWithQuery:(RemoveGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Checks if users are member of group.
+/// \param id Group id.
+///
+/// \param userIds User ids to check.
+///
+/// \param success Called if member statuses.
+///
+/// \param failure Called if operation failed.
+///
++ (void)areGroupMembersOf:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds success:(void (^ _Nonnull)(NSDictionary<NSString *, Membership *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -4700,6 +5411,10 @@ SWIFT_CLASS_NAMED("CommunitiesSettings")
 @interface GetSocialCommunitiesSettings : NSObject
 /// Properties.
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Is discoverable.
+@property (nonatomic, readonly) BOOL isDiscovarable;
+/// Is private.
+@property (nonatomic, readonly) BOOL isPrivate;
 /// Check if sepcified action is available or not.
 /// - parameters:
 /// - action:       The action to check.
@@ -4877,6 +5592,10 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger NoReferrer
 + (NSInteger)NoReferrerMatch SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger ActivityRejected;)
 + (NSInteger)ActivityRejected SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger ActivityRateLimited;)
++ (NSInteger)ActivityRateLimited SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger CommentRateLimited;)
++ (NSInteger)CommentRateLimited SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger ConnectionTimeout;)
 + (NSInteger)ConnectionTimeout SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger NoInternet;)
@@ -4902,6 +5621,14 @@ SWIFT_CLASS_NAMED("FollowQuery")
 ///
 /// New <code>FollowQuery</code> instance.
 + (GetSocialFollowQuery * _Nonnull)topicsWithIds:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
+/// Create query to follow groups.
+/// \param ids List of group ids.
+///
+///
+/// returns:
+///
+/// New <code>FollowQuery</code> instance.
++ (GetSocialFollowQuery * _Nonnull)groupsWithIds:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
 /// Create query to follow users.
 /// \param ids User ids.
 ///
@@ -4969,6 +5696,14 @@ SWIFT_CLASS_NAMED("FollowersQuery")
 ///
 /// New <code>FollowersQuery</code> instance.
 + (GetSocialFollowersQuery * _Nonnull)ofTopicWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create query to get followers of a group.
+/// \param id Group id.
+///
+///
+/// returns:
+///
+/// New <code>FollowersQuery</code> instance.
++ (GetSocialFollowersQuery * _Nonnull)ofGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get followers of a user.
 /// \param id User id.
 ///
@@ -5210,6 +5945,159 @@ SWIFT_CLASS("_TtC12GetSocialSDK21GetSocialNotification")
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+
+
+
+
+/// Describe group object.
+SWIFT_CLASS_NAMED("Group")
+@interface GetSocialGroup : NSObject
+/// Group identifier
+@property (nonatomic, readonly, copy) NSString * _Nonnull groupId;
+/// Group localized title
+@property (nonatomic, readonly, copy) NSString * _Nullable title;
+/// Group localized description
+@property (nonatomic, readonly, copy) NSString * _Nullable groupDescription;
+/// Avatar Url
+@property (nonatomic, readonly, copy) NSString * _Nullable avatarUrl;
+/// Creation date
+@property (nonatomic, readonly) int64_t createdAt;
+/// Last update
+@property (nonatomic, readonly) int64_t updatedAt;
+/// Setting
+@property (nonatomic, readonly, strong) GetSocialCommunitiesSettings * _Nonnull settings;
+/// Number of followers
+@property (nonatomic, readonly) NSInteger followersCount;
+/// Current user is follower or not
+@property (nonatomic, readonly) BOOL isFollowedByMe;
+/// Number of members
+@property (nonatomic, readonly) NSInteger membersCount;
+/// Membership info
+@property (nonatomic, readonly, strong) Membership * _Nullable membership;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Describe group content object.
+SWIFT_CLASS_NAMED("GroupContent")
+@interface GetSocialGroupContent : NSObject
+/// Group id
+@property (nonatomic, readonly, copy) NSString * _Nonnull id;
+/// Group title
+@property (nonatomic, copy) NSString * _Nullable title;
+/// Group description
+@property (nonatomic, copy) NSString * _Nullable groupDescription;
+/// Group icon
+@property (nonatomic, strong) GetSocialMediaAttachment * _Nullable avatar;
+/// Custom properties
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Create a new group content to create a group.
+/// \param groupId Group id.
+///
+- (nonnull instancetype)initWithGroupId:(NSString * _Nonnull)groupId OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Describe group member object.
+SWIFT_CLASS_NAMED("GroupMember")
+@interface GetSocialGroupMember : GetSocialUser
+/// Membership details
+@property (nonatomic, readonly, strong) Membership * _Nonnull membership;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+/// Result of getting group members method.
+SWIFT_CLASS_NAMED("GroupMembersPagingResult")
+@interface GetSocialGroupMembersPagingResult : GetSocialPagingResult
+/// List of members.
+@property (nonatomic, readonly, copy) NSArray<GetSocialGroupMember *> * _Nonnull members;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe groups paging query.
+SWIFT_CLASS_NAMED("GroupsPagingQuery")
+@interface GetSocialGroupsPagingQuery : GetSocialPagingQuery
+/// Constructor.
+/// \param query <code>GroupsQuery</code> instance.
+///
+///
+/// returns:
+///
+/// New <code>GroupsPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialGroupsQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Result of getting groups method.
+SWIFT_CLASS_NAMED("GroupsPagingResult")
+@interface GetSocialGroupsPagingResult : GetSocialPagingResult
+/// List of groups.
+@property (nonatomic, readonly, copy) NSArray<GetSocialGroup *> * _Nonnull groups;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe query to get group.
+SWIFT_CLASS_NAMED("GroupsQuery")
+@interface GetSocialGroupsQuery : NSObject
+/// Create a query to find a group.
+/// \param searchTerm Search term.
+///
+///
+/// returns:
+///
+/// New <code>TopicsQuery</code> instance.
++ (GetSocialGroupsQuery * _Nonnull)find:(NSString * _Nonnull)searchTerm SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get groups.
+///
+/// returns:
+///
+/// New <code>GroupsQuery</code> instance.
++ (GetSocialGroupsQuery * _Nonnull)all SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups followed by a specific user.
+/// \param id User id.
+///
+- (GetSocialGroupsQuery * _Nonnull)followedByUserWithId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups which a specific user is member of.
+/// \param id User id.
+///
+- (GetSocialGroupsQuery * _Nonnull)byMemberId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 
 
@@ -5563,6 +6451,30 @@ SWIFT_CLASS_NAMED("JSONBridge")
 
 
 
+/// Describe updating group members query.
+SWIFT_CLASS_NAMED("JoinGroupQuery")
+@interface GetSocialJoinGroupQuery : NSObject
+/// Create a query to join to a group.
+/// \param groupId Group Id.
+///
+- (nonnull instancetype)initWithGroupId:(NSString * _Nonnull)groupId OBJC_DESIGNATED_INITIALIZER;
+/// Set invitation token. Use this method if user was invited to join a group.
+/// \param invitationToken Invitation token.
+///
+///
+/// returns:
+///
+/// Updated <code>JoinGroupQuery</code> instance.
+- (GetSocialJoinGroupQuery * _Nonnull)withInvitationToken:(NSString * _Nonnull)invitationToken SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
 SWIFT_CLASS_NAMED("LanguageCodes")
 @interface GetSocialLanguageCodes : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull bengali;)
@@ -5722,6 +6634,85 @@ SWIFT_PROTOCOL_NAMED("MediaUploader")
 @protocol GetSocialMediaUploader
 - (NSString * _Nullable)uploadMedia:(NSData * _Nonnull)media to:(NSURL * _Nonnull)url withMetadata:(NSDictionary<NSString *, NSString *> * _Nonnull)metadata SWIFT_WARN_UNUSED_RESULT;
 @end
+
+typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialMemberStatus, "MemberStatus", open) {
+/// User is not approved yet
+  GetSocialMemberStatusApprovalPending = 0,
+/// User has not accepted the invitation yet
+  GetSocialMemberStatusInvitationPending = 1,
+/// Member
+  GetSocialMemberStatusMember = 2,
+};
+
+@class GetSocialMembersQuery;
+
+/// Describe members paging query.
+SWIFT_CLASS_NAMED("MembersPagingQuery")
+@interface GetSocialMembersPagingQuery : GetSocialPagingQuery
+/// Constructor.
+/// \param query <code>MembersQuery</code> instance.
+///
+///
+/// returns:
+///
+/// New <code>MembersPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialMembersQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Describe query to get members of a group.
+SWIFT_CLASS_NAMED("MembersQuery")
+@interface GetSocialMembersQuery : NSObject
+/// Create a query to get members of a group.
+/// \param id Group Id.
+///
+///
+/// returns:
+///
+/// New <code>MembersQuery</code> instance.
++ (GetSocialMembersQuery * _Nonnull)ofGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters members by role.
+/// \param role Role.
+///
+///
+/// returns:
+///
+/// Query instance.
+- (GetSocialMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
+/// Filters members by status.
+/// \param status Status.
+///
+///
+/// returns:
+///
+/// Query instance.
+- (GetSocialMembersQuery * _Nonnull)withStatus:(enum GetSocialMemberStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK10Membership")
+@interface Membership : NSObject
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 enum GetSocialMentionType : NSInteger;
 
@@ -6194,6 +7185,12 @@ SWIFT_CLASS_NAMED("PostActivityTarget")
 /// - returns:
 /// <code>PostActivityTarget</code> instance.
 + (GetSocialPostActivityTarget * _Nonnull)timeline SWIFT_WARN_UNUSED_RESULT;
+/// Target is a specific group.
+/// - parameters:
+/// - id:       Group id.
+/// - returns:
+/// <code>PostActivityTarget</code> instance.
++ (GetSocialPostActivityTarget * _Nonnull)groupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Target is a specific activity.
 /// - parameters:
 /// - activityId:       Activity id.
@@ -6225,6 +7222,15 @@ SWIFT_CLASS_NAMED("PrivateActivityBuilder")
 /// Private method.
 + (GetSocialActivity * _Nonnull)commentActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
 + (GetSocialActivity * _Nonnull)removeCommentFromActivity:(GetSocialActivity * _Nonnull)activity SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+/// Private class.
+SWIFT_CLASS_NAMED("PrivateGroupBuilder")
+@interface GetSocialPrivateGroupBuilder : NSObject
+/// Private method.
++ (void)updateGroup:(GetSocialGroup * _Nonnull)group isFollowed:(BOOL)isFollowed;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -6682,12 +7688,30 @@ SWIFT_CLASS_NAMED("RemoveActivitiesQuery")
 
 
 
+
+SWIFT_CLASS("_TtC12GetSocialSDK23RemoveGroupMembersQuery")
+@interface RemoveGroupMembersQuery : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
 /// Describe reporting reason.
 typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialReportingReason, "ReportingReason", open) {
 /// Spam.
   GetSocialReportingReasonSpam = 0,
 /// Inappropriate content.
   GetSocialReportingReasonInappropriateContent = 1,
+};
+
+typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialMemberRole, "Role", open) {
+/// Owner
+  GetSocialMemberRoleOwner = 0,
+/// Admin
+  GetSocialMemberRoleAdmin = 1,
+/// Member
+  GetSocialMemberRoleMember = 3,
 };
 
 
@@ -6897,6 +7921,50 @@ SWIFT_CLASS_NAMED("TopicsQuery")
 
 
 
+
+
+
+
+
+
+/// Describe updating group members query.
+SWIFT_CLASS_NAMED("UpdateGroupMembersQuery")
+@interface GetSocialUpdateGroupMembersQuery : NSObject
+/// Create a query to update group members.
+/// \param id Group Id.
+///
+/// \param userIds User ids.
+///
+- (nonnull instancetype)initWithId:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds OBJC_DESIGNATED_INITIALIZER;
+/// New status of users.
+/// \param status New member status.
+///
+///
+/// returns:
+///
+/// <ul>
+///   <li>
+///     <code>UpdateGroupMembersQuery</code> instance.
+///   </li>
+/// </ul>
+- (GetSocialUpdateGroupMembersQuery * _Nonnull)withMemberStatus:(enum GetSocialMemberStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// New role of users.
+/// \param role New member role.
+///
+///
+/// returns:
+///
+/// <ul>
+///   <li>
+///     <code>UpdateGroupMembersQuery</code> instance.
+///   </li>
+/// </ul>
+- (GetSocialUpdateGroupMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
 
 
 

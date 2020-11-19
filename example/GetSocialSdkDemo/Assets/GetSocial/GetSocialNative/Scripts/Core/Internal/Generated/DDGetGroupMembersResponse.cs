@@ -19,6 +19,9 @@ using Thrift.Transport;
 namespace GetSocialSdk.Core 
 {
 
+  /// <summary>
+  /// SGMemberStatus
+  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif

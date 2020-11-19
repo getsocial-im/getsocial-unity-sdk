@@ -62,6 +62,7 @@ namespace GetSocialSdk.Core
     USERS_EVENTS = 46,
     USERS_PROPERTIES = 47,
     CUSTOM_EVENTS_PROPERTIES = 48,
+    ACTIVITY_ENGAGED_USERS = 49,
   }
 }
 #endif

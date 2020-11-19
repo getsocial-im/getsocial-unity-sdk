@@ -667,10 +667,10 @@ namespace GetSocialSdk.Core
         {
             LogRequest("removeGroups", "groupIds = " + groupIds);
             WithHadesClient((client) => {
-                var request = new RemoveGroupsRequest();
+                var request = new DeleteGroupsRequest();
                 request.Ids = groupIds;
                 request.SessionId = SessionId;
-                var response = client.removeGroups(request);
+                var response = client.deleteGroups(request);
                 LogResponse("removeGroups", response);
             }, success, failure);
         }
@@ -681,7 +681,7 @@ namespace GetSocialSdk.Core
             WithHadesClient((client) => {
                 var request = pagingQuery.ToRPC();
                 request.SessionId = SessionId;
-                var response = client.getMembers(request);
+                var response = client.getGroupMembers(request);
                 LogResponse("getMembers", response);
                 return (response.FromRPCModel());
             }, success, failure);
@@ -730,7 +730,7 @@ namespace GetSocialSdk.Core
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
-                var response = client.updateMembers(request);
+                var response = client.updateGroupMembers(request);
                 LogResponse("updateMembers", response);
                 return (response.Members.ConvertAll(sgMember => sgMember.FromRPCModel()));
             }, success, failure);
@@ -742,7 +742,7 @@ namespace GetSocialSdk.Core
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
-                var response = client.removeMembers(request);
+                var response = client.removeGroupMembers(request);
                 LogResponse("removeMembers", response);
             }, success, failure);
         }
@@ -751,11 +751,11 @@ namespace GetSocialSdk.Core
         {
             LogRequest("areMembers", "groupId = " + groupId + " userIdList = " + userIdList);
             WithHadesClient((client) => {
-                var request = new AreMembersRequest();
+                var request = new AreGroupMembersRequest();
                 request.GroupId = groupId;
                 request.UserIds = userIdList.AsString();
                 request.SessionId = SessionId;
-                var response = client.areMembers(request);
+                var response = client.areGroupMembers(request);
                 LogResponse("areMembers", response);
                 return (response.FromRPCModel());
             }, success, failure);

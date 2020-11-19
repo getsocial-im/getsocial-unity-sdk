@@ -30,6 +30,8 @@ namespace GetSocialSdk.Core
     private Pagination _pagination;
     private SGEntity _target;
     private string _userId;
+    private string _author;
+    private List<string> _tags;
 
     public string SessionId
     {
@@ -112,6 +114,38 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// set when target.ID=="timeline"
+    /// </summary>
+    public string Author
+    {
+      get
+      {
+        return _author;
+      }
+      set
+      {
+        __isset.author = true;
+        this._author = value;
+      }
+    }
+
+    /// <summary>
+    /// filter by author, supports both "userId" and "provider:id" formats, use "app" to filter by app
+    /// </summary>
+    public List<string> Tags
+    {
+      get
+      {
+        return _tags;
+      }
+      set
+      {
+        __isset.tags = true;
+        this._tags = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -124,6 +158,8 @@ namespace GetSocialSdk.Core
       public bool pagination;
       public bool target;
       public bool userId;
+      public bool author;
+      public bool tags;
     }
 
     public DDGetActivitiesRequest() {
@@ -184,6 +220,30 @@ namespace GetSocialSdk.Core
             case 6:
               if (field.Type == TType.String) {
                 UserId = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.String) {
+                Author = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.List) {
+                {
+                  Tags = new List<string>();
+                  TList _list105 = iprot.ReadListBegin();
+                  for( int _i106 = 0; _i106 < _list105.Count; ++_i106)
+                  {
+                    string _elem107;
+                    _elem107 = iprot.ReadString();
+                    Tags.Add(_elem107);
+                  }
+                  iprot.ReadListEnd();
+                }
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -257,6 +317,29 @@ namespace GetSocialSdk.Core
           oprot.WriteString(UserId);
           oprot.WriteFieldEnd();
         }
+        if (Author != null && __isset.author) {
+          field.Name = "author";
+          field.Type = TType.String;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(Author);
+          oprot.WriteFieldEnd();
+        }
+        if (Tags != null && __isset.tags) {
+          field.Name = "tags";
+          field.Type = TType.List;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Tags.Count));
+            foreach (string _iter108 in Tags)
+            {
+              oprot.WriteString(_iter108);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -304,6 +387,18 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("UserId: ");
         __sb.Append(UserId);
+      }
+      if (Author != null && __isset.author) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Author: ");
+        __sb.Append(Author);
+      }
+      if (Tags != null && __isset.tags) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Tags: ");
+        __sb.Append(Tags.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

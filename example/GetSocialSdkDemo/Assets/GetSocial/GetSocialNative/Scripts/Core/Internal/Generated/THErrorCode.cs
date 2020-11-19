@@ -75,6 +75,11 @@ namespace GetSocialSdk.Core
     AFInvalidParam = 6017,
     AFActivityRejected = 6018,
     AFFeedNotFound = 6019,
+    AFActivityRateLimited = 6020,
+    AFCommentRateLimited = 6021,
+    AFInvalidActivityID = 6022,
+    AFInvalidQueryParameters = 6023,
+    AFInvalidEntityID = 6024,
     /// <summary>
     /// Apollo (Social Graph)
     /// </summary>

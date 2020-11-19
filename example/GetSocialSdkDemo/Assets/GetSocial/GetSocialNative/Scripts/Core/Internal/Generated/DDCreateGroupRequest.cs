@@ -33,7 +33,7 @@ namespace GetSocialSdk.Core
     private Dictionary<string, string> _title;
     private Dictionary<string, string> _groupDescription;
     private string _avatarUrl;
-    private Dictionary<SGAction, SGRole> _permissions;
+    private Dictionary<int, int> _permissions;
     private Dictionary<string, string> _properties;
     private bool _isDiscoverable;
     private bool _isPrivate;
@@ -116,7 +116,10 @@ namespace GetSocialSdk.Core
       }
     }
 
-    public Dictionary<SGAction, SGRole> Permissions
+    /// <summary>
+    /// map<SGAction, SGRole> permissions, check SGAction and SGRole for possible values
+    /// </summary>
+    public Dictionary<int, int> Permissions
     {
       get
       {
@@ -129,6 +132,9 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// feed.post = admin, feed.post.interact = everyone
+    /// </summary>
     public Dictionary<string, string> Properties
     {
       get
@@ -273,14 +279,14 @@ namespace GetSocialSdk.Core
             case 7:
               if (field.Type == TType.Map) {
                 {
-                  Permissions = new Dictionary<SGAction, SGRole>();
+                  Permissions = new Dictionary<int, int>();
                   TMap _map91 = iprot.ReadMapBegin();
                   for( int _i92 = 0; _i92 < _map91.Count; ++_i92)
                   {
-                    SGAction _key93;
-                    SGRole _val94;
-                    _key93 = (SGAction)iprot.ReadI32();
-                    _val94 = (SGRole)iprot.ReadI32();
+                    int _key93;
+                    int _val94;
+                    _key93 = iprot.ReadI32();
+                    _val94 = iprot.ReadI32();
                     Permissions[_key93] = _val94;
                   }
                   iprot.ReadMapEnd();
@@ -414,10 +420,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.I32, TType.I32, Permissions.Count));
-            foreach (SGAction _iter101 in Permissions.Keys)
+            foreach (int _iter101 in Permissions.Keys)
             {
-              oprot.WriteI32((int)_iter101);
-              oprot.WriteI32((int)Permissions[_iter101]);
+              oprot.WriteI32(_iter101);
+              oprot.WriteI32(Permissions[_iter101]);
             }
             oprot.WriteMapEnd();
           }

@@ -630,9 +630,9 @@ namespace GetSocialSdk.Core
         {
             var request = new GetGroupMembersRequest();
             request.GroupId = query.GroupId;
-            request.Info = new SGMembershipInfo();
-            request.Info.Status = (int)query.Status;
-            request.Info.Role = (int)query.Role;
+            //request.Info = new SGMembershipInfo();
+            //request.Info.Status = (int)query.Status;
+            //request.Info.Role = (int)query.Role;
             return request;
         }
 
@@ -652,19 +652,19 @@ namespace GetSocialSdk.Core
             return request;
         }
 
-        public static UpdateMembersRequest ToRPC(this UpdateGroupMembersQuery query)
+        public static UpdateGroupMembersRequest ToRPC(this UpdateGroupMembersQuery query)
         {
-            var request = new UpdateMembersRequest();
+            var request = new UpdateGroupMembersRequest();
             request.GroupId = query.GroupId;
-            request.Info = new SGMembershipInfo();
-            request.Info.Status = (int)query.Status;
+            //request.Info = new SGMembershipInfo();
+            //request.Info.Status = (int)query.Status;
             request.UserIds = query.UserIdList.AsString();
             return request;
         }
 
-        public static RemoveMembersRequest ToRPC(this RemoveGroupMembersQuery query)
+        public static RemoveGroupMembersRequest ToRPC(this RemoveGroupMembersQuery query)
         {
-            var request = new RemoveMembersRequest();
+            var request = new RemoveGroupMembersRequest();
             request.GroupId = query.GroupId;
             request.UserIds = query.UserIdList.AsString();
             return request;
@@ -928,7 +928,7 @@ namespace GetSocialSdk.Core
             }
         }
 
-        public static Dictionary<string, MembershipRole> FromRPCModel(this AreMembersResponse response)
+        public static Dictionary<string, MembershipRole> FromRPCModel(this AreGroupMembersResponse response)
         {
             var result = new Dictionary<string, MembershipRole>();
             foreach (var entry in response.Result)

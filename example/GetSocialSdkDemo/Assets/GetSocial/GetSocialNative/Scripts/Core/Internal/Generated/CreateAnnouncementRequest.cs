@@ -155,15 +155,15 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Content = new Dictionary<string, AFContent>();
-                  TMap _map178 = iprot.ReadMapBegin();
-                  for( int _i179 = 0; _i179 < _map178.Count; ++_i179)
+                  TMap _map182 = iprot.ReadMapBegin();
+                  for( int _i183 = 0; _i183 < _map182.Count; ++_i183)
                   {
-                    string _key180;
-                    AFContent _val181;
-                    _key180 = iprot.ReadString();
-                    _val181 = new AFContent();
-                    _val181.Read(iprot);
-                    Content[_key180] = _val181;
+                    string _key184;
+                    AFContent _val185;
+                    _key184 = iprot.ReadString();
+                    _val185 = new AFContent();
+                    _val185.Read(iprot);
+                    Content[_key184] = _val185;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -189,14 +189,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Properties = new Dictionary<string, string>();
-                  TMap _map182 = iprot.ReadMapBegin();
-                  for( int _i183 = 0; _i183 < _map182.Count; ++_i183)
+                  TMap _map186 = iprot.ReadMapBegin();
+                  for( int _i187 = 0; _i187 < _map186.Count; ++_i187)
                   {
-                    string _key184;
-                    string _val185;
-                    _key184 = iprot.ReadString();
-                    _val185 = iprot.ReadString();
-                    Properties[_key184] = _val185;
+                    string _key188;
+                    string _val189;
+                    _key188 = iprot.ReadString();
+                    _val189 = iprot.ReadString();
+                    Properties[_key188] = _val189;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -248,10 +248,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
-            foreach (string _iter186 in Content.Keys)
+            foreach (string _iter190 in Content.Keys)
             {
-              oprot.WriteString(_iter186);
-              Content[_iter186].Write(oprot);
+              oprot.WriteString(_iter190);
+              Content[_iter190].Write(oprot);
             }
             oprot.WriteMapEnd();
           }
@@ -280,10 +280,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter187 in Properties.Keys)
+            foreach (string _iter191 in Properties.Keys)
             {
-              oprot.WriteString(_iter187);
-              oprot.WriteString(Properties[_iter187]);
+              oprot.WriteString(_iter191);
+              oprot.WriteString(Properties[_iter191]);
             }
             oprot.WriteMapEnd();
           }

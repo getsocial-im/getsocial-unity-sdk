@@ -103,3 +103,10 @@ typedef void (^GetSocialUINotificationClickHandler)(GetSocialNotification* notif
  * @abstract App mention shortcut.
  */
 extern NSString *GetSocialUI_Shortcut_App;
+
+/*!
+* @typedef NSString* (^GetSocialUICustomErrorMessageProvider)(GetSocialErrorCode* errorCode, NSString* errorMessage)
+* @abstract The typedef defines the block that is called before an error message will be shown on the UI. Return custom error message
+* or return the original error message received in errorMessage.
+*/
+typedef NSString* (^GetSocialUICustomErrorMessageProvider)(NSInteger errorCode, NSString* errorMessage);

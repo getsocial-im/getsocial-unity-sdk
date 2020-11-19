@@ -242,12 +242,7 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      RemoveGroupsResponse removeGroups(RemoveGroupsRequest request);
-      /// <summary>
-      /// #sdk7
-      /// </summary>
-      /// <param name="request"></param>
-      GetGroupMembersResponse getMembers(GetGroupMembersRequest request);
+      DeleteGroupsResponse deleteGroups(DeleteGroupsRequest request);
       /// <summary>
       /// #sdk7
       /// </summary>
@@ -262,17 +257,22 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      UpdateMembersResponse updateMembers(UpdateMembersRequest request);
+      UpdateGroupMembersResponse updateGroupMembers(UpdateGroupMembersRequest request);
       /// <summary>
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      RemoveMembersResponse removeMembers(RemoveMembersRequest request);
+      RemoveGroupMembersResponse removeGroupMembers(RemoveGroupMembersRequest request);
       /// <summary>
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      AreMembersResponse areMembers(AreMembersRequest request);
+      AreGroupMembersResponse areGroupMembers(AreGroupMembersRequest request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      GetGroupMembersResponse getGroupMembers(GetGroupMembersRequest request);
       /// <summary>
       /// groups DD
       /// </summary>
@@ -282,9 +282,9 @@ namespace GetSocialSdk.Core
       DDDeleteGroupsResponse ddDeleteGroups(DDDeleteGroupsRequest request);
       DDGetGroupResponse ddGetGroup(DDGetGroupRequest request);
       DDGetGroupsResponse ddGetGroups(DDGetGroupsRequest request);
-      DDGetGroupMembersResponse ddGetMembers(DDGetGroupMembersRequest request);
-      DDUpdateMembersResponse ddUpdateMembers(DDUpdateMembersRequest request);
-      DDUpdateMembersResponse ddRemoveMembers(DDUpdateMembersRequest request);
+      DDGetGroupMembersResponse ddGetGroupMembers(DDGetGroupMembersRequest request);
+      DDUpdateGroupMembersResponse ddUpdateGroupMembers(DDUpdateGroupMembersRequest request);
+      DDRemoveGroupMembersResponse ddRemoveGroupMembers(DDRemoveGroupMembersRequest request);
       /// <summary>
       /// #sdk6 #sdk7
       /// </summary>
@@ -2746,23 +2746,23 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      public RemoveGroupsResponse removeGroups(RemoveGroupsRequest request)
+      public DeleteGroupsResponse deleteGroups(DeleteGroupsRequest request)
       {
-        send_removeGroups(request);
-        return recv_removeGroups();
+        send_deleteGroups(request);
+        return recv_deleteGroups();
 
       }
-      public void send_removeGroups(RemoveGroupsRequest request)
+      public void send_deleteGroups(DeleteGroupsRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("removeGroups", TMessageType.Call, seqid_));
-        removeGroups_args args = new removeGroups_args();
+        oprot_.WriteMessageBegin(new TMessage("deleteGroups", TMessageType.Call, seqid_));
+        deleteGroups_args args = new deleteGroups_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public RemoveGroupsResponse recv_removeGroups()
+      public DeleteGroupsResponse recv_deleteGroups()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -2770,7 +2770,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        removeGroups_result result = new removeGroups_result();
+        deleteGroups_result result = new deleteGroups_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -2779,48 +2779,7 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "removeGroups failed: unknown result");
-      }
-
-      
-      /// <summary>
-      /// #sdk7
-      /// </summary>
-      /// <param name="request"></param>
-      public GetGroupMembersResponse getMembers(GetGroupMembersRequest request)
-      {
-        send_getMembers(request);
-        return recv_getMembers();
-
-      }
-      public void send_getMembers(GetGroupMembersRequest request)
-      {
-        oprot_.WriteMessageBegin(new TMessage("getMembers", TMessageType.Call, seqid_));
-        getMembers_args args = new getMembers_args();
-        args.Request = request;
-        args.Write(oprot_);
-        oprot_.WriteMessageEnd();
-        oprot_.Transport.Flush();
-      }
-
-      public GetGroupMembersResponse recv_getMembers()
-      {
-        TMessage msg = iprot_.ReadMessageBegin();
-        if (msg.Type == TMessageType.Exception) {
-          TApplicationException x = TApplicationException.Read(iprot_);
-          iprot_.ReadMessageEnd();
-          throw x;
-        }
-        getMembers_result result = new getMembers_result();
-        result.Read(iprot_);
-        iprot_.ReadMessageEnd();
-        if (result.__isset.success) {
-          return result.Success;
-        }
-        if (result.__isset.errors) {
-          throw result.Errors;
-        }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "deleteGroups failed: unknown result");
       }
 
       
@@ -2910,23 +2869,23 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      public UpdateMembersResponse updateMembers(UpdateMembersRequest request)
+      public UpdateGroupMembersResponse updateGroupMembers(UpdateGroupMembersRequest request)
       {
-        send_updateMembers(request);
-        return recv_updateMembers();
+        send_updateGroupMembers(request);
+        return recv_updateGroupMembers();
 
       }
-      public void send_updateMembers(UpdateMembersRequest request)
+      public void send_updateGroupMembers(UpdateGroupMembersRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("updateMembers", TMessageType.Call, seqid_));
-        updateMembers_args args = new updateMembers_args();
+        oprot_.WriteMessageBegin(new TMessage("updateGroupMembers", TMessageType.Call, seqid_));
+        updateGroupMembers_args args = new updateGroupMembers_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public UpdateMembersResponse recv_updateMembers()
+      public UpdateGroupMembersResponse recv_updateGroupMembers()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -2934,7 +2893,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        updateMembers_result result = new updateMembers_result();
+        updateGroupMembers_result result = new updateGroupMembers_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -2943,7 +2902,7 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "updateMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "updateGroupMembers failed: unknown result");
       }
 
       
@@ -2951,23 +2910,23 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      public RemoveMembersResponse removeMembers(RemoveMembersRequest request)
+      public RemoveGroupMembersResponse removeGroupMembers(RemoveGroupMembersRequest request)
       {
-        send_removeMembers(request);
-        return recv_removeMembers();
+        send_removeGroupMembers(request);
+        return recv_removeGroupMembers();
 
       }
-      public void send_removeMembers(RemoveMembersRequest request)
+      public void send_removeGroupMembers(RemoveGroupMembersRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("removeMembers", TMessageType.Call, seqid_));
-        removeMembers_args args = new removeMembers_args();
+        oprot_.WriteMessageBegin(new TMessage("removeGroupMembers", TMessageType.Call, seqid_));
+        removeGroupMembers_args args = new removeGroupMembers_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public RemoveMembersResponse recv_removeMembers()
+      public RemoveGroupMembersResponse recv_removeGroupMembers()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -2975,7 +2934,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        removeMembers_result result = new removeMembers_result();
+        removeGroupMembers_result result = new removeGroupMembers_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -2984,7 +2943,7 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "removeMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "removeGroupMembers failed: unknown result");
       }
 
       
@@ -2992,23 +2951,23 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
-      public AreMembersResponse areMembers(AreMembersRequest request)
+      public AreGroupMembersResponse areGroupMembers(AreGroupMembersRequest request)
       {
-        send_areMembers(request);
-        return recv_areMembers();
+        send_areGroupMembers(request);
+        return recv_areGroupMembers();
 
       }
-      public void send_areMembers(AreMembersRequest request)
+      public void send_areGroupMembers(AreGroupMembersRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("areMembers", TMessageType.Call, seqid_));
-        areMembers_args args = new areMembers_args();
+        oprot_.WriteMessageBegin(new TMessage("areGroupMembers", TMessageType.Call, seqid_));
+        areGroupMembers_args args = new areGroupMembers_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public AreMembersResponse recv_areMembers()
+      public AreGroupMembersResponse recv_areGroupMembers()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -3016,7 +2975,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        areMembers_result result = new areMembers_result();
+        areGroupMembers_result result = new areGroupMembers_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -3025,7 +2984,48 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "areMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "areGroupMembers failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public GetGroupMembersResponse getGroupMembers(GetGroupMembersRequest request)
+      {
+        send_getGroupMembers(request);
+        return recv_getGroupMembers();
+
+      }
+      public void send_getGroupMembers(GetGroupMembersRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("getGroupMembers", TMessageType.Call, seqid_));
+        getGroupMembers_args args = new getGroupMembers_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public GetGroupMembersResponse recv_getGroupMembers()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        getGroupMembers_result result = new getGroupMembers_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getGroupMembers failed: unknown result");
       }
 
       
@@ -3218,23 +3218,23 @@ namespace GetSocialSdk.Core
       }
 
       
-      public DDGetGroupMembersResponse ddGetMembers(DDGetGroupMembersRequest request)
+      public DDGetGroupMembersResponse ddGetGroupMembers(DDGetGroupMembersRequest request)
       {
-        send_ddGetMembers(request);
-        return recv_ddGetMembers();
+        send_ddGetGroupMembers(request);
+        return recv_ddGetGroupMembers();
 
       }
-      public void send_ddGetMembers(DDGetGroupMembersRequest request)
+      public void send_ddGetGroupMembers(DDGetGroupMembersRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("ddGetMembers", TMessageType.Call, seqid_));
-        ddGetMembers_args args = new ddGetMembers_args();
+        oprot_.WriteMessageBegin(new TMessage("ddGetGroupMembers", TMessageType.Call, seqid_));
+        ddGetGroupMembers_args args = new ddGetGroupMembers_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public DDGetGroupMembersResponse recv_ddGetMembers()
+      public DDGetGroupMembersResponse recv_ddGetGroupMembers()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -3242,7 +3242,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        ddGetMembers_result result = new ddGetMembers_result();
+        ddGetGroupMembers_result result = new ddGetGroupMembers_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -3251,27 +3251,27 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddGetMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddGetGroupMembers failed: unknown result");
       }
 
       
-      public DDUpdateMembersResponse ddUpdateMembers(DDUpdateMembersRequest request)
+      public DDUpdateGroupMembersResponse ddUpdateGroupMembers(DDUpdateGroupMembersRequest request)
       {
-        send_ddUpdateMembers(request);
-        return recv_ddUpdateMembers();
+        send_ddUpdateGroupMembers(request);
+        return recv_ddUpdateGroupMembers();
 
       }
-      public void send_ddUpdateMembers(DDUpdateMembersRequest request)
+      public void send_ddUpdateGroupMembers(DDUpdateGroupMembersRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("ddUpdateMembers", TMessageType.Call, seqid_));
-        ddUpdateMembers_args args = new ddUpdateMembers_args();
+        oprot_.WriteMessageBegin(new TMessage("ddUpdateGroupMembers", TMessageType.Call, seqid_));
+        ddUpdateGroupMembers_args args = new ddUpdateGroupMembers_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public DDUpdateMembersResponse recv_ddUpdateMembers()
+      public DDUpdateGroupMembersResponse recv_ddUpdateGroupMembers()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -3279,7 +3279,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        ddUpdateMembers_result result = new ddUpdateMembers_result();
+        ddUpdateGroupMembers_result result = new ddUpdateGroupMembers_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -3288,27 +3288,27 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddUpdateMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddUpdateGroupMembers failed: unknown result");
       }
 
       
-      public DDUpdateMembersResponse ddRemoveMembers(DDUpdateMembersRequest request)
+      public DDRemoveGroupMembersResponse ddRemoveGroupMembers(DDRemoveGroupMembersRequest request)
       {
-        send_ddRemoveMembers(request);
-        return recv_ddRemoveMembers();
+        send_ddRemoveGroupMembers(request);
+        return recv_ddRemoveGroupMembers();
 
       }
-      public void send_ddRemoveMembers(DDUpdateMembersRequest request)
+      public void send_ddRemoveGroupMembers(DDRemoveGroupMembersRequest request)
       {
-        oprot_.WriteMessageBegin(new TMessage("ddRemoveMembers", TMessageType.Call, seqid_));
-        ddRemoveMembers_args args = new ddRemoveMembers_args();
+        oprot_.WriteMessageBegin(new TMessage("ddRemoveGroupMembers", TMessageType.Call, seqid_));
+        ddRemoveGroupMembers_args args = new ddRemoveGroupMembers_args();
         args.Request = request;
         args.Write(oprot_);
         oprot_.WriteMessageEnd();
         oprot_.Transport.Flush();
       }
 
-      public DDUpdateMembersResponse recv_ddRemoveMembers()
+      public DDRemoveGroupMembersResponse recv_ddRemoveGroupMembers()
       {
         TMessage msg = iprot_.ReadMessageBegin();
         if (msg.Type == TMessageType.Exception) {
@@ -3316,7 +3316,7 @@ namespace GetSocialSdk.Core
           iprot_.ReadMessageEnd();
           throw x;
         }
-        ddRemoveMembers_result result = new ddRemoveMembers_result();
+        ddRemoveGroupMembers_result result = new ddRemoveGroupMembers_result();
         result.Read(iprot_);
         iprot_.ReadMessageEnd();
         if (result.__isset.success) {
@@ -3325,7 +3325,7 @@ namespace GetSocialSdk.Core
         if (result.__isset.errors) {
           throw result.Errors;
         }
-        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddRemoveMembers failed: unknown result");
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddRemoveGroupMembers failed: unknown result");
       }
 
       
@@ -10754,21 +10754,21 @@ namespace GetSocialSdk.Core
         processMap_["ddGetEntityFollowers"] = ddGetEntityFollowers_Process;
         processMap_["createGroup"] = createGroup_Process;
         processMap_["updateGroup"] = updateGroup_Process;
-        processMap_["removeGroups"] = removeGroups_Process;
-        processMap_["getMembers"] = getMembers_Process;
+        processMap_["deleteGroups"] = deleteGroups_Process;
         processMap_["getGroups"] = getGroups_Process;
         processMap_["getGroup"] = getGroup_Process;
-        processMap_["updateMembers"] = updateMembers_Process;
-        processMap_["removeMembers"] = removeMembers_Process;
-        processMap_["areMembers"] = areMembers_Process;
+        processMap_["updateGroupMembers"] = updateGroupMembers_Process;
+        processMap_["removeGroupMembers"] = removeGroupMembers_Process;
+        processMap_["areGroupMembers"] = areGroupMembers_Process;
+        processMap_["getGroupMembers"] = getGroupMembers_Process;
         processMap_["ddCreateGroup"] = ddCreateGroup_Process;
         processMap_["ddUpdateGroup"] = ddUpdateGroup_Process;
         processMap_["ddDeleteGroups"] = ddDeleteGroups_Process;
         processMap_["ddGetGroup"] = ddGetGroup_Process;
         processMap_["ddGetGroups"] = ddGetGroups_Process;
-        processMap_["ddGetMembers"] = ddGetMembers_Process;
-        processMap_["ddUpdateMembers"] = ddUpdateMembers_Process;
-        processMap_["ddRemoveMembers"] = ddRemoveMembers_Process;
+        processMap_["ddGetGroupMembers"] = ddGetGroupMembers_Process;
+        processMap_["ddUpdateGroupMembers"] = ddUpdateGroupMembers_Process;
+        processMap_["ddRemoveGroupMembers"] = ddRemoveGroupMembers_Process;
         processMap_["createInviteUrl"] = createInviteUrl_Process;
         processMap_["createInvite"] = createInvite_Process;
         processMap_["getInviteProviders"] = getInviteProviders_Process;
@@ -12481,23 +12481,23 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
-      public void removeGroups_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void deleteGroups_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        removeGroups_args args = new removeGroups_args();
+        deleteGroups_args args = new deleteGroups_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        removeGroups_result result = new removeGroups_result();
+        deleteGroups_result result = new deleteGroups_result();
         try
         {
           try
           {
-            result.Success = iface_.removeGroups(args.Request);
+            result.Success = iface_.deleteGroups(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("removeGroups", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("deleteGroups", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12509,42 +12509,7 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("removeGroups", TMessageType.Exception, seqid));
-          x.Write(oprot);
-        }
-        oprot.WriteMessageEnd();
-        oprot.Transport.Flush();
-      }
-
-      public void getMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
-      {
-        getMembers_args args = new getMembers_args();
-        args.Read(iprot);
-        iprot.ReadMessageEnd();
-        getMembers_result result = new getMembers_result();
-        try
-        {
-          try
-          {
-            result.Success = iface_.getMembers(args.Request);
-          }
-          catch (THErrors errors)
-          {
-            result.Errors = errors;
-          }
-          oprot.WriteMessageBegin(new TMessage("getMembers", TMessageType.Reply, seqid)); 
-          result.Write(oprot);
-        }
-        catch (TTransportException)
-        {
-          throw;
-        }
-        catch (Exception ex)
-        {
-          Console.Error.WriteLine("Error occurred in processor:");
-          Console.Error.WriteLine(ex.ToString());
-          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("getMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("deleteGroups", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -12621,23 +12586,23 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
-      public void updateMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void updateGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        updateMembers_args args = new updateMembers_args();
+        updateGroupMembers_args args = new updateGroupMembers_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        updateMembers_result result = new updateMembers_result();
+        updateGroupMembers_result result = new updateGroupMembers_result();
         try
         {
           try
           {
-            result.Success = iface_.updateMembers(args.Request);
+            result.Success = iface_.updateGroupMembers(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("updateMembers", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("updateGroupMembers", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12649,30 +12614,30 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("updateMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("updateGroupMembers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
       }
 
-      public void removeMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void removeGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        removeMembers_args args = new removeMembers_args();
+        removeGroupMembers_args args = new removeGroupMembers_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        removeMembers_result result = new removeMembers_result();
+        removeGroupMembers_result result = new removeGroupMembers_result();
         try
         {
           try
           {
-            result.Success = iface_.removeMembers(args.Request);
+            result.Success = iface_.removeGroupMembers(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("removeMembers", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("removeGroupMembers", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12684,30 +12649,30 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("removeMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("removeGroupMembers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
       }
 
-      public void areMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void areGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        areMembers_args args = new areMembers_args();
+        areGroupMembers_args args = new areGroupMembers_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        areMembers_result result = new areMembers_result();
+        areGroupMembers_result result = new areGroupMembers_result();
         try
         {
           try
           {
-            result.Success = iface_.areMembers(args.Request);
+            result.Success = iface_.areGroupMembers(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("areMembers", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("areGroupMembers", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12719,7 +12684,42 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("areMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("areGroupMembers", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void getGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        getGroupMembers_args args = new getGroupMembers_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        getGroupMembers_result result = new getGroupMembers_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.getGroupMembers(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("getGroupMembers", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("getGroupMembers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -12901,23 +12901,23 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
-      public void ddGetMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void ddGetGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        ddGetMembers_args args = new ddGetMembers_args();
+        ddGetGroupMembers_args args = new ddGetGroupMembers_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        ddGetMembers_result result = new ddGetMembers_result();
+        ddGetGroupMembers_result result = new ddGetGroupMembers_result();
         try
         {
           try
           {
-            result.Success = iface_.ddGetMembers(args.Request);
+            result.Success = iface_.ddGetGroupMembers(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("ddGetMembers", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("ddGetGroupMembers", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12929,30 +12929,30 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("ddGetMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("ddGetGroupMembers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
       }
 
-      public void ddUpdateMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void ddUpdateGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        ddUpdateMembers_args args = new ddUpdateMembers_args();
+        ddUpdateGroupMembers_args args = new ddUpdateGroupMembers_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        ddUpdateMembers_result result = new ddUpdateMembers_result();
+        ddUpdateGroupMembers_result result = new ddUpdateGroupMembers_result();
         try
         {
           try
           {
-            result.Success = iface_.ddUpdateMembers(args.Request);
+            result.Success = iface_.ddUpdateGroupMembers(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("ddUpdateMembers", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("ddUpdateGroupMembers", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12964,30 +12964,30 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("ddUpdateMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("ddUpdateGroupMembers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
         oprot.Transport.Flush();
       }
 
-      public void ddRemoveMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      public void ddRemoveGroupMembers_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
-        ddRemoveMembers_args args = new ddRemoveMembers_args();
+        ddRemoveGroupMembers_args args = new ddRemoveGroupMembers_args();
         args.Read(iprot);
         iprot.ReadMessageEnd();
-        ddRemoveMembers_result result = new ddRemoveMembers_result();
+        ddRemoveGroupMembers_result result = new ddRemoveGroupMembers_result();
         try
         {
           try
           {
-            result.Success = iface_.ddRemoveMembers(args.Request);
+            result.Success = iface_.ddRemoveGroupMembers(args.Request);
           }
           catch (THErrors errors)
           {
             result.Errors = errors;
           }
-          oprot.WriteMessageBegin(new TMessage("ddRemoveMembers", TMessageType.Reply, seqid)); 
+          oprot.WriteMessageBegin(new TMessage("ddRemoveGroupMembers", TMessageType.Reply, seqid)); 
           result.Write(oprot);
         }
         catch (TTransportException)
@@ -12999,7 +12999,7 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine("Error occurred in processor:");
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
-          oprot.WriteMessageBegin(new TMessage("ddRemoveMembers", TMessageType.Exception, seqid));
+          oprot.WriteMessageBegin(new TMessage("ddRemoveGroupMembers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -31433,11 +31433,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class removeGroups_args : TBase
+    public partial class deleteGroups_args : TBase
     {
-      private RemoveGroupsRequest _request;
+      private DeleteGroupsRequest _request;
 
-      public RemoveGroupsRequest Request
+      public DeleteGroupsRequest Request
       {
         get
         {
@@ -31459,7 +31459,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public removeGroups_args() {
+      public deleteGroups_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -31479,7 +31479,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new RemoveGroupsRequest();
+                  Request = new DeleteGroupsRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -31503,7 +31503,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("removeGroups_args");
+          TStruct struc = new TStruct("deleteGroups_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -31524,7 +31524,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("removeGroups_args(");
+        StringBuilder __sb = new StringBuilder("deleteGroups_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -31542,12 +31542,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class removeGroups_result : TBase
+    public partial class deleteGroups_result : TBase
     {
-      private RemoveGroupsResponse _success;
+      private DeleteGroupsResponse _success;
       private THErrors _errors;
 
-      public RemoveGroupsResponse Success
+      public DeleteGroupsResponse Success
       {
         get
         {
@@ -31583,7 +31583,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public removeGroups_result() {
+      public deleteGroups_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -31603,7 +31603,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new RemoveGroupsResponse();
+                  Success = new DeleteGroupsResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -31635,7 +31635,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("removeGroups_result");
+          TStruct struc = new TStruct("deleteGroups_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -31668,266 +31668,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("removeGroups_result(");
-        bool __first = true;
-        if (Success != null && __isset.success) {
-          if(!__first) { __sb.Append(", "); }
-          __first = false;
-          __sb.Append("Success: ");
-          __sb.Append(Success== null ? "<null>" : Success.ToString());
-        }
-        if (Errors != null && __isset.errors) {
-          if(!__first) { __sb.Append(", "); }
-          __first = false;
-          __sb.Append("Errors: ");
-          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
-        }
-        __sb.Append(")");
-        return __sb.ToString();
-      }
-
-    }
-
-
-    #if !SILVERLIGHT
-    [Serializable]
-    #endif
-    public partial class getMembers_args : TBase
-    {
-      private GetGroupMembersRequest _request;
-
-      public GetGroupMembersRequest Request
-      {
-        get
-        {
-          return _request;
-        }
-        set
-        {
-          __isset.request = true;
-          this._request = value;
-        }
-      }
-
-
-      public Isset __isset;
-      #if !SILVERLIGHT
-      [Serializable]
-      #endif
-      public struct Isset {
-        public bool request;
-      }
-
-      public getMembers_args() {
-      }
-
-      public void Read (TProtocol iprot)
-      {
-        iprot.IncrementRecursionDepth();
-        try
-        {
-          TField field;
-          iprot.ReadStructBegin();
-          while (true)
-          {
-            field = iprot.ReadFieldBegin();
-            if (field.Type == TType.Stop) { 
-              break;
-            }
-            switch (field.ID)
-            {
-              case 1:
-                if (field.Type == TType.Struct) {
-                  Request = new GetGroupMembersRequest();
-                  Request.Read(iprot);
-                } else { 
-                  TProtocolUtil.Skip(iprot, field.Type);
-                }
-                break;
-              default: 
-                TProtocolUtil.Skip(iprot, field.Type);
-                break;
-            }
-            iprot.ReadFieldEnd();
-          }
-          iprot.ReadStructEnd();
-        }
-        finally
-        {
-          iprot.DecrementRecursionDepth();
-        }
-      }
-
-      public void Write(TProtocol oprot) {
-        oprot.IncrementRecursionDepth();
-        try
-        {
-          TStruct struc = new TStruct("getMembers_args");
-          oprot.WriteStructBegin(struc);
-          TField field = new TField();
-          if (Request != null && __isset.request) {
-            field.Name = "request";
-            field.Type = TType.Struct;
-            field.ID = 1;
-            oprot.WriteFieldBegin(field);
-            Request.Write(oprot);
-            oprot.WriteFieldEnd();
-          }
-          oprot.WriteFieldStop();
-          oprot.WriteStructEnd();
-        }
-        finally
-        {
-          oprot.DecrementRecursionDepth();
-        }
-      }
-
-      public override string ToString() {
-        StringBuilder __sb = new StringBuilder("getMembers_args(");
-        bool __first = true;
-        if (Request != null && __isset.request) {
-          if(!__first) { __sb.Append(", "); }
-          __first = false;
-          __sb.Append("Request: ");
-          __sb.Append(Request== null ? "<null>" : Request.ToString());
-        }
-        __sb.Append(")");
-        return __sb.ToString();
-      }
-
-    }
-
-
-    #if !SILVERLIGHT
-    [Serializable]
-    #endif
-    public partial class getMembers_result : TBase
-    {
-      private GetGroupMembersResponse _success;
-      private THErrors _errors;
-
-      public GetGroupMembersResponse Success
-      {
-        get
-        {
-          return _success;
-        }
-        set
-        {
-          __isset.success = true;
-          this._success = value;
-        }
-      }
-
-      public THErrors Errors
-      {
-        get
-        {
-          return _errors;
-        }
-        set
-        {
-          __isset.errors = true;
-          this._errors = value;
-        }
-      }
-
-
-      public Isset __isset;
-      #if !SILVERLIGHT
-      [Serializable]
-      #endif
-      public struct Isset {
-        public bool success;
-        public bool errors;
-      }
-
-      public getMembers_result() {
-      }
-
-      public void Read (TProtocol iprot)
-      {
-        iprot.IncrementRecursionDepth();
-        try
-        {
-          TField field;
-          iprot.ReadStructBegin();
-          while (true)
-          {
-            field = iprot.ReadFieldBegin();
-            if (field.Type == TType.Stop) { 
-              break;
-            }
-            switch (field.ID)
-            {
-              case 0:
-                if (field.Type == TType.Struct) {
-                  Success = new GetGroupMembersResponse();
-                  Success.Read(iprot);
-                } else { 
-                  TProtocolUtil.Skip(iprot, field.Type);
-                }
-                break;
-              case 1:
-                if (field.Type == TType.Struct) {
-                  Errors = new THErrors();
-                  Errors.Read(iprot);
-                } else { 
-                  TProtocolUtil.Skip(iprot, field.Type);
-                }
-                break;
-              default: 
-                TProtocolUtil.Skip(iprot, field.Type);
-                break;
-            }
-            iprot.ReadFieldEnd();
-          }
-          iprot.ReadStructEnd();
-        }
-        finally
-        {
-          iprot.DecrementRecursionDepth();
-        }
-      }
-
-      public void Write(TProtocol oprot) {
-        oprot.IncrementRecursionDepth();
-        try
-        {
-          TStruct struc = new TStruct("getMembers_result");
-          oprot.WriteStructBegin(struc);
-          TField field = new TField();
-
-          if (this.__isset.success) {
-            if (Success != null) {
-              field.Name = "Success";
-              field.Type = TType.Struct;
-              field.ID = 0;
-              oprot.WriteFieldBegin(field);
-              Success.Write(oprot);
-              oprot.WriteFieldEnd();
-            }
-          } else if (this.__isset.errors) {
-            if (Errors != null) {
-              field.Name = "Errors";
-              field.Type = TType.Struct;
-              field.ID = 1;
-              oprot.WriteFieldBegin(field);
-              Errors.Write(oprot);
-              oprot.WriteFieldEnd();
-            }
-          }
-          oprot.WriteFieldStop();
-          oprot.WriteStructEnd();
-        }
-        finally
-        {
-          oprot.DecrementRecursionDepth();
-        }
-      }
-
-      public override string ToString() {
-        StringBuilder __sb = new StringBuilder("getMembers_result(");
+        StringBuilder __sb = new StringBuilder("deleteGroups_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -32469,11 +32210,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class updateMembers_args : TBase
+    public partial class updateGroupMembers_args : TBase
     {
-      private UpdateMembersRequest _request;
+      private UpdateGroupMembersRequest _request;
 
-      public UpdateMembersRequest Request
+      public UpdateGroupMembersRequest Request
       {
         get
         {
@@ -32495,7 +32236,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public updateMembers_args() {
+      public updateGroupMembers_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -32515,7 +32256,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new UpdateMembersRequest();
+                  Request = new UpdateGroupMembersRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -32539,7 +32280,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("updateMembers_args");
+          TStruct struc = new TStruct("updateGroupMembers_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -32560,7 +32301,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("updateMembers_args(");
+        StringBuilder __sb = new StringBuilder("updateGroupMembers_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -32578,12 +32319,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class updateMembers_result : TBase
+    public partial class updateGroupMembers_result : TBase
     {
-      private UpdateMembersResponse _success;
+      private UpdateGroupMembersResponse _success;
       private THErrors _errors;
 
-      public UpdateMembersResponse Success
+      public UpdateGroupMembersResponse Success
       {
         get
         {
@@ -32619,7 +32360,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public updateMembers_result() {
+      public updateGroupMembers_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -32639,7 +32380,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new UpdateMembersResponse();
+                  Success = new UpdateGroupMembersResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -32671,7 +32412,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("updateMembers_result");
+          TStruct struc = new TStruct("updateGroupMembers_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -32704,7 +32445,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("updateMembers_result(");
+        StringBuilder __sb = new StringBuilder("updateGroupMembers_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -32728,11 +32469,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class removeMembers_args : TBase
+    public partial class removeGroupMembers_args : TBase
     {
-      private RemoveMembersRequest _request;
+      private RemoveGroupMembersRequest _request;
 
-      public RemoveMembersRequest Request
+      public RemoveGroupMembersRequest Request
       {
         get
         {
@@ -32754,7 +32495,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public removeMembers_args() {
+      public removeGroupMembers_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -32774,7 +32515,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new RemoveMembersRequest();
+                  Request = new RemoveGroupMembersRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -32798,7 +32539,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("removeMembers_args");
+          TStruct struc = new TStruct("removeGroupMembers_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -32819,7 +32560,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("removeMembers_args(");
+        StringBuilder __sb = new StringBuilder("removeGroupMembers_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -32837,12 +32578,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class removeMembers_result : TBase
+    public partial class removeGroupMembers_result : TBase
     {
-      private RemoveMembersResponse _success;
+      private RemoveGroupMembersResponse _success;
       private THErrors _errors;
 
-      public RemoveMembersResponse Success
+      public RemoveGroupMembersResponse Success
       {
         get
         {
@@ -32878,7 +32619,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public removeMembers_result() {
+      public removeGroupMembers_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -32898,7 +32639,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new RemoveMembersResponse();
+                  Success = new RemoveGroupMembersResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -32930,7 +32671,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("removeMembers_result");
+          TStruct struc = new TStruct("removeGroupMembers_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -32963,7 +32704,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("removeMembers_result(");
+        StringBuilder __sb = new StringBuilder("removeGroupMembers_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -32987,11 +32728,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class areMembers_args : TBase
+    public partial class areGroupMembers_args : TBase
     {
-      private AreMembersRequest _request;
+      private AreGroupMembersRequest _request;
 
-      public AreMembersRequest Request
+      public AreGroupMembersRequest Request
       {
         get
         {
@@ -33013,7 +32754,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public areMembers_args() {
+      public areGroupMembers_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -33033,7 +32774,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new AreMembersRequest();
+                  Request = new AreGroupMembersRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -33057,7 +32798,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("areMembers_args");
+          TStruct struc = new TStruct("areGroupMembers_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -33078,7 +32819,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("areMembers_args(");
+        StringBuilder __sb = new StringBuilder("areGroupMembers_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -33096,12 +32837,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class areMembers_result : TBase
+    public partial class areGroupMembers_result : TBase
     {
-      private AreMembersResponse _success;
+      private AreGroupMembersResponse _success;
       private THErrors _errors;
 
-      public AreMembersResponse Success
+      public AreGroupMembersResponse Success
       {
         get
         {
@@ -33137,7 +32878,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public areMembers_result() {
+      public areGroupMembers_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -33157,7 +32898,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new AreMembersResponse();
+                  Success = new AreGroupMembersResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -33189,7 +32930,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("areMembers_result");
+          TStruct struc = new TStruct("areGroupMembers_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -33222,7 +32963,266 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("areMembers_result(");
+        StringBuilder __sb = new StringBuilder("areGroupMembers_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getGroupMembers_args : TBase
+    {
+      private GetGroupMembersRequest _request;
+
+      public GetGroupMembersRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public getGroupMembers_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new GetGroupMembersRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getGroupMembers_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getGroupMembers_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getGroupMembers_result : TBase
+    {
+      private GetGroupMembersResponse _success;
+      private THErrors _errors;
+
+      public GetGroupMembersResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public getGroupMembers_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new GetGroupMembersResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getGroupMembers_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getGroupMembers_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -34541,7 +34541,7 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddGetMembers_args : TBase
+    public partial class ddGetGroupMembers_args : TBase
     {
       private DDGetGroupMembersRequest _request;
 
@@ -34567,7 +34567,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public ddGetMembers_args() {
+      public ddGetGroupMembers_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -34611,7 +34611,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddGetMembers_args");
+          TStruct struc = new TStruct("ddGetGroupMembers_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -34632,7 +34632,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddGetMembers_args(");
+        StringBuilder __sb = new StringBuilder("ddGetGroupMembers_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -34650,7 +34650,7 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddGetMembers_result : TBase
+    public partial class ddGetGroupMembers_result : TBase
     {
       private DDGetGroupMembersResponse _success;
       private THErrors _errors;
@@ -34691,7 +34691,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public ddGetMembers_result() {
+      public ddGetGroupMembers_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -34743,7 +34743,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddGetMembers_result");
+          TStruct struc = new TStruct("ddGetGroupMembers_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -34776,7 +34776,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddGetMembers_result(");
+        StringBuilder __sb = new StringBuilder("ddGetGroupMembers_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -34800,11 +34800,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddUpdateMembers_args : TBase
+    public partial class ddUpdateGroupMembers_args : TBase
     {
-      private DDUpdateMembersRequest _request;
+      private DDUpdateGroupMembersRequest _request;
 
-      public DDUpdateMembersRequest Request
+      public DDUpdateGroupMembersRequest Request
       {
         get
         {
@@ -34826,7 +34826,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public ddUpdateMembers_args() {
+      public ddUpdateGroupMembers_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -34846,7 +34846,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new DDUpdateMembersRequest();
+                  Request = new DDUpdateGroupMembersRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -34870,7 +34870,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddUpdateMembers_args");
+          TStruct struc = new TStruct("ddUpdateGroupMembers_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -34891,7 +34891,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddUpdateMembers_args(");
+        StringBuilder __sb = new StringBuilder("ddUpdateGroupMembers_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -34909,12 +34909,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddUpdateMembers_result : TBase
+    public partial class ddUpdateGroupMembers_result : TBase
     {
-      private DDUpdateMembersResponse _success;
+      private DDUpdateGroupMembersResponse _success;
       private THErrors _errors;
 
-      public DDUpdateMembersResponse Success
+      public DDUpdateGroupMembersResponse Success
       {
         get
         {
@@ -34950,7 +34950,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public ddUpdateMembers_result() {
+      public ddUpdateGroupMembers_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -34970,7 +34970,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new DDUpdateMembersResponse();
+                  Success = new DDUpdateGroupMembersResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -35002,7 +35002,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddUpdateMembers_result");
+          TStruct struc = new TStruct("ddUpdateGroupMembers_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -35035,7 +35035,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddUpdateMembers_result(");
+        StringBuilder __sb = new StringBuilder("ddUpdateGroupMembers_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -35059,11 +35059,11 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddRemoveMembers_args : TBase
+    public partial class ddRemoveGroupMembers_args : TBase
     {
-      private DDUpdateMembersRequest _request;
+      private DDRemoveGroupMembersRequest _request;
 
-      public DDUpdateMembersRequest Request
+      public DDRemoveGroupMembersRequest Request
       {
         get
         {
@@ -35085,7 +35085,7 @@ namespace GetSocialSdk.Core
         public bool request;
       }
 
-      public ddRemoveMembers_args() {
+      public ddRemoveGroupMembers_args() {
       }
 
       public void Read (TProtocol iprot)
@@ -35105,7 +35105,7 @@ namespace GetSocialSdk.Core
             {
               case 1:
                 if (field.Type == TType.Struct) {
-                  Request = new DDUpdateMembersRequest();
+                  Request = new DDRemoveGroupMembersRequest();
                   Request.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -35129,7 +35129,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddRemoveMembers_args");
+          TStruct struc = new TStruct("ddRemoveGroupMembers_args");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
           if (Request != null && __isset.request) {
@@ -35150,7 +35150,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddRemoveMembers_args(");
+        StringBuilder __sb = new StringBuilder("ddRemoveGroupMembers_args(");
         bool __first = true;
         if (Request != null && __isset.request) {
           if(!__first) { __sb.Append(", "); }
@@ -35168,12 +35168,12 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
-    public partial class ddRemoveMembers_result : TBase
+    public partial class ddRemoveGroupMembers_result : TBase
     {
-      private DDUpdateMembersResponse _success;
+      private DDRemoveGroupMembersResponse _success;
       private THErrors _errors;
 
-      public DDUpdateMembersResponse Success
+      public DDRemoveGroupMembersResponse Success
       {
         get
         {
@@ -35209,7 +35209,7 @@ namespace GetSocialSdk.Core
         public bool errors;
       }
 
-      public ddRemoveMembers_result() {
+      public ddRemoveGroupMembers_result() {
       }
 
       public void Read (TProtocol iprot)
@@ -35229,7 +35229,7 @@ namespace GetSocialSdk.Core
             {
               case 0:
                 if (field.Type == TType.Struct) {
-                  Success = new DDUpdateMembersResponse();
+                  Success = new DDRemoveGroupMembersResponse();
                   Success.Read(iprot);
                 } else { 
                   TProtocolUtil.Skip(iprot, field.Type);
@@ -35261,7 +35261,7 @@ namespace GetSocialSdk.Core
         oprot.IncrementRecursionDepth();
         try
         {
-          TStruct struc = new TStruct("ddRemoveMembers_result");
+          TStruct struc = new TStruct("ddRemoveGroupMembers_result");
           oprot.WriteStructBegin(struc);
           TField field = new TField();
 
@@ -35294,7 +35294,7 @@ namespace GetSocialSdk.Core
       }
 
       public override string ToString() {
-        StringBuilder __sb = new StringBuilder("ddRemoveMembers_result(");
+        StringBuilder __sb = new StringBuilder("ddRemoveGroupMembers_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }

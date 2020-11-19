@@ -44,4 +44,6 @@
  */
 - (BOOL)show;
 
+- (void)setCustomErrorMessageProvider:(GetSocialUICustomErrorMessageProvider)provider;
+
 @end

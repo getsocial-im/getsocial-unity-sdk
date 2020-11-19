@@ -31,7 +31,8 @@ namespace GetSocialSdk.Core
     private string _appId;
     private string _groupId;
     private Pagination _pagination;
-    private SGMembershipInfo _info;
+    private int _role;
+    private int _status;
 
     public string SessionId
     {
@@ -85,16 +86,32 @@ namespace GetSocialSdk.Core
       }
     }
 
-    public SGMembershipInfo Info
+    public int Role
     {
       get
       {
-        return _info;
+        return _role;
       }
       set
       {
-        __isset.info = true;
-        this._info = value;
+        __isset.role = true;
+        this._role = value;
+      }
+    }
+
+    /// <summary>
+    /// SGRole int
+    /// </summary>
+    public int Status
+    {
+      get
+      {
+        return _status;
+      }
+      set
+      {
+        __isset.status = true;
+        this._status = value;
       }
     }
 
@@ -108,7 +125,8 @@ namespace GetSocialSdk.Core
       public bool appId;
       public bool groupId;
       public bool pagination;
-      public bool info;
+      public bool role;
+      public bool status;
     }
 
     public DDGetGroupMembersRequest() {
@@ -159,9 +177,15 @@ namespace GetSocialSdk.Core
               }
               break;
             case 5:
-              if (field.Type == TType.Struct) {
-                Info = new SGMembershipInfo();
-                Info.Read(iprot);
+              if (field.Type == TType.I32) {
+                Role = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.I32) {
+                Status = iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -219,12 +243,20 @@ namespace GetSocialSdk.Core
           Pagination.Write(oprot);
           oprot.WriteFieldEnd();
         }
-        if (Info != null && __isset.info) {
-          field.Name = "info";
-          field.Type = TType.Struct;
+        if (__isset.role) {
+          field.Name = "role";
+          field.Type = TType.I32;
           field.ID = 5;
           oprot.WriteFieldBegin(field);
-          Info.Write(oprot);
+          oprot.WriteI32(Role);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.status) {
+          field.Name = "status";
+          field.Type = TType.I32;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(Status);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -263,11 +295,17 @@ namespace GetSocialSdk.Core
         __sb.Append("Pagination: ");
         __sb.Append(Pagination== null ? "<null>" : Pagination.ToString());
       }
-      if (Info != null && __isset.info) {
+      if (__isset.role) {
         if(!__first) { __sb.Append(", "); }
         __first = false;
-        __sb.Append("Info: ");
-        __sb.Append(Info== null ? "<null>" : Info.ToString());
+        __sb.Append("Role: ");
+        __sb.Append(Role);
+      }
+      if (__isset.status) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Status: ");
+        __sb.Append(Status);
       }
       __sb.Append(")");
       return __sb.ToString();

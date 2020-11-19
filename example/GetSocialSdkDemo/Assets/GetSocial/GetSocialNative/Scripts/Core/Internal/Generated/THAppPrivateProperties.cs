@@ -74,6 +74,13 @@ namespace GetSocialSdk.Core
     private bool _rejectModeratedActivity;
     private bool _activityPendingByDefault;
     private bool _commentPendingByDefault;
+    private int _activitiesRateLimit;
+    private int _activitiesRateLimitSamplingPeriod;
+    private int _commentsRateLimit;
+    private int _commentsRateLimitSamplingPeriod;
+    private bool _pushNotificationsRequestToJoinGroup;
+    private bool _pushNotificationsInviteToJoinGroup;
+    private bool _pushNotificationsRequestToJoinGroupApproved;
 
     public string InviteDomain
     {
@@ -728,6 +735,97 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public int ActivitiesRateLimit
+    {
+      get
+      {
+        return _activitiesRateLimit;
+      }
+      set
+      {
+        __isset.activitiesRateLimit = true;
+        this._activitiesRateLimit = value;
+      }
+    }
+
+    public int ActivitiesRateLimitSamplingPeriod
+    {
+      get
+      {
+        return _activitiesRateLimitSamplingPeriod;
+      }
+      set
+      {
+        __isset.activitiesRateLimitSamplingPeriod = true;
+        this._activitiesRateLimitSamplingPeriod = value;
+      }
+    }
+
+    public int CommentsRateLimit
+    {
+      get
+      {
+        return _commentsRateLimit;
+      }
+      set
+      {
+        __isset.commentsRateLimit = true;
+        this._commentsRateLimit = value;
+      }
+    }
+
+    public int CommentsRateLimitSamplingPeriod
+    {
+      get
+      {
+        return _commentsRateLimitSamplingPeriod;
+      }
+      set
+      {
+        __isset.commentsRateLimitSamplingPeriod = true;
+        this._commentsRateLimitSamplingPeriod = value;
+      }
+    }
+
+    public bool PushNotificationsRequestToJoinGroup
+    {
+      get
+      {
+        return _pushNotificationsRequestToJoinGroup;
+      }
+      set
+      {
+        __isset.pushNotificationsRequestToJoinGroup = true;
+        this._pushNotificationsRequestToJoinGroup = value;
+      }
+    }
+
+    public bool PushNotificationsInviteToJoinGroup
+    {
+      get
+      {
+        return _pushNotificationsInviteToJoinGroup;
+      }
+      set
+      {
+        __isset.pushNotificationsInviteToJoinGroup = true;
+        this._pushNotificationsInviteToJoinGroup = value;
+      }
+    }
+
+    public bool PushNotificationsRequestToJoinGroupApproved
+    {
+      get
+      {
+        return _pushNotificationsRequestToJoinGroupApproved;
+      }
+      set
+      {
+        __isset.pushNotificationsRequestToJoinGroupApproved = true;
+        this._pushNotificationsRequestToJoinGroupApproved = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -784,6 +882,13 @@ namespace GetSocialSdk.Core
       public bool rejectModeratedActivity;
       public bool activityPendingByDefault;
       public bool commentPendingByDefault;
+      public bool activitiesRateLimit;
+      public bool activitiesRateLimitSamplingPeriod;
+      public bool commentsRateLimit;
+      public bool commentsRateLimitSamplingPeriod;
+      public bool pushNotificationsRequestToJoinGroup;
+      public bool pushNotificationsInviteToJoinGroup;
+      public bool pushNotificationsRequestToJoinGroupApproved;
     }
 
     public THAppPrivateProperties() {
@@ -1184,6 +1289,55 @@ namespace GetSocialSdk.Core
             case 50:
               if (field.Type == TType.Bool) {
                 CommentPendingByDefault = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 51:
+              if (field.Type == TType.I32) {
+                ActivitiesRateLimit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 52:
+              if (field.Type == TType.I32) {
+                ActivitiesRateLimitSamplingPeriod = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 53:
+              if (field.Type == TType.I32) {
+                CommentsRateLimit = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 54:
+              if (field.Type == TType.I32) {
+                CommentsRateLimitSamplingPeriod = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 55:
+              if (field.Type == TType.Bool) {
+                PushNotificationsRequestToJoinGroup = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 56:
+              if (field.Type == TType.Bool) {
+                PushNotificationsInviteToJoinGroup = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 57:
+              if (field.Type == TType.Bool) {
+                PushNotificationsRequestToJoinGroupApproved = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -1632,6 +1786,62 @@ namespace GetSocialSdk.Core
           oprot.WriteBool(CommentPendingByDefault);
           oprot.WriteFieldEnd();
         }
+        if (__isset.activitiesRateLimit) {
+          field.Name = "activitiesRateLimit";
+          field.Type = TType.I32;
+          field.ID = 51;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(ActivitiesRateLimit);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.activitiesRateLimitSamplingPeriod) {
+          field.Name = "activitiesRateLimitSamplingPeriod";
+          field.Type = TType.I32;
+          field.ID = 52;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(ActivitiesRateLimitSamplingPeriod);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.commentsRateLimit) {
+          field.Name = "commentsRateLimit";
+          field.Type = TType.I32;
+          field.ID = 53;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(CommentsRateLimit);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.commentsRateLimitSamplingPeriod) {
+          field.Name = "commentsRateLimitSamplingPeriod";
+          field.Type = TType.I32;
+          field.ID = 54;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(CommentsRateLimitSamplingPeriod);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsRequestToJoinGroup) {
+          field.Name = "pushNotificationsRequestToJoinGroup";
+          field.Type = TType.Bool;
+          field.ID = 55;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(PushNotificationsRequestToJoinGroup);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsInviteToJoinGroup) {
+          field.Name = "pushNotificationsInviteToJoinGroup";
+          field.Type = TType.Bool;
+          field.ID = 56;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(PushNotificationsInviteToJoinGroup);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.pushNotificationsRequestToJoinGroupApproved) {
+          field.Name = "pushNotificationsRequestToJoinGroupApproved";
+          field.Type = TType.Bool;
+          field.ID = 57;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(PushNotificationsRequestToJoinGroupApproved);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -1943,6 +2153,48 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("CommentPendingByDefault: ");
         __sb.Append(CommentPendingByDefault);
+      }
+      if (__isset.activitiesRateLimit) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActivitiesRateLimit: ");
+        __sb.Append(ActivitiesRateLimit);
+      }
+      if (__isset.activitiesRateLimitSamplingPeriod) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ActivitiesRateLimitSamplingPeriod: ");
+        __sb.Append(ActivitiesRateLimitSamplingPeriod);
+      }
+      if (__isset.commentsRateLimit) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CommentsRateLimit: ");
+        __sb.Append(CommentsRateLimit);
+      }
+      if (__isset.commentsRateLimitSamplingPeriod) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("CommentsRateLimitSamplingPeriod: ");
+        __sb.Append(CommentsRateLimitSamplingPeriod);
+      }
+      if (__isset.pushNotificationsRequestToJoinGroup) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsRequestToJoinGroup: ");
+        __sb.Append(PushNotificationsRequestToJoinGroup);
+      }
+      if (__isset.pushNotificationsInviteToJoinGroup) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsInviteToJoinGroup: ");
+        __sb.Append(PushNotificationsInviteToJoinGroup);
+      }
+      if (__isset.pushNotificationsRequestToJoinGroupApproved) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("PushNotificationsRequestToJoinGroupApproved: ");
+        __sb.Append(PushNotificationsRequestToJoinGroupApproved);
       }
       __sb.Append(")");
       return __sb.ToString();
