@@ -169,55 +169,65 @@ namespace GetSocialSdk.Core
 
         #region Groups
 
-        // public static void CreateGroup(GroupContent content, Action<Group> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.CreateGroup(content, success, failure);
-        // }
+        public static void CreateGroup(GroupContent content, Action<Group> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.CreateGroup(content, success, failure);
+        }
 
-        // public static void UpdateGroup(string groupId, GroupContent content, Action<Group> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.UpdateGroup(groupId, content, success, failure);
-        // }
+        public static void UpdateGroup(string groupId, GroupContent content, Action<Group> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.UpdateGroup(groupId, content, success, failure);
+        }
 
-        // public static void RemoveGroups(List<string> groupIds, Action success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.RemoveGroups(groupIds, success, failure);
-        // }
+        public static void RemoveGroups(List<string> groupIds, Action success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.RemoveGroups(groupIds, success, failure);
+        }
 
-        // public static void GetGroupMembers(PagingQuery<GroupMembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.GetGroupMembers(pagingQuery, success, failure);
-        // }
+        public static void GetGroupMembers(PagingQuery<MembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetGroupMembers(pagingQuery, success, failure);
+        }
 
-        // public static void GetGroups(PagingQuery<GroupsQuery> pagingQuery, Action<PagingResult<Group>> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.GetGroups(pagingQuery, success, failure);
-        // }
+        public static void GetGroups(PagingQuery<GroupsQuery> pagingQuery, Action<PagingResult<Group>> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetGroups(pagingQuery, success, failure);
+        }
 
-        // public static void GetGroupsCount(GroupsQuery query, Action<int> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.GetGroupsCount(query, success, failure);
-        // }
+        public static void GetGroupsCount(GroupsQuery query, Action<int> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetGroupsCount(query, success, failure);
+        }
 
-        // public static void GetGroup(string groupId, Action<Group> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.GetGroup(groupId, success, failure);
-        // }
+        public static void GetGroup(string groupId, Action<Group> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetGroup(groupId, success, failure);
+        }
 
-        // public static void UpdateGroupMembers(UpdateGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.UpdateGroupMembers(query, success, failure);
-        // }
+        public static void UpdateGroupMembers(UpdateGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.UpdateGroupMembers(query, success, failure);
+        }
 
-        // public static void RemoveGroupMembers(RemoveGroupMembersQuery query, string groupId, Action success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.RemoveGroupMembers(query, groupId, success, failure);
-        // }
+        public static void AddGroupMembers(AddGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.AddGroupMembers(query, success, failure);
+        }
 
-        // public static void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, MembershipRole>> success, Action<GetSocialError> failure)
-        // {
-        //     GetSocialFactory.Bridge.AreGroupMembers(groupId, userIdList, success, failure);
-        // }
+        public static void JoinGroup(JoinGroupQuery query, Action<GroupMember> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.JoinGroup(query, success, failure);
+        }
+
+        public static void RemoveGroupMembers(RemoveGroupMembersQuery query, Action success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.RemoveGroupMembers(query, success, failure);
+        }
+
+        public static void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, MemberRole>> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.AreGroupMembers(groupId, userIdList, success, failure);
+        }
 
         #endregion
 

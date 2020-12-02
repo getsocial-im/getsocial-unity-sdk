@@ -33,7 +33,7 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <param name="groupId">Group ID.</param>
         /// <returns>new target.</returns>
-        private static PostActivityTarget Group(string groupId) {
+        public static PostActivityTarget Group(string groupId) {
             return new PostActivityTarget(CommunitiesIds.Group(groupId));
         }
 

@@ -7,7 +7,7 @@ namespace GetSocialSdk.Core
     public class GroupContent
     {
         [JsonSerializationKey("id")]
-        public string Id { get; set; }
+        public string Id { get; internal set; }
 
         [JsonSerializationKey("title")]
         public string Title { get; set; }
@@ -15,15 +15,11 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("description")] 
         internal string Description { get; set; } 
 
-        [JsonSerializationKey("avatarUrl")]
-        internal string AvatarUrl { get; set; } 
-
-// FIXME: use proper type
         [JsonSerializationKey("avatar")]
-        internal string Avatar { get; set; } 
+        internal MediaAttachment Avatar { get; set; } 
 
         [JsonSerializationKey("permissions")]
-        internal Dictionary<CommunitiesAction, MembershipRole> Permissions { get; } 
+        internal Dictionary<CommunitiesAction, MemberRole> Permissions { get; } 
 
         [JsonSerializationKey("properties")]
         internal Dictionary<string, string> Properties { get; } 
@@ -34,9 +30,10 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("isPrivate")]
         internal bool IsPrivate { get; set; } 
 
-        public GroupContent()
+        public GroupContent(string groupId)
         {
-            Permissions = new Dictionary<CommunitiesAction, MembershipRole>();
+            Id = groupId;
+            Permissions = new Dictionary<CommunitiesAction, MemberRole>();
             Properties = new Dictionary<string, string>();
         }
 
@@ -52,13 +49,13 @@ namespace GetSocialSdk.Core
             return this;
         }
 
-        public GroupContent AddPermission(CommunitiesAction action, MembershipRole role)
+        public GroupContent AddPermission(CommunitiesAction action, MemberRole role)
         {
             Permissions[action] = role;
             return this;
         }
 
-        public GroupContent AddPermissions(Dictionary<CommunitiesAction, MembershipRole> permissions)
+        public GroupContent AddPermissions(Dictionary<CommunitiesAction, MemberRole> permissions)
         {
             Permissions.AddAll(permissions);
             return this;

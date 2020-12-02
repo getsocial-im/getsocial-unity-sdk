@@ -544,7 +544,7 @@ namespace GetSocialSdk.Core
                 request.SessionId = SessionId;
                 var response = client.areFriends(request);
                 LogResponse("areFriends", response);
-                return response.Result;
+                return response.FromRPCModel(request.UserIds);
             }, success, failure);
         }
 
@@ -641,8 +641,14 @@ namespace GetSocialSdk.Core
         public void CreateGroup(GroupContent content, Action<Group> success, Action<GetSocialError> failure)
         {
             LogRequest("createGroup", "content = " + content);
+            if (content.Avatar != null && content.Avatar.Image != null)
+            {
+                var attachmentList = new List<MediaAttachment>();
+                attachmentList.Add(content.Avatar);
+                new MediaUploader(_stateController).UploadMedia(attachmentList, "USER_AVATAR");
+            }
             WithHadesClient((client) => {
-                var request = content.ToRPC();
+                var request = content.ToRPC(_stateController.SdkLanguage);
                 request.SessionId = SessionId;
                 var response = client.createGroup(request);
                 LogResponse("createGroup", response);
@@ -654,7 +660,7 @@ namespace GetSocialSdk.Core
         {
             LogRequest("updateGroup", "groupId = " + groupId + ", content = " + content);
             WithHadesClient((client) => {
-                var request = content.ToUpdateRPC();
+                var request = content.ToUpdateRPC(_stateController.SdkLanguage);
                 request.SessionId = SessionId;
                 request.Id = groupId;
                 var response = client.updateGroup(request);
@@ -675,7 +681,7 @@ namespace GetSocialSdk.Core
             }, success, failure);
         }
 
-        public void GetGroupMembers(PagingQuery<GroupMembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
+        public void GetGroupMembers(PagingQuery<MembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
         {
             LogRequest("getMembers", "query = " + pagingQuery);
             WithHadesClient((client) => {
@@ -724,30 +730,54 @@ namespace GetSocialSdk.Core
             }, success, failure);
         }
 
-        public void UpdateGroupMembers(UpdateGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
+        public void AddGroupMembers(AddGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
         {
-            LogRequest("updateMembers", "query = " + query);
+            LogRequest("addGroupMembers", "query = " + query);
             WithHadesClient((client) => {
-                var request = query.ToRPC();
+                var request = query.InternalQuery.ToRPC();
                 request.SessionId = SessionId;
                 var response = client.updateGroupMembers(request);
-                LogResponse("updateMembers", response);
+                LogResponse("addGroupMembers", response);
                 return (response.Members.ConvertAll(sgMember => sgMember.FromRPCModel()));
             }, success, failure);
         }
 
-        public void RemoveGroupMembers(RemoveGroupMembersQuery query, string groupId, Action success, Action<GetSocialError> failure)
+        public void JoinGroup(JoinGroupQuery query, Action<GroupMember> success, Action<GetSocialError> failure)
         {
-            LogRequest("removeMembers", "query = " + query + ", groupId = " + groupId);
+            LogRequest("joinGroup", "query = " + query);
+            WithHadesClient((client) => {
+                var request = query.InternalQuery.ToRPC();
+                request.SessionId = SessionId;
+                var response = client.updateGroupMembers(request);
+                LogResponse("joinGroup", response);
+                return (response.Members.ConvertAll(sgMember => sgMember.FromRPCModel()).First());
+            }, success, failure);
+        }
+
+        public void UpdateGroupMembers(UpdateGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
+        {
+            LogRequest("updateGroupMembers", "query = " + query);
+            WithHadesClient((client) => {
+                var request = query.ToRPC();
+                request.SessionId = SessionId;
+                var response = client.updateGroupMembers(request);
+                LogResponse("updateGroupMembers", response);
+                return (response.Members.ConvertAll(sgMember => sgMember.FromRPCModel()));
+            }, success, failure);
+        }
+
+        public void RemoveGroupMembers(RemoveGroupMembersQuery query, Action success, Action<GetSocialError> failure)
+        {
+            LogRequest("removeGroupMembers", "query = " + query);
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
                 var response = client.removeGroupMembers(request);
-                LogResponse("removeMembers", response);
+                LogResponse("removeGroupMembers", response);
             }, success, failure);
         }
 
-        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, MembershipRole>> success, Action<GetSocialError> failure)
+        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, MemberRole>> success, Action<GetSocialError> failure)
         {
             LogRequest("areMembers", "groupId = " + groupId + " userIdList = " + userIdList);
             WithHadesClient((client) => {
@@ -798,7 +828,7 @@ namespace GetSocialSdk.Core
                 request.SessionId = SessionId;
                 var response = client.isFollowing(request);
                 LogResponse("isFollowing", response);
-                return (response.FromRPCModel());
+                return response.FromRPCModel(request.EntityIds);
             }, success, failure);
         }
 

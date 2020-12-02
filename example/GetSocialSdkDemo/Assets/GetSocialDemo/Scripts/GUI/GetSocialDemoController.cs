@@ -236,17 +236,39 @@ public class GetSocialDemoController : MonoBehaviour {
         }
     }
 
+    private void AddFriend(string userId)
+    {
+        Communities.AddFriends(UserIdList.Create(userId),
+            friendsCount =>
+            {
+                var message = "Friend added";
+                _console.LogD(message);
+            },
+            error => _console.LogE("Failed to add a friend " + userId + ", error:" + error.Message));
+    }
+
     public void HandleAction (GetSocialAction action) {
         _console.LogD("Action: " + action.ToString(), false);
-        if (action.Type == GetSocialActionType.OpenProfile && action.Data.ContainsKey(GetSocialActionKeys.OpenProfile.UserId)) 
+        if (action.Type == GetSocialActionType.AddFriend && action.Data.ContainsKey(GetSocialActionKeys.AddFriend.UserId))
         {
-            newFriend (action.Data[GetSocialActionKeys.OpenProfile.UserId]);
+            var userId = action.Data[GetSocialActionKeys.AddFriend.UserId];
+            AddFriend(userId);
+        } else if (action.Type == GetSocialActionType.OpenProfile && action.Data.ContainsKey(GetSocialActionKeys.OpenProfile.UserId)) 
+        {
+            ShowUserDetails(action.Data[GetSocialActionKeys.OpenProfile.UserId]);
+        } else if (action.Type == GetSocialActionType.Custom)
+        {
+            var popup = new MNPopup("Custom Action", action.ToString());
+            popup.Show();
+        } else
+        {
+            GetSocial.Handle(action);
         }
     }
 
-    void newFriend (string userId) {
+    void ShowUserDetails (string userId) {
         Communities.GetUser(UserId.Create(userId), user => {
-            DemoUtils.ShowPopup ("You have a new friend!", user.DisplayName + " is now your friend.");
+            DemoUtils.ShowPopup ("Details", user.ToString());
         }, error => {
             _console.LogE ("Failed to get user: " + error.Message + ", code: " + error.ErrorCode);
         });
@@ -390,6 +412,9 @@ public class GetSocialDemoController : MonoBehaviour {
             section.User = UserId.CurrentUser();
         }));
         Button ("Search Users", ShowMenuSection<UsersSearchSection>);
+        Button("Create Group", ShowMenuSection<CreateGroupSection>);
+        Button("Search Groups", ShowMenuSection<GroupsSearchSection>);
+        Button("My Groups", ShowMenuSection<MyGroupsSection>);
         GUILayout.Space (30f);
         GUILayout.Label ("UI", GSStyles.NormalLabelText);
         Button ("Activity Feed", ShowMenuSection<ActivityFeedUiSection>);
@@ -421,7 +446,6 @@ public class GetSocialDemoController : MonoBehaviour {
     
     public void PushMenuSection<Menu>(Action<Menu> onCreate) where Menu : DemoMenuSection
     {
-        Debug.Log("### PUSHING MENU SECTION " + this);
         ShowMainMenu();
         _isInMainMenu = false;
         if (_stack.Count > 0)

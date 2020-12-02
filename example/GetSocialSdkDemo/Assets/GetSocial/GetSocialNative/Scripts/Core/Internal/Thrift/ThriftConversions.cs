@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Thrift.Collections;
 using UnityEngine;
 
 namespace GetSocialSdk.Core
@@ -89,6 +90,18 @@ namespace GetSocialSdk.Core
                 DisplayName = user.DisplayName,
                 MutualFriendsCount = suggestedFriend.MutualFriends
             };
+        }
+
+        public static Dictionary<string, bool> FromRPCModel(this AreFriendsResponse response, THashSet<string> sourceIds)
+        {
+            var result = response.Result;
+            sourceIds.ToList().ForEach((sourceId) => {
+                if (!result.ContainsKey(sourceId))
+                {
+                    result.Add(sourceId, false);
+                }
+            });
+            return result;
         }
 
         public static PagingResult<T> ToPagingResult<T>(List<T> entries, int offset, int limit)
@@ -563,10 +576,23 @@ namespace GetSocialSdk.Core
 
         public static CommunitiesSettings FromRPC(this SGSettings rpcSettings)
         {
+            var permissions = new Dictionary<CommunitiesAction, MemberRole>();
+            foreach (int key in rpcSettings.Permissions.Keys)
+            {
+                var convertedKeys = CommunitiesActionFromRPC(key);
+                var convertedValue = MemberRoleFromRPCModel(rpcSettings.Permissions[key]);
+                foreach (CommunitiesAction action in convertedKeys)
+                {
+                    permissions[action] = convertedValue;
+                }
+            }
             return new CommunitiesSettings
             {
                 Properties = rpcSettings.Properties,
-                AllowedActions = ConvertAllowableActions(rpcSettings.AllowedActions)
+                AllowedActions = ConvertAllowableActions(rpcSettings.AllowedActions),
+                IsPrivate = rpcSettings.IsPrivate,
+                IsDiscoverable = rpcSettings.IsDiscoverable,
+                Permissions = permissions
             };
         }
 
@@ -619,20 +645,25 @@ namespace GetSocialSdk.Core
             };
         }
 
-        public static GetGroupMembersRequest ToRPC(this PagingQuery<GroupMembersQuery> pagingQuery)
+        public static GetGroupMembersRequest ToRPC(this PagingQuery<MembersQuery> pagingQuery)
         {
             var request = pagingQuery.Query.ToRPC();
             request.Pagination = CreatePagination(pagingQuery);
             return request;
         }
 
-        public static GetGroupMembersRequest ToRPC(this GroupMembersQuery query)
+        public static GetGroupMembersRequest ToRPC(this MembersQuery query)
         {
             var request = new GetGroupMembersRequest();
             request.GroupId = query.GroupId;
-            //request.Info = new SGMembershipInfo();
-            //request.Info.Status = (int)query.Status;
-            //request.Info.Role = (int)query.Role;
+            if (query.Status != null)
+            {
+                request.Status = (int)query.Status;
+            }
+            if (query.Role != null)
+            {
+                request.Role = (int)query.Role;
+            }
             return request;
         }
 
@@ -654,11 +685,19 @@ namespace GetSocialSdk.Core
 
         public static UpdateGroupMembersRequest ToRPC(this UpdateGroupMembersQuery query)
         {
+            Debug.LogError("REQUEST: " + query.ToString());
             var request = new UpdateGroupMembersRequest();
             request.GroupId = query.GroupId;
-            //request.Info = new SGMembershipInfo();
-            //request.Info.Status = (int)query.Status;
             request.UserIds = query.UserIdList.AsString();
+            if (query.Status != null)
+            {
+                request.Status = (int)query.Status;
+            }
+            if (query.Role != null)
+            {
+                request.Role = (int)query.Role;
+            }
+            request.InvitationToken = query.InvitationToken;
             return request;
         }
 
@@ -738,14 +777,22 @@ namespace GetSocialSdk.Core
             return topic;
         }
 
-        public static CreateGroupRequest ToRPC(this GroupContent content)
+        public static CreateGroupRequest ToRPC(this GroupContent content, string sdkLanguage)
         {
             var request = new CreateGroupRequest();
             request.Id = content.Id;
-            // FIXME: use proper locale
-            request.Title = new Dictionary<string, string> { { "en", content.Title } };
-            request.GroupDescription = new Dictionary<string, string> { { "en", content.Description } };
-            request.AvatarUrl = content.AvatarUrl;
+            if (content.Title != null)
+            {
+                request.Title = new Dictionary<string, string> { { sdkLanguage, content.Title } };
+            }
+            if (content.Description != null)
+            {
+                request.GroupDescription = new Dictionary<string, string> { { sdkLanguage, content.Description } };
+            }
+            if (content.Avatar != null)
+            {
+                request.AvatarUrl = content.Avatar.ImageUrl;
+            }
             request.IsDiscoverable = content.IsDiscoverable;
             request.IsPrivate = content.IsPrivate;
             var permissions = new Dictionary<int, int>();
@@ -758,14 +805,22 @@ namespace GetSocialSdk.Core
             return request;
         }
 
-        public static UpdateGroupRequest ToUpdateRPC(this GroupContent content)
+        public static UpdateGroupRequest ToUpdateRPC(this GroupContent content, string sdkLanguage)
         {
             var request = new UpdateGroupRequest();
             request.Id = content.Id;
-            // FIXME: use proper locale
-            request.Title = new Dictionary<string, string> { { "en", content.Title } };
-            request.GroupDescription = new Dictionary<string, string> { { "en", content.Description } };
-            request.AvatarUrl = content.AvatarUrl;
+            if (content.Title != null)
+            {
+                request.Title = new Dictionary<string, string> { { sdkLanguage, content.Title } };
+            }
+            if (content.Description != null)
+            {
+                request.GroupDescription = new Dictionary<string, string> { { sdkLanguage, content.Description } };
+            }
+            if (content.Avatar != null)
+            {
+                request.AvatarUrl = content.Avatar.ImageUrl;
+            }
             request.IsDiscoverable = content.IsDiscoverable;
             request.IsPrivate = content.IsPrivate;
             var permissions = new Dictionary<int, int>();
@@ -782,24 +837,33 @@ namespace GetSocialSdk.Core
         {
             var group = new Group();
             group.Id = rpcGroup.Id;
+            group.Title = new LocalizableText(rpcGroup.Title).LocalizedValue();
+            group.Description = new LocalizableText(rpcGroup.GroupDescription).LocalizedValue();
             group.AvatarUrl = rpcGroup.AvatarUrl;
             group.CreatedAt = rpcGroup.CreatedAt;
-            group.Description = new LocalizableText(rpcGroup.GroupDescription).LocalizedValue();
             group.FollowersCount = rpcGroup.FollowersCount;
             group.IsFollowedByMe = rpcGroup.IsFollower;
             group.MembersCount = rpcGroup.MembersCount;
             group.Membership = rpcGroup.Membership.FromRPCModel();
             group.Settings = rpcGroup.Settings.FromRPC();
-            group.Title = new LocalizableText(rpcGroup.Title).LocalizedValue();
             group.UpdatedAt = rpcGroup.UpdatedAt;
             return group;
         }
 
         public static GroupMember FromRPCModel(this SGGroupMember rpcGroupMember)
         {
-            var member = (GroupMember)(rpcGroupMember.User.FromRPCModel());
-            member.Membership = rpcGroupMember.Membership.FromRPCModel();
-            return member;
+            var user = rpcGroupMember.User;
+            return new GroupMember
+            {
+                PublicProperties = user.PublicProperties,
+                Id = user.Id,
+                Identities = IdentitiesToDictionary(user.Identities),
+                Verified = false,
+                AvatarUrl = user.AvatarUrl,
+                DisplayName = user.DisplayName,
+                Membership = rpcGroupMember.Membership.FromRPCModel()
+            };
+
         }
 
         public static Pagination ToPagination<T>(this PagingQuery<T> query)
@@ -888,59 +952,68 @@ namespace GetSocialSdk.Core
             return new UserReactions { User = reaction.Creator.FromRPCModel(), ReactionsList = reaction.Reactions};
         }
 
-        public static MembershipInfo FromRPCModel(this SGMembershipInfo rpcMembership)
+        public static Membership FromRPCModel(this SGMembershipInfo rpcMembership)
         {
-            var info = new MembershipInfo();
+            if (rpcMembership.CreatedAt == 0)
+            {
+                return null;
+            }
+            var info = new Membership();
             info.CreatedAt = rpcMembership.CreatedAt;
             info.InvitationToken = rpcMembership.InvitationToken;
-            info.Role = MembershipRoleFromRPCModel(rpcMembership.Role);
-            info.Status = MembershipStatusFromRPCModel(rpcMembership.Status);
+            info.Role = MemberRoleFromRPCModel(rpcMembership.Role);
+            info.Status = MemberStatusFromRPCModel(rpcMembership.Status);
             return info;
         }
 
-        public static MembershipRole MembershipRoleFromRPCModel(int rawValue)
+        public static MemberRole MemberRoleFromRPCModel(int rawValue)
         {
             switch (rawValue)
             {
                 case 0:
-                    return MembershipRole.Owner;
+                    return MemberRole.Owner;
                 case 1:
-                    return MembershipRole.Admin;
-                case 2:
-                    return MembershipRole.Member;
-                default:
-                    return MembershipRole.Unknown;
+                    return MemberRole.Admin;
+                case 3:
+                    return MemberRole.Member;
             }
+            throw new ArgumentException();
         }
 
-        public static MembershipStatus MembershipStatusFromRPCModel(int rawValue)
+        public static MemberStatus MemberStatusFromRPCModel(int rawValue)
         {
             switch (rawValue)
             {
                 case 0:
-                    return MembershipStatus.ApprovalPending;
+                    return MemberStatus.ApprovalPending;
                 case 1:
-                    return MembershipStatus.InvitationPending;
+                    return MemberStatus.InvitationPending;
                 case 2:
-                    return MembershipStatus.CompleteMember;
-                default:
-                    return MembershipStatus.Unknown;
+                    return MemberStatus.Member;
             }
+            throw new ArgumentException();
         }
 
-        public static Dictionary<string, MembershipRole> FromRPCModel(this AreGroupMembersResponse response)
+        public static Dictionary<string, MemberRole> FromRPCModel(this AreGroupMembersResponse response)
         {
-            var result = new Dictionary<string, MembershipRole>();
+            var result = new Dictionary<string, MemberRole>();
             foreach (var entry in response.Result)
             {
-                result[entry.Key] = MembershipRoleFromRPCModel(entry.Value.Role);
+                result[entry.Key] = MemberRoleFromRPCModel(entry.Value.Role);
             }
             return result;
         }
 
-        public static Dictionary<string, bool> FromRPCModel(this IsFollowingResponse response)
+        public static Dictionary<string, bool> FromRPCModel(this IsFollowingResponse response, THashSet<string> sourceIds)
         {
-            return response.Result;
+            var result = response.Result;
+            sourceIds.ToList().ForEach((sourceId) => {
+                if (!result.ContainsKey(sourceId))
+                {
+                    result.Add(sourceId, false);
+                }
+            });
+            return result;
         }
 
         #endregion

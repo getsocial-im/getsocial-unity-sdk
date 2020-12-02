@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
+using GetSocialSdk.Ui;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -159,6 +160,12 @@ public class PostActivitySection : DemoMenuSection
             {
                 content.AddMediaAttachment(MediaAttachment.WithVideo(DemoUtils.LoadSampleVideoBytes()));
             }
+            if ((_text == null || _text.Length == 0) && content.Attachments.Count == 0 && (_action == null || (_title == null ||  _title.Length == 0)))
+            {
+                _console.LogE("Text, attachment or button is mandatory!");
+                return;
+            }
+
             content.AddProperties(_properties.ToDictionary(data => data.Key, data => data.Val));
             
             if (Activity == null) 
@@ -166,6 +173,7 @@ public class PostActivitySection : DemoMenuSection
                 Communities.PostActivity(content, Target, posted => 
                 {
                     _console.LogD("Posted: " + posted);
+                    OpenFeed();
                 }, error => 
                 {
                     _console.LogE("Failed to post: " + error);
@@ -175,11 +183,30 @@ public class PostActivitySection : DemoMenuSection
                 Communities.UpdateActivity(Activity, content, posted => 
                 {
                     _console.LogD("Updated: " + posted);
+                    OpenFeed();
                 }, error => 
                 {
                     _console.LogE("Failed to update: " + error);
                 });
             }
+        }
+    }
+
+    private void OpenFeed()
+    {
+        ActivitiesQuery query = null;
+        if (Target.Ids.Type == CommunitiesEntityType.Group)
+        {
+            query = ActivitiesQuery.ActivitiesInGroup(Target.Ids.Ids.ToArray()[0]);
+        }
+        if (Target.Ids.Type == CommunitiesEntityType.Topic)
+        {
+            query = ActivitiesQuery.ActivitiesInTopic(Target.Ids.Ids.ToArray()[0]);
+        }
+        if (query != null)
+        {
+            ActivityFeedViewBuilder.Create(query)
+                                .Show();
         }
     }
 

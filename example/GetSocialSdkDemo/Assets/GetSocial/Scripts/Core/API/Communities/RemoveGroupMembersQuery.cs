@@ -13,14 +13,10 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("userIdList")]
         internal UserIdList UserIdList;
 
-        RemoveGroupMembersQuery(UserIdList userIdList, string groupId)
+        public RemoveGroupMembersQuery(string groupId, UserIdList userIdList)
         {
             this.UserIdList = userIdList;
             this.GroupId = groupId;
-        }
-        
-        public static RemoveGroupMembersQuery Users(UserIdList userIdList, string groupId) {
-            return new RemoveGroupMembersQuery(userIdList, groupId);
         }
     }
 }

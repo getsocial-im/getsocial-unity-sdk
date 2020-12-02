@@ -266,7 +266,7 @@ namespace GetSocialSdk.Core
             CallAsyncVoid("Communities.removeGroups", GSJson.Serialize(groupIds), success, failure);
         }
 
-        public void GetGroupMembers(PagingQuery<GroupMembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
+        public void GetGroupMembers(PagingQuery<MembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
         {
             CallAsync("Communities.getGroupMembers", GSJson.Serialize(pagingQuery), success, failure);
         }
@@ -291,12 +291,24 @@ namespace GetSocialSdk.Core
             CallAsync("Communities.updateGroupMembers", GSJson.Serialize(query), success, failure);
         }
 
-        public void RemoveGroupMembers(RemoveGroupMembersQuery query, string groupId, Action success, Action<GetSocialError> failure)
+        public void AddGroupMembers(AddGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
         {
-            CallAsyncVoid("Communities.removeGroupMembers", GSJson.Serialize(new RemoveGroupMembersBody { GroupId = groupId, Query = query }), success, failure);
+            CallAsync("Communities.addGroupMembers", GSJson.Serialize(query), success, failure);
         }
 
-        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, MembershipRole>> success, Action<GetSocialError> failure)
+        public void JoinGroup(JoinGroupQuery query, Action<GroupMember> success, Action<GetSocialError> failure)
+        {
+            CallAsync("Communities.updateGroupMembers", GSJson.Serialize(query.InternalQuery), (List<GroupMember> groupMembers) => {
+                success(groupMembers.ToArray()[0]);
+            }, failure);
+        }
+
+        public void RemoveGroupMembers(RemoveGroupMembersQuery query, Action success, Action<GetSocialError> failure)
+        {
+            CallAsyncVoid("Communities.removeGroupMembers", GSJson.Serialize(query), success, failure);
+        }
+
+        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, MemberRole>> success, Action<GetSocialError> failure)
         {
             CallAsync("Communities.areGroupMembers", GSJson.Serialize(new AreGroupMembersBody { GroupId = groupId, UserIdList = userIdList }), success, failure);
         }

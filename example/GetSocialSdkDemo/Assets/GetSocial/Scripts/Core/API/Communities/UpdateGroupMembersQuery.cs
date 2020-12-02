@@ -14,14 +14,36 @@ namespace GetSocialSdk.Core
         internal UserIdList UserIdList;
 
         [JsonSerializationKey("status")]
-        internal MembershipStatus Status;
+        internal MemberStatus? Status;
 
-        public UpdateGroupMembersQuery(string groupId, UserIdList userIdList, MembershipStatus status)
+        [JsonSerializationKey("role")]
+        internal MemberRole? Role;
+
+        [JsonSerializationKey("invitationToken")]
+        internal string InvitationToken;
+
+        public UpdateGroupMembersQuery(string groupId, UserIdList userIdList)
         {
             this.UserIdList = userIdList;
             this.GroupId = groupId;
-            this.Status = status;
         }
-        
+
+        public UpdateGroupMembersQuery WithMemberStatus(MemberStatus memberStatus)
+        {
+            this.Status = memberStatus;
+            return this;
+        }
+
+        public UpdateGroupMembersQuery WithMemberRole(MemberRole memberRole)
+        {
+            this.Role = memberRole;
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return $"GroupID: {GroupId}, UserIdList: {UserIdList}, Role: {Role}, Status: {Status}, InvitationToken: {InvitationToken}";
+        }
+
     }
 }

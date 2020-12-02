@@ -19,6 +19,15 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("allowedActions")]
         internal Dictionary<CommunitiesAction, bool> AllowedActions { get; set; }
 
+        [JsonSerializationKey("isPrivate")]
+        public bool IsPrivate { get; internal set; }
+
+        [JsonSerializationKey("isDiscoverable")]
+        public bool IsDiscoverable { get; internal set; }
+
+        [JsonSerializationKey("permissions")]
+        public Dictionary<CommunitiesAction, MemberRole> Permissions { get; internal set; }
+
         /// <summary>
         /// Check if current user is allowed to perform a certain action.
         /// </summary>
@@ -38,7 +47,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Properties: {Properties.ToDebugString()}, AllowedActions: {AllowedActions.ToDebugString()}";
+            return $"Properties: {Properties.ToDebugString()}, AllowedActions: {AllowedActions.ToDebugString()}, IsPrivate: {IsPrivate}, IsDiscoverable: {IsDiscoverable}, Permissions: {Permissions.ToDebugString()}";
         }
     }
 }

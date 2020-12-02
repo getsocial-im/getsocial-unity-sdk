@@ -44,5 +44,11 @@ namespace GetSocialSdk.Core
         {
             return AsString();
         }
+
+        internal UserIdList ToUserIdList()
+        {
+            return UserIdList.CreateWithProvider(this.Provider, this.Id);
+        }
+
     }
 }

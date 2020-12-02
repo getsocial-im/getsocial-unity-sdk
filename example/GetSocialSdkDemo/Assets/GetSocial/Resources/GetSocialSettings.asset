@@ -15,7 +15,7 @@ MonoBehaviour:
   _appId: LuDPp7W0J4
   _isAutoRegisrationForPushesEnabled: 1
   _isForegroundNotificationsEnabled: 0
-  _autoInitEnabled: 0
+  _autoInitEnabled: 1
   _disableFacebookReferralCheck: 0
   _getSocialCustomConfigurationFilePath: getsocial-dark
   _getSocialDefaultConfigurationFilePath: 
@@ -30,7 +30,7 @@ MonoBehaviour:
   _isIosPushEnabled: 1
   _isAndroidPushEnabled: 1
   _isAppIdValid: 1
-  _isRichNotificationsEnabled: 1
+  _isRichNotificationsEnabled: 0
   _shouldWaitForListener: 1
   _extensionBundleId: im.getsocial.demo.unity.getsocialnotificationextension
   _extensionProvisioningProfile: GetSocialNotificationExtension Unity - Development

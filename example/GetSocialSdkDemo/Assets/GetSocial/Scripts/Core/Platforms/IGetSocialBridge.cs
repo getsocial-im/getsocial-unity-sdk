@@ -106,7 +106,7 @@ namespace GetSocialSdk.Core
 
         void RemoveGroups(List<string> groupIds, Action success, Action<GetSocialError> failure);
 
-        void GetGroupMembers(PagingQuery<GroupMembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure);
+        void GetGroupMembers(PagingQuery<MembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure);
 
         void GetGroups(PagingQuery<GroupsQuery> pagingQuery, Action<PagingResult<Group>> success, Action<GetSocialError> failure);
 
@@ -114,11 +114,15 @@ namespace GetSocialSdk.Core
 
         void GetGroup(string groupId, Action<Group> success, Action<GetSocialError> failure);
 
+        void AddGroupMembers(AddGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure);
+
+        void JoinGroup(JoinGroupQuery query, Action<GroupMember> success, Action<GetSocialError> failure);
+
         void UpdateGroupMembers(UpdateGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure);
 
-        void RemoveGroupMembers(RemoveGroupMembersQuery query, string groupId, Action success, Action<GetSocialError> failure);
+        void RemoveGroupMembers(RemoveGroupMembersQuery query, Action success, Action<GetSocialError> failure);
 
-        void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, MembershipRole>> success, Action<GetSocialError> failure);
+        void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, MemberRole>> success, Action<GetSocialError> failure);
 
         #endregion
 

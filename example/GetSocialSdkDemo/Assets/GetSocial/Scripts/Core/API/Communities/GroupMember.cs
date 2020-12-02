@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
@@ -6,6 +5,11 @@ namespace GetSocialSdk.Core
     public class GroupMember: User
     {
         [JsonSerializationKey("membership")]
-        public MembershipInfo Membership { get; internal set; }
+        public Membership Membership { get; internal set; }
+
+        public override string ToString()
+        {
+            return $"User: {base.ToString()}, Membership: {Membership}";
+        }
     }
 }

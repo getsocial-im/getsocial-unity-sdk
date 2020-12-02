@@ -57,7 +57,7 @@ namespace GetSocialSdk.Core {
         /// </summary>
         /// <param name="group">Name of the group.</param>
         /// <returns>New query.</returns>
-        private static ActivitiesQuery ActivitiesInGroup (string group) {
+        public static ActivitiesQuery ActivitiesInGroup (string group) {
             return new ActivitiesQuery (CommunitiesIds.Group (group));
         }
 

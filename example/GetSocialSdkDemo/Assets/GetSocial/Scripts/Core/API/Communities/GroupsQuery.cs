@@ -5,7 +5,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Builder for a query to retrieve groups.
     /// </summary>
-    public sealed class GroupsQuery 
+public sealed class GroupsQuery 
     {
         [JsonSerializationKey("searchTerm")]
         internal string SearchTerm;
