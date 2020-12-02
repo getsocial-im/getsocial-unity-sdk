@@ -3621,6 +3621,10 @@ typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialMemberRole, "Role", open) {
   GetSocialMemberRoleAdmin = 1,
 /// Member
   GetSocialMemberRoleMember = 3,
+/// Followers, used only in Topics permissions
+  GetSocialMemberRoleFollower = 4,
+/// Everyone, used only in Topics permissions
+  GetSocialMemberRoleEveryone = 5,
 };
 
 
@@ -7712,6 +7716,10 @@ typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialMemberRole, "Role", open) {
   GetSocialMemberRoleAdmin = 1,
 /// Member
   GetSocialMemberRoleMember = 3,
+/// Followers, used only in Topics permissions
+  GetSocialMemberRoleFollower = 4,
+/// Everyone, used only in Topics permissions
+  GetSocialMemberRoleEveryone = 5,
 };
 
 
