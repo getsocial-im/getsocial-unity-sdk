@@ -39,5 +39,10 @@ namespace GetSocialSdk.Core
             GetSocialFactory.Bridge.RemoveIdentity(providerId, callback, failure);
         }
 
+        public override string ToString()
+        {
+            return $"{base.ToString()}";
+        }
+
     }
 }

@@ -63,7 +63,7 @@ namespace GetSocialSdk.Core
         bool _isAppIdValid = true;
 
         [SerializeField] 
-        bool _isRichNotificationsEnabled = true;
+        bool _isRichNotificationsEnabled = false;
 
         [SerializeField] 
         bool _shouldWaitForListener = false;
@@ -227,6 +227,10 @@ namespace GetSocialSdk.Core
             set
             {
                 Instance._isIosPushEnabled = value;
+                if (!value)
+                {
+                    Instance._isRichNotificationsEnabled = false;
+                }
                 MarkAssetDirty();
             }
         }

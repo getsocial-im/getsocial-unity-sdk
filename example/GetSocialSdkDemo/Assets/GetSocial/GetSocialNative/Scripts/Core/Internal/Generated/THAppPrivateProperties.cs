@@ -81,6 +81,13 @@ namespace GetSocialSdk.Core
     private bool _pushNotificationsRequestToJoinGroup;
     private bool _pushNotificationsInviteToJoinGroup;
     private bool _pushNotificationsRequestToJoinGroupApproved;
+    private bool _clevertapEnabled;
+    private string _clevertapAccountID;
+    private string _clevertapPasscode;
+    private string _clevertapIdentity;
+    private string _clevertapLocation;
+    private Dictionary<string, string> _fallbackUrlByCountry;
+    private Dictionary<string, string> _desktopRedirectURLByCountry;
 
     public string InviteDomain
     {
@@ -826,6 +833,97 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool ClevertapEnabled
+    {
+      get
+      {
+        return _clevertapEnabled;
+      }
+      set
+      {
+        __isset.clevertapEnabled = true;
+        this._clevertapEnabled = value;
+      }
+    }
+
+    public string ClevertapAccountID
+    {
+      get
+      {
+        return _clevertapAccountID;
+      }
+      set
+      {
+        __isset.clevertapAccountID = true;
+        this._clevertapAccountID = value;
+      }
+    }
+
+    public string ClevertapPasscode
+    {
+      get
+      {
+        return _clevertapPasscode;
+      }
+      set
+      {
+        __isset.clevertapPasscode = true;
+        this._clevertapPasscode = value;
+      }
+    }
+
+    public string ClevertapIdentity
+    {
+      get
+      {
+        return _clevertapIdentity;
+      }
+      set
+      {
+        __isset.clevertapIdentity = true;
+        this._clevertapIdentity = value;
+      }
+    }
+
+    public string ClevertapLocation
+    {
+      get
+      {
+        return _clevertapLocation;
+      }
+      set
+      {
+        __isset.clevertapLocation = true;
+        this._clevertapLocation = value;
+      }
+    }
+
+    public Dictionary<string, string> FallbackUrlByCountry
+    {
+      get
+      {
+        return _fallbackUrlByCountry;
+      }
+      set
+      {
+        __isset.fallbackUrlByCountry = true;
+        this._fallbackUrlByCountry = value;
+      }
+    }
+
+    public Dictionary<string, string> DesktopRedirectURLByCountry
+    {
+      get
+      {
+        return _desktopRedirectURLByCountry;
+      }
+      set
+      {
+        __isset.desktopRedirectURLByCountry = true;
+        this._desktopRedirectURLByCountry = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -889,6 +987,13 @@ namespace GetSocialSdk.Core
       public bool pushNotificationsRequestToJoinGroup;
       public bool pushNotificationsInviteToJoinGroup;
       public bool pushNotificationsRequestToJoinGroupApproved;
+      public bool clevertapEnabled;
+      public bool clevertapAccountID;
+      public bool clevertapPasscode;
+      public bool clevertapIdentity;
+      public bool clevertapLocation;
+      public bool fallbackUrlByCountry;
+      public bool desktopRedirectURLByCountry;
     }
 
     public THAppPrivateProperties() {
@@ -927,14 +1032,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   LandingPageDescription = new Dictionary<string, string>();
-                  TMap _map15 = iprot.ReadMapBegin();
-                  for( int _i16 = 0; _i16 < _map15.Count; ++_i16)
+                  TMap _map20 = iprot.ReadMapBegin();
+                  for( int _i21 = 0; _i21 < _map20.Count; ++_i21)
                   {
-                    string _key17;
-                    string _val18;
-                    _key17 = iprot.ReadString();
-                    _val18 = iprot.ReadString();
-                    LandingPageDescription[_key17] = _val18;
+                    string _key22;
+                    string _val23;
+                    _key22 = iprot.ReadString();
+                    _val23 = iprot.ReadString();
+                    LandingPageDescription[_key22] = _val23;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -1170,14 +1275,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   LandingPageTitle = new Dictionary<string, string>();
-                  TMap _map19 = iprot.ReadMapBegin();
-                  for( int _i20 = 0; _i20 < _map19.Count; ++_i20)
+                  TMap _map24 = iprot.ReadMapBegin();
+                  for( int _i25 = 0; _i25 < _map24.Count; ++_i25)
                   {
-                    string _key21;
-                    string _val22;
-                    _key21 = iprot.ReadString();
-                    _val22 = iprot.ReadString();
-                    LandingPageTitle[_key21] = _val22;
+                    string _key26;
+                    string _val27;
+                    _key26 = iprot.ReadString();
+                    _val27 = iprot.ReadString();
+                    LandingPageTitle[_key26] = _val27;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -1196,12 +1301,12 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   RedirectUrlWhitelist = new List<string>();
-                  TList _list23 = iprot.ReadListBegin();
-                  for( int _i24 = 0; _i24 < _list23.Count; ++_i24)
+                  TList _list28 = iprot.ReadListBegin();
+                  for( int _i29 = 0; _i29 < _list28.Count; ++_i29)
                   {
-                    string _elem25;
-                    _elem25 = iprot.ReadString();
-                    RedirectUrlWhitelist.Add(_elem25);
+                    string _elem30;
+                    _elem30 = iprot.ReadString();
+                    RedirectUrlWhitelist.Add(_elem30);
                   }
                   iprot.ReadListEnd();
                 }
@@ -1342,6 +1447,79 @@ namespace GetSocialSdk.Core
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
+            case 58:
+              if (field.Type == TType.Bool) {
+                ClevertapEnabled = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 59:
+              if (field.Type == TType.String) {
+                ClevertapAccountID = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 60:
+              if (field.Type == TType.String) {
+                ClevertapPasscode = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 61:
+              if (field.Type == TType.String) {
+                ClevertapIdentity = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 62:
+              if (field.Type == TType.String) {
+                ClevertapLocation = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 63:
+              if (field.Type == TType.Map) {
+                {
+                  FallbackUrlByCountry = new Dictionary<string, string>();
+                  TMap _map31 = iprot.ReadMapBegin();
+                  for( int _i32 = 0; _i32 < _map31.Count; ++_i32)
+                  {
+                    string _key33;
+                    string _val34;
+                    _key33 = iprot.ReadString();
+                    _val34 = iprot.ReadString();
+                    FallbackUrlByCountry[_key33] = _val34;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 64:
+              if (field.Type == TType.Map) {
+                {
+                  DesktopRedirectURLByCountry = new Dictionary<string, string>();
+                  TMap _map35 = iprot.ReadMapBegin();
+                  for( int _i36 = 0; _i36 < _map35.Count; ++_i36)
+                  {
+                    string _key37;
+                    string _val38;
+                    _key37 = iprot.ReadString();
+                    _val38 = iprot.ReadString();
+                    DesktopRedirectURLByCountry[_key37] = _val38;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
             default: 
               TProtocolUtil.Skip(iprot, field.Type);
               break;
@@ -1386,10 +1564,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, LandingPageDescription.Count));
-            foreach (string _iter26 in LandingPageDescription.Keys)
+            foreach (string _iter39 in LandingPageDescription.Keys)
             {
-              oprot.WriteString(_iter26);
-              oprot.WriteString(LandingPageDescription[_iter26]);
+              oprot.WriteString(_iter39);
+              oprot.WriteString(LandingPageDescription[_iter39]);
             }
             oprot.WriteMapEnd();
           }
@@ -1658,10 +1836,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, LandingPageTitle.Count));
-            foreach (string _iter27 in LandingPageTitle.Keys)
+            foreach (string _iter40 in LandingPageTitle.Keys)
             {
-              oprot.WriteString(_iter27);
-              oprot.WriteString(LandingPageTitle[_iter27]);
+              oprot.WriteString(_iter40);
+              oprot.WriteString(LandingPageTitle[_iter40]);
             }
             oprot.WriteMapEnd();
           }
@@ -1682,9 +1860,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, RedirectUrlWhitelist.Count));
-            foreach (string _iter28 in RedirectUrlWhitelist)
+            foreach (string _iter41 in RedirectUrlWhitelist)
             {
-              oprot.WriteString(_iter28);
+              oprot.WriteString(_iter41);
             }
             oprot.WriteListEnd();
           }
@@ -1840,6 +2018,78 @@ namespace GetSocialSdk.Core
           field.ID = 57;
           oprot.WriteFieldBegin(field);
           oprot.WriteBool(PushNotificationsRequestToJoinGroupApproved);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.clevertapEnabled) {
+          field.Name = "clevertapEnabled";
+          field.Type = TType.Bool;
+          field.ID = 58;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(ClevertapEnabled);
+          oprot.WriteFieldEnd();
+        }
+        if (ClevertapAccountID != null && __isset.clevertapAccountID) {
+          field.Name = "clevertapAccountID";
+          field.Type = TType.String;
+          field.ID = 59;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ClevertapAccountID);
+          oprot.WriteFieldEnd();
+        }
+        if (ClevertapPasscode != null && __isset.clevertapPasscode) {
+          field.Name = "clevertapPasscode";
+          field.Type = TType.String;
+          field.ID = 60;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ClevertapPasscode);
+          oprot.WriteFieldEnd();
+        }
+        if (ClevertapIdentity != null && __isset.clevertapIdentity) {
+          field.Name = "clevertapIdentity";
+          field.Type = TType.String;
+          field.ID = 61;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ClevertapIdentity);
+          oprot.WriteFieldEnd();
+        }
+        if (ClevertapLocation != null && __isset.clevertapLocation) {
+          field.Name = "clevertapLocation";
+          field.Type = TType.String;
+          field.ID = 62;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(ClevertapLocation);
+          oprot.WriteFieldEnd();
+        }
+        if (FallbackUrlByCountry != null && __isset.fallbackUrlByCountry) {
+          field.Name = "fallbackUrlByCountry";
+          field.Type = TType.Map;
+          field.ID = 63;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, FallbackUrlByCountry.Count));
+            foreach (string _iter42 in FallbackUrlByCountry.Keys)
+            {
+              oprot.WriteString(_iter42);
+              oprot.WriteString(FallbackUrlByCountry[_iter42]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (DesktopRedirectURLByCountry != null && __isset.desktopRedirectURLByCountry) {
+          field.Name = "desktopRedirectURLByCountry";
+          field.Type = TType.Map;
+          field.ID = 64;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, DesktopRedirectURLByCountry.Count));
+            foreach (string _iter43 in DesktopRedirectURLByCountry.Keys)
+            {
+              oprot.WriteString(_iter43);
+              oprot.WriteString(DesktopRedirectURLByCountry[_iter43]);
+            }
+            oprot.WriteMapEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -2195,6 +2445,48 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("PushNotificationsRequestToJoinGroupApproved: ");
         __sb.Append(PushNotificationsRequestToJoinGroupApproved);
+      }
+      if (__isset.clevertapEnabled) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ClevertapEnabled: ");
+        __sb.Append(ClevertapEnabled);
+      }
+      if (ClevertapAccountID != null && __isset.clevertapAccountID) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ClevertapAccountID: ");
+        __sb.Append(ClevertapAccountID);
+      }
+      if (ClevertapPasscode != null && __isset.clevertapPasscode) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ClevertapPasscode: ");
+        __sb.Append(ClevertapPasscode);
+      }
+      if (ClevertapIdentity != null && __isset.clevertapIdentity) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ClevertapIdentity: ");
+        __sb.Append(ClevertapIdentity);
+      }
+      if (ClevertapLocation != null && __isset.clevertapLocation) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ClevertapLocation: ");
+        __sb.Append(ClevertapLocation);
+      }
+      if (FallbackUrlByCountry != null && __isset.fallbackUrlByCountry) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("FallbackUrlByCountry: ");
+        __sb.Append(FallbackUrlByCountry.ToDebugString());
+      }
+      if (DesktopRedirectURLByCountry != null && __isset.desktopRedirectURLByCountry) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("DesktopRedirectURLByCountry: ");
+        __sb.Append(DesktopRedirectURLByCountry.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

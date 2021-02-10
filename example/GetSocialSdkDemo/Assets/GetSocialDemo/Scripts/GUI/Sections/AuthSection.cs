@@ -47,6 +47,7 @@ public class AuthSection : DemoMenuSection
 
     private string _key = "key", _val = "value";
     private string _keyPrivate = "key", _valPrivate = "value";
+    private string _keyIncrement = "token", _valIncrement = "10.5";
 
     private readonly List<PropertiesUpdate> _batchUpdatePublicProperties = new List<PropertiesUpdate>();
     private readonly List<PropertiesUpdate> _batchUpdatePrivateProperties = new List<PropertiesUpdate>();
@@ -231,6 +232,32 @@ public class AuthSection : DemoMenuSection
             GetSocial.GetCurrentUser().UpdateDetails(update,
                 () => _console.LogD("Property removed for key: " + _keyPrivate),
                 error => _console.LogE("Failed to remove property for key: " + _keyPrivate + ", error: " + error)
+            );
+        }, true, GSStyles.Button);
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Increment property: ", GSStyles.NormalLabelText);
+        _keyIncrement = GUILayout.TextField(_keyIncrement, GSStyles.TextField);
+        _valIncrement = GUILayout.TextField(_valIncrement, GSStyles.TextField);
+
+        DemoGuiUtils.DrawButton("Increment", () =>
+        {
+            var update = new UserUpdate().IncrementPublicProperty(_keyIncrement, double.Parse(_valIncrement));
+            GetSocial.GetCurrentUser().UpdateDetails(update,
+                () => _console.LogD("Property incremented for key: " + _keyIncrement + "=" +
+                                    GetSocial.GetCurrentUser().PublicProperties[_keyIncrement]),
+                error => _console.LogE("Failed to increment property for key: " + _keyIncrement + ", error: " + error)
+            );
+        }, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Decrement", () =>
+        {
+            var update = new UserUpdate().DecrementPublicProperty(_keyIncrement, double.Parse(_valIncrement));
+            GetSocial.GetCurrentUser().UpdateDetails(update,
+                () => _console.LogD("Property decremented for key: " + _keyIncrement + "=" +
+                                    GetSocial.GetCurrentUser().PublicProperties[_keyIncrement]),
+                error => _console.LogE("Failed to decrement property for key: " + _keyIncrement + ", error: " + error)
             );
         }, true, GSStyles.Button);
 

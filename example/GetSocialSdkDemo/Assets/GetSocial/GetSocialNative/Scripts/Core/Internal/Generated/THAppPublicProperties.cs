@@ -133,14 +133,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   InviteText = new Dictionary<string, string>();
-                  TMap _map5 = iprot.ReadMapBegin();
-                  for( int _i6 = 0; _i6 < _map5.Count; ++_i6)
+                  TMap _map10 = iprot.ReadMapBegin();
+                  for( int _i11 = 0; _i11 < _map10.Count; ++_i11)
                   {
-                    string _key7;
-                    string _val8;
-                    _key7 = iprot.ReadString();
-                    _val8 = iprot.ReadString();
-                    InviteText[_key7] = _val8;
+                    string _key12;
+                    string _val13;
+                    _key12 = iprot.ReadString();
+                    _val13 = iprot.ReadString();
+                    InviteText[_key12] = _val13;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -152,14 +152,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   InviteSubject = new Dictionary<string, string>();
-                  TMap _map9 = iprot.ReadMapBegin();
-                  for( int _i10 = 0; _i10 < _map9.Count; ++_i10)
+                  TMap _map14 = iprot.ReadMapBegin();
+                  for( int _i15 = 0; _i15 < _map14.Count; ++_i15)
                   {
-                    string _key11;
-                    string _val12;
-                    _key11 = iprot.ReadString();
-                    _val12 = iprot.ReadString();
-                    InviteSubject[_key11] = _val12;
+                    string _key16;
+                    string _val17;
+                    _key16 = iprot.ReadString();
+                    _val17 = iprot.ReadString();
+                    InviteSubject[_key16] = _val17;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -216,10 +216,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, InviteText.Count));
-            foreach (string _iter13 in InviteText.Keys)
+            foreach (string _iter18 in InviteText.Keys)
             {
-              oprot.WriteString(_iter13);
-              oprot.WriteString(InviteText[_iter13]);
+              oprot.WriteString(_iter18);
+              oprot.WriteString(InviteText[_iter18]);
             }
             oprot.WriteMapEnd();
           }
@@ -232,10 +232,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, InviteSubject.Count));
-            foreach (string _iter14 in InviteSubject.Keys)
+            foreach (string _iter19 in InviteSubject.Keys)
             {
-              oprot.WriteString(_iter14);
-              oprot.WriteString(InviteSubject[_iter14]);
+              oprot.WriteString(_iter19);
+              oprot.WriteString(InviteSubject[_iter19]);
             }
             oprot.WriteMapEnd();
           }

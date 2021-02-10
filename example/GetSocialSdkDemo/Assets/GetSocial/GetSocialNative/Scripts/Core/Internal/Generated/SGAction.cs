@@ -15,6 +15,8 @@ namespace GetSocialSdk.Core
   {
     FEED_POST = 0,
     FEED_POST_INTERACT = 1,
+    FEED_POST_DELETE = 2,
+    FEED_READ = 3,
   }
 }
 #endif

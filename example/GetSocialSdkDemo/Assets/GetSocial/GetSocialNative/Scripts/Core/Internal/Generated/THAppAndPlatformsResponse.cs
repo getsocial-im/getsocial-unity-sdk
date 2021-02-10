@@ -93,13 +93,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Platforms = new List<THAppPlatform>();
-                  TList _list29 = iprot.ReadListBegin();
-                  for( int _i30 = 0; _i30 < _list29.Count; ++_i30)
+                  TList _list44 = iprot.ReadListBegin();
+                  for( int _i45 = 0; _i45 < _list44.Count; ++_i45)
                   {
-                    THAppPlatform _elem31;
-                    _elem31 = new THAppPlatform();
-                    _elem31.Read(iprot);
-                    Platforms.Add(_elem31);
+                    THAppPlatform _elem46;
+                    _elem46 = new THAppPlatform();
+                    _elem46.Read(iprot);
+                    Platforms.Add(_elem46);
                   }
                   iprot.ReadListEnd();
                 }
@@ -143,9 +143,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Platforms.Count));
-            foreach (THAppPlatform _iter32 in Platforms)
+            foreach (THAppPlatform _iter47 in Platforms)
             {
-              _iter32.Write(oprot);
+              _iter47.Write(oprot);
             }
             oprot.WriteListEnd();
           }

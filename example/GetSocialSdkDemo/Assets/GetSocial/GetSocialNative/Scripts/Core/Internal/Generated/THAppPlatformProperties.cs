@@ -54,6 +54,7 @@ namespace GetSocialSdk.Core
     private string _iapPublicKey;
     private string _iapSharedSecret;
     private string _iapServiceAccountKey;
+    private Dictionary<string, string> _redirectUrlByCountry;
 
     public long PushNotificationsCertificateExpiresDev
     {
@@ -424,6 +425,22 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// for Android
+    /// </summary>
+    public Dictionary<string, string> RedirectUrlByCountry
+    {
+      get
+      {
+        return _redirectUrlByCountry;
+      }
+      set
+      {
+        __isset.redirectUrlByCountry = true;
+        this._redirectUrlByCountry = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -457,6 +474,7 @@ namespace GetSocialSdk.Core
       public bool iapPublicKey;
       public bool iapSharedSecret;
       public bool iapServiceAccountKey;
+      public bool redirectUrlByCountry;
     }
 
     public THAppPlatformProperties() {
@@ -662,6 +680,25 @@ namespace GetSocialSdk.Core
             case 27:
               if (field.Type == TType.String) {
                 IapServiceAccountKey = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 28:
+              if (field.Type == TType.Map) {
+                {
+                  RedirectUrlByCountry = new Dictionary<string, string>();
+                  TMap _map0 = iprot.ReadMapBegin();
+                  for( int _i1 = 0; _i1 < _map0.Count; ++_i1)
+                  {
+                    string _key2;
+                    string _val3;
+                    _key2 = iprot.ReadString();
+                    _val3 = iprot.ReadString();
+                    RedirectUrlByCountry[_key2] = _val3;
+                  }
+                  iprot.ReadMapEnd();
+                }
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -903,6 +940,22 @@ namespace GetSocialSdk.Core
           oprot.WriteString(IapServiceAccountKey);
           oprot.WriteFieldEnd();
         }
+        if (RedirectUrlByCountry != null && __isset.redirectUrlByCountry) {
+          field.Name = "redirectUrlByCountry";
+          field.Type = TType.Map;
+          field.ID = 28;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, RedirectUrlByCountry.Count));
+            foreach (string _iter4 in RedirectUrlByCountry.Keys)
+            {
+              oprot.WriteString(_iter4);
+              oprot.WriteString(RedirectUrlByCountry[_iter4]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -1076,6 +1129,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("IapServiceAccountKey: ");
         __sb.Append(IapServiceAccountKey);
+      }
+      if (RedirectUrlByCountry != null && __isset.redirectUrlByCountry) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("RedirectUrlByCountry: ");
+        __sb.Append(RedirectUrlByCountry.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

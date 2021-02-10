@@ -53,6 +53,8 @@ namespace GetSocialSdk.Core
 
         void UpdateActivity(string id, ActivityContent content, Action<Activity> onSuccess,
             Action<GetSocialError> onFailure);
+        void RemoveActivities(RemoveActivitiesQuery query, Action onSuccess, Action<GetSocialError> onFailure);
+
 
         void AddReaction(string reaction, string activityId, Action success, Action<GetSocialError> failure);
         void RemoveReaction(string reaction, string activityId, Action success, Action<GetSocialError> failure);

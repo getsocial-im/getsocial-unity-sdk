@@ -369,6 +369,21 @@ namespace GetSocialSdk.Core
             }, onSuccess, onFailure);
         }
 
+        public void RemoveActivities(RemoveActivitiesQuery query, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            WithHadesClient(client =>
+            {
+                var request = new DeleteActivitiesRequest();
+                request.SessionId = SessionId;
+                request.Ids = new THashSet<string>();
+                request.Ids.AddAll(query.Ids);
+                LogRequest("removeActivities", request);
+                var response = client.deleteActivities(request);
+                LogResponse("removeActivities", response);
+            }, onSuccess, onFailure);
+        }
+
+
         public void AddReaction(string reaction, string activityId, Action success, Action<GetSocialError> failure)
         {
             WithHadesClient(client =>

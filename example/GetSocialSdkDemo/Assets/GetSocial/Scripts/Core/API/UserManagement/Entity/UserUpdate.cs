@@ -8,6 +8,7 @@ namespace GetSocialSdk.Core
     public sealed class UserUpdate 
     {
         private const string RemoveValue = "";
+        private const string SumPlaceholder = "$SUM:";
 
         [JsonSerializationKey("displayName")]
         public string DisplayName;
@@ -61,6 +62,54 @@ namespace GetSocialSdk.Core
         public UserUpdate RemovePrivateProperty(string key)
         {
             _privateProperties[key] = RemoveValue;
+            return this;
+        }
+
+        /// <summary>
+        /// Increment a public property with the provided value.
+        /// </summary>
+        /// <param name="key">property key</param>
+        /// <param name="increment">positive number</param>
+        /// <returns>update UserUpdate instance</returns>
+        public UserUpdate IncrementPublicProperty(string key, double increment)
+        {
+            _publicProperties[key] = SumPlaceholder + increment;
+            return this;
+        }
+
+        /// <summary>
+        /// Decrement a public property with the provided value.
+        /// </summary>
+        /// <param name="key">property key</param>
+        /// <param name="decrement">positive number</param>
+        /// <returns>update UserUpdate instance</returns>
+        public UserUpdate DecrementPublicProperty(string key, double decrement)
+        {
+            _publicProperties[key] = SumPlaceholder + (decrement * -1);
+            return this;
+        }
+
+        /// <summary>
+        /// Increment a private property with the provided value.
+        /// </summary>
+        /// <param name="key">property key</param>
+        /// <param name="increment">positive number</param>
+        /// <returns>update UserUpdate instance</returns>
+        public UserUpdate IncrementPrivateProperty(string key, double increment)
+        {
+            _privateProperties[key] = SumPlaceholder + increment;
+            return this;
+        }
+
+        /// <summary>
+        /// Decrement a private property with the provided value.
+        /// </summary>
+        /// <param name="key">property key</param>
+        /// <param name="decrement">positive number</param>
+        /// <returns>update UserUpdate instance</returns>
+        public UserUpdate DecrementPrivateProperty(string key, double decrement)
+        {
+            _privateProperties[key] = SumPlaceholder + (decrement * -1);
             return this;
         }
     }

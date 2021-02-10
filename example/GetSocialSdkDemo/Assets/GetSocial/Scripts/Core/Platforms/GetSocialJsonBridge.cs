@@ -152,6 +152,10 @@ namespace GetSocialSdk.Core
         {
             CallAsync("Communities.updateActivity", GSJson.Serialize(new UpdateActivityBody{Target = id, Content = content}), onSuccess, onFailure);
         }
+        public void RemoveActivities(RemoveActivitiesQuery query, Action onSuccess, Action<GetSocialError> onFailure)
+        {
+            CallAsyncVoid("Communities.removeActivities", GSJson.Serialize(query), onSuccess, onFailure);
+        }
 
         public void AddReaction(string reaction, string activityId, Action success, Action<GetSocialError> failure)
         {

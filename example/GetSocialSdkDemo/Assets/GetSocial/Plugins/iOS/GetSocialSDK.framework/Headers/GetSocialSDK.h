@@ -278,6 +278,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Status.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_Status;)
 + (NSString * _Nonnull)addGroupMember_Status SWIFT_WARN_UNUSED_RESULT;
+/// ChatId.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openChat_ChatId;)
++ (NSString * _Nonnull)openChat_ChatId SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -306,6 +309,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Add group member.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember;)
 + (NSString * _Nonnull)addGroupMember SWIFT_WARN_UNUSED_RESULT;
+/// Open chat.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openChat;)
++ (NSString * _Nonnull)openChat SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -840,6 +846,216 @@ SWIFT_CLASS_NAMED("BanInfo")
 
 
 
+@class GetSocialChatMessage;
+
+/// Describe group object.
+SWIFT_CLASS_NAMED("Chat")
+@interface GetSocialChat : NSObject
+/// Chat identifier
+@property (nonatomic, readonly, copy) NSString * _Nonnull chatId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull title;
+/// Avatar Url
+@property (nonatomic, readonly, copy) NSString * _Nullable avatarUrl;
+/// Creation date
+@property (nonatomic, readonly) int64_t createdAt;
+/// Last update
+@property (nonatomic, readonly) int64_t updatedAt;
+/// Number of members
+@property (nonatomic, readonly) NSInteger membersCount;
+/// Last message.
+@property (nonatomic, readonly, strong) GetSocialChatMessage * _Nullable lastMessage;
+/// Other member.
+@property (nonatomic, readonly, strong) GetSocialUser * _Nullable otherMember;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Describe a chat id.
+SWIFT_CLASS_NAMED("ChatId")
+@interface GetSocialChatId : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+/// Create new ChatId instance.
+/// \param id Chat id.
+///
+///
+/// returns:
+///
+/// New <code>ChatId</code> instance.
++ (GetSocialChatId * _Nonnull)createWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create new ChatId instance with user Id.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:	User Id.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>ChatId</code> instance.
++ (GetSocialChatId * _Nonnull)createWithUserId:(GetSocialUserId * _Nonnull)userId SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe a chat message instance.
+SWIFT_CLASS_NAMED("ChatMessage")
+@interface GetSocialChatMessage : NSObject
+/// Message id.
+@property (nonatomic, readonly, copy) NSString * _Nonnull messageId;
+/// Text content.
+@property (nonatomic, readonly, copy) NSString * _Nullable text;
+/// Author.
+@property (nonatomic, readonly, strong) GetSocialUser * _Nonnull author;
+/// Media attachments.
+@property (nonatomic, readonly, copy) NSArray<GetSocialMediaAttachment *> * _Nonnull mediaAttachments;
+/// Custom properties.
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Date of sending as UNIX timestamp in UTC.
+@property (nonatomic, readonly) int64_t sentAt;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Describe Chat message content.
+SWIFT_CLASS_NAMED("ChatMessageContent")
+@interface GetSocialChatMessageContent : NSObject
+/// Text content.
+@property (nonatomic, copy) NSString * _Nullable text;
+/// Attachments, like image and video.
+@property (nonatomic, copy) NSArray<GetSocialMediaAttachment *> * _Nonnull attachments;
+/// Custom properties.
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Set property.
+/// \param value Value to set.
+///
+/// \param forKey Key for the value.
+///
+- (void)setPropertyValue:(NSString * _Nonnull)value forKey:(NSString * _Nonnull)forKey;
+/// Append media attachment.
+/// \param attachment Media attachment.
+///
+- (void)appendMediaAttachment:(GetSocialMediaAttachment * _Nonnull)attachment;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+
+@class GetSocialChatMessagesQuery;
+
+/// Describe chat messages paging query.
+SWIFT_CLASS_NAMED("ChatMessagesPagingQuery")
+@interface GetSocialChatMessagesPagingQuery : NSObject
+/// Default limit.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger defaultLimit;)
++ (NSInteger)defaultLimit SWIFT_WARN_UNUSED_RESULT;
+/// Next cursor to load next result page.
+@property (nonatomic, copy) NSString * _Nullable nextMessagesCursor;
+/// Previous cursor to load previous result page.
+@property (nonatomic, copy) NSString * _Nullable previousMessagesCursor;
+/// Limit.
+@property (nonatomic) NSInteger limit;
+/// Constructor.
+/// \param query <code>ChatMessagesQuery</code> instance.
+///
+///
+/// returns:
+///
+/// New <code>ChatMessagesPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialChatMessagesQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Result of getting chat messages method.
+SWIFT_CLASS_NAMED("ChatMessagesPagingResult")
+@interface GetSocialChatMessagesPagingResult : NSObject
+/// List of messages.
+@property (nonatomic, readonly, copy) NSArray<GetSocialChatMessage *> * _Nonnull messages;
+/// Cursor to load more new messages.
+@property (nonatomic, readonly, copy) NSString * _Nonnull nextMessagesCursor;
+/// Cursor to load more messages.
+@property (nonatomic, readonly, copy) NSString * _Nonnull previousMessagesCursor;
+/// Cursor to load latest messages.
+@property (nonatomic, readonly, copy) NSString * _Nonnull refreshCursor;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+/// Describe a query to get reaction.
+SWIFT_CLASS_NAMED("ChatMessagesQuery")
+@interface GetSocialChatMessagesQuery : NSObject
+/// Create a query to get chat messages.
+/// \param id ChatId object.
+///
+///
+/// returns:
+///
+/// New <code>ChatMessagesQuery</code> instance.
++ (GetSocialChatMessagesQuery * _Nonnull)inChatWithId:(GetSocialChatId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Describe chats paging query.
+SWIFT_CLASS_NAMED("ChatsPagingQuery")
+@interface GetSocialChatsPagingQuery : GetSocialPagingQuery
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Result of getting chats method.
+SWIFT_CLASS_NAMED("ChatsPagingResult")
+@interface GetSocialChatsPagingResult : GetSocialPagingResult
+/// List of chats.
+@property (nonatomic, readonly, copy) NSArray<GetSocialChat *> * _Nonnull chats;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
 @class GetSocialFriendsQuery;
 @class GetSocialFriendsPagingQuery;
 @class GetSocialFriendsPagingResult;
@@ -871,7 +1087,7 @@ enum GetSocialReportingReason : NSInteger;
 @class GetSocialJoinGroupQuery;
 @class GetSocialUpdateGroupMembersQuery;
 @class RemoveGroupMembersQuery;
-@class Membership;
+@class GetSocialMembership;
 
 /// Interface for community related methods.
 SWIFT_CLASS_NAMED("Communities")
@@ -894,367 +1110,771 @@ SWIFT_CLASS_NAMED("Communities")
 ///     parameters
 ///     <ul>
 ///       <li>
-///         ids:          List of user identifiers to remove from friends list.
+///         ids:		List of user identifiers to remove from friends list.
 ///       </li>
 ///       <li>
-///         success:      Called if friends were removed.
+///         success:      	Called if friends were removed.
 ///       </li>
 ///       <li>
-///         failure:      Called if operation failed.
+///         failure:          	Called if operation failed.
 ///       </li>
 ///     </ul>
 ///   </li>
 /// </ul>
 + (void)removeFriendsWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Check if users are friend of current user.
-/// \param ids List of user identifiers.
-///
-/// \param success Called with result if users are friends or not.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:          List of user identifiers.
+///   </li>
+///   <li>
+///     success:      Called with result if users are friends or not.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)areFriendsWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSDictionary<NSString *, NSNumber *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Check if user is friend of current user.
-/// \param id User identifier.
-///
-/// \param success Called with result if user is friend or not.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:           User identifier.
+///   </li>
+///   <li>
+///     success:      Called with result if user is friend or not.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)isFriendWithId:(GetSocialUserId * _Nonnull)id success:(void (^ _Nonnull)(BOOL))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Return number of friends of a user.
-/// \param query Query parameters.
-///
-/// \param success Called with number of friends.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameters.
+///   </li>
+///   <li>
+///     success:      Called with number of friends.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)friendsCountWithQuery:(GetSocialFriendsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a list of friends of a user.
-/// \param query Query parameters.
-///
-/// \param success Called with friends of the provided user.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameters.
+///   </li>
+///   <li>
+///     success:      Called with friends of the provided user.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)friendsWithQuery:(GetSocialFriendsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialFriendsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a list of suggested friends of current user.
-/// \param query Query parameter.
-///
-/// \param success Called with list of suggested friends.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameter.
+///   </li>
+///   <li>
+///     success:      Called with list of suggested friends.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)suggestedFriendsWithQuery:(GetSocialSuggestedFriendsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialSuggestedFriendsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Set the provided users as friends of current user.
 /// important:
 ///
 /// Existing friends will be removed!
-/// \param ids List of user identifiers.
-///
-/// \param success Called if friends was successfully set.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:          List of user identifiers.
+///   </li>
+///   <li>
+///     success:      Called if friends was successfully set.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)setFriendsWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Find users.
-/// \param query Search parameter.
-///
-/// \param success Called with list of users. The list is empty if no user found.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Search parameter.
+///   </li>
+///   <li>
+///     success:          Called with list of users. The list is empty if no user found.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)usersWithQuery:(GetSocialUsersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialUsersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get multiple users by identifiers.
-/// \param ids List of user identifiers.
-///
-/// \param success Called with map of users, where key is user id. The list is empty if no user found.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:              List of user identifiers.
+///   </li>
+///   <li>
+///     success:          Called with map of users, where key is user id. The list is empty if no user found.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)usersWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSDictionary<NSString *, GetSocialUser *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get single user by identifier.
-/// \param id User identifier.
-///
-/// \param success Called with the user instance.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               User identifier.
+///   </li>
+///   <li>
+///     success:          Called with the user instance.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)userWithId:(GetSocialUserId * _Nonnull)id success:(void (^ _Nonnull)(GetSocialUser * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Return number of user matching the provided query.
-/// \param query Query parameter.
-///
-/// \param success Called with number of users.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of users.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)usersCountWithQuery:(GetSocialUsersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Follow a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called if operation succeeded with total numbers of followed entities.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded with total numbers of followed entities.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)followWithQuery:(GetSocialFollowQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Unfollow a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called if operation succeeded total numbers of followed entities.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded total numbers of followed entities.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)unfollowWithQuery:(GetSocialFollowQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Check if a user follows a community entity, like topic or user.
-/// \param id User id.
-///
-/// \param query Query parameter.
-///
-/// \param success Called with result map, where key is the community entity’s id.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               User id.
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with result map, where key is the community entity’s id.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)isFollowingWithUserId:(GetSocialUserId * _Nonnull)id query:(GetSocialFollowQuery * _Nonnull)query success:(void (^ _Nonnull)(NSDictionary<NSString *, NSNumber *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get followers of a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called with followers.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with followers.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)followersWithQuery:(GetSocialFollowersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialUsersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get number of followers of a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called with number of followers.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of followers.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)followersCountWithQuery:(GetSocialFollowersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get announcements.
-/// \param query Query parameter.
-///
-/// \param success Called with list of announcements.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameter.
+///   </li>
+///   <li>
+///     success:      Called with list of announcements.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)announcementsWithQuery:(GetSocialAnnouncementsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialActivity *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get activities.
-/// \param query Query parameter.
-///
-/// \param success Called with list of activities.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameter.
+///   </li>
+///   <li>
+///     success:      Called with list of activities.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)activitiesWithQuery:(GetSocialActivitiesPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialActivitiesPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a single activity.
-/// \param id Activity id.
-///
-/// \param success Called with activity instance.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Activity id.
+///   </li>
+///   <li>
+///     success:          Called with activity instance.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)activityWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Post activity content to the specified target.
-/// \param content Content to post.
-///
-/// \param target Where to post the content.
-///
-/// \param success Called with activity instance if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     content:          Content to post.
+///   </li>
+///   <li>
+///     target:           Where to post the content.
+///   </li>
+///   <li>
+///     success:          Called with activity instance if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)postActivityContent:(GetSocialActivityContent * _Nonnull)content target:(GetSocialPostActivityTarget * _Nonnull)target success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Update existing activity with provided content.
-/// \param id Activity id to update.
-///
-/// \param content New content.
-///
-/// \param success Called with updated activity instance if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:			Activity id to update.
+///   </li>
+///   <li>
+///     content:      New content.
+///   </li>
+///   <li>
+///     success:      Called with updated activity instance if operation succeeded.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)updateActivityWithId:(NSString * _Nonnull)id content:(GetSocialActivityContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Add reaction to an activity.
-/// \param reaction Reaction to add.
-///
-/// \param activityId To add the reaction to.
-///
-/// \param success Called if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     reaction:         Reaction to add.
+///   </li>
+///   <li>
+///     activityId:       To add the reaction to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)addReaction:(NSString * _Nonnull)reaction toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Remove a reaction from an activity.
-/// \param reaction Reaction to remove.
-///
-/// \param activityId To remove the reaction from.
-///
-/// \param success Called if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     reaction:         Reaction to remove.
+///   </li>
+///   <li>
+///     activityId:       To remove the reaction from.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeReaction:(NSString * _Nonnull)reaction fromActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get reactions.
-/// \param query Query parameters.
-///
-/// \param success Called with reactions.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called with reactions.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)reactionsWithQuery:(GetSocialReactionsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialReactionsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Report an activity.
-/// \param id Activity id to report.
-///
-/// \param reason Reason of reporting.
-///
-/// \param explanation Explanation of reason.
-///
-/// \param success Called if operation succeededs.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Activity id to report.
+///   </li>
+///   <li>
+///     reason:           Reason of reporting.
+///   </li>
+///   <li>
+///     explanation:      Explanation of reason.
+///   </li>
+///   <li>
+///     success:          Called if operation succeededs.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)reportActivityWithId:(NSString * _Nonnull)id reason:(enum GetSocialReportingReason)reason explanation:(NSString * _Nullable)explanation success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Remove activities.
-/// \param query Query parameters.
-///
-/// \param success Called if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeActivitiesWithQuery:(GetSocialRemoveActivitiesQuery * _Nonnull)query success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Find tags.
-/// \param query Query parameters.
-///
-/// \param success Called with list of tags.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called with list of tags.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)tagsWithQuery:(GetSocialTagsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<NSString *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a single topic.
-/// \param id Topic id.
-///
-/// \param success Called with topic.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Topic id.
+///   </li>
+///   <li>
+///     success:          Called with topic.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)topicWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialTopic * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Find topics.
-/// \param query Query parameter.
-///
-/// \param success Called with list of topics.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with list of topics.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)topicsWithQuery:(GetSocialTopicsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialTopicsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get number of topics.
-/// \param query Query parameter.
-///
-/// \param success Called with number of topics.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of topics.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)topicsCountWithQuery:(GetSocialTopicsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Creates a new group.
-/// \param content Group content.
-///
-/// \param success Called with created group.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     content:          Group content.
+///   </li>
+///   <li>
+///     success:          Called with created group.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)createGroupWithContent:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Updates an existing group.
-/// \param id Existing group id.
-///
-/// \param content New group content.
-///
-/// \param success Called with updated topic.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Existing group id.
+///   </li>
+///   <li>
+///     content:          New group content.
+///   </li>
+///   <li>
+///     success:          Called with updated topic.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)updateGroupWithId:(NSString * _Nonnull)id content:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Removes groups.
-/// \param ids Group ids to delete.
-///
-/// \param success Called if groups are removed.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:              Group ids to delete.
+///   </li>
+///   <li>
+///     success:          Called if groups are removed.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeGroupsWithIds:(NSArray<NSString *> * _Nonnull)ids success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get members of the provided group.
-/// \param query Query parameter.
-///
-/// \param success Called with group members .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with group members .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)membersOfGroupWithQuery:(GetSocialMembersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMembersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get groups.
-/// \param query Query parameter.
-///
-/// \param success Called with groups.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with groups.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)groupsWithQuery:(GetSocialGroupsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get number of groups.
-/// \param query Query parameter.
-///
-/// \param success Called with number of groups .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of groups .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)groupsCountWithQuery:(GetSocialGroupsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get group by id.
-/// \param id Group id.
-///
-/// \param success Called with group .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Group id.
+///   </li>
+///   <li>
+///     success:          Called with group .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)groupWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Adds user to a group.
-/// \param query Query parameter.
-///
-/// \param success Called with new group member .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with new group member .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)addGroupMembersWithQuery:(GetSocialAddGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Current user joins a group.
-/// \param query Query parameter.
-///
-/// \param success Called with new group member.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with new group member.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)joinGroupWithQuery:(GetSocialJoinGroupQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMember * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Updates an existing group member.
-/// \param query Query parameter.
-///
-/// \param success Called with updated group member.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with updated group member.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)updateGroupMembersWithQuery:(GetSocialUpdateGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Removes member from group.
-/// \param query Query parameter.
-///
-/// \param success Called if member removed.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called if member removed.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeGroupMembersWithQuery:(RemoveGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Checks if users are member of group.
-/// \param id Group id.
-///
-/// \param userIds User ids to check.
-///
-/// \param success Called if member statuses.
-///
-/// \param failure Called if operation failed.
-///
-+ (void)areGroupMembersOf:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds success:(void (^ _Nonnull)(NSDictionary<NSString *, Membership *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Group id.
+///   </li>
+///   <li>
+///     userIds:       	User ids to check.
+///   </li>
+///   <li>
+///     success:          Called if member statuses.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)areGroupMembersOf:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds success:(void (^ _Nonnull)(NSDictionary<NSString *, GetSocialMembership *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Sends a chat message to the provided target.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     content:      Chat message content
+///   </li>
+///   <li>
+///     target:       Chat message recipient.
+///   </li>
+///   <li>
+///     success:      Called if message sent.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
++ (void)sendChatMessage:(GetSocialChatMessageContent * _Nonnull)content target:(GetSocialChatId * _Nonnull)target success:(void (^ _Nonnull)(GetSocialChatMessage * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Retrieves existing chat messages.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query: 		Chat messages paging query.
+///   </li>
+///   <li>
+///     success: 		Called with list of messages.
+///   </li>
+///   <li>
+///     failure: 		Called if operation failed.
+///   </li>
+/// </ul>
++ (void)chatMessages:(GetSocialChatMessagesPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialChatMessagesPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Retrieves existing chats.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query: 		Chats paging query.
+///   </li>
+///   <li>
+///     success: 		Called with list of chats.
+///   </li>
+///   <li>
+///     failure: 		Called if operation failed.
+///   </li>
+/// </ul>
++ (void)chats:(GetSocialChatsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialChatsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Retrieves existing chat by id.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id: 		Chat id.
+///   </li>
+///   <li>
+///     success: 	Called with chat object, if it exists.
+///   </li>
+///   <li>
+///     failure: 	Called if operation failed or chat not found.
+///   </li>
+/// </ul>
++ (void)chat:(GetSocialChatId * _Nonnull)id success:(void (^ _Nonnull)(GetSocialChat * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1324,12 +1944,20 @@ SWIFT_CLASS_NAMED("CommunitiesSettings")
 @property (nonatomic, readonly) BOOL isDiscovarable;
 /// Is private.
 @property (nonatomic, readonly) BOOL isPrivate;
-/// Check if sepcified action is available or not.
+/// Check if specified action is available or not.
 /// - parameters:
 /// - action:       The action to check.
 /// - returns:
 /// <code>true</code>, if action is available, otherwise <code>false</code>.
 - (BOOL)isActionAllowedWithAction:(enum GetSocialCommunitiesAction)action SWIFT_WARN_UNUSED_RESULT;
+/// Check which role allowed to perform the specified action.
+/// \param action The action to check.
+///
+///
+/// returns:
+///
+/// <code>Role</code> instance. If action not found, it will return Role.admin.
+- (enum GetSocialMemberRole)permissionRoleForAction:(enum GetSocialCommunitiesAction)action SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -1882,7 +2510,7 @@ SWIFT_CLASS_NAMED("Group")
 /// Number of members
 @property (nonatomic, readonly) NSInteger membersCount;
 /// Membership info
-@property (nonatomic, readonly, strong) Membership * _Nullable membership;
+@property (nonatomic, readonly, strong) GetSocialMembership * _Nullable membership;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -1904,10 +2532,20 @@ SWIFT_CLASS_NAMED("GroupContent")
 @property (nonatomic, strong) GetSocialMediaAttachment * _Nullable avatar;
 /// Custom properties
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Defines if group is visible for everyone or not
+@property (nonatomic) BOOL isDiscoverable;
+/// Defines if users can join without approval or not
+@property (nonatomic) BOOL isPrivate;
 /// Create a new group content to create a group.
 /// \param groupId Group id.
 ///
 - (nonnull instancetype)initWithGroupId:(NSString * _Nonnull)groupId OBJC_DESIGNATED_INITIALIZER;
+/// Set permission.
+/// \param action CommunitiesAction
+///
+/// \param role Role
+///
+- (void)setPermissionRole:(enum GetSocialMemberRole)role forAction:(enum GetSocialCommunitiesAction)action;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1921,7 +2559,7 @@ SWIFT_CLASS_NAMED("GroupContent")
 SWIFT_CLASS_NAMED("GroupMember")
 @interface GetSocialGroupMember : GetSocialUser
 /// Membership details
-@property (nonatomic, readonly, strong) Membership * _Nonnull membership;
+@property (nonatomic, readonly, strong) GetSocialMembership * _Nonnull membership;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -2539,6 +3177,8 @@ SWIFT_CLASS_NAMED("MediaAttachment")
 
 
 
+
+
 SWIFT_PROTOCOL_NAMED("MediaUploader")
 @protocol GetSocialMediaUploader
 - (NSString * _Nullable)uploadMedia:(NSData * _Nonnull)media to:(NSURL * _Nonnull)url withMetadata:(NSDictionary<NSString *, NSString *> * _Nonnull)metadata SWIFT_WARN_UNUSED_RESULT;
@@ -2613,8 +3253,17 @@ SWIFT_CLASS_NAMED("MembersQuery")
 
 
 
-SWIFT_CLASS("_TtC12GetSocialSDK10Membership")
-@interface Membership : NSObject
+/// Describe group object.
+SWIFT_CLASS_NAMED("Membership")
+@interface GetSocialMembership : NSObject
+/// Member role
+@property (nonatomic, readonly) enum GetSocialMemberRole role;
+/// Member status
+@property (nonatomic, readonly) enum GetSocialMemberStatus status;
+/// Creation date
+@property (nonatomic, readonly) int64_t createdAt;
+/// Invitation token
+@property (nonatomic, readonly, copy) NSString * _Nullable invitationToken;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -2828,6 +3477,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Placeholder to send notification to referrer.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull referrer;)
 + (NSString * _Nonnull)referrer SWIFT_WARN_UNUSED_RESULT;
+/// Placeholder to send notification to followers.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull followers;)
++ (NSString * _Nonnull)followers SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -2898,6 +3550,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Notification sent from SDK.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull sdk;)
 + (NSString * _Nonnull)sdk SWIFT_WARN_UNUSED_RESULT;
+/// Notification sent on new chat message.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull chatMessage;)
++ (NSString * _Nonnull)chatMessage SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -3908,7 +4563,7 @@ SWIFT_CLASS_NAMED("UserId")
 /// - id:           Id of user.
 /// - returns:
 /// New <code>UserId</code> instance.
-+ (GetSocialUserId * _Nonnull)createWithProvider:(NSString * _Nonnull)provider id:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
++ (GetSocialUserId * _Nonnull)createWithProvider:(NSString * _Nonnull)provider userId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a UserId instance with current user.
 /// New <code>UserId</code> instance.
 + (GetSocialUserId * _Nonnull)currentUser SWIFT_WARN_UNUSED_RESULT;
@@ -3938,7 +4593,7 @@ SWIFT_CLASS_NAMED("UserIdList")
 /// - id:           Ids of users.
 /// - returns:
 /// New <code>UserId</code> instance.
-+ (GetSocialUserIdList * _Nonnull)createWithProvider:(NSString * _Nonnull)provider ids:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
++ (GetSocialUserIdList * _Nonnull)createWithProvider:(NSString * _Nonnull)provider userIds:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -4013,6 +4668,22 @@ SWIFT_CLASS_NAMED("UserUpdate")
 - (void)setPrivatePropertyValue:(NSString * _Nonnull)value forKey:(NSString * _Nonnull)forKey;
 /// Remove private property.
 - (void)removePrivatePropertyWithKey:(NSString * _Nonnull)forKey;
+/// Increase public property value.
+/// \param by positive number
+///
+- (void)increasePublicPropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
+/// Decrease public property value.
+/// \param by positive number
+///
+- (void)decreasePublicPropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
+/// Increase private property value.
+/// \param by positive number
+///
+- (void)increasePrivatePropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
+/// Decrease private property value.
+/// \param by positive number
+///
+- (void)decreasePrivatePropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -4373,6 +5044,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Status.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember_Status;)
 + (NSString * _Nonnull)addGroupMember_Status SWIFT_WARN_UNUSED_RESULT;
+/// ChatId.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openChat_ChatId;)
++ (NSString * _Nonnull)openChat_ChatId SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -4401,6 +5075,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Add group member.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull addGroupMember;)
 + (NSString * _Nonnull)addGroupMember SWIFT_WARN_UNUSED_RESULT;
+/// Open chat.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull openChat;)
++ (NSString * _Nonnull)openChat SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -4935,6 +5612,216 @@ SWIFT_CLASS_NAMED("BanInfo")
 
 
 
+@class GetSocialChatMessage;
+
+/// Describe group object.
+SWIFT_CLASS_NAMED("Chat")
+@interface GetSocialChat : NSObject
+/// Chat identifier
+@property (nonatomic, readonly, copy) NSString * _Nonnull chatId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull title;
+/// Avatar Url
+@property (nonatomic, readonly, copy) NSString * _Nullable avatarUrl;
+/// Creation date
+@property (nonatomic, readonly) int64_t createdAt;
+/// Last update
+@property (nonatomic, readonly) int64_t updatedAt;
+/// Number of members
+@property (nonatomic, readonly) NSInteger membersCount;
+/// Last message.
+@property (nonatomic, readonly, strong) GetSocialChatMessage * _Nullable lastMessage;
+/// Other member.
+@property (nonatomic, readonly, strong) GetSocialUser * _Nullable otherMember;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Describe a chat id.
+SWIFT_CLASS_NAMED("ChatId")
+@interface GetSocialChatId : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+/// Create new ChatId instance.
+/// \param id Chat id.
+///
+///
+/// returns:
+///
+/// New <code>ChatId</code> instance.
++ (GetSocialChatId * _Nonnull)createWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create new ChatId instance with user Id.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:	User Id.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>ChatId</code> instance.
++ (GetSocialChatId * _Nonnull)createWithUserId:(GetSocialUserId * _Nonnull)userId SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe a chat message instance.
+SWIFT_CLASS_NAMED("ChatMessage")
+@interface GetSocialChatMessage : NSObject
+/// Message id.
+@property (nonatomic, readonly, copy) NSString * _Nonnull messageId;
+/// Text content.
+@property (nonatomic, readonly, copy) NSString * _Nullable text;
+/// Author.
+@property (nonatomic, readonly, strong) GetSocialUser * _Nonnull author;
+/// Media attachments.
+@property (nonatomic, readonly, copy) NSArray<GetSocialMediaAttachment *> * _Nonnull mediaAttachments;
+/// Custom properties.
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Date of sending as UNIX timestamp in UTC.
+@property (nonatomic, readonly) int64_t sentAt;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Describe Chat message content.
+SWIFT_CLASS_NAMED("ChatMessageContent")
+@interface GetSocialChatMessageContent : NSObject
+/// Text content.
+@property (nonatomic, copy) NSString * _Nullable text;
+/// Attachments, like image and video.
+@property (nonatomic, copy) NSArray<GetSocialMediaAttachment *> * _Nonnull attachments;
+/// Custom properties.
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Set property.
+/// \param value Value to set.
+///
+/// \param forKey Key for the value.
+///
+- (void)setPropertyValue:(NSString * _Nonnull)value forKey:(NSString * _Nonnull)forKey;
+/// Append media attachment.
+/// \param attachment Media attachment.
+///
+- (void)appendMediaAttachment:(GetSocialMediaAttachment * _Nonnull)attachment;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+
+@class GetSocialChatMessagesQuery;
+
+/// Describe chat messages paging query.
+SWIFT_CLASS_NAMED("ChatMessagesPagingQuery")
+@interface GetSocialChatMessagesPagingQuery : NSObject
+/// Default limit.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger defaultLimit;)
++ (NSInteger)defaultLimit SWIFT_WARN_UNUSED_RESULT;
+/// Next cursor to load next result page.
+@property (nonatomic, copy) NSString * _Nullable nextMessagesCursor;
+/// Previous cursor to load previous result page.
+@property (nonatomic, copy) NSString * _Nullable previousMessagesCursor;
+/// Limit.
+@property (nonatomic) NSInteger limit;
+/// Constructor.
+/// \param query <code>ChatMessagesQuery</code> instance.
+///
+///
+/// returns:
+///
+/// New <code>ChatMessagesPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialChatMessagesQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Result of getting chat messages method.
+SWIFT_CLASS_NAMED("ChatMessagesPagingResult")
+@interface GetSocialChatMessagesPagingResult : NSObject
+/// List of messages.
+@property (nonatomic, readonly, copy) NSArray<GetSocialChatMessage *> * _Nonnull messages;
+/// Cursor to load more new messages.
+@property (nonatomic, readonly, copy) NSString * _Nonnull nextMessagesCursor;
+/// Cursor to load more messages.
+@property (nonatomic, readonly, copy) NSString * _Nonnull previousMessagesCursor;
+/// Cursor to load latest messages.
+@property (nonatomic, readonly, copy) NSString * _Nonnull refreshCursor;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+/// Describe a query to get reaction.
+SWIFT_CLASS_NAMED("ChatMessagesQuery")
+@interface GetSocialChatMessagesQuery : NSObject
+/// Create a query to get chat messages.
+/// \param id ChatId object.
+///
+///
+/// returns:
+///
+/// New <code>ChatMessagesQuery</code> instance.
++ (GetSocialChatMessagesQuery * _Nonnull)inChatWithId:(GetSocialChatId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Describe chats paging query.
+SWIFT_CLASS_NAMED("ChatsPagingQuery")
+@interface GetSocialChatsPagingQuery : GetSocialPagingQuery
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+/// Result of getting chats method.
+SWIFT_CLASS_NAMED("ChatsPagingResult")
+@interface GetSocialChatsPagingResult : GetSocialPagingResult
+/// List of chats.
+@property (nonatomic, readonly, copy) NSArray<GetSocialChat *> * _Nonnull chats;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
 @class GetSocialFriendsQuery;
 @class GetSocialFriendsPagingQuery;
 @class GetSocialFriendsPagingResult;
@@ -4966,7 +5853,7 @@ enum GetSocialReportingReason : NSInteger;
 @class GetSocialJoinGroupQuery;
 @class GetSocialUpdateGroupMembersQuery;
 @class RemoveGroupMembersQuery;
-@class Membership;
+@class GetSocialMembership;
 
 /// Interface for community related methods.
 SWIFT_CLASS_NAMED("Communities")
@@ -4989,367 +5876,771 @@ SWIFT_CLASS_NAMED("Communities")
 ///     parameters
 ///     <ul>
 ///       <li>
-///         ids:          List of user identifiers to remove from friends list.
+///         ids:		List of user identifiers to remove from friends list.
 ///       </li>
 ///       <li>
-///         success:      Called if friends were removed.
+///         success:      	Called if friends were removed.
 ///       </li>
 ///       <li>
-///         failure:      Called if operation failed.
+///         failure:          	Called if operation failed.
 ///       </li>
 ///     </ul>
 ///   </li>
 /// </ul>
 + (void)removeFriendsWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Check if users are friend of current user.
-/// \param ids List of user identifiers.
-///
-/// \param success Called with result if users are friends or not.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:          List of user identifiers.
+///   </li>
+///   <li>
+///     success:      Called with result if users are friends or not.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)areFriendsWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSDictionary<NSString *, NSNumber *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Check if user is friend of current user.
-/// \param id User identifier.
-///
-/// \param success Called with result if user is friend or not.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:           User identifier.
+///   </li>
+///   <li>
+///     success:      Called with result if user is friend or not.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)isFriendWithId:(GetSocialUserId * _Nonnull)id success:(void (^ _Nonnull)(BOOL))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Return number of friends of a user.
-/// \param query Query parameters.
-///
-/// \param success Called with number of friends.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameters.
+///   </li>
+///   <li>
+///     success:      Called with number of friends.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)friendsCountWithQuery:(GetSocialFriendsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a list of friends of a user.
-/// \param query Query parameters.
-///
-/// \param success Called with friends of the provided user.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameters.
+///   </li>
+///   <li>
+///     success:      Called with friends of the provided user.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)friendsWithQuery:(GetSocialFriendsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialFriendsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a list of suggested friends of current user.
-/// \param query Query parameter.
-///
-/// \param success Called with list of suggested friends.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameter.
+///   </li>
+///   <li>
+///     success:      Called with list of suggested friends.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)suggestedFriendsWithQuery:(GetSocialSuggestedFriendsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialSuggestedFriendsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Set the provided users as friends of current user.
 /// important:
 ///
 /// Existing friends will be removed!
-/// \param ids List of user identifiers.
-///
-/// \param success Called if friends was successfully set.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:          List of user identifiers.
+///   </li>
+///   <li>
+///     success:      Called if friends was successfully set.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)setFriendsWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Find users.
-/// \param query Search parameter.
-///
-/// \param success Called with list of users. The list is empty if no user found.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Search parameter.
+///   </li>
+///   <li>
+///     success:          Called with list of users. The list is empty if no user found.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)usersWithQuery:(GetSocialUsersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialUsersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get multiple users by identifiers.
-/// \param ids List of user identifiers.
-///
-/// \param success Called with map of users, where key is user id. The list is empty if no user found.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:              List of user identifiers.
+///   </li>
+///   <li>
+///     success:          Called with map of users, where key is user id. The list is empty if no user found.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)usersWithIds:(GetSocialUserIdList * _Nonnull)ids success:(void (^ _Nonnull)(NSDictionary<NSString *, GetSocialUser *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get single user by identifier.
-/// \param id User identifier.
-///
-/// \param success Called with the user instance.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               User identifier.
+///   </li>
+///   <li>
+///     success:          Called with the user instance.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)userWithId:(GetSocialUserId * _Nonnull)id success:(void (^ _Nonnull)(GetSocialUser * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Return number of user matching the provided query.
-/// \param query Query parameter.
-///
-/// \param success Called with number of users.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of users.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)usersCountWithQuery:(GetSocialUsersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Follow a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called if operation succeeded with total numbers of followed entities.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded with total numbers of followed entities.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)followWithQuery:(GetSocialFollowQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Unfollow a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called if operation succeeded total numbers of followed entities.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded total numbers of followed entities.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)unfollowWithQuery:(GetSocialFollowQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Check if a user follows a community entity, like topic or user.
-/// \param id User id.
-///
-/// \param query Query parameter.
-///
-/// \param success Called with result map, where key is the community entity’s id.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               User id.
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with result map, where key is the community entity’s id.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)isFollowingWithUserId:(GetSocialUserId * _Nonnull)id query:(GetSocialFollowQuery * _Nonnull)query success:(void (^ _Nonnull)(NSDictionary<NSString *, NSNumber *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get followers of a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called with followers.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with followers.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)followersWithQuery:(GetSocialFollowersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialUsersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get number of followers of a community entity, like topic or user.
-/// \param query Query parameter.
-///
-/// \param success Called with number of followers.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of followers.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)followersCountWithQuery:(GetSocialFollowersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get announcements.
-/// \param query Query parameter.
-///
-/// \param success Called with list of announcements.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameter.
+///   </li>
+///   <li>
+///     success:      Called with list of announcements.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)announcementsWithQuery:(GetSocialAnnouncementsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialActivity *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get activities.
-/// \param query Query parameter.
-///
-/// \param success Called with list of activities.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:        Query parameter.
+///   </li>
+///   <li>
+///     success:      Called with list of activities.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)activitiesWithQuery:(GetSocialActivitiesPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialActivitiesPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a single activity.
-/// \param id Activity id.
-///
-/// \param success Called with activity instance.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Activity id.
+///   </li>
+///   <li>
+///     success:          Called with activity instance.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)activityWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Post activity content to the specified target.
-/// \param content Content to post.
-///
-/// \param target Where to post the content.
-///
-/// \param success Called with activity instance if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     content:          Content to post.
+///   </li>
+///   <li>
+///     target:           Where to post the content.
+///   </li>
+///   <li>
+///     success:          Called with activity instance if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)postActivityContent:(GetSocialActivityContent * _Nonnull)content target:(GetSocialPostActivityTarget * _Nonnull)target success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Update existing activity with provided content.
-/// \param id Activity id to update.
-///
-/// \param content New content.
-///
-/// \param success Called with updated activity instance if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:			Activity id to update.
+///   </li>
+///   <li>
+///     content:      New content.
+///   </li>
+///   <li>
+///     success:      Called with updated activity instance if operation succeeded.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
 + (void)updateActivityWithId:(NSString * _Nonnull)id content:(GetSocialActivityContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Add reaction to an activity.
-/// \param reaction Reaction to add.
-///
-/// \param activityId To add the reaction to.
-///
-/// \param success Called if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     reaction:         Reaction to add.
+///   </li>
+///   <li>
+///     activityId:       To add the reaction to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)addReaction:(NSString * _Nonnull)reaction toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Remove a reaction from an activity.
-/// \param reaction Reaction to remove.
-///
-/// \param activityId To remove the reaction from.
-///
-/// \param success Called if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     reaction:         Reaction to remove.
+///   </li>
+///   <li>
+///     activityId:       To remove the reaction from.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeReaction:(NSString * _Nonnull)reaction fromActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get reactions.
-/// \param query Query parameters.
-///
-/// \param success Called with reactions.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called with reactions.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)reactionsWithQuery:(GetSocialReactionsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialReactionsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Report an activity.
-/// \param id Activity id to report.
-///
-/// \param reason Reason of reporting.
-///
-/// \param explanation Explanation of reason.
-///
-/// \param success Called if operation succeededs.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Activity id to report.
+///   </li>
+///   <li>
+///     reason:           Reason of reporting.
+///   </li>
+///   <li>
+///     explanation:      Explanation of reason.
+///   </li>
+///   <li>
+///     success:          Called if operation succeededs.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)reportActivityWithId:(NSString * _Nonnull)id reason:(enum GetSocialReportingReason)reason explanation:(NSString * _Nullable)explanation success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Remove activities.
-/// \param query Query parameters.
-///
-/// \param success Called if operation succeeded.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeActivitiesWithQuery:(GetSocialRemoveActivitiesQuery * _Nonnull)query success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Find tags.
-/// \param query Query parameters.
-///
-/// \param success Called with list of tags.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called with list of tags.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)tagsWithQuery:(GetSocialTagsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<NSString *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get a single topic.
-/// \param id Topic id.
-///
-/// \param success Called with topic.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Topic id.
+///   </li>
+///   <li>
+///     success:          Called with topic.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)topicWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialTopic * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Find topics.
-/// \param query Query parameter.
-///
-/// \param success Called with list of topics.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with list of topics.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)topicsWithQuery:(GetSocialTopicsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialTopicsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get number of topics.
-/// \param query Query parameter.
-///
-/// \param success Called with number of topics.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of topics.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)topicsCountWithQuery:(GetSocialTopicsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Creates a new group.
-/// \param content Group content.
-///
-/// \param success Called with created group.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     content:          Group content.
+///   </li>
+///   <li>
+///     success:          Called with created group.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)createGroupWithContent:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Updates an existing group.
-/// \param id Existing group id.
-///
-/// \param content New group content.
-///
-/// \param success Called with updated topic.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Existing group id.
+///   </li>
+///   <li>
+///     content:          New group content.
+///   </li>
+///   <li>
+///     success:          Called with updated topic.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)updateGroupWithId:(NSString * _Nonnull)id content:(GetSocialGroupContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Removes groups.
-/// \param ids Group ids to delete.
-///
-/// \param success Called if groups are removed.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     ids:              Group ids to delete.
+///   </li>
+///   <li>
+///     success:          Called if groups are removed.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeGroupsWithIds:(NSArray<NSString *> * _Nonnull)ids success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get members of the provided group.
-/// \param query Query parameter.
-///
-/// \param success Called with group members .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with group members .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)membersOfGroupWithQuery:(GetSocialMembersPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMembersPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get groups.
-/// \param query Query parameter.
-///
-/// \param success Called with groups.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with groups.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)groupsWithQuery:(GetSocialGroupsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get number of groups.
-/// \param query Query parameter.
-///
-/// \param success Called with number of groups .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with number of groups .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)groupsCountWithQuery:(GetSocialGroupsQuery * _Nonnull)query success:(void (^ _Nonnull)(NSInteger))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Get group by id.
-/// \param id Group id.
-///
-/// \param success Called with group .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Group id.
+///   </li>
+///   <li>
+///     success:          Called with group .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)groupWithId:(NSString * _Nonnull)id success:(void (^ _Nonnull)(GetSocialGroup * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Adds user to a group.
-/// \param query Query parameter.
-///
-/// \param success Called with new group member .
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with new group member .
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)addGroupMembersWithQuery:(GetSocialAddGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Current user joins a group.
-/// \param query Query parameter.
-///
-/// \param success Called with new group member.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with new group member.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)joinGroupWithQuery:(GetSocialJoinGroupQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialGroupMember * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Updates an existing group member.
-/// \param query Query parameter.
-///
-/// \param success Called with updated group member.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called with updated group member.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)updateGroupMembersWithQuery:(GetSocialUpdateGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(NSArray<GetSocialGroupMember *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Removes member from group.
-/// \param query Query parameter.
-///
-/// \param success Called if member removed.
-///
-/// \param failure Called if operation failed.
-///
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameter.
+///   </li>
+///   <li>
+///     success:          Called if member removed.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
 + (void)removeGroupMembersWithQuery:(RemoveGroupMembersQuery * _Nonnull)query success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Checks if users are member of group.
-/// \param id Group id.
-///
-/// \param userIds User ids to check.
-///
-/// \param success Called if member statuses.
-///
-/// \param failure Called if operation failed.
-///
-+ (void)areGroupMembersOf:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds success:(void (^ _Nonnull)(NSDictionary<NSString *, Membership *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:               Group id.
+///   </li>
+///   <li>
+///     userIds:       	User ids to check.
+///   </li>
+///   <li>
+///     success:          Called if member statuses.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)areGroupMembersOf:(NSString * _Nonnull)id userIds:(GetSocialUserIdList * _Nonnull)userIds success:(void (^ _Nonnull)(NSDictionary<NSString *, GetSocialMembership *> * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Sends a chat message to the provided target.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     content:      Chat message content
+///   </li>
+///   <li>
+///     target:       Chat message recipient.
+///   </li>
+///   <li>
+///     success:      Called if message sent.
+///   </li>
+///   <li>
+///     failure:      Called if operation failed.
+///   </li>
+/// </ul>
++ (void)sendChatMessage:(GetSocialChatMessageContent * _Nonnull)content target:(GetSocialChatId * _Nonnull)target success:(void (^ _Nonnull)(GetSocialChatMessage * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Retrieves existing chat messages.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query: 		Chat messages paging query.
+///   </li>
+///   <li>
+///     success: 		Called with list of messages.
+///   </li>
+///   <li>
+///     failure: 		Called if operation failed.
+///   </li>
+/// </ul>
++ (void)chatMessages:(GetSocialChatMessagesPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialChatMessagesPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Retrieves existing chats.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query: 		Chats paging query.
+///   </li>
+///   <li>
+///     success: 		Called with list of chats.
+///   </li>
+///   <li>
+///     failure: 		Called if operation failed.
+///   </li>
+/// </ul>
++ (void)chats:(GetSocialChatsPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialChatsPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Retrieves existing chat by id.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id: 		Chat id.
+///   </li>
+///   <li>
+///     success: 	Called with chat object, if it exists.
+///   </li>
+///   <li>
+///     failure: 	Called if operation failed or chat not found.
+///   </li>
+/// </ul>
++ (void)chat:(GetSocialChatId * _Nonnull)id success:(void (^ _Nonnull)(GetSocialChat * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -5419,12 +6710,20 @@ SWIFT_CLASS_NAMED("CommunitiesSettings")
 @property (nonatomic, readonly) BOOL isDiscovarable;
 /// Is private.
 @property (nonatomic, readonly) BOOL isPrivate;
-/// Check if sepcified action is available or not.
+/// Check if specified action is available or not.
 /// - parameters:
 /// - action:       The action to check.
 /// - returns:
 /// <code>true</code>, if action is available, otherwise <code>false</code>.
 - (BOOL)isActionAllowedWithAction:(enum GetSocialCommunitiesAction)action SWIFT_WARN_UNUSED_RESULT;
+/// Check which role allowed to perform the specified action.
+/// \param action The action to check.
+///
+///
+/// returns:
+///
+/// <code>Role</code> instance. If action not found, it will return Role.admin.
+- (enum GetSocialMemberRole)permissionRoleForAction:(enum GetSocialCommunitiesAction)action SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -5977,7 +7276,7 @@ SWIFT_CLASS_NAMED("Group")
 /// Number of members
 @property (nonatomic, readonly) NSInteger membersCount;
 /// Membership info
-@property (nonatomic, readonly, strong) Membership * _Nullable membership;
+@property (nonatomic, readonly, strong) GetSocialMembership * _Nullable membership;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -5999,10 +7298,20 @@ SWIFT_CLASS_NAMED("GroupContent")
 @property (nonatomic, strong) GetSocialMediaAttachment * _Nullable avatar;
 /// Custom properties
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+/// Defines if group is visible for everyone or not
+@property (nonatomic) BOOL isDiscoverable;
+/// Defines if users can join without approval or not
+@property (nonatomic) BOOL isPrivate;
 /// Create a new group content to create a group.
 /// \param groupId Group id.
 ///
 - (nonnull instancetype)initWithGroupId:(NSString * _Nonnull)groupId OBJC_DESIGNATED_INITIALIZER;
+/// Set permission.
+/// \param action CommunitiesAction
+///
+/// \param role Role
+///
+- (void)setPermissionRole:(enum GetSocialMemberRole)role forAction:(enum GetSocialCommunitiesAction)action;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -6016,7 +7325,7 @@ SWIFT_CLASS_NAMED("GroupContent")
 SWIFT_CLASS_NAMED("GroupMember")
 @interface GetSocialGroupMember : GetSocialUser
 /// Membership details
-@property (nonatomic, readonly, strong) Membership * _Nonnull membership;
+@property (nonatomic, readonly, strong) GetSocialMembership * _Nonnull membership;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -6634,6 +7943,8 @@ SWIFT_CLASS_NAMED("MediaAttachment")
 
 
 
+
+
 SWIFT_PROTOCOL_NAMED("MediaUploader")
 @protocol GetSocialMediaUploader
 - (NSString * _Nullable)uploadMedia:(NSData * _Nonnull)media to:(NSURL * _Nonnull)url withMetadata:(NSDictionary<NSString *, NSString *> * _Nonnull)metadata SWIFT_WARN_UNUSED_RESULT;
@@ -6708,8 +8019,17 @@ SWIFT_CLASS_NAMED("MembersQuery")
 
 
 
-SWIFT_CLASS("_TtC12GetSocialSDK10Membership")
-@interface Membership : NSObject
+/// Describe group object.
+SWIFT_CLASS_NAMED("Membership")
+@interface GetSocialMembership : NSObject
+/// Member role
+@property (nonatomic, readonly) enum GetSocialMemberRole role;
+/// Member status
+@property (nonatomic, readonly) enum GetSocialMemberStatus status;
+/// Creation date
+@property (nonatomic, readonly) int64_t createdAt;
+/// Invitation token
+@property (nonatomic, readonly, copy) NSString * _Nullable invitationToken;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -6923,6 +8243,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Placeholder to send notification to referrer.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull referrer;)
 + (NSString * _Nonnull)referrer SWIFT_WARN_UNUSED_RESULT;
+/// Placeholder to send notification to followers.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull followers;)
++ (NSString * _Nonnull)followers SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -6993,6 +8316,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 /// Notification sent from SDK.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull sdk;)
 + (NSString * _Nonnull)sdk SWIFT_WARN_UNUSED_RESULT;
+/// Notification sent on new chat message.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull chatMessage;)
++ (NSString * _Nonnull)chatMessage SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -8003,7 +9329,7 @@ SWIFT_CLASS_NAMED("UserId")
 /// - id:           Id of user.
 /// - returns:
 /// New <code>UserId</code> instance.
-+ (GetSocialUserId * _Nonnull)createWithProvider:(NSString * _Nonnull)provider id:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
++ (GetSocialUserId * _Nonnull)createWithProvider:(NSString * _Nonnull)provider userId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a UserId instance with current user.
 /// New <code>UserId</code> instance.
 + (GetSocialUserId * _Nonnull)currentUser SWIFT_WARN_UNUSED_RESULT;
@@ -8033,7 +9359,7 @@ SWIFT_CLASS_NAMED("UserIdList")
 /// - id:           Ids of users.
 /// - returns:
 /// New <code>UserId</code> instance.
-+ (GetSocialUserIdList * _Nonnull)createWithProvider:(NSString * _Nonnull)provider ids:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
++ (GetSocialUserIdList * _Nonnull)createWithProvider:(NSString * _Nonnull)provider userIds:(NSArray<NSString *> * _Nonnull)ids SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -8108,6 +9434,22 @@ SWIFT_CLASS_NAMED("UserUpdate")
 - (void)setPrivatePropertyValue:(NSString * _Nonnull)value forKey:(NSString * _Nonnull)forKey;
 /// Remove private property.
 - (void)removePrivatePropertyWithKey:(NSString * _Nonnull)forKey;
+/// Increase public property value.
+/// \param by positive number
+///
+- (void)increasePublicPropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
+/// Decrease public property value.
+/// \param by positive number
+///
+- (void)decreasePublicPropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
+/// Increase private property value.
+/// \param by positive number
+///
+- (void)increasePrivatePropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
+/// Decrease private property value.
+/// \param by positive number
+///
+- (void)decreasePrivatePropertyWithKey:(NSString * _Nonnull)forKey by:(double)by;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;

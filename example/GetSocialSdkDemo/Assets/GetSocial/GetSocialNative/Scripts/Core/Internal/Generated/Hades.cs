@@ -286,6 +286,26 @@ namespace GetSocialSdk.Core
       DDUpdateGroupMembersResponse ddUpdateGroupMembers(DDUpdateGroupMembersRequest request);
       DDRemoveGroupMembersResponse ddRemoveGroupMembers(DDRemoveGroupMembersRequest request);
       /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      GetChatsResponse getChats(GetChatsRequest request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      GetChatResponse getChat(GetChatRequest request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      GetChatMessagesResponse getChatMessages(GetChatMessagesRequest request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      SendChatMessageResponse sendChatMessage(SendChatMessageRequest request);
+      /// <summary>
       /// #sdk6 #sdk7
       /// </summary>
       /// <param name="sessionId"></param>
@@ -337,6 +357,12 @@ namespace GetSocialSdk.Core
       /// <param name="event"></param>
       /// <param name="customData"></param>
       bool setReferrer(string sessionId, string referrerId, string @event, Dictionary<string, string> customData);
+      /// <summary>
+      /// DD
+      /// </summary>
+      /// <param name="request"></param>
+      DDGetReferralUsersResponse ddGetReferredUsers(DDGetReferralUsersRequest request);
+      DDGetReferralUsersResponse ddGetReferrerUsers(DDGetReferralUsersRequest request);
       /// <summary>
       /// #sdk6 #sdk7
       /// </summary>
@@ -3330,6 +3356,170 @@ namespace GetSocialSdk.Core
 
       
       /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public GetChatsResponse getChats(GetChatsRequest request)
+      {
+        send_getChats(request);
+        return recv_getChats();
+
+      }
+      public void send_getChats(GetChatsRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("getChats", TMessageType.Call, seqid_));
+        getChats_args args = new getChats_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public GetChatsResponse recv_getChats()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        getChats_result result = new getChats_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getChats failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public GetChatResponse getChat(GetChatRequest request)
+      {
+        send_getChat(request);
+        return recv_getChat();
+
+      }
+      public void send_getChat(GetChatRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("getChat", TMessageType.Call, seqid_));
+        getChat_args args = new getChat_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public GetChatResponse recv_getChat()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        getChat_result result = new getChat_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getChat failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public GetChatMessagesResponse getChatMessages(GetChatMessagesRequest request)
+      {
+        send_getChatMessages(request);
+        return recv_getChatMessages();
+
+      }
+      public void send_getChatMessages(GetChatMessagesRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("getChatMessages", TMessageType.Call, seqid_));
+        getChatMessages_args args = new getChatMessages_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public GetChatMessagesResponse recv_getChatMessages()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        getChatMessages_result result = new getChatMessages_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getChatMessages failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public SendChatMessageResponse sendChatMessage(SendChatMessageRequest request)
+      {
+        send_sendChatMessage(request);
+        return recv_sendChatMessage();
+
+      }
+      public void send_sendChatMessage(SendChatMessageRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("sendChatMessage", TMessageType.Call, seqid_));
+        sendChatMessage_args args = new sendChatMessage_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public SendChatMessageResponse recv_sendChatMessage()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        sendChatMessage_result result = new sendChatMessage_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "sendChatMessage failed: unknown result");
+      }
+
+      
+      /// <summary>
       /// #sdk6 #sdk7
       /// </summary>
       /// <param name="sessionId"></param>
@@ -3713,6 +3903,84 @@ namespace GetSocialSdk.Core
           throw result.Errors;
         }
         throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "setReferrer failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// DD
+      /// </summary>
+      /// <param name="request"></param>
+      public DDGetReferralUsersResponse ddGetReferredUsers(DDGetReferralUsersRequest request)
+      {
+        send_ddGetReferredUsers(request);
+        return recv_ddGetReferredUsers();
+
+      }
+      public void send_ddGetReferredUsers(DDGetReferralUsersRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("ddGetReferredUsers", TMessageType.Call, seqid_));
+        ddGetReferredUsers_args args = new ddGetReferredUsers_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public DDGetReferralUsersResponse recv_ddGetReferredUsers()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        ddGetReferredUsers_result result = new ddGetReferredUsers_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddGetReferredUsers failed: unknown result");
+      }
+
+      
+      public DDGetReferralUsersResponse ddGetReferrerUsers(DDGetReferralUsersRequest request)
+      {
+        send_ddGetReferrerUsers(request);
+        return recv_ddGetReferrerUsers();
+
+      }
+      public void send_ddGetReferrerUsers(DDGetReferralUsersRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("ddGetReferrerUsers", TMessageType.Call, seqid_));
+        ddGetReferrerUsers_args args = new ddGetReferrerUsers_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public DDGetReferralUsersResponse recv_ddGetReferrerUsers()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        ddGetReferrerUsers_result result = new ddGetReferrerUsers_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddGetReferrerUsers failed: unknown result");
       }
 
       
@@ -10769,6 +11037,10 @@ namespace GetSocialSdk.Core
         processMap_["ddGetGroupMembers"] = ddGetGroupMembers_Process;
         processMap_["ddUpdateGroupMembers"] = ddUpdateGroupMembers_Process;
         processMap_["ddRemoveGroupMembers"] = ddRemoveGroupMembers_Process;
+        processMap_["getChats"] = getChats_Process;
+        processMap_["getChat"] = getChat_Process;
+        processMap_["getChatMessages"] = getChatMessages_Process;
+        processMap_["sendChatMessage"] = sendChatMessage_Process;
         processMap_["createInviteUrl"] = createInviteUrl_Process;
         processMap_["createInvite"] = createInvite_Process;
         processMap_["getInviteProviders"] = getInviteProviders_Process;
@@ -10778,6 +11050,8 @@ namespace GetSocialSdk.Core
         processMap_["getReferredUsersV2"] = getReferredUsersV2_Process;
         processMap_["getReferrerUsers"] = getReferrerUsers_Process;
         processMap_["setReferrer"] = setReferrer_Process;
+        processMap_["ddGetReferredUsers"] = ddGetReferredUsers_Process;
+        processMap_["ddGetReferrerUsers"] = ddGetReferrerUsers_Process;
         processMap_["processCrossPromoClick"] = processCrossPromoClick_Process;
         processMap_["getActivities"] = getActivities_Process;
         processMap_["getStickyActivities"] = getStickyActivities_Process;
@@ -13006,6 +13280,146 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
+      public void getChats_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        getChats_args args = new getChats_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        getChats_result result = new getChats_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.getChats(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("getChats", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("getChats", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void getChat_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        getChat_args args = new getChat_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        getChat_result result = new getChat_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.getChat(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("getChat", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("getChat", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void getChatMessages_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        getChatMessages_args args = new getChatMessages_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        getChatMessages_result result = new getChatMessages_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.getChatMessages(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("getChatMessages", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("getChatMessages", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void sendChatMessage_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        sendChatMessage_args args = new sendChatMessage_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        sendChatMessage_result result = new sendChatMessage_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.sendChatMessage(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("sendChatMessage", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("sendChatMessage", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
       public void createInviteUrl_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
         createInviteUrl_args args = new createInviteUrl_args();
@@ -13315,6 +13729,76 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
           oprot.WriteMessageBegin(new TMessage("setReferrer", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void ddGetReferredUsers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        ddGetReferredUsers_args args = new ddGetReferredUsers_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        ddGetReferredUsers_result result = new ddGetReferredUsers_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.ddGetReferredUsers(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("ddGetReferredUsers", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("ddGetReferredUsers", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void ddGetReferrerUsers_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        ddGetReferrerUsers_args args = new ddGetReferrerUsers_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        ddGetReferrerUsers_result result = new ddGetReferrerUsers_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.ddGetReferrerUsers(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("ddGetReferrerUsers", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("ddGetReferrerUsers", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -35318,6 +35802,1042 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
+    public partial class getChats_args : TBase
+    {
+      private GetChatsRequest _request;
+
+      public GetChatsRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public getChats_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new GetChatsRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getChats_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getChats_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getChats_result : TBase
+    {
+      private GetChatsResponse _success;
+      private THErrors _errors;
+
+      public GetChatsResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public getChats_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new GetChatsResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getChats_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getChats_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getChat_args : TBase
+    {
+      private GetChatRequest _request;
+
+      public GetChatRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public getChat_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new GetChatRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getChat_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getChat_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getChat_result : TBase
+    {
+      private GetChatResponse _success;
+      private THErrors _errors;
+
+      public GetChatResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public getChat_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new GetChatResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getChat_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getChat_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getChatMessages_args : TBase
+    {
+      private GetChatMessagesRequest _request;
+
+      public GetChatMessagesRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public getChatMessages_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new GetChatMessagesRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getChatMessages_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getChatMessages_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getChatMessages_result : TBase
+    {
+      private GetChatMessagesResponse _success;
+      private THErrors _errors;
+
+      public GetChatMessagesResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public getChatMessages_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new GetChatMessagesResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getChatMessages_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getChatMessages_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class sendChatMessage_args : TBase
+    {
+      private SendChatMessageRequest _request;
+
+      public SendChatMessageRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public sendChatMessage_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new SendChatMessageRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("sendChatMessage_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("sendChatMessage_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class sendChatMessage_result : TBase
+    {
+      private SendChatMessageResponse _success;
+      private THErrors _errors;
+
+      public SendChatMessageResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public sendChatMessage_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new SendChatMessageResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("sendChatMessage_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("sendChatMessage_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
     public partial class createInviteUrl_args : TBase
     {
       private string _sessionId;
@@ -38091,6 +39611,524 @@ namespace GetSocialSdk.Core
           __first = false;
           __sb.Append("Success: ");
           __sb.Append(Success);
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddGetReferredUsers_args : TBase
+    {
+      private DDGetReferralUsersRequest _request;
+
+      public DDGetReferralUsersRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public ddGetReferredUsers_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new DDGetReferralUsersRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddGetReferredUsers_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddGetReferredUsers_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddGetReferredUsers_result : TBase
+    {
+      private DDGetReferralUsersResponse _success;
+      private THErrors _errors;
+
+      public DDGetReferralUsersResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public ddGetReferredUsers_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new DDGetReferralUsersResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddGetReferredUsers_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddGetReferredUsers_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddGetReferrerUsers_args : TBase
+    {
+      private DDGetReferralUsersRequest _request;
+
+      public DDGetReferralUsersRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public ddGetReferrerUsers_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new DDGetReferralUsersRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddGetReferrerUsers_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddGetReferrerUsers_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddGetReferrerUsers_result : TBase
+    {
+      private DDGetReferralUsersResponse _success;
+      private THErrors _errors;
+
+      public DDGetReferralUsersResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public ddGetReferrerUsers_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new DDGetReferralUsersResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddGetReferrerUsers_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddGetReferrerUsers_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
         }
         if (Errors != null && __isset.errors) {
           if(!__first) { __sb.Append(", "); }

@@ -33,6 +33,7 @@ namespace GetSocialSdk.Core
     public const string IrisNotificationsTypeRequestToJoinGroup = "request_to_join_group";
     public const string IrisNotificationsTypeInviteToJoinGroup = "invite_to_join_group";
     public const string IrisNotificationsTypeRequestToJoinGroupApproved = "request_to_join_group_approved";
+    public const string IrisNotificationsTypeChatMessage = "chat_message";
     public const string IrisNotificationsTypeTargeting = "targeting";
     public const string IrisNotificationsTypeDirect = "direct";
   }
