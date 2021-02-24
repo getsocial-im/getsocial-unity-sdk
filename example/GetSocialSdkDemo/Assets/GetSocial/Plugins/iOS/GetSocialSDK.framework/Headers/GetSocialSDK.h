@@ -2070,6 +2070,21 @@ SWIFT_CLASS_NAMED("CurrentUser")
 /// \param failure Called if operation failed.
 ///
 - (void)removeIdentityByProviderId:(NSString * _Nonnull)providerId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Refresh details of current user. Use this method if you have a Smart Flow which updates user 		properties.
+/// <ul>
+///   <li>
+///     parameters
+///     <ul>
+///       <li>
+///         success:      Called if operation finished.
+///       </li>
+///       <li>
+///         failure:      Called if operation failed.
+///       </li>
+///     </ul>
+///   </li>
+/// </ul>
+- (void)refreshWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -6836,6 +6851,21 @@ SWIFT_CLASS_NAMED("CurrentUser")
 /// \param failure Called if operation failed.
 ///
 - (void)removeIdentityByProviderId:(NSString * _Nonnull)providerId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Refresh details of current user. Use this method if you have a Smart Flow which updates user 		properties.
+/// <ul>
+///   <li>
+///     parameters
+///     <ul>
+///       <li>
+///         success:      Called if operation finished.
+///       </li>
+///       <li>
+///         failure:      Called if operation failed.
+///       </li>
+///     </ul>
+///   </li>
+/// </ul>
+- (void)refreshWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

@@ -863,6 +863,7 @@ extension ChatsPagingQuery : Swift.Decodable {
   @objc public func isAnonymous() -> Swift.Bool
   @objc(addIdentity:success:conflict:failure:) public func addIdentity(_ identity: GetSocialSDK.Identity, success: @escaping GetSocialSDK.SuccessCallback, conflict: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ConflictUser>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(removeIdentityByProviderId:success:failure:) public func removeIdentity(_ providerId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(refreshWithSuccess:failure:) public func refresh(success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc override dynamic public init()
   @objc deinit
 }

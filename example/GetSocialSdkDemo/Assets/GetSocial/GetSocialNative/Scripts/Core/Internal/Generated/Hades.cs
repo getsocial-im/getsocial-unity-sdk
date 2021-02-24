@@ -620,6 +620,11 @@ namespace GetSocialSdk.Core
       List<THPublicUser> getPublicUsers(string sessionId, List<string> ids);
       List<THUserReference> findAppUsers(string sessionId, string appId, THUsersQuery query);
       THPrivateUser updateAppUser(string sessionId, string userId, THPrivateUser request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="sessionId"></param>
+      /// <param name="userId"></param>
       THPrivateUser getPrivateUser(string sessionId, string userId);
       /// <summary>
       /// Smart Invites
@@ -6688,6 +6693,11 @@ namespace GetSocialSdk.Core
       }
 
       
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="sessionId"></param>
+      /// <param name="userId"></param>
       public THPrivateUser getPrivateUser(string sessionId, string userId)
       {
         send_getPrivateUser(sessionId, userId);

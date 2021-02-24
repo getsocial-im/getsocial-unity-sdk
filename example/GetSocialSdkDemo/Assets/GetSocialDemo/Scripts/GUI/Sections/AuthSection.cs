@@ -246,8 +246,11 @@ public class AuthSection : DemoMenuSection
         {
             var update = new UserUpdate().IncrementPublicProperty(_keyIncrement, double.Parse(_valIncrement));
             GetSocial.GetCurrentUser().UpdateDetails(update,
-                () => _console.LogD("Property incremented for key: " + _keyIncrement + "=" +
-                                    GetSocial.GetCurrentUser().PublicProperties[_keyIncrement]),
+                () => {
+                    _console.LogD("Property incremented for key: " + _keyIncrement + "=" +
+                                 GetSocial.GetCurrentUser().PublicProperties[_keyIncrement]);
+                    demoController.FetchCurrentUserData();
+                },
                 error => _console.LogE("Failed to increment property for key: " + _keyIncrement + ", error: " + error)
             );
         }, true, GSStyles.Button);
@@ -255,12 +258,31 @@ public class AuthSection : DemoMenuSection
         {
             var update = new UserUpdate().DecrementPublicProperty(_keyIncrement, double.Parse(_valIncrement));
             GetSocial.GetCurrentUser().UpdateDetails(update,
-                () => _console.LogD("Property decremented for key: " + _keyIncrement + "=" +
-                                    GetSocial.GetCurrentUser().PublicProperties[_keyIncrement]),
+                () => {
+                    _console.LogD("Property decremented for key: " + _keyIncrement + "=" +
+                                GetSocial.GetCurrentUser().PublicProperties[_keyIncrement]);
+                    demoController.FetchCurrentUserData();
+
+                },
                 error => _console.LogE("Failed to decrement property for key: " + _keyIncrement + ", error: " + error)
             );
         }, true, GSStyles.Button);
 
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Refresh User: ", GSStyles.NormalLabelText);
+
+        DemoGuiUtils.DrawButton("Refresh", () =>
+        {
+            GetSocial.GetCurrentUser().Refresh(
+                () => { _console.LogD("Current User refreshed");
+                    demoController.FetchCurrentUserData();
+                },
+                error => {
+                    _console.LogE("Failed to refresh Current User, error: " + error);
+                }
+            );
+        }, true, GSStyles.Button);
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
     }

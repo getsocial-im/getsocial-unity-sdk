@@ -29,6 +29,7 @@ namespace GetSocialSdk.Core
         void ResetUser(Action success, Action<GetSocialError> failure);
         void ResetUserWithoutInit(Action success, Action<GetSocialError> failure);
         void UpdateDetails(UserUpdate userUpdate, Action callback, Action<GetSocialError> failure);
+        void Refresh(Action callback, Action<GetSocialError> failure);
 
         #endregion
         #region Language

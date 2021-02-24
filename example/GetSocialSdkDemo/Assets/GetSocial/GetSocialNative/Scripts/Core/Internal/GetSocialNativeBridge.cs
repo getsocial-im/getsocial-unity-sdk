@@ -206,6 +206,17 @@ namespace GetSocialSdk.Core
             }, callback, failure);
         }
 
+        public void Refresh(Action callback, Action<GetSocialError> failure)
+        {
+            WithHadesClient(client =>
+            {
+                LogRequest("refresh");
+                var result = client.getPrivateUser(SessionId, _stateController.User.Id);
+                LogResponse("refresh", result);
+                _stateController.User = result.ToCurrentUser();
+            }, callback, failure);
+        }
+
         private void Init(THSdkAuthRequest request)
         {
             LogRequest("authenticateSdk", request);
@@ -299,11 +310,16 @@ namespace GetSocialSdk.Core
 
         public void GetAnnouncements(AnnouncementsQuery query, Action<List<Activity>> onSuccess, Action<GetSocialError> onFailure)
         {
+            LogRequest("getAnnouncements", "query = " + query);
+            if (query == null)
+            {
+                onFailure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
                 request.SessionId = SessionId;
-                LogRequest("getAnnouncements", request);
                 var response = client.getAnnouncements(request);
                 LogResponse("getAnnouncements", response);
                 return response.Data.ConvertAll(it => it.Activity.FromRPCModel());
@@ -312,11 +328,16 @@ namespace GetSocialSdk.Core
 
         public void GetActivities(PagingQuery<ActivitiesQuery> query, Action<PagingResult<Activity>> onSuccess, Action<GetSocialError> onFailure)
         {
+            LogRequest("getActivities", "query = " + query);
+            if (query == null || query.Query == null)
+            {
+                onFailure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
                 request.SessionId = SessionId;
-                LogRequest("getActivities", request);
                 var response = client.getActivitiesV2(request);
                 LogResponse("getActivities", response);
                 return response.FromRPCModel();
@@ -328,7 +349,6 @@ namespace GetSocialSdk.Core
             WithHadesClient(client =>
             {
                 var request = new GetActivityByIDRequest {ActivityId = id, SessionId = SessionId};
-                LogRequest("getActivityByID", request);
                 var response = client.getActivityByID(request);
                 LogResponse("getActivityByID", response);
                 return response.Activity.FromRPCModel();
@@ -371,13 +391,18 @@ namespace GetSocialSdk.Core
 
         public void RemoveActivities(RemoveActivitiesQuery query, Action onSuccess, Action<GetSocialError> onFailure)
         {
+            LogRequest("removeActivities", "query = " + query);
+            if (query == null)
+            {
+                onFailure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = new DeleteActivitiesRequest();
                 request.SessionId = SessionId;
                 request.Ids = new THashSet<string>();
                 request.Ids.AddAll(query.Ids);
-                LogRequest("removeActivities", request);
                 var response = client.deleteActivities(request);
                 LogResponse("removeActivities", response);
             }, onSuccess, onFailure);
@@ -418,10 +443,15 @@ namespace GetSocialSdk.Core
 
         public void GetTags(TagsQuery query, Action<List<string>> onSuccess, Action<GetSocialError> onFailure)
         {
+            LogRequest("findTagsV2", "query = " + query);
+            if (query == null)
+            {
+                onFailure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
-                LogRequest("findTagsV2", request);
                 request.SessionId = SessionId;
                 var response = client.findTagsV2(request);
                 LogResponse("findTagsV2", response);
@@ -447,10 +477,15 @@ namespace GetSocialSdk.Core
         }
         public void GetReactions(PagingQuery<ReactionsQuery> query, Action<PagingResult<UserReactions>> onSuccess, Action<GetSocialError> onFailure)
         {
+            LogRequest("getReactions", "query = " + query);
+            if (query == null || query.Query == null)
+            {
+                onFailure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
-                LogRequest("getReactions", request);
                 request.SessionId = SessionId;
                 var response = client.getReactions(request);
                 LogResponse("getReactions", response);
@@ -460,10 +495,15 @@ namespace GetSocialSdk.Core
 
         public void GetUsers(PagingQuery<UsersQuery> query, Action<PagingResult<User>> onSuccess, Action<GetSocialError> onFailure)
         {
+            LogRequest("getUsers", "query = " + query);
+            if (query == null || query.Query == null)
+            {
+                onFailure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
-                LogRequest("getUsers", request);
                 request.SessionId = SessionId;
                 var response = client.getUsers(request);
                 LogResponse("getUsers", response);
@@ -485,11 +525,11 @@ namespace GetSocialSdk.Core
 
         public void GetUsersCount(UsersQuery query, Action<int> success, Action<GetSocialError> error)
         {
+            LogRequest("getUsers", "query = " + query);
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
                 request.Pagination = new Pagination {Limit = 1};
-                LogRequest("getUsers", request);
                 request.SessionId = SessionId;
                 var response = client.getUsers(request);
                 LogResponse("getUsers", response);
@@ -525,10 +565,15 @@ namespace GetSocialSdk.Core
 
         public void GetFriends(PagingQuery<FriendsQuery> query, Action<PagingResult<User>> success, Action<GetSocialError> failure)
         {
+            LogRequest("getFriends", "query = " + query);
+            if (query == null || query.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
-                LogRequest("getFriends", request);
                 request.SessionId = SessionId;
                 var response = client.getFriendsV2(request);
                 LogResponse("getFriends", response);
@@ -538,10 +583,15 @@ namespace GetSocialSdk.Core
 
         public void GetFriendsCount(FriendsQuery query, Action<int> success, Action<GetSocialError> failure)
         {
+            LogRequest("getFriends", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = query.ToRpc();
-                LogRequest("getFriends", request);
                 request.SessionId = SessionId;
                 var response = client.getFriendsV2(request);
                 LogResponse("getFriends", response);
@@ -595,6 +645,11 @@ namespace GetSocialSdk.Core
 
         public void GetSuggestedFriends(SimplePagingQuery query, Action<PagingResult<SuggestedFriend>> success, Action<GetSocialError> failure)
         {
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient(client =>
             {
                 var request = new GetSuggestedFriendsRequest
@@ -628,6 +683,11 @@ namespace GetSocialSdk.Core
         public void GetTopics(PagingQuery<TopicsQuery> pagingQuery, Action<PagingResult<Topic>> success, Action<GetSocialError> failure)
         {
             LogRequest("getTopics", "query = " + pagingQuery);
+            if (pagingQuery == null || pagingQuery.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = pagingQuery.ToRPC();
                 request.SessionId = SessionId;
@@ -640,6 +700,11 @@ namespace GetSocialSdk.Core
         public void GetTopicsCount(TopicsQuery query, Action<int> success, Action<GetSocialError> failure)
         {
             LogRequest("getTopics", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
@@ -699,6 +764,11 @@ namespace GetSocialSdk.Core
         public void GetGroupMembers(PagingQuery<MembersQuery> pagingQuery, Action<PagingResult<GroupMember>> success, Action<GetSocialError> failure)
         {
             LogRequest("getMembers", "query = " + pagingQuery);
+            if (pagingQuery == null || pagingQuery.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = pagingQuery.ToRPC();
                 request.SessionId = SessionId;
@@ -711,6 +781,11 @@ namespace GetSocialSdk.Core
         public void GetGroups(PagingQuery<GroupsQuery> pagingQuery, Action<PagingResult<Group>> success, Action<GetSocialError> failure)
         {
             LogRequest("getGroups", "query = " + pagingQuery);
+            if (pagingQuery == null || pagingQuery.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = pagingQuery.ToRPC();
                 request.SessionId = SessionId;
@@ -723,6 +798,11 @@ namespace GetSocialSdk.Core
         public void GetGroupsCount(GroupsQuery query, Action<int> success, Action<GetSocialError> failure)
         {
             LogRequest("getGroups", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
@@ -748,6 +828,11 @@ namespace GetSocialSdk.Core
         public void AddGroupMembers(AddGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
         {
             LogRequest("addGroupMembers", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.InternalQuery.ToRPC();
                 request.SessionId = SessionId;
@@ -760,6 +845,11 @@ namespace GetSocialSdk.Core
         public void JoinGroup(JoinGroupQuery query, Action<GroupMember> success, Action<GetSocialError> failure)
         {
             LogRequest("joinGroup", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.InternalQuery.ToRPC();
                 request.SessionId = SessionId;
@@ -772,6 +862,11 @@ namespace GetSocialSdk.Core
         public void UpdateGroupMembers(UpdateGroupMembersQuery query, Action<List<GroupMember>> success, Action<GetSocialError> failure)
         {
             LogRequest("updateGroupMembers", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
@@ -784,6 +879,11 @@ namespace GetSocialSdk.Core
         public void RemoveGroupMembers(RemoveGroupMembersQuery query, Action success, Action<GetSocialError> failure)
         {
             LogRequest("removeGroupMembers", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
                 request.SessionId = SessionId;
@@ -812,9 +912,14 @@ namespace GetSocialSdk.Core
         #region Followers
         public void Follow(FollowQuery query, Action<int> success, Action<GetSocialError> failure)
         {
+            LogRequest("followEntities", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
-                LogRequest("followEntities", "query = " + request);
                 request.SessionId = SessionId;
                 var response = client.followEntities(request);
                 LogResponse("followEntities", response);
@@ -824,9 +929,14 @@ namespace GetSocialSdk.Core
 
         public void Unfollow(FollowQuery query, Action<int> success, Action<GetSocialError> failure)
         {
+            LogRequest("unfollowEntities", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToUnfollowRPC();
-                LogRequest("unfollowEntities", "query = " + request);
                 request.SessionId = SessionId;
                 var response = client.unfollowEntities(request);
                 LogResponse("unfollowEntities", response);
@@ -836,6 +946,12 @@ namespace GetSocialSdk.Core
 
         public void IsFollowing(UserId userId, FollowQuery query, Action<Dictionary<string, bool>> success, Action<GetSocialError> failure)
         {
+            LogRequest("isFollowing", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToIsFollowingRPC();
                 request.UserId = userId.AsString();
@@ -849,9 +965,14 @@ namespace GetSocialSdk.Core
 
         public void GetFollowers(PagingQuery<FollowersQuery> query, Action<PagingResult<User>> success, Action<GetSocialError> failure)
         {
+            LogRequest("getEntityFollowers", "query = " + query);
+            if (query == null || query.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
-                LogRequest("getEntityFollowers", "query = " + request);
                 request.SessionId = SessionId;
                 var response = client.getEntityFollowers(request);
                 LogResponse("getEntityFollowers", response);
@@ -861,9 +982,14 @@ namespace GetSocialSdk.Core
 
         public void GetFollowersCount(FollowersQuery query, Action<int> success, Action<GetSocialError> failure)
         {
+            LogRequest("getEntityFollowers", "query = " + query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
-                LogRequest("getEntityFollowers", "query = " + request);
                 request.SessionId = SessionId;
                 var response = client.getEntityFollowers(request);
                 LogResponse("getEntityFollowers", response);
@@ -923,8 +1049,13 @@ namespace GetSocialSdk.Core
 
         public void GetReferredUsers(PagingQuery<ReferralUsersQuery> query, Action<PagingResult<ReferralUser>> success, Action<GetSocialError> failure)
         {
+            LogRequest("getReferredUsersV2", query);
+            if (query == null || query.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
-                LogRequest("getReferredUsersV2", query);
                 var offset = SafeParse(query.NextCursor);
                 var response = client.getReferredUsersV2(SessionId, query.Query.GetEventName(), offset, query.Limit);
                 LogResponse("getReferredUsersV2", response);
@@ -946,8 +1077,13 @@ namespace GetSocialSdk.Core
 
         public void GetReferrerUsers(PagingQuery<ReferralUsersQuery> query, Action<PagingResult<ReferralUser>> success, Action<GetSocialError> failure)
         {
+            LogRequest("getReferrerUsers", query);
+            if (query == null || query.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
-                LogRequest("getReferrerUsers", query);
                 var offset = SafeParse(query.NextCursor);
                 var response = client.getReferrerUsers(SessionId, query.Query.GetEventName(), offset, query.Limit);
                 LogResponse("getReferrerUsers", response);
@@ -1050,9 +1186,14 @@ namespace GetSocialSdk.Core
 
         public void GetNotifications(PagingQuery<NotificationsQuery> query, Action<PagingResult<Notification>> success, Action<GetSocialError> failure)
         {
+            LogRequest("getNotifications, query = ", query);
+            if (query == null || query.Query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
-                LogRequest("getNotifications", request);
                 request.SessionId = SessionId;
                 var response = client.getNotifications(request);
                 LogResponse("getNotifications", response);
@@ -1062,9 +1203,14 @@ namespace GetSocialSdk.Core
 
         public void CountNotifications(NotificationsQuery query, Action<int> success, Action<GetSocialError> failure)
         {
+            LogRequest("getNotifications, query = ", query);
+            if (query == null)
+            {
+                failure(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
             WithHadesClient((client) => {
                 var request = query.ToRPC();
-                LogRequest("getNotifications", request);
                 request.Pagination = new Pagination {Limit = 1};
                 request.SessionId = SessionId;
                 var response = client.getNotifications(request);

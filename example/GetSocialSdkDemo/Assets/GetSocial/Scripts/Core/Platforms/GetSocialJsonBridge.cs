@@ -107,6 +107,11 @@ namespace GetSocialSdk.Core
             CallAsyncVoid("CurrentUser.updateDetails",  GSJson.Serialize(userUpdate), callback, failure);
         }
 
+        public void Refresh(Action callback, Action<GetSocialError> failure)
+        {
+            CallAsyncVoid("CurrentUser.refresh", "", callback, failure);
+        }
+
         public bool SetLanguage(string language)
         {
             return CallSync<bool>("GetSocial.setLanguage", language);

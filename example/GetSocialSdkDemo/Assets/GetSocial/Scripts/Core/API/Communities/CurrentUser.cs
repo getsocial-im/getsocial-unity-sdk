@@ -39,6 +39,16 @@ namespace GetSocialSdk.Core
             GetSocialFactory.Bridge.RemoveIdentity(providerId, callback, failure);
         }
 
+        /// <summary>
+        /// Refresh properties of current user.
+        /// </summary>
+        /// <param name="callback">A callback to indicate if this operation was successful.</param>
+        /// <param name="failure">Called if operation failed.</param>
+        public void Refresh(Action success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.Refresh(success, failure);
+        }
+
         public override string ToString()
         {
             return $"{base.ToString()}";
