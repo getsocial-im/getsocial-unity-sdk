@@ -21,7 +21,7 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("productTitle")]
         public string ProductTitle;
 
-        [JsonSerializationKey("purchaseType")]
+        [JsonSerializationKey("productType")]
         public ProductType PurchaseType;
 
         [JsonSerializationKey("price")]

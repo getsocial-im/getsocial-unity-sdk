@@ -5,7 +5,7 @@ namespace GetSocialSdk.Core
     public sealed class Badge
     {
 
-        [JsonSerializationKey("value")]
+        [JsonSerializationKey("badge")]
         internal int Value = int.MinValue;
 
         [JsonSerializationKey("increase")]

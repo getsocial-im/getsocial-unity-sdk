@@ -79,13 +79,6 @@ namespace GetSocialSdk.Core
         }
 
         /// <summary>
-        /// Get a number of unique users who have seen this activity.
-        /// </summary>
-        /// <value>views count of the activity.</value>
-        [JsonSerializationKey("viewCount")]
-        public int ViewCount { get; internal set; }
-
-        /// <summary>
         /// Get custom data of the activity attached when it was posted.
         /// </summary>
         /// <value>map of custom values, attached to the activity.</value>
@@ -145,7 +138,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Type: {Type}, Announcement: {Announcement}, CommentsCount: {CommentsCount}, ReactionsCount: {ReactionsCount.ToDebugString()}, MyReactions: {MyReactionsList.ToDebugString()},  ViewCount: {ViewCount}, Properties: {Properties.ToDebugString()}, CreatedAt: {CreatedAt}, Mentions: {Mentions.ToDebugString()}, Button: {Button}, Source: {Source}, Status: {Status}";
+            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Type: {Type}, Announcement: {Announcement}, CommentsCount: {CommentsCount}, ReactionsCount: {ReactionsCount.ToDebugString()}, MyReactions: {MyReactionsList.ToDebugString()},  Properties: {Properties.ToDebugString()}, CreatedAt: {CreatedAt}, Mentions: {Mentions.ToDebugString()}, Button: {Button}, Source: {Source}, Status: {Status}";
         }
     }
 }

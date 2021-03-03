@@ -513,8 +513,6 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly) int64_t createdAt;
 /// Mentions.
 @property (nonatomic, readonly, copy) NSArray<GetSocialMention *> * _Nonnull mentions;
-/// Number of views.
-@property (nonatomic, readonly) NSInteger viewCount;
 /// Parent of activity.
 @property (nonatomic, readonly, strong) GetSocialCommunitiesEntity * _Nullable source;
 /// Status of activity. For possible values check {ActivityStatus} class.
@@ -5294,8 +5292,6 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly) int64_t createdAt;
 /// Mentions.
 @property (nonatomic, readonly, copy) NSArray<GetSocialMention *> * _Nonnull mentions;
-/// Number of views.
-@property (nonatomic, readonly) NSInteger viewCount;
 /// Parent of activity.
 @property (nonatomic, readonly, strong) GetSocialCommunitiesEntity * _Nullable source;
 /// Status of activity. For possible values check {ActivityStatus} class.

@@ -451,7 +451,7 @@ namespace GetSocialSdk.Core
                 Author = activity.Author.FromRPCModel(user),
                 Properties = activity.Properties ?? new Dictionary<string, string>(),
                 CreatedAt = activity.CreatedAt,
-                ViewCount = activity.Reactions.ViewCount,
+                //ViewCount = activity.Reactions.ViewCount,
                 CommentsCount = activity.Reactions.CommentCount,
                 MediaAttachments = (content.Attachments ?? new List<AFAttachment>()).ConvertAll(FromRpc),
                 Text = content.Text,

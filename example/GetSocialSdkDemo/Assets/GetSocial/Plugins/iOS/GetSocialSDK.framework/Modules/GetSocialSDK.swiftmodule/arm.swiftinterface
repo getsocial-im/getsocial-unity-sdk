@@ -1192,9 +1192,6 @@ open class KeychainWrapper {
   @objc public var mentions: [GetSocialSDK.Mention] {
     get
     }
-  @objc public var viewCount: Swift.Int {
-    get
-    }
   @objc public var source: GetSocialSDK.CommunitiesEntity? {
     get
     }
