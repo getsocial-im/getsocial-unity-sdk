@@ -685,7 +685,6 @@ namespace GetSocialSdk.Core
 
         public static UpdateGroupMembersRequest ToRPC(this UpdateGroupMembersQuery query)
         {
-            Debug.LogError("REQUEST: " + query.ToString());
             var request = new UpdateGroupMembersRequest();
             request.GroupId = query.GroupId;
             request.UserIds = query.UserIdList.AsString();
@@ -775,6 +774,107 @@ namespace GetSocialSdk.Core
             topic.Settings = rpcTopic.Settings.FromRPC();
             topic.UpdatedAt = rpcTopic.UpdatedAt;
             return topic;
+        }
+
+        public static SGChatMessageContent ToRPCModel(this ChatMessageContent content)
+        {
+            var sgMessageContent = new SGChatMessageContent();
+            sgMessageContent.Text = content.Text;
+            sgMessageContent.Properties = content.Properties;
+            sgMessageContent.Attachments = new List<SGChatMessageAttachment>();
+            if (content.Attachments != null)
+            {
+                content.Attachments.ForEach((MediaAttachment obj) => obj.ToRPCModel());
+            }
+            return sgMessageContent;
+        }
+
+        public static ChatMessage FromRPCModel(this SGChatMessage response)
+        {
+            var chatMessage = new ChatMessage();
+            chatMessage.Id = response.Id;
+            chatMessage.Text = response.Content.Text;
+            chatMessage.SentAt = response.SentAt;
+            chatMessage.Properties = response.Properties;
+            chatMessage.MediaAttachments = new List<MediaAttachment>();
+            if (response.Content.Attachments != null)
+            {
+                response.Content.Attachments.ForEach((SGChatMessageAttachment obj) => chatMessage.MediaAttachments.Add(obj.FromRPCModel()));
+            }
+            if (response.Author.PublicUser.Id.Equals(GetSocial.GetCurrentUser().Id))
+            {
+                chatMessage.Author = GetSocial.GetCurrentUser();
+            } else
+            {
+                chatMessage.Author = response.Author.FromRPCModel();
+            }
+            return chatMessage;
+        }
+
+        public static ChatMessagesPagingResult FromRPCModel(this GetChatMessagesResponse response)
+        {
+            var result = new ChatMessagesPagingResult();
+            result.NextMessagesCursor = response.NextCursor;
+            result.PreviousMessagesCursor = response.PreviousCursor;
+            result.RefreshCursor = response.PollingCursor;
+            result.Messages = new List<ChatMessage>();
+            response.Messages.ForEach((SGChatMessage obj) => result.Messages.Add(obj.FromRPCModel()));
+            return result;
+        }
+
+        public static Chat FromRPCModel(this SGChat rpcChat)
+        {
+            var chat = new Chat();
+            chat.Id = rpcChat.Id;
+            chat.Title = rpcChat.Title;
+            chat.AvatarUrl = rpcChat.AvatarUrl;
+            chat.CreatedAt = rpcChat.CreatedAt;
+            chat.UpdatedAt = rpcChat.UpdatedAt;
+            chat.MembersCount = rpcChat.MembersCount;
+            chat.LastMessage = rpcChat.LastMessage.FromRPCModel();
+            chat.OtherMember = rpcChat.OtherMember.FromRPCModel();
+            return chat;
+        }
+
+        public static Chat FromRPCModel(this GetChatResponse rpcResponse)
+        {
+            return rpcResponse.Chat.FromRPCModel();
+        }
+
+        public static SGChatPagination ToRPCModel(this ChatMessagesPagingQuery pagingQuery)
+        {
+            var pagination = new SGChatPagination();
+            if (pagingQuery.NextMessages != null && pagingQuery.NextMessages.Length != 0)
+            {
+                pagination.Cursor = pagingQuery.NextMessages;
+            }
+            if (pagingQuery.PreviousMessages != null && pagingQuery.PreviousMessages.Length != 0)
+            {
+                pagination.Cursor = pagingQuery.PreviousMessages;
+            }
+            pagination.Limit = pagingQuery.Limit;
+            return pagination;
+        }
+
+        public static SGChatMessageAttachment ToRPCModel(this MediaAttachment mediaAttachment)
+        {
+            var attachment = new SGChatMessageAttachment();
+            attachment.ImageURL = mediaAttachment.ImageUrl;
+            attachment.VideoURL = mediaAttachment.VideoUrl;
+            return attachment;
+        }
+
+        public static MediaAttachment FromRPCModel(this SGChatMessageAttachment sGChatMessageAttachment)
+        {
+            var attachment = new MediaAttachment();
+            attachment.ImageUrl = sGChatMessageAttachment.ImageURL;
+            attachment.VideoUrl = sGChatMessageAttachment.VideoURL;
+            return attachment;
+        }
+
+        public static PagingResult<Chat> FromRPCModel(this GetChatsResponse response)
+        {
+            return FromRPCModel(response.Chats, response.NextCursor, FromRPCModel);
         }
 
         public static CreateGroupRequest ToRPC(this GroupContent content, string sdkLanguage)
@@ -965,7 +1065,7 @@ namespace GetSocialSdk.Core
             info.Status = MemberStatusFromRPCModel(rpcMembership.Status);
             return info;
         }
-
+        
         public static MemberRole MemberRoleFromRPCModel(int rawValue)
         {
             switch (rawValue)
@@ -976,6 +1076,10 @@ namespace GetSocialSdk.Core
                     return MemberRole.Admin;
                 case 3:
                     return MemberRole.Member;
+                case 4:
+                    return MemberRole.Follower;
+                case 5:
+                    return MemberRole.Everyone;
             }
             throw new ArgumentException();
         }

@@ -65,8 +65,18 @@ public abstract class BaseUsersListSection<Q> : BaseListSection<Q, User>
         popup.AddAction("Feed", () => Feed(user));
         popup.AddAction("All posts by", () => AllPosts(user));
         popup.AddAction("Followed Topics", () => Topics(user));
+        popup.AddAction("Open Chat", () => Chat(user));
         popup.AddAction("Cancel", () => { });
         popup.Show();   
+    }
+
+    private void Chat(User user)
+    {
+        demoController.PushMenuSection<ChatMessagesView>(section =>
+        {
+            var chatId = ChatId.Create(UserId.Create(user.Id));
+            section.SetChatId(chatId);
+        });
     }
 
     private void Feed(User user) 

@@ -39,12 +39,13 @@ public class GetSocialDemoController : MonoBehaviour {
 
     public string CurrentViewTitle { set; get; }
     private string _latestReferralData;
-    private string _latestChatId;
+    private ChatId _latestChatId;
     private bool _isTestDevice;
 
     // store user info to avoid constant calls to native
     private CurrentUser _currentUser;
     private bool _enterIdentityData;
+    private bool _isInitialized;
 
     #region lifecycle
 
@@ -85,6 +86,7 @@ public class GetSocialDemoController : MonoBehaviour {
                 } 
             });
         } else {
+            _latestChatId = null;
             GetSocialUi.CloseView (false);
         }
     }
@@ -148,24 +150,26 @@ public class GetSocialDemoController : MonoBehaviour {
             _console.LogD (string.Format ("DeviceToken: {0}", deviceToken), false);
         });
         Notifications.SetOnNotificationReceivedListener(notification => {
-            // handle chat message
-            if (notification.Action.Type.Equals("open_chat_message"))
-            {
-                _latestChatId = notification.Action.Data["open_messages_for_id"];
-                if (GetSocial.IsInitialized)
-                {
-                    ShowChat();
-                }
-            }
+            GetSocialUi.CloseView();
+            _console.LogD(string.Format("Notification was received: {0}", notification));
+            var notificationIds = new List<string>();
+            notificationIds.Add(notification.Id);
+            Notifications.SetStatus(NotificationStatus.Read, notificationIds, () => {}, (error) => { });
             if (notification.Action.Type.Equals(GetSocialActionType.AddFriend))
             {
                 ShowPopup(notification);
+            } else
+            {
+                HandleAction(notification.Action);
             }
-            _console.LogD(string.Format("Notification received : {0}", notification));
         });
         Notifications.SetOnNotificationClickedListener((notification, context) => {
-            _console.LogD(string.Format("Notification wasClicked : {0}", notification));
-            HandleAction (notification.Action);
+            GetSocialUi.CloseView();
+            _console.LogD(string.Format("Notification was clicked: {0}", notification));
+            var notificationIds = new List<string>();
+            notificationIds.Add(notification.Id);
+            Notifications.SetStatus(NotificationStatus.Read, notificationIds, () => {}, (error) => { });
+            HandleAction(notification.Action);
         });
 
         _console.LogD ("Setting up GetSocial...");
@@ -209,17 +213,15 @@ public class GetSocialDemoController : MonoBehaviour {
 
     private void ShowChat () {
         MainThreadExecutor.Queue (() => {
-            //todo
-            // ShowMenuSection<SocialGraphSection> ();
-            // _menuSections.ForEach (section => {
-            //     if (section is SocialGraphSection) {
-            //         ((SocialGraphSection) section).MessageFriend (_latestChatId);
-            //         _latestChatId = null;
-            //     }
-            // });
-            // if (_console.IsVisible) {
-            //     _console.Toggle ();
-            // }
+            PushMenuSection<ChatMessagesView>(section =>
+            {
+                section.SetChatId(_latestChatId);
+                //_latestChatId = null;
+            });
+            if (_console.IsVisible)
+            {
+                _console.Toggle();
+            }
         });
     }
 
@@ -248,20 +250,28 @@ public class GetSocialDemoController : MonoBehaviour {
     }
 
     public void HandleAction (GetSocialAction action) {
+        if (action == null) { return; }
+
         _console.LogD("Action: " + action.ToString(), false);
         if (action.Type == GetSocialActionType.AddFriend && action.Data.ContainsKey(GetSocialActionKeys.AddFriend.UserId))
         {
             var userId = action.Data[GetSocialActionKeys.AddFriend.UserId];
             AddFriend(userId);
-        } else if (action.Type == GetSocialActionType.OpenProfile && action.Data.ContainsKey(GetSocialActionKeys.OpenProfile.UserId)) 
+        } else if (action.Type == GetSocialActionType.OpenProfile && action.Data.ContainsKey(GetSocialActionKeys.OpenProfile.UserId))
         {
             ShowUserDetails(action.Data[GetSocialActionKeys.OpenProfile.UserId]);
         } else if (action.Type == GetSocialActionType.Custom)
         {
             var popup = new MNPopup("Custom Action", action.ToString());
             popup.Show();
-        } else
+        } else if (action.Type.Equals(GetSocialActionType.OpenChat))
         {
+            _latestChatId = ChatId.Create(action.Data[GetSocialActionKeys.OpenChat.ChatId]);
+            if (GetSocial.IsInitialized)
+            {
+                ShowChat();
+            }
+        } else {
             GetSocial.Handle(action);
         }
     }
@@ -353,30 +363,37 @@ public class GetSocialDemoController : MonoBehaviour {
 
     void DrawMainView () {
         GUILayout.Label ("API", GSStyles.NormalLabelText);
-        if (GetSocial.IsInitialized)
+        if (!_isInitialized)
         {
-            Button ("User Management", ShowMenuSection<AuthSection>);
-        } else
+            _isInitialized = GetSocial.IsInitialized;
+        }
+        if (_isInitialized)
         {
-            Button ("Init with anonymous", () => GetSocial.Init());
-            if (_enterIdentityData) {
-                DemoGuiUtils.DrawRow(() => 
+            Button("User Management", ShowMenuSection<AuthSection>);
+        }
+        else
+        {
+            Button("Init with anonymous", () => GetSocial.Init());
+            if (_enterIdentityData)
+            {
+                DemoGuiUtils.DrawRow(() =>
                 {
                     _identityId = GUILayout.TextField(_identityId, GSStyles.TextField);
                     _identityToken = GUILayout.TextField(_identityToken, GSStyles.TextField);
                 });
-                DemoGuiUtils.DrawRow(() => 
+                DemoGuiUtils.DrawRow(() =>
                 {
                     Button("Init", InitWithCustom);
                     Button("Cancel", () => { _enterIdentityData = false; });
                 });
-            } else 
-            {
-                Button ("Init with custom identity", () => { _enterIdentityData = true; });
             }
-            Button ("Init with FB", InitWithFacebook);
+            else
+            {
+                Button("Init with custom identity", () => { _enterIdentityData = true; });
+            }
+            Button("Init with FB", InitWithFacebook);
         }
-        Button ("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
+        Button("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
         Button ("Promo Codes", ShowMenuSection<PromoCodesSection>);
         Button ("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
         GUILayout.Space (30f);
@@ -412,6 +429,7 @@ public class GetSocialDemoController : MonoBehaviour {
             section.User = UserId.CurrentUser();
         }));
         Button ("Search Users", ShowMenuSection<UsersSearchSection>);
+        Button("Chats", ShowMenuSection<ChatsSection>);
         Button("Create Group", ShowMenuSection<CreateGroupSection>);
         Button("Search Groups", ShowMenuSection<GroupsSearchSection>);
         Button("My Groups", ShowMenuSection<MyGroupsSection>);

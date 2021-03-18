@@ -347,6 +347,27 @@ namespace GetSocialSdk.Core
             CallAsync("Communities.getFollowersCount", GSJson.Serialize(query), success, failure);
         }
 
+        public void SendChatMessage(ChatMessageContent content, ChatId target, Action<ChatMessage> success, Action<GetSocialError> failure)
+        {
+            CallAsync("Communities.sendChatMessage", GSJson.Serialize(new SendChatMessageBody { Content = content, Target = target }), success, failure);
+        }
+
+        public void GetChatMessages(ChatMessagesPagingQuery pagingQuery, Action<ChatMessagesPagingResult> success, Action<GetSocialError> failure)
+        {
+            CallAsync("Communities.getChatMessages", GSJson.Serialize(pagingQuery), success, failure);
+        }
+
+        public void GetChats(SimplePagingQuery pagingQuery, Action<PagingResult<Chat>> success, Action<GetSocialError> failure)
+        {
+            CallAsync("Communities.getChats", GSJson.Serialize(pagingQuery), success, failure);
+        }
+
+        public void GetChat(ChatId chatId, Action<Chat> success, Action<GetSocialError> failure)
+        {
+            CallAsync("Communities.getChat", GSJson.Serialize(chatId), success, failure);
+        }
+
+
         #region Invites
         public void GetAvailableChannels(Action<List<InviteChannel>> success, Action<GetSocialError> failure)
         {
@@ -552,7 +573,6 @@ namespace GetSocialSdk.Core
         {
             return FromJson<R>(MethodCaller.Call(method, body));
         }
-
     }
 
     internal interface IMethodCaller
@@ -677,4 +697,13 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("explanation")]
         public string Explanation;
     }
+
+    public class SendChatMessageBody
+    {
+        [JsonSerializationKey("target")]
+        public ChatId Target;
+        [JsonSerializationKey("content")]
+        public ChatMessageContent Content;
+    }
+
 }

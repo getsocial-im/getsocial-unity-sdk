@@ -43,13 +43,10 @@ public class NotificationUiSection : DemoMenuSection
             .SetNotificationClickListener((notification, context) =>
             {
                 _console.LogD("Notification click listener invoked: " + notification.Id);
-                if (context != null && context.Action != null)
-                {
-                    demoController.HandleAction(notification.Action);
-                    _console.LogD("Action button listener invoked: " + context.Action + " - " + notification.Id);
-                }
+                GetSocialUi.CloseView();
+                demoController.HandleAction(notification.Action);
             })
-            .SetViewStateCallbacks(() => _console.LogD("Notifications view opened"), () => _console.LogD("Notifications view closed"))
+            //.SetViewStateCallbacks(() => _console.LogD("Notifications view opened"), () => _console.LogD("Notifications view closed"))
             .Show();
     }
     

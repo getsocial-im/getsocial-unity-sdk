@@ -5,7 +5,7 @@ using GetSocialSdk.MiniJSON;
 namespace GetSocialSdk.Core
 {
     /// <summary>
-    /// Builder for a query to retrieve groups.
+    /// Builder for a query to follow entities.
     /// </summary>
     public sealed class FollowQuery 
     {

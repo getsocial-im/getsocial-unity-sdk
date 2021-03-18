@@ -231,6 +231,29 @@ namespace GetSocialSdk.Core
 
         #endregion
 
+        #region Chat
+        public static void SendChatMessage(ChatMessageContent content, ChatId target, Action<ChatMessage> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.SendChatMessage(content, target, success, failure);
+        }
+
+        public static void GetChatMessages(ChatMessagesPagingQuery pagingQuery, Action<ChatMessagesPagingResult> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetChatMessages(pagingQuery, success, failure);
+        }
+
+        public static void GetChats(SimplePagingQuery pagingQuery, Action<PagingResult<Chat>> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetChats(pagingQuery, success, failure);
+        }
+
+        public static void GetChat(ChatId chatId, Action<Chat> success, Action<GetSocialError> failure)
+        {
+            GetSocialFactory.Bridge.GetChat(chatId, success, failure);
+        }
+
+        #endregion
+
         #region Follow/Unfollow
 
         public static void Follow(FollowQuery query, Action<int> success, Action<GetSocialError> failure)

@@ -37,5 +37,19 @@
             public const string PromoCode = "$promo_code";
         }
 
+        public static class AddGroupMember
+        {
+            public const string GroupId = "$group_id";
+            public const string UserId = "$user_id";
+            public const string InvitationToken = "$invitation_token";
+            public const string Role = "$role";
+            public const string Status = "$status";
+        }
+
+        public static class OpenChat
+        {
+            public const string ChatId = "$chat_id";
+        }
+
     }
 }

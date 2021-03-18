@@ -36,6 +36,16 @@
         /// Claim Promo Code.
         /// </summary>
         public const string ClaimPromoCode = "claim_promo_code";
-        
+
+        /// <summary>
+        /// Add Group Member.
+        /// </summary>
+        public const string AddGroupMember = "add_group_member";
+
+        /// <summary>
+        /// Open Chat.
+        /// </summary>
+        public const string OpenChat = "open_chat";
+
     }
 }

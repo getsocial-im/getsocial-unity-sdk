@@ -143,6 +143,14 @@ namespace GetSocialSdk.Core
 
         #endregion
 
+        #region Chat
+        void SendChatMessage(ChatMessageContent content, ChatId target, Action<ChatMessage> success, Action<GetSocialError> failure);
+        void GetChatMessages(ChatMessagesPagingQuery pagingQuery, Action<ChatMessagesPagingResult> success, Action<GetSocialError> failure);
+        void GetChats(SimplePagingQuery pagingQuery, Action<PagingResult<Chat>> success, Action<GetSocialError> failure);
+        void GetChat(ChatId chatId, Action<Chat> success, Action<GetSocialError> failure);
+
+        #endregion
+
         #endregion
 
         #region Invites

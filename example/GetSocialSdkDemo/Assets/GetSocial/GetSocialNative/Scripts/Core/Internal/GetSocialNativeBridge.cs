@@ -908,6 +908,64 @@ namespace GetSocialSdk.Core
 
         #endregion
 
+        #region Chats
+        public void SendChatMessage(ChatMessageContent content, ChatId target, Action<ChatMessage> success, Action<GetSocialError> failure)
+        {
+            LogRequest("sendChatMessage", "content = " + content + ", target = " + target);
+            WithHadesClient((client) => {
+                var request = new SendChatMessageRequest();
+                request.SessionId = SessionId;
+                request.Content = content.ToRPCModel();
+                request.Id = target.Id;
+                request.UserId = target.UserId.ToRpc();
+                var response = client.sendChatMessage(request);
+                LogResponse("sendChatMessage", response);
+                return (response.Message.FromRPCModel());
+            }, success, failure);
+        }
+
+        public void GetChatMessages(ChatMessagesPagingQuery pagingQuery, Action<ChatMessagesPagingResult> success, Action<GetSocialError> failure)
+        {
+            LogRequest("getChatMessages", "pagingQuery = " + pagingQuery);
+            WithHadesClient((client) => {
+                var request = new GetChatMessagesRequest();
+                request.SessionId = SessionId;
+                request.Pagination = pagingQuery.ToRPCModel();
+                request.Id = pagingQuery.Query.Id.Id;
+                request.UserId = pagingQuery.Query.Id.UserId.ToRpc();
+                var response = client.getChatMessages(request);
+                LogResponse("getChatMessages", response);
+                return (response.FromRPCModel());
+            }, success, failure);
+        }
+
+        public void GetChats(SimplePagingQuery pagingQuery, Action<PagingResult<Chat>> success, Action<GetSocialError> failure)
+        {
+            LogRequest("getChats", "pagingQuery = " + pagingQuery);
+            WithHadesClient((client) => {
+                var request = new GetChatsRequest();
+                request.SessionId = SessionId;
+                request.Pagination = pagingQuery.ToPagination();
+                var response = client.getChats(request);
+                LogResponse("getChats", response);
+                return (response.FromRPCModel());
+            }, success, failure);
+        }
+
+        public void GetChat(ChatId chatId, Action<Chat> success, Action<GetSocialError> failure)
+        {
+            LogRequest("getChat", "chatId = " + chatId);
+            WithHadesClient((client) => {
+                var request = new GetChatRequest();
+                request.SessionId = SessionId;
+                request.Id = chatId.Id;
+                request.UserId = chatId.UserId.ToRpc();
+                var response = client.getChat(request);
+                LogResponse("getChat", response);
+                return response.FromRPCModel();
+            }, success, failure);
+        }
+        #endregion
 
         #region Followers
         public void Follow(FollowQuery query, Action<int> success, Action<GetSocialError> failure)
@@ -1422,7 +1480,6 @@ namespace GetSocialSdk.Core
                 // Just to be sure we won't crash in logs
             }
         }
-
     }
 }
 #endif
