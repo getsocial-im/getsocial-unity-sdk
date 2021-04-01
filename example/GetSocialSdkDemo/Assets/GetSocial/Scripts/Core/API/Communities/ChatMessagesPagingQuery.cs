@@ -28,13 +28,13 @@ namespace GetSocialSdk.Core
             return this;
         }
 
-        public ChatMessagesPagingQuery WithNextMessagesCursor(string next)
+        public ChatMessagesPagingQuery NextMessagesCursor(string next)
         {
             NextMessages = next;
             return this;
         }
 
-        public ChatMessagesPagingQuery WithPreviousMessagesCursor(string previous)
+        public ChatMessagesPagingQuery PreviousMessagesCursor(string previous)
         {
             PreviousMessages = previous;
             return this;

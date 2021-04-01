@@ -97,9 +97,34 @@ namespace GetSocialSdk.Editor
         {
             Application.OpenURL(string.Format("http://docs.getsocial.im/?utm_source={0}&utm_medium=unity-editor", BuildConfig.PublishTarget));
         }
+
+        [MenuItem("GetSocial/Helper Methods/Trigger Referral Data Listener", false, 2000)]
+        public static void TriggerReferralDataListener()
+        {
+            var token = "token";
+            var referrerUserId = "userId";
+            var referrerChannelId = "channelId";
+            var IsFirstMatch = true;
+            var IsGuaranteedMatch = true;
+            var IsReinstall = false;
+            var IsFirstMatchLink = true;
+            var linkParams = new Dictionary<string, string>();
+            var originalLinkParams = new Dictionary<string, string>();
+
+            UnityEditorHelperFunctions.TriggerOnReferralDataReceivedListener(token,
+                referrerUserId,
+                referrerChannelId,
+                IsFirstMatch,
+                IsGuaranteedMatch,
+                IsReinstall,
+                IsFirstMatchLink,
+                linkParams,
+                originalLinkParams); ;
+        }
+
         #endregion
 
-        
+
         #region methods
         void DrawGeneralSettings()
         {

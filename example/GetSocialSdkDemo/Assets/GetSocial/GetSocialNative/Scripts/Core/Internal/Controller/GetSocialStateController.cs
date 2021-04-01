@@ -32,6 +32,8 @@ namespace GetSocialSdk.Core
 
         internal string UploadEndpoint { get; private set; }
 
+        internal Action<ReferralData> ReferralDataListener;
+
         /// <summary>
         /// !IMPORTANT! Call from the UI thread only.
         /// </summary>

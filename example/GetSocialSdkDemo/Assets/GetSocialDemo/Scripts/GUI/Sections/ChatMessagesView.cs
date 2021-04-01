@@ -123,7 +123,7 @@ public class ChatMessagesView : DemoMenuSection
     {
         if (_previousCursor != null && _previousCursor.Length > 0)
         {
-            _pagingQuery = _pagingQuery.WithPreviousMessagesCursor(_previousCursor);
+            _pagingQuery = _pagingQuery.PreviousMessagesCursor(_previousCursor);
             LoadMessages((entries) =>
             {
                 _messages.InsertRange(0, entries);
@@ -135,14 +135,14 @@ public class ChatMessagesView : DemoMenuSection
     {
         if (_nextCursor != null && _nextCursor.Length > 0)
         {
-            _pagingQuery = _pagingQuery.WithNextMessagesCursor(_nextCursor);
+            _pagingQuery = _pagingQuery.NextMessagesCursor(_nextCursor);
             LoadMessages((entries) => {
                 _messages.AddAll(entries);
                 LoadNewerMessages(false);
             }); 
         } else if (_refreshCursor != null && refresh)
         {
-            _pagingQuery = _pagingQuery.WithNextMessagesCursor(_refreshCursor);
+            _pagingQuery = _pagingQuery.NextMessagesCursor(_refreshCursor);
             LoadMessages((entries) => {
                 _messages.AddAll(entries);
                 LoadNewerMessages(false);

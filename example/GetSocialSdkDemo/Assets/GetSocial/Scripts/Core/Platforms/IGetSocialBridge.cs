@@ -170,6 +170,10 @@ namespace GetSocialSdk.Core
 
         void SetOnReferralDataReceivedListener(Action<ReferralData> action);
 
+#if UNITY_EDITOR
+        void TriggerOnReferralDataReceivedListener(ReferralData referralData);
+#endif
+
         #endregion
 
         #region Promo Codes

@@ -11,7 +11,7 @@ namespace GetSocialSdk.Core
     public class GetSocialNativeBridge : IGetSocialBridge
     {
         private readonly GetSocialStateController _stateController = new GetSocialStateController();
-        
+
         private string SessionId { get { return _stateController.SessionId; } }
         private bool _initCalled;
 
@@ -1161,7 +1161,8 @@ namespace GetSocialSdk.Core
 
         public void SetOnReferralDataReceivedListener(Action<ReferralData> action)
         {
-            Debug.Log("Referral data listener is not supported");
+            _stateController.ReferralDataListener = action;
+            Debug.Log("To test referral data listener method in Unity Editor, call ");
         }
 
         #endregion
@@ -1359,6 +1360,14 @@ namespace GetSocialSdk.Core
         public void HandleOnStartUnityEvent()
         {
             Debug.Log("Unity started.");
+        }
+
+        public void TriggerOnReferralDataReceivedListener(ReferralData referralData)
+        {
+            if (_stateController.ReferralDataListener != null)
+            {
+                _stateController.ReferralDataListener(referralData);
+            }
         }
 
         #endregion

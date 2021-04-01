@@ -440,6 +440,13 @@ namespace GetSocialSdk.Core
             MethodCaller.RegisterListener("Invites.setOnReferralDataReceivedListener", Json(wrapper));
         }
 
+#if UNITY_EDITOR
+        public void TriggerOnReferralDataReceivedListener(ReferralData referralData)
+        {
+            // empty 
+        }
+#endif
+
         #endregion
 
         #region Promo Codes

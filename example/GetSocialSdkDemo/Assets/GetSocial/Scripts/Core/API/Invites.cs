@@ -94,6 +94,5 @@ namespace GetSocialSdk.Core
         {
             GetSocialFactory.Bridge.SetOnReferralDataReceivedListener(action);
         }
-
     }
 }

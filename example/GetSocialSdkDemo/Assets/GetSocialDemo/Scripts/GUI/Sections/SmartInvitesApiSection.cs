@@ -24,6 +24,9 @@ using Assets.GetSocialDemo.Scripts.Utils;
 using GetSocialSdk.Core;
 using GetSocialSdk.Ui;
 using UnityEngine;
+#if UNITY_EDITOR
+
+#endif
 
 public class SmartInvitesApiSection : DemoMenuSection
 {
@@ -404,7 +407,6 @@ public class SmartInvitesApiSection : DemoMenuSection
             () => CreateInviteLink(),
             style: GSStyles.Button);
     }
-    
 
     void DrawSendCustomInvites()
     {
