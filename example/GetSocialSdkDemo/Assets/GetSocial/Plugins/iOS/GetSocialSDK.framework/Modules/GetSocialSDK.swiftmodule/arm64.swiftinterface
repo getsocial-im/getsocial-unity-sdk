@@ -1180,7 +1180,7 @@ open class KeychainWrapper {
   @objc public var reactions: [GetSocialSDK.UserReactions] {
     get
     }
-  @objc public var commenters: [GetSocialSDK.User] {
+  @objc public var commenters: Swift.Set<GetSocialSDK.User> {
     get
     }
   @objc public var properties: [Swift.String : Swift.String] {
@@ -1628,6 +1628,9 @@ extension ChatMessagesPagingQuery : Swift.Decodable {
     @objc get
   }
   @objc override dynamic public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc override dynamic public var hash: Swift.Int {
+    @objc get
+  }
   public func encode(to encoder: Swift.Encoder) throws
   @objc override dynamic public init()
   @objc deinit
@@ -1966,6 +1969,7 @@ extension FollowersPagingQuery : Swift.Decodable {
   @objc(postActivityContent:target:success:failure:) public static func postActivity(_ content: GetSocialSDK.ActivityContent, target: GetSocialSDK.PostActivityTarget, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Activity>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(updateActivityWithId:content:success:failure:) public static func updateActivity(_ id: Swift.String, content: GetSocialSDK.ActivityContent, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Activity>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(addReaction:toActivityWithId:success:failure:) public static func addReaction(_ reaction: Swift.String, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(setReaction:toActivityWithId:success:failure:) public static func setReaction(_ reaction: Swift.String, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(removeReaction:fromActivityWithId:success:failure:) public static func removeReaction(_ reaction: Swift.String, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(reactionsWithQuery:success:failure:) public static func reactions(_ query: GetSocialSDK.ReactionsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ReactionsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc(reportActivityWithId:reason:explanation:success:failure:) public static func reportActivity(_ id: Swift.String, reason: GetSocialSDK.ReportingReason, explanation: Swift.String?, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)

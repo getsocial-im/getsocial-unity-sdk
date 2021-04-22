@@ -506,7 +506,7 @@ SWIFT_CLASS_NAMED("Activity")
 /// Reactions.
 @property (nonatomic, readonly, copy) NSArray<GetSocialUserReactions *> * _Nonnull reactions;
 /// Commenters.
-@property (nonatomic, readonly, copy) NSArray<GetSocialUser *> * _Nonnull commenters;
+@property (nonatomic, readonly, copy) NSSet<GetSocialUser *> * _Nonnull commenters;
 /// Custom properties.
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
 /// Date of creation as UNIX timestamp in UTC.
@@ -1452,7 +1452,7 @@ SWIFT_CLASS_NAMED("Communities")
 ///   </li>
 /// </ul>
 + (void)updateActivityWithId:(NSString * _Nonnull)id content:(GetSocialActivityContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
-/// Add reaction to an activity.
+/// Add a new reaction to an activity, existing reactions will be kept.
 /// <ul>
 ///   <li>
 ///     parameters:
@@ -1471,6 +1471,25 @@ SWIFT_CLASS_NAMED("Communities")
 ///   </li>
 /// </ul>
 + (void)addReaction:(NSString * _Nonnull)reaction toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Set a reaction to an activity, existing reaction will be removed.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     reaction:         Reaction to add.
+///   </li>
+///   <li>
+///     activityId:       To add the reaction to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)setReaction:(NSString * _Nonnull)reaction toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Remove a reaction from an activity.
 /// <ul>
 ///   <li>
@@ -1984,14 +2003,8 @@ SWIFT_CLASS_NAMED("User")
 @property (nonatomic, readonly) BOOL isVerified;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
-/// Check if user is equal to another user.
-/// \param object Another user object.
-///
-///
-/// returns:
-///
-/// <code>true</code> if users are equal, otherwise <code>false</code>.
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+@property (nonatomic, readonly) NSUInteger hash;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -5285,7 +5298,7 @@ SWIFT_CLASS_NAMED("Activity")
 /// Reactions.
 @property (nonatomic, readonly, copy) NSArray<GetSocialUserReactions *> * _Nonnull reactions;
 /// Commenters.
-@property (nonatomic, readonly, copy) NSArray<GetSocialUser *> * _Nonnull commenters;
+@property (nonatomic, readonly, copy) NSSet<GetSocialUser *> * _Nonnull commenters;
 /// Custom properties.
 @property (nonatomic, readonly, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
 /// Date of creation as UNIX timestamp in UTC.
@@ -6231,7 +6244,7 @@ SWIFT_CLASS_NAMED("Communities")
 ///   </li>
 /// </ul>
 + (void)updateActivityWithId:(NSString * _Nonnull)id content:(GetSocialActivityContent * _Nonnull)content success:(void (^ _Nonnull)(GetSocialActivity * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
-/// Add reaction to an activity.
+/// Add a new reaction to an activity, existing reactions will be kept.
 /// <ul>
 ///   <li>
 ///     parameters:
@@ -6250,6 +6263,25 @@ SWIFT_CLASS_NAMED("Communities")
 ///   </li>
 /// </ul>
 + (void)addReaction:(NSString * _Nonnull)reaction toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Set a reaction to an activity, existing reaction will be removed.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     reaction:         Reaction to add.
+///   </li>
+///   <li>
+///     activityId:       To add the reaction to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)setReaction:(NSString * _Nonnull)reaction toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 /// Remove a reaction from an activity.
 /// <ul>
 ///   <li>
@@ -6763,14 +6795,8 @@ SWIFT_CLASS_NAMED("User")
 @property (nonatomic, readonly) BOOL isVerified;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
-/// Check if user is equal to another user.
-/// \param object Another user object.
-///
-///
-/// returns:
-///
-/// <code>true</code> if users are equal, otherwise <code>false</code>.
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+@property (nonatomic, readonly) NSUInteger hash;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 

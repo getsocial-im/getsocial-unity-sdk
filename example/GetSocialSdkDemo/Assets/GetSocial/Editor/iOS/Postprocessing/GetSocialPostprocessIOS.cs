@@ -376,9 +376,31 @@ namespace GetSocialSdk.Editor
                 "facebook-stories"
             };
 
-            var appsArray = plistInfoFile.root.CreateArray(LSApplicationQueriesSchemes);
-            fbApps.ToList().ForEach(appsArray.AddString);
-            otherApps.ToList().ForEach(appsArray.AddString);
+            PlistElementArray existingSchemes = plistInfoFile.root[LSApplicationQueriesSchemes] as PlistElementArray;
+            if (existingSchemes == null)
+            {
+                existingSchemes = plistInfoFile.root.CreateArray(LSApplicationQueriesSchemes);
+            }
+            MergePlistArrays(existingSchemes, fbApps);
+            MergePlistArrays(existingSchemes, otherApps);
+        }
+
+        private static void MergePlistArrays(PlistElementArray originalArray, string[] newArray)
+        {
+            newArray.ToList().ForEach((entry) => {
+                var contains = false;
+                originalArray.values.ForEach((plistElement) => {
+                    if (plistElement.AsString().Equals(entry))
+                    {
+                        contains = true;
+                    }
+                });
+                if (!contains)
+                {
+                    originalArray.AddString(entry);
+                }
+            });
+
         }
 
         private static void SetUiBackgroundModes(PlistDocument plistDocument)

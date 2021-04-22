@@ -80,6 +80,7 @@ namespace GetSocialSdk.Core
     AFInvalidActivityID = 6022,
     AFInvalidQueryParameters = 6023,
     AFInvalidEntityID = 6024,
+    AFInvalidPaginationToken = 6025,
     /// <summary>
     /// Apollo (Social Graph)
     /// </summary>
