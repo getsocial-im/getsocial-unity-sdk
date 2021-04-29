@@ -537,6 +537,7 @@ extension FollowersPagingResult : Swift.Encodable {
   @objc(inTopicWithId:) public static func inTopic(_ id: Swift.String) -> GetSocialSDK.ActivitiesQuery
   @objc(inGroupWithId:) public static func inGroup(_ id: Swift.String) -> GetSocialSDK.ActivitiesQuery
   @objc(inAllTopics) public static func inAllTopics() -> GetSocialSDK.ActivitiesQuery
+  @objc(inAllGroups) public static func inAllGroups() -> GetSocialSDK.ActivitiesQuery
   @objc public static func timeline() -> GetSocialSDK.ActivitiesQuery
   @objc public static func everywhere() -> GetSocialSDK.ActivitiesQuery
   @objc(byUserWithId:) final public func byUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.ActivitiesQuery

@@ -423,6 +423,12 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 + (GetSocialActivitiesQuery * _Nonnull)inAllTopics SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get activities from all groups.
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
++ (GetSocialActivitiesQuery * _Nonnull)inAllGroups SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get activities in current user timeline.
 ///
 /// returns:
@@ -5215,6 +5221,12 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 + (GetSocialActivitiesQuery * _Nonnull)inAllTopics SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get activities from all groups.
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
++ (GetSocialActivitiesQuery * _Nonnull)inAllGroups SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get activities in current user timeline.
 ///
 /// returns:
