@@ -726,7 +726,7 @@ namespace GetSocialSdk.Core
       /// <param name="request"></param>
       GetReactionsResponse getReactions(GetReactionsRequest request);
       /// <summary>
-      /// #sdk7 - works as set, existing reaction is replaced
+      /// #sdk7
       /// </summary>
       /// <param name="request"></param>
       CreateReactionResponse createReaction(CreateReactionRequest request);
@@ -8081,7 +8081,7 @@ namespace GetSocialSdk.Core
 
       
       /// <summary>
-      /// #sdk7 - works as set, existing reaction is replaced
+      /// #sdk7
       /// </summary>
       /// <param name="request"></param>
       public CreateReactionResponse createReaction(CreateReactionRequest request)
