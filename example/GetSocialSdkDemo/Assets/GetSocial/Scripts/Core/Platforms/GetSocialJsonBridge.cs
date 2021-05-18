@@ -395,11 +395,19 @@ namespace GetSocialSdk.Core
 
         public void CreateLink(Dictionary<string, object> linkParams, Action<string> success, Action<GetSocialError> failure)
         {
-            linkParams = ImageToBase64(linkParams);
+#if UNITY_IOS
+            linkParams = ImageToBase64(linkParams, false);
+            var content = new InviteContent();
+            content = content.AddLinkParams(linkParams);
+            CallAsync("Invites.createLink", GSJson.Serialize(content), success, failure);
+#else
+            linkParams = ImageToBase64(linkParams, true);
             CallAsync("Invites.createLink", GSJson.Serialize(linkParams), success, failure);
+#endif
+
         }
-        
-        private static Dictionary<string, object> ImageToBase64(Dictionary<string, object> linkParams)
+
+        private static Dictionary<string, object> ImageToBase64(Dictionary<string, object> linkParams, bool addSuffix)
         {
             if (linkParams == null)
             {
@@ -410,7 +418,13 @@ namespace GetSocialSdk.Core
             {
                 if (kv.Value is Texture2D)
                 {
-                    result[kv.Key + "64"] = (kv.Value as Texture2D).TextureToBase64();
+                    if (addSuffix)
+                    {
+                        result[kv.Key + "64"] = (kv.Value as Texture2D).TextureToBase64();
+                    } else
+                    {
+                        result[kv.Key] = (kv.Value as Texture2D).TextureToBase64();
+                    }
                 } else
                 {
                     result[kv.Key] = kv.Value;
@@ -447,9 +461,9 @@ namespace GetSocialSdk.Core
         }
 #endif
 
-        #endregion
+#endregion
 
-        #region Promo Codes
+#region Promo Codes
 
         public void CreatePromoCode(PromoCodeContent content, Action<PromoCode> success, Action<GetSocialError> failure)
         {
@@ -466,9 +480,9 @@ namespace GetSocialSdk.Core
             CallAsync("PromoCodes.claim", code, success, failure);
         }
 
-        #endregion
+#endregion
 
-        #region Analytics
+#region Analytics
 
         public bool TrackPurchase(PurchaseData purchaseData)
         {
@@ -480,9 +494,9 @@ namespace GetSocialSdk.Core
             return CallSync<bool>("Analytics.trackCustomEvent", GSJson.Serialize(new TrackCustomEventBody { EventName = eventName, EventData = eventData }));
         }
 
-        #endregion
+#endregion
 
-        #region Push notifications
+#region Push notifications
 
         public void GetNotifications(PagingQuery<NotificationsQuery> pagingQuery, Action<PagingResult<Notification>> success, Action<GetSocialError> failure)
         {
@@ -536,7 +550,7 @@ namespace GetSocialSdk.Core
             MethodCaller.Call("GetSocial.handleOnStartUnityEvent", "");
         }
 
-        #endregion
+#endregion
 
         private void CallAsync<R>(string method, string body, Action<R> success, Action<GetSocialError> failure)
         {

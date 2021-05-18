@@ -25,8 +25,8 @@ namespace GetSocialSdk.Core
   public partial class SFActionConfig : TBase
   {
     private long _limit;
-    private Dictionary<string, string> _publicProperties;
-    private Dictionary<string, string> _privateProperties;
+    private Dictionary<string, SFPropAction> _publicProperties;
+    private Dictionary<string, SFPropAction> _privateProperties;
     private string _templateName;
     private string _whEventName;
     private Dictionary<string, string> _whCustomData;
@@ -54,7 +54,7 @@ namespace GetSocialSdk.Core
     /// <summary>
     /// Key/value pairs for type=CustomProp
     /// </summary>
-    public Dictionary<string, string> PublicProperties
+    public Dictionary<string, SFPropAction> PublicProperties
     {
       get
       {
@@ -67,7 +67,7 @@ namespace GetSocialSdk.Core
       }
     }
 
-    public Dictionary<string, string> PrivateProperties
+    public Dictionary<string, SFPropAction> PrivateProperties
     {
       get
       {
@@ -238,14 +238,15 @@ namespace GetSocialSdk.Core
             case 2:
               if (field.Type == TType.Map) {
                 {
-                  PublicProperties = new Dictionary<string, string>();
+                  PublicProperties = new Dictionary<string, SFPropAction>();
                   TMap _map4 = iprot.ReadMapBegin();
                   for( int _i5 = 0; _i5 < _map4.Count; ++_i5)
                   {
                     string _key6;
-                    string _val7;
+                    SFPropAction _val7;
                     _key6 = iprot.ReadString();
-                    _val7 = iprot.ReadString();
+                    _val7 = new SFPropAction();
+                    _val7.Read(iprot);
                     PublicProperties[_key6] = _val7;
                   }
                   iprot.ReadMapEnd();
@@ -257,14 +258,15 @@ namespace GetSocialSdk.Core
             case 3:
               if (field.Type == TType.Map) {
                 {
-                  PrivateProperties = new Dictionary<string, string>();
+                  PrivateProperties = new Dictionary<string, SFPropAction>();
                   TMap _map8 = iprot.ReadMapBegin();
                   for( int _i9 = 0; _i9 < _map8.Count; ++_i9)
                   {
                     string _key10;
-                    string _val11;
+                    SFPropAction _val11;
                     _key10 = iprot.ReadString();
-                    _val11 = iprot.ReadString();
+                    _val11 = new SFPropAction();
+                    _val11.Read(iprot);
                     PrivateProperties[_key10] = _val11;
                   }
                   iprot.ReadMapEnd();
@@ -369,11 +371,11 @@ namespace GetSocialSdk.Core
           field.ID = 2;
           oprot.WriteFieldBegin(field);
           {
-            oprot.WriteMapBegin(new TMap(TType.String, TType.String, PublicProperties.Count));
+            oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, PublicProperties.Count));
             foreach (string _iter16 in PublicProperties.Keys)
             {
               oprot.WriteString(_iter16);
-              oprot.WriteString(PublicProperties[_iter16]);
+              PublicProperties[_iter16].Write(oprot);
             }
             oprot.WriteMapEnd();
           }
@@ -385,11 +387,11 @@ namespace GetSocialSdk.Core
           field.ID = 3;
           oprot.WriteFieldBegin(field);
           {
-            oprot.WriteMapBegin(new TMap(TType.String, TType.String, PrivateProperties.Count));
+            oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, PrivateProperties.Count));
             foreach (string _iter17 in PrivateProperties.Keys)
             {
               oprot.WriteString(_iter17);
-              oprot.WriteString(PrivateProperties[_iter17]);
+              PrivateProperties[_iter17].Write(oprot);
             }
             oprot.WriteMapEnd();
           }

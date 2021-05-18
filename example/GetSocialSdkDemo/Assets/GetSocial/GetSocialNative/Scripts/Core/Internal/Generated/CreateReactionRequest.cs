@@ -30,6 +30,7 @@ namespace GetSocialSdk.Core
     private string _sessionId;
     private string _reaction;
     private SGEntity _id;
+    private bool _keepExisting;
 
     public string SessionId
     {
@@ -70,6 +71,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool KeepExisting
+    {
+      get
+      {
+        return _keepExisting;
+      }
+      set
+      {
+        __isset.keepExisting = true;
+        this._keepExisting = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -79,6 +93,7 @@ namespace GetSocialSdk.Core
       public bool sessionId;
       public bool reaction;
       public bool id;
+      public bool keepExisting;
     }
 
     public CreateReactionRequest() {
@@ -117,6 +132,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Struct) {
                 Id = new SGEntity();
                 Id.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 4:
+              if (field.Type == TType.Bool) {
+                KeepExisting = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -166,6 +188,14 @@ namespace GetSocialSdk.Core
           Id.Write(oprot);
           oprot.WriteFieldEnd();
         }
+        if (__isset.keepExisting) {
+          field.Name = "keepExisting";
+          field.Type = TType.Bool;
+          field.ID = 4;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(KeepExisting);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -195,6 +225,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Id: ");
         __sb.Append(Id== null ? "<null>" : Id.ToString());
+      }
+      if (__isset.keepExisting) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("KeepExisting: ");
+        __sb.Append(KeepExisting);
       }
       __sb.Append(")");
       return __sb.ToString();
