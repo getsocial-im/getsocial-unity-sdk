@@ -61,7 +61,9 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
         if (activity.Author.Id.Equals(GetSocial.GetCurrentUser().Id))
         {
             popup.AddAction("Edit", () => Edit(activity));
-        } else
+            popup.AddAction("Remove", () => Remove(activity));
+        }
+        else
         {
             popup.AddAction("Report as Spam", () => Report(activity, ReportingReason.Spam, "This activity is spam!"));
             popup.AddAction("Report as Inappropriate", () => Report(activity, ReportingReason.InappropriateContent, "This activity is inappropriate!"));
@@ -88,7 +90,21 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
         demoController.PushMenuSection<PostActivitySection>(section =>
         {
             section.SetActivity(activity);
+            section.Target = PostActivityTarget.Topic(Query.Ids.Ids.ToArray()[0]);
         });
+    }
+
+    private void Remove(Activity activity)
+    {
+        List<string> list = new List<string>();
+        list.Add(activity.Id);
+        var query = RemoveActivitiesQuery.ActivityIds(list);
+        Communities.RemoveActivities(query, () =>
+        {
+            var index = _items.FindIndex(item => item == activity);
+            _items.RemoveAt(index);
+            _console.LogD("Activity removed");
+        }, error => _console.LogE("Failed to remove: " + error.Message));
     }
 
     private void Details(Activity activity) 

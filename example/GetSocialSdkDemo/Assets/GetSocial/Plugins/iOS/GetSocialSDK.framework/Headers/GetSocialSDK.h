@@ -3269,6 +3269,7 @@ SWIFT_CLASS_NAMED("MembersQuery")
 /// Query instance.
 - (GetSocialMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
 /// Filters members by status.
+/// Restrictions: if current user is not Admin or Owner of the group, only members with Member status are returned.
 /// \param status Status.
 ///
 ///
@@ -8067,6 +8068,7 @@ SWIFT_CLASS_NAMED("MembersQuery")
 /// Query instance.
 - (GetSocialMembersQuery * _Nonnull)withRole:(enum GetSocialMemberRole)role SWIFT_WARN_UNUSED_RESULT;
 /// Filters members by status.
+/// Restrictions: if current user is not Admin or Owner of the group, only members with Member status are returned.
 /// \param status Status.
 ///
 ///

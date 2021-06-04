@@ -35,6 +35,12 @@ namespace GetSocialSdk.Core
             GetSocialFactory.Bridge.UpdateActivity(id, content, onSuccess, onFailure);
         }
 
+        public static void RemoveActivities(RemoveActivitiesQuery query, Action onSuccess,
+    Action<GetSocialError> onFailure)
+        {
+            GetSocialFactory.Bridge.RemoveActivities(query, onSuccess, onFailure);
+        }
+
         public static void AddReaction(string reaction, string activityId, Action success, Action<GetSocialError> failure)
         {
             GetSocialFactory.Bridge.AddReaction(reaction, activityId, success, failure);

@@ -173,7 +173,13 @@ public class PostActivitySection : DemoMenuSection
                 Communities.PostActivity(content, Target, posted => 
                 {
                     _console.LogD("Posted: " + posted);
-                    OpenFeed();
+                    if (Target != null)
+                    {
+                        OpenFeed();
+                    } else
+                    {
+                        _console.LogD("Can't open feed, Target is null");
+                    }
                 }, error => 
                 {
                     _console.LogE("Failed to post: " + error);
@@ -183,7 +189,14 @@ public class PostActivitySection : DemoMenuSection
                 Communities.UpdateActivity(Activity, content, posted => 
                 {
                     _console.LogD("Updated: " + posted);
-                    OpenFeed();
+                    if (Target != null)
+                    {
+                        OpenFeed();
+                    }
+                    else
+                    {
+                        _console.LogD("Can't open feed, Target is null");
+                    }
                 }, error => 
                 {
                     _console.LogE("Failed to update: " + error);
