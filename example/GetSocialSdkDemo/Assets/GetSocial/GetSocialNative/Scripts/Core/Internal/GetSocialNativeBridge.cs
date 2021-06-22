@@ -1220,8 +1220,9 @@ namespace GetSocialSdk.Core
         public bool TrackCustomEvent(string eventName, Dictionary<string, string> eventData)
         {
             Track(new AnalyticsEvent {
-                Name = eventName, 
+                Name = eventName,
                 Properties = eventData,
+                IsCustom = true
             });
             return true;
         }

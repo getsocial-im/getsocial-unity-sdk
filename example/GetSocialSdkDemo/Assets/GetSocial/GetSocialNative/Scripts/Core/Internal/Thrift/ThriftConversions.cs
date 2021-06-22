@@ -160,7 +160,8 @@ namespace GetSocialSdk.Core
                 CustomProperties = e.Properties,
                 DeviceTimeType = THDeviceTimeType.SERVER_TIME,
                 DeviceTime = e.CreatedAt.ToUnixTimestamp(),
-                RetryCount = 0
+                RetryCount = 0,
+                IsCustom = e.IsCustom
             };
         }
 

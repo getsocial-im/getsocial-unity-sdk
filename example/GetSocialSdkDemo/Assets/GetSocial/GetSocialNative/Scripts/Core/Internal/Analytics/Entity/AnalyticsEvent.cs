@@ -11,6 +11,7 @@ namespace GetSocialSdk.Core
         public string Name;
         public Dictionary<string, string> Properties;
         public DateTime CreatedAt = DateTime.Now;
+        public bool IsCustom = false;
 
         public AnalyticsEvent()
         {
@@ -24,7 +25,8 @@ namespace GetSocialSdk.Core
                 Id = Id,
                 Name = Name, 
                 Properties = Properties,
-                CreatedAt = CreatedAt.AddSeconds(diff)
+                CreatedAt = CreatedAt.AddSeconds(diff),
+                IsCustom = IsCustom
             };
         }
     }
