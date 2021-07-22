@@ -45,11 +45,26 @@ public abstract class BaseTopicsSection : BaseListSection<TopicsQuery, Topic>
         }
         popup.AddAction("Info", () => Print(topic));
         popup.AddAction("Followers", () => Followers(topic));
-        popup.AddAction("Feed", () => Feed(topic));
+        popup.AddAction("Activities", () => ShowActivities(topic));
+        popup.AddAction("Announcements", () => ShowAnnouncements(topic));
         popup.AddAction("Feed UI", () => FeedUI(topic));
-        popup.AddAction("Post To", () => PostTo(topic));
+        popup.AddAction("Activities with Poll", () => ActivitiesWithPoll(topic));
+        popup.AddAction("Announcements with Poll", () => AnnouncementsWithPoll(topic));
+        if (topic.Settings.IsActionAllowed(CommunitiesAction.Post))
+        {
+            popup.AddAction("Post To", () => PostTo(topic));
+            popup.AddAction("Create Poll", () => CreatePoll(topic));
+        }
         popup.AddAction("Cancel", () => { });
         popup.Show();   
+    }
+
+    private void CreatePoll(Topic topic)
+    {
+        demoController.PushMenuSection<CreatePollSection>(section =>
+        {
+            section.Target = PostActivityTarget.Topic(topic.Id);
+        });
     }
 
     private void PostTo(Topic topic)
@@ -69,11 +84,35 @@ public abstract class BaseTopicsSection : BaseListSection<TopicsQuery, Topic>
         });
     }
     
-    private void Feed(Topic topic)
+    private void ShowActivities(Topic topic)
     {
         demoController.PushMenuSection<ActivitiesSection>(section =>
         {
             section.Query = ActivitiesQuery.ActivitiesInTopic(topic.Id);
+        });
+    }
+
+    private void ShowAnnouncements(Topic topic)
+    {
+        demoController.PushMenuSection<AnnouncementsSection>(section =>
+        {
+            section.Query = AnnouncementsQuery.InTopic(topic.Id);
+        });
+    }
+
+    private void ActivitiesWithPoll(Topic topic)
+    {
+        demoController.PushMenuSection<ActivitiesWithPollSection>(section =>
+        {
+            section.Query = ActivitiesQuery.ActivitiesInTopic(topic.Id).WithPollStatus(PollStatus.WithPoll);
+        });
+    }
+
+    private void AnnouncementsWithPoll(Topic topic)
+    {
+        demoController.PushMenuSection<AnnouncementsWithPollSection>(section =>
+        {
+            section.Query = AnnouncementsQuery.InTopic(topic.Id).WithPollStatus(PollStatus.WithPoll);
         });
     }
 

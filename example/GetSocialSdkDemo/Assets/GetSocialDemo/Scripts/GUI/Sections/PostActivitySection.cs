@@ -191,7 +191,7 @@ public class PostActivitySection : DemoMenuSection
                     _console.LogD("Updated: " + posted);
                     if (Target != null)
                     {
-                        OpenFeed();
+                        OpenActivityDetails();
                     }
                     else
                     {
@@ -203,6 +203,11 @@ public class PostActivitySection : DemoMenuSection
                 });
             }
         }
+    }
+
+    private void OpenActivityDetails()
+    {
+        ActivityDetailsViewBuilder.Create(Activity).Show();
     }
 
     private void OpenFeed()
@@ -219,8 +224,14 @@ public class PostActivitySection : DemoMenuSection
         if (query != null)
         {
             ActivityFeedViewBuilder.Create(query)
+                .SetActionListener(OnAction)
                                 .Show();
         }
+    }
+
+    void OnAction(GetSocialAction action)
+    {
+        demoController.HandleAction(action);
     }
 
     private class Data : DemoGuiUtils.IDrawableRow

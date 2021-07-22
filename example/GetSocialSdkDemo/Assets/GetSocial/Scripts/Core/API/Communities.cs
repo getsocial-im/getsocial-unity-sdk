@@ -68,6 +68,28 @@ namespace GetSocialSdk.Core
         }
         #endregion
 
+        #region Polls
+        public static void AddVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            GetSocialFactory.Bridge.AddVotes(pollOptionIds, activityId, onSuccess, onError);
+        }
+
+        public static void SetVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            GetSocialFactory.Bridge.SetVotes(pollOptionIds, activityId, onSuccess, onError);
+        }
+
+        public static void RemoveVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            GetSocialFactory.Bridge.RemoveVotes(pollOptionIds, activityId, onSuccess, onError);
+        }
+
+        public static void GetVotes(PagingQuery<VotesQuery> query, Action<PagingResult<UserVotes>> onSuccess, Action<GetSocialError> onError)
+        {
+            GetSocialFactory.Bridge.GetVotes(query, onSuccess, onError);
+        }
+        #endregion
+
         #region Users
         public static void GetUsers(PagingQuery<UsersQuery> query, Action<PagingResult<User>> onSuccess,
             Action<GetSocialError> onFailure)

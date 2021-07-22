@@ -10,8 +10,12 @@ namespace GetSocialSdk.Core {
 
         [JsonSerializationKey ("author")]
         internal UserId Author;
+
         [JsonSerializationKey ("tag")]
         internal string Tag;
+
+        [JsonSerializationKey("pollStatus")]
+        internal int InternalPollStatus = PollStatus.All;
 
         private ActivitiesQuery (CommunitiesIds ids) {
             Ids = ids;
@@ -94,6 +98,12 @@ namespace GetSocialSdk.Core {
         /// <returns></returns>
         public ActivitiesQuery WithTag (string tag) {
             Tag = tag;
+            return this;
+        }
+
+        public ActivitiesQuery WithPollStatus(int pollStatus)
+        {
+            InternalPollStatus = pollStatus;
             return this;
         }
 

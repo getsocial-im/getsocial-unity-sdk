@@ -26,6 +26,9 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("properties")] 
         internal Dictionary<string, string> Properties { get; }
 
+        [JsonSerializationKey("poll")]
+        public PollContent Poll { get; set; }
+
         public ActivityContent()
         {
             Attachments = new List<MediaAttachment>();

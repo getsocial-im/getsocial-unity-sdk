@@ -31,6 +31,8 @@ namespace GetSocialSdk.Core
     private Dictionary<string, AFContent> _content;
     private Dictionary<string, string> _properties;
     private SGEntity _target;
+    private AFPollContent _poll;
+    private bool _allowMultiReactions;
 
     public string SessionId
     {
@@ -84,6 +86,32 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public AFPollContent Poll
+    {
+      get
+      {
+        return _poll;
+      }
+      set
+      {
+        __isset.poll = true;
+        this._poll = value;
+      }
+    }
+
+    public bool AllowMultiReactions
+    {
+      get
+      {
+        return _allowMultiReactions;
+      }
+      set
+      {
+        __isset.allowMultiReactions = true;
+        this._allowMultiReactions = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -94,6 +122,8 @@ namespace GetSocialSdk.Core
       public bool content;
       public bool properties;
       public bool target;
+      public bool poll;
+      public bool allowMultiReactions;
     }
 
     public CreateActivityRequest() {
@@ -125,15 +155,15 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Content = new Dictionary<string, AFContent>();
-                  TMap _map134 = iprot.ReadMapBegin();
-                  for( int _i135 = 0; _i135 < _map134.Count; ++_i135)
+                  TMap _map151 = iprot.ReadMapBegin();
+                  for( int _i152 = 0; _i152 < _map151.Count; ++_i152)
                   {
-                    string _key136;
-                    AFContent _val137;
-                    _key136 = iprot.ReadString();
-                    _val137 = new AFContent();
-                    _val137.Read(iprot);
-                    Content[_key136] = _val137;
+                    string _key153;
+                    AFContent _val154;
+                    _key153 = iprot.ReadString();
+                    _val154 = new AFContent();
+                    _val154.Read(iprot);
+                    Content[_key153] = _val154;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -145,14 +175,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Properties = new Dictionary<string, string>();
-                  TMap _map138 = iprot.ReadMapBegin();
-                  for( int _i139 = 0; _i139 < _map138.Count; ++_i139)
+                  TMap _map155 = iprot.ReadMapBegin();
+                  for( int _i156 = 0; _i156 < _map155.Count; ++_i156)
                   {
-                    string _key140;
-                    string _val141;
-                    _key140 = iprot.ReadString();
-                    _val141 = iprot.ReadString();
-                    Properties[_key140] = _val141;
+                    string _key157;
+                    string _val158;
+                    _key157 = iprot.ReadString();
+                    _val158 = iprot.ReadString();
+                    Properties[_key157] = _val158;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -164,6 +194,21 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Struct) {
                 Target = new SGEntity();
                 Target.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Struct) {
+                Poll = new AFPollContent();
+                Poll.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Bool) {
+                AllowMultiReactions = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -204,10 +249,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
-            foreach (string _iter142 in Content.Keys)
+            foreach (string _iter159 in Content.Keys)
             {
-              oprot.WriteString(_iter142);
-              Content[_iter142].Write(oprot);
+              oprot.WriteString(_iter159);
+              Content[_iter159].Write(oprot);
             }
             oprot.WriteMapEnd();
           }
@@ -220,10 +265,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter143 in Properties.Keys)
+            foreach (string _iter160 in Properties.Keys)
             {
-              oprot.WriteString(_iter143);
-              oprot.WriteString(Properties[_iter143]);
+              oprot.WriteString(_iter160);
+              oprot.WriteString(Properties[_iter160]);
             }
             oprot.WriteMapEnd();
           }
@@ -235,6 +280,22 @@ namespace GetSocialSdk.Core
           field.ID = 4;
           oprot.WriteFieldBegin(field);
           Target.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (Poll != null && __isset.poll) {
+          field.Name = "poll";
+          field.Type = TType.Struct;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          Poll.Write(oprot);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.allowMultiReactions) {
+          field.Name = "allowMultiReactions";
+          field.Type = TType.Bool;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(AllowMultiReactions);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -272,6 +333,18 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Target: ");
         __sb.Append(Target== null ? "<null>" : Target.ToString());
+      }
+      if (Poll != null && __isset.poll) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Poll: ");
+        __sb.Append(Poll== null ? "<null>" : Poll.ToString());
+      }
+      if (__isset.allowMultiReactions) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("AllowMultiReactions: ");
+        __sb.Append(AllowMultiReactions);
       }
       __sb.Append(")");
       return __sb.ToString();

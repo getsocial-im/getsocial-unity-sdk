@@ -367,6 +367,26 @@ namespace GetSocialSdk.Core
             CallAsync("Communities.getChat", GSJson.Serialize(chatId), success, failure);
         }
 
+        public void AddVotes(HashSet<string> pollOptionIdSet, string activityId, Action success, Action<GetSocialError> failure)
+        {
+            CallAsyncVoid("Communities.addVotes", GSJson.Serialize(new ModifyVotesBody { ActivityId = activityId, PollOptionIds = new List<string>(pollOptionIdSet) }), success, failure);
+        }
+
+        public void SetVotes(HashSet<string> pollOptionIdSet, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            CallAsyncVoid("Communities.setVotes", GSJson.Serialize(new ModifyVotesBody { ActivityId = activityId, PollOptionIds = new List<string>(pollOptionIdSet) }), onSuccess, onError);
+        }
+
+        public void RemoveVotes(HashSet<string> pollOptionIdSet, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            CallAsyncVoid("Communities.removeVotes", GSJson.Serialize(new ModifyVotesBody { ActivityId = activityId, PollOptionIds = new List<string>(pollOptionIdSet) }), onSuccess, onError);
+        }
+
+        public void GetVotes(PagingQuery<VotesQuery> query, Action<PagingResult<UserVotes>> success, Action<GetSocialError> failure)
+        {
+            CallAsync("Communities.getVotes", GSJson.Serialize(query), success, failure);
+        }
+
 
         #region Invites
         public void GetAvailableChannels(Action<List<InviteChannel>> success, Action<GetSocialError> failure)
@@ -623,6 +643,14 @@ namespace GetSocialSdk.Core
     {
         [JsonSerializationKey("reaction")]
         public string Reaction;
+        [JsonSerializationKey("activityId")]
+        public string ActivityId;
+    }
+
+    public class ModifyVotesBody
+    {
+        [JsonSerializationKey("pollOptionIds")]
+        public List<string> PollOptionIds;
         [JsonSerializationKey("activityId")]
         public string ActivityId;
     }

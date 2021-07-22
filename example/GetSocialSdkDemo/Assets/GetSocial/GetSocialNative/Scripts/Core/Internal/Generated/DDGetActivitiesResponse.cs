@@ -19,9 +19,6 @@ using Thrift.Transport;
 namespace GetSocialSdk.Core 
 {
 
-  /// <summary>
-  /// to be discussed, maybe support only one tag instead
-  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
@@ -121,13 +118,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Data = new List<AFActivity>();
-                  TList _list109 = iprot.ReadListBegin();
-                  for( int _i110 = 0; _i110 < _list109.Count; ++_i110)
+                  TList _list126 = iprot.ReadListBegin();
+                  for( int _i127 = 0; _i127 < _list126.Count; ++_i127)
                   {
-                    AFActivity _elem111;
-                    _elem111 = new AFActivity();
-                    _elem111.Read(iprot);
-                    Data.Add(_elem111);
+                    AFActivity _elem128;
+                    _elem128 = new AFActivity();
+                    _elem128.Read(iprot);
+                    Data.Add(_elem128);
                   }
                   iprot.ReadListEnd();
                 }
@@ -139,13 +136,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   EntityDetails = new List<AFEntityReference>();
-                  TList _list112 = iprot.ReadListBegin();
-                  for( int _i113 = 0; _i113 < _list112.Count; ++_i113)
+                  TList _list129 = iprot.ReadListBegin();
+                  for( int _i130 = 0; _i130 < _list129.Count; ++_i130)
                   {
-                    AFEntityReference _elem114;
-                    _elem114 = new AFEntityReference();
-                    _elem114.Read(iprot);
-                    EntityDetails.Add(_elem114);
+                    AFEntityReference _elem131;
+                    _elem131 = new AFEntityReference();
+                    _elem131.Read(iprot);
+                    EntityDetails.Add(_elem131);
                   }
                   iprot.ReadListEnd();
                 }
@@ -157,15 +154,15 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Authors = new Dictionary<string, THPublicUser>();
-                  TMap _map115 = iprot.ReadMapBegin();
-                  for( int _i116 = 0; _i116 < _map115.Count; ++_i116)
+                  TMap _map132 = iprot.ReadMapBegin();
+                  for( int _i133 = 0; _i133 < _map132.Count; ++_i133)
                   {
-                    string _key117;
-                    THPublicUser _val118;
-                    _key117 = iprot.ReadString();
-                    _val118 = new THPublicUser();
-                    _val118.Read(iprot);
-                    Authors[_key117] = _val118;
+                    string _key134;
+                    THPublicUser _val135;
+                    _key134 = iprot.ReadString();
+                    _val135 = new THPublicUser();
+                    _val135.Read(iprot);
+                    Authors[_key134] = _val135;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -208,9 +205,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Data.Count));
-            foreach (AFActivity _iter119 in Data)
+            foreach (AFActivity _iter136 in Data)
             {
-              _iter119.Write(oprot);
+              _iter136.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -223,9 +220,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, EntityDetails.Count));
-            foreach (AFEntityReference _iter120 in EntityDetails)
+            foreach (AFEntityReference _iter137 in EntityDetails)
             {
-              _iter120.Write(oprot);
+              _iter137.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -238,10 +235,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Authors.Count));
-            foreach (string _iter121 in Authors.Keys)
+            foreach (string _iter138 in Authors.Keys)
             {
-              oprot.WriteString(_iter121);
-              Authors[_iter121].Write(oprot);
+              oprot.WriteString(_iter138);
+              Authors[_iter138].Write(oprot);
             }
             oprot.WriteMapEnd();
           }

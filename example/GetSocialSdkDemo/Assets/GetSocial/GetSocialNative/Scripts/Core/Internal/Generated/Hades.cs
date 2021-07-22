@@ -726,6 +726,11 @@ namespace GetSocialSdk.Core
       /// <param name="request"></param>
       GetReactionsResponse getReactions(GetReactionsRequest request);
       /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      GetVotesResponse getVotes(GetVotesRequest request);
+      /// <summary>
       /// #sdk7 - works as set, existing reaction is replaced
       /// </summary>
       /// <param name="request"></param>
@@ -734,7 +739,17 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
+      CreateVoteResponse createVote(CreateVoteRequest request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
       DeleteReactionResponse deleteReaction(DeleteReactionRequest request);
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      DeleteVoteResponse deleteVote(DeleteVoteRequest request);
       /// <summary>
       /// #sdk7
       /// </summary>
@@ -760,7 +775,9 @@ namespace GetSocialSdk.Core
       DDUpdateAnnouncementResponse ddUpdateAnnouncement(DDUpdateAnnouncementRequest request);
       DDGetReactionsResponse ddGetReactions(DDGetReactionsRequest request);
       DDCreateReactionsResponse ddCreateReactions(DDCreateReactionsRequest request);
+      DDCreateVoteResponse ddCreateVote(DDCreateVoteRequest request);
       DDDeleteReactionsResponse ddDeleteReactions(DDDeleteReactionsRequest request);
+      DDDeleteVoteResponse ddDeleteVote(DDDeleteVoteRequest request);
       DDPurgeActivitiesResponse ddPurgeActivities(DDPurgeActivitiesRequest request);
       DDGetActivitiesForModerationResponse ddGetActivitiesForModeration(DDGetActivitiesForModerationRequest request);
       /// <summary>
@@ -8081,6 +8098,47 @@ namespace GetSocialSdk.Core
 
       
       /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public GetVotesResponse getVotes(GetVotesRequest request)
+      {
+        send_getVotes(request);
+        return recv_getVotes();
+
+      }
+      public void send_getVotes(GetVotesRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("getVotes", TMessageType.Call, seqid_));
+        getVotes_args args = new getVotes_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public GetVotesResponse recv_getVotes()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        getVotes_result result = new getVotes_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "getVotes failed: unknown result");
+      }
+
+      
+      /// <summary>
       /// #sdk7 - works as set, existing reaction is replaced
       /// </summary>
       /// <param name="request"></param>
@@ -8125,6 +8183,47 @@ namespace GetSocialSdk.Core
       /// #sdk7
       /// </summary>
       /// <param name="request"></param>
+      public CreateVoteResponse createVote(CreateVoteRequest request)
+      {
+        send_createVote(request);
+        return recv_createVote();
+
+      }
+      public void send_createVote(CreateVoteRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("createVote", TMessageType.Call, seqid_));
+        createVote_args args = new createVote_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public CreateVoteResponse recv_createVote()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        createVote_result result = new createVote_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "createVote failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
       public DeleteReactionResponse deleteReaction(DeleteReactionRequest request)
       {
         send_deleteReaction(request);
@@ -8159,6 +8258,47 @@ namespace GetSocialSdk.Core
           throw result.Errors;
         }
         throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "deleteReaction failed: unknown result");
+      }
+
+      
+      /// <summary>
+      /// #sdk7
+      /// </summary>
+      /// <param name="request"></param>
+      public DeleteVoteResponse deleteVote(DeleteVoteRequest request)
+      {
+        send_deleteVote(request);
+        return recv_deleteVote();
+
+      }
+      public void send_deleteVote(DeleteVoteRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("deleteVote", TMessageType.Call, seqid_));
+        deleteVote_args args = new deleteVote_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public DeleteVoteResponse recv_deleteVote()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        deleteVote_result result = new deleteVote_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "deleteVote failed: unknown result");
       }
 
       
@@ -8655,6 +8795,43 @@ namespace GetSocialSdk.Core
       }
 
       
+      public DDCreateVoteResponse ddCreateVote(DDCreateVoteRequest request)
+      {
+        send_ddCreateVote(request);
+        return recv_ddCreateVote();
+
+      }
+      public void send_ddCreateVote(DDCreateVoteRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("ddCreateVote", TMessageType.Call, seqid_));
+        ddCreateVote_args args = new ddCreateVote_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public DDCreateVoteResponse recv_ddCreateVote()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        ddCreateVote_result result = new ddCreateVote_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddCreateVote failed: unknown result");
+      }
+
+      
       public DDDeleteReactionsResponse ddDeleteReactions(DDDeleteReactionsRequest request)
       {
         send_ddDeleteReactions(request);
@@ -8689,6 +8866,43 @@ namespace GetSocialSdk.Core
           throw result.Errors;
         }
         throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddDeleteReactions failed: unknown result");
+      }
+
+      
+      public DDDeleteVoteResponse ddDeleteVote(DDDeleteVoteRequest request)
+      {
+        send_ddDeleteVote(request);
+        return recv_ddDeleteVote();
+
+      }
+      public void send_ddDeleteVote(DDDeleteVoteRequest request)
+      {
+        oprot_.WriteMessageBegin(new TMessage("ddDeleteVote", TMessageType.Call, seqid_));
+        ddDeleteVote_args args = new ddDeleteVote_args();
+        args.Request = request;
+        args.Write(oprot_);
+        oprot_.WriteMessageEnd();
+        oprot_.Transport.Flush();
+      }
+
+      public DDDeleteVoteResponse recv_ddDeleteVote()
+      {
+        TMessage msg = iprot_.ReadMessageBegin();
+        if (msg.Type == TMessageType.Exception) {
+          TApplicationException x = TApplicationException.Read(iprot_);
+          iprot_.ReadMessageEnd();
+          throw x;
+        }
+        ddDeleteVote_result result = new ddDeleteVote_result();
+        result.Read(iprot_);
+        iprot_.ReadMessageEnd();
+        if (result.__isset.success) {
+          return result.Success;
+        }
+        if (result.__isset.errors) {
+          throw result.Errors;
+        }
+        throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, "ddDeleteVote failed: unknown result");
       }
 
       
@@ -11162,8 +11376,11 @@ namespace GetSocialSdk.Core
         processMap_["createAnnouncement"] = createAnnouncement_Process;
         processMap_["updateAnnouncement"] = updateAnnouncement_Process;
         processMap_["getReactions"] = getReactions_Process;
+        processMap_["getVotes"] = getVotes_Process;
         processMap_["createReaction"] = createReaction_Process;
+        processMap_["createVote"] = createVote_Process;
         processMap_["deleteReaction"] = deleteReaction_Process;
+        processMap_["deleteVote"] = deleteVote_Process;
         processMap_["reportEntityV2"] = reportEntityV2_Process;
         processMap_["activityTrackView"] = activityTrackView_Process;
         processMap_["ddGetActivities"] = ddGetActivities_Process;
@@ -11177,7 +11394,9 @@ namespace GetSocialSdk.Core
         processMap_["ddUpdateAnnouncement"] = ddUpdateAnnouncement_Process;
         processMap_["ddGetReactions"] = ddGetReactions_Process;
         processMap_["ddCreateReactions"] = ddCreateReactions_Process;
+        processMap_["ddCreateVote"] = ddCreateVote_Process;
         processMap_["ddDeleteReactions"] = ddDeleteReactions_Process;
+        processMap_["ddDeleteVote"] = ddDeleteVote_Process;
         processMap_["ddPurgeActivities"] = ddPurgeActivities_Process;
         processMap_["ddGetActivitiesForModeration"] = ddGetActivitiesForModeration_Process;
         processMap_["runETLQuery"] = runETLQuery_Process;
@@ -17308,6 +17527,41 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
+      public void getVotes_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        getVotes_args args = new getVotes_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        getVotes_result result = new getVotes_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.getVotes(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("getVotes", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("getVotes", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
       public void createReaction_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
         createReaction_args args = new createReaction_args();
@@ -17343,6 +17597,41 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
+      public void createVote_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        createVote_args args = new createVote_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        createVote_result result = new createVote_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.createVote(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("createVote", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("createVote", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
       public void deleteReaction_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
         deleteReaction_args args = new deleteReaction_args();
@@ -17372,6 +17661,41 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
           oprot.WriteMessageBegin(new TMessage("deleteReaction", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void deleteVote_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        deleteVote_args args = new deleteVote_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        deleteVote_result result = new deleteVote_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.deleteVote(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("deleteVote", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("deleteVote", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -17833,6 +18157,41 @@ namespace GetSocialSdk.Core
         oprot.Transport.Flush();
       }
 
+      public void ddCreateVote_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        ddCreateVote_args args = new ddCreateVote_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        ddCreateVote_result result = new ddCreateVote_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.ddCreateVote(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("ddCreateVote", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("ddCreateVote", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
       public void ddDeleteReactions_Process(int seqid, TProtocol iprot, TProtocol oprot)
       {
         ddDeleteReactions_args args = new ddDeleteReactions_args();
@@ -17862,6 +18221,41 @@ namespace GetSocialSdk.Core
           Console.Error.WriteLine(ex.ToString());
           TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
           oprot.WriteMessageBegin(new TMessage("ddDeleteReactions", TMessageType.Exception, seqid));
+          x.Write(oprot);
+        }
+        oprot.WriteMessageEnd();
+        oprot.Transport.Flush();
+      }
+
+      public void ddDeleteVote_Process(int seqid, TProtocol iprot, TProtocol oprot)
+      {
+        ddDeleteVote_args args = new ddDeleteVote_args();
+        args.Read(iprot);
+        iprot.ReadMessageEnd();
+        ddDeleteVote_result result = new ddDeleteVote_result();
+        try
+        {
+          try
+          {
+            result.Success = iface_.ddDeleteVote(args.Request);
+          }
+          catch (THErrors errors)
+          {
+            result.Errors = errors;
+          }
+          oprot.WriteMessageBegin(new TMessage("ddDeleteVote", TMessageType.Reply, seqid)); 
+          result.Write(oprot);
+        }
+        catch (TTransportException)
+        {
+          throw;
+        }
+        catch (Exception ex)
+        {
+          Console.Error.WriteLine("Error occurred in processor:");
+          Console.Error.WriteLine(ex.ToString());
+          TApplicationException x = new TApplicationException        (TApplicationException.ExceptionType.InternalError," Internal error.");
+          oprot.WriteMessageBegin(new TMessage("ddDeleteVote", TMessageType.Exception, seqid));
           x.Write(oprot);
         }
         oprot.WriteMessageEnd();
@@ -71138,6 +71532,265 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
+    public partial class getVotes_args : TBase
+    {
+      private GetVotesRequest _request;
+
+      public GetVotesRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public getVotes_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new GetVotesRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getVotes_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getVotes_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class getVotes_result : TBase
+    {
+      private GetVotesResponse _success;
+      private THErrors _errors;
+
+      public GetVotesResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public getVotes_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new GetVotesResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("getVotes_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("getVotes_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
     public partial class createReaction_args : TBase
     {
       private CreateReactionRequest _request;
@@ -71397,6 +72050,265 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
+    public partial class createVote_args : TBase
+    {
+      private CreateVoteRequest _request;
+
+      public CreateVoteRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public createVote_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new CreateVoteRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("createVote_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("createVote_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class createVote_result : TBase
+    {
+      private CreateVoteResponse _success;
+      private THErrors _errors;
+
+      public CreateVoteResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public createVote_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new CreateVoteResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("createVote_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("createVote_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
     public partial class deleteReaction_args : TBase
     {
       private DeleteReactionRequest _request;
@@ -71633,6 +72545,265 @@ namespace GetSocialSdk.Core
 
       public override string ToString() {
         StringBuilder __sb = new StringBuilder("deleteReaction_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class deleteVote_args : TBase
+    {
+      private DeleteVoteRequest _request;
+
+      public DeleteVoteRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public deleteVote_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new DeleteVoteRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("deleteVote_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("deleteVote_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class deleteVote_result : TBase
+    {
+      private DeleteVoteResponse _success;
+      private THErrors _errors;
+
+      public DeleteVoteResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public deleteVote_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new DeleteVoteResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("deleteVote_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("deleteVote_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }
@@ -75023,6 +76194,265 @@ namespace GetSocialSdk.Core
     #if !SILVERLIGHT
     [Serializable]
     #endif
+    public partial class ddCreateVote_args : TBase
+    {
+      private DDCreateVoteRequest _request;
+
+      public DDCreateVoteRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public ddCreateVote_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new DDCreateVoteRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddCreateVote_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddCreateVote_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddCreateVote_result : TBase
+    {
+      private DDCreateVoteResponse _success;
+      private THErrors _errors;
+
+      public DDCreateVoteResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public ddCreateVote_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new DDCreateVoteResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddCreateVote_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddCreateVote_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
     public partial class ddDeleteReactions_args : TBase
     {
       private DDDeleteReactionsRequest _request;
@@ -75259,6 +76689,265 @@ namespace GetSocialSdk.Core
 
       public override string ToString() {
         StringBuilder __sb = new StringBuilder("ddDeleteReactions_result(");
+        bool __first = true;
+        if (Success != null && __isset.success) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Success: ");
+          __sb.Append(Success== null ? "<null>" : Success.ToString());
+        }
+        if (Errors != null && __isset.errors) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Errors: ");
+          __sb.Append(Errors== null ? "<null>" : Errors.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddDeleteVote_args : TBase
+    {
+      private DDDeleteVoteRequest _request;
+
+      public DDDeleteVoteRequest Request
+      {
+        get
+        {
+          return _request;
+        }
+        set
+        {
+          __isset.request = true;
+          this._request = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool request;
+      }
+
+      public ddDeleteVote_args() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Request = new DDDeleteVoteRequest();
+                  Request.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddDeleteVote_args");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+          if (Request != null && __isset.request) {
+            field.Name = "request";
+            field.Type = TType.Struct;
+            field.ID = 1;
+            oprot.WriteFieldBegin(field);
+            Request.Write(oprot);
+            oprot.WriteFieldEnd();
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddDeleteVote_args(");
+        bool __first = true;
+        if (Request != null && __isset.request) {
+          if(!__first) { __sb.Append(", "); }
+          __first = false;
+          __sb.Append("Request: ");
+          __sb.Append(Request== null ? "<null>" : Request.ToString());
+        }
+        __sb.Append(")");
+        return __sb.ToString();
+      }
+
+    }
+
+
+    #if !SILVERLIGHT
+    [Serializable]
+    #endif
+    public partial class ddDeleteVote_result : TBase
+    {
+      private DDDeleteVoteResponse _success;
+      private THErrors _errors;
+
+      public DDDeleteVoteResponse Success
+      {
+        get
+        {
+          return _success;
+        }
+        set
+        {
+          __isset.success = true;
+          this._success = value;
+        }
+      }
+
+      public THErrors Errors
+      {
+        get
+        {
+          return _errors;
+        }
+        set
+        {
+          __isset.errors = true;
+          this._errors = value;
+        }
+      }
+
+
+      public Isset __isset;
+      #if !SILVERLIGHT
+      [Serializable]
+      #endif
+      public struct Isset {
+        public bool success;
+        public bool errors;
+      }
+
+      public ddDeleteVote_result() {
+      }
+
+      public void Read (TProtocol iprot)
+      {
+        iprot.IncrementRecursionDepth();
+        try
+        {
+          TField field;
+          iprot.ReadStructBegin();
+          while (true)
+          {
+            field = iprot.ReadFieldBegin();
+            if (field.Type == TType.Stop) { 
+              break;
+            }
+            switch (field.ID)
+            {
+              case 0:
+                if (field.Type == TType.Struct) {
+                  Success = new DDDeleteVoteResponse();
+                  Success.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              case 1:
+                if (field.Type == TType.Struct) {
+                  Errors = new THErrors();
+                  Errors.Read(iprot);
+                } else { 
+                  TProtocolUtil.Skip(iprot, field.Type);
+                }
+                break;
+              default: 
+                TProtocolUtil.Skip(iprot, field.Type);
+                break;
+            }
+            iprot.ReadFieldEnd();
+          }
+          iprot.ReadStructEnd();
+        }
+        finally
+        {
+          iprot.DecrementRecursionDepth();
+        }
+      }
+
+      public void Write(TProtocol oprot) {
+        oprot.IncrementRecursionDepth();
+        try
+        {
+          TStruct struc = new TStruct("ddDeleteVote_result");
+          oprot.WriteStructBegin(struc);
+          TField field = new TField();
+
+          if (this.__isset.success) {
+            if (Success != null) {
+              field.Name = "Success";
+              field.Type = TType.Struct;
+              field.ID = 0;
+              oprot.WriteFieldBegin(field);
+              Success.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          } else if (this.__isset.errors) {
+            if (Errors != null) {
+              field.Name = "Errors";
+              field.Type = TType.Struct;
+              field.ID = 1;
+              oprot.WriteFieldBegin(field);
+              Errors.Write(oprot);
+              oprot.WriteFieldEnd();
+            }
+          }
+          oprot.WriteFieldStop();
+          oprot.WriteStructEnd();
+        }
+        finally
+        {
+          oprot.DecrementRecursionDepth();
+        }
+      }
+
+      public override string ToString() {
+        StringBuilder __sb = new StringBuilder("ddDeleteVote_result(");
         bool __first = true;
         if (Success != null && __isset.success) {
           if(!__first) { __sb.Append(", "); }

@@ -192,6 +192,16 @@ extension ReferralUsersPagingResult : Swift.Encodable {
   @objc override dynamic public init()
   @objc deinit
 }
+@objcMembers @objc(GetSocialVotesPagingResult) public class VotesPagingResult : GetSocialSDK.PagingResult {
+  @objc final public let votes: [GetSocialSDK.UserVotes]
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc deinit
+}
+extension VotesPagingResult : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
 @objcMembers @objc(GetSocialAddGroupMembersQuery) final public class AddGroupMembersQuery : ObjectiveC.NSObject {
   @objc public init(id: Swift.String, userIds: GetSocialSDK.UserIdList)
   @objc final public func withRole(_ role: GetSocialSDK.Role) -> GetSocialSDK.AddGroupMembersQuery
@@ -214,6 +224,18 @@ extension AddGroupMembersQuery : Swift.Decodable {
 }
 extension FriendsPagingResult : Swift.Encodable {
   public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialVotesPagingQuery) final public class VotesPagingQuery : GetSocialSDK.PagingQuery {
+  @objc final public let query: GetSocialSDK.VotesQuery
+  @objc(initWithQuery:) public init(_ query: GetSocialSDK.VotesQuery)
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension VotesPagingQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
 }
 @objcMembers @objc(GetSocialActivitiesPagingQuery) final public class ActivitiesPagingQuery : GetSocialSDK.PagingQuery {
   @objc final public let query: GetSocialSDK.ActivitiesQuery
@@ -526,11 +548,29 @@ extension TopicsQuery : Swift.Decodable {
 extension FollowersPagingResult : Swift.Encodable {
   public func encode(to encoder: Swift.Encoder) throws
 }
+@objc(GetSocialPollStatus) public enum PollStatus : Swift.Int, Swift.CustomStringConvertible, Swift.Codable {
+  case all = 0
+  case withPoll = 1
+  case withPollVotedByMe = 2
+  case withPollNotVotedByMe = 3
+  case withoutPoll = 4
+  public var description: Swift.String {
+    get
+  }
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
 @objcMembers @objc(GetSocialActivitiesQuery) final public class ActivitiesQuery : ObjectiveC.NSObject {
   @objc final public var byUser: GetSocialSDK.UserId? {
     get
     }
   @objc final public var tag: Swift.String? {
+    get
+    }
+  @objc final public var pollStatus: GetSocialSDK.PollStatus {
     get
     }
   @objc(feedOfUserWithId:) public static func feedOf(_ id: GetSocialSDK.UserId) -> GetSocialSDK.ActivitiesQuery
@@ -542,6 +582,7 @@ extension FollowersPagingResult : Swift.Encodable {
   @objc public static func everywhere() -> GetSocialSDK.ActivitiesQuery
   @objc(byUserWithId:) final public func byUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.ActivitiesQuery
   @objc(withTag:) final public func withTag(_ tag: Swift.String) -> GetSocialSDK.ActivitiesQuery
+  @objc(withPollStatus:) final public func withPollStatus(_ status: GetSocialSDK.PollStatus) -> GetSocialSDK.ActivitiesQuery
   @objc final public func asPostTarget() -> GetSocialSDK.PostActivityTarget?
   @objc final public func asAnnouncementsQuery() -> GetSocialSDK.AnnouncementsQuery?
   @objc(commentsToActivityWithId:) public static func commentsToActivity(_ id: Swift.String) -> GetSocialSDK.ActivitiesQuery
@@ -799,6 +840,16 @@ extension InviteContent : Swift.Decodable {
 extension FollowQuery : Swift.Decodable {
   public convenience init(from decoder: Swift.Decoder) throws
 }
+@objc final public class PollContent : ObjectiveC.NSObject {
+  final public var allowMultipleVotes: Swift.Bool
+  final public var endDate: Foundation.Date?
+  final public var options: [GetSocialSDK.PollOptionContent]
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PollContent : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
+}
 @objcMembers @objc(GetSocialBanInfo) public class BanInfo : ObjectiveC.NSObject {
   public var expiration: Swift.Int64? {
     get
@@ -813,6 +864,28 @@ extension FollowQuery : Swift.Decodable {
   @objc deinit
 }
 extension BanInfo : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
+}
+@objcMembers @objc(GetSocialPollOption) public class PollOption : ObjectiveC.NSObject {
+  @objc public var optionId: Swift.String {
+    get
+    }
+  @objc public var text: Swift.String? {
+    get
+    }
+  @objc public var attachment: GetSocialSDK.MediaAttachment? {
+    get
+    }
+  @objc public var voteCount: Swift.Int {
+    get
+    }
+  @objc public var isVotedByMe: Swift.Bool {
+    get
+    }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PollOption : Swift.Encodable {
   public func encode(to encoder: Swift.Encoder) throws
 }
 @objcMembers @objc(GetSocialNotificationReceiverPlaceholders) public class NotificationReceiverPlaceholders : ObjectiveC.NSObject {
@@ -869,9 +942,14 @@ extension ChatsPagingQuery : Swift.Decodable {
   @objc deinit
 }
 @objcMembers @objc(GetSocialAnnouncementsQuery) final public class AnnouncementsQuery : ObjectiveC.NSObject {
+  @objc final public var pollStatus: GetSocialSDK.PollStatus {
+    get
+    }
   @objc(forFeedOfUserWithId:) public static func forFeedOf(_ id: GetSocialSDK.UserId) -> GetSocialSDK.AnnouncementsQuery
   @objc(inTopicWithId:) public static func inTopic(_ id: Swift.String) -> GetSocialSDK.AnnouncementsQuery
+  @objc(inGroupWithId:) public static func inGroup(_ id: Swift.String) -> GetSocialSDK.AnnouncementsQuery
   @objc public static func timeline() -> GetSocialSDK.AnnouncementsQuery
+  @objc(withPollStatus:) final public func withPollStatus(_ status: GetSocialSDK.PollStatus) -> GetSocialSDK.AnnouncementsQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
@@ -1048,6 +1126,18 @@ extension GroupsPagingResult : Swift.Encodable {
 extension CommunitiesEntity : Swift.Encodable {
   public func encode(to encoder: Swift.Encoder) throws
 }
+@objcMembers @objc(GetSocialUserVotes) final public class UserVotes : ObjectiveC.NSObject {
+  @objc final public let user: GetSocialSDK.User
+  @objc final public let votes: [Swift.String]
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension UserVotes : Swift.Encodable {
+  final public func encode(to encoder: Swift.Encoder) throws
+}
 @objcMembers @objc(GetSocialFriendsQuery) final public class FriendsQuery : ObjectiveC.NSObject {
   @objc(ofUserWithId:) public static func ofUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.FriendsQuery
   @objc override final public var description: Swift.String {
@@ -1197,6 +1287,9 @@ open class KeychainWrapper {
     get
     }
   @objc public var status: Swift.String {
+    get
+    }
+  @objc public var poll: GetSocialSDK.Poll? {
     get
     }
   @objc override dynamic public var description: Swift.String {
@@ -1498,6 +1591,7 @@ extension NotificationCustomization : Swift.Codable {
   @objc final public var attachments: [GetSocialSDK.MediaAttachment]
   @objc final public var button: GetSocialSDK.ActivityButton?
   @objc final public var properties: [Swift.String : Swift.String]
+  @objc final public var poll: GetSocialSDK.PollContent?
   @objc(setPropertyValue:forKey:) final public func setProperty(value: Swift.String, forKey: Swift.String)
   @objc(appendMediaAttachment:) final public func appendMediaAttachment(_ attachment: GetSocialSDK.MediaAttachment)
   @objc override final public var description: Swift.String {
@@ -1995,8 +2089,24 @@ extension FollowersPagingQuery : Swift.Decodable {
   @objc public static func chatMessages(_ query: GetSocialSDK.ChatMessagesPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ChatMessagesPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc public static func chats(_ query: GetSocialSDK.ChatsPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.ChatsPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc public static func chat(_ id: GetSocialSDK.ChatId, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.Chat>, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(addVotes:toActivityWithId:success:failure:) public static func addVotes(_ pollOptionIds: Swift.Set<Swift.String>, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(setVotes:toActivityWithId:success:failure:) public static func setVotes(_ pollOptionIds: Swift.Set<Swift.String>, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(removeVotes:fromActivityWithId:success:failure:) public static func removeVotes(_ pollOptionIds: Swift.Set<Swift.String>, activityId: Swift.String, success: @escaping GetSocialSDK.SuccessCallback, failure: @escaping GetSocialSDK.FailureCallback)
+  @objc(votesWithQuery:success:failure:) public static func votes(_ query: GetSocialSDK.VotesPagingQuery, success: @escaping GetSocialSDK.ResultCallback<GetSocialSDK.VotesPagingResult>, failure: @escaping GetSocialSDK.FailureCallback)
   @objc override dynamic public init()
   @objc deinit
+}
+@objcMembers @objc(GetSocialVotesQuery) final public class VotesQuery : ObjectiveC.NSObject {
+  @objc final public var pollOptionId: Swift.String?
+  @objc(forActivityWithId:) public static func forActivity(_ id: Swift.String) -> GetSocialSDK.VotesQuery
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension VotesQuery : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
 }
 @objc public class OldInviteContent : ObjectiveC.NSObject {
   public var subject: Swift.String? {
@@ -2111,6 +2221,28 @@ extension GetSocialNotification : Swift.Encodable {
 }
 extension FriendsPagingQuery : Swift.Decodable {
   public convenience init(from decoder: Swift.Decoder) throws
+}
+@objcMembers @objc(GetSocialPoll) public class Poll : ObjectiveC.NSObject {
+  @objc public var allowMultipleVotes: Swift.Bool {
+    get
+    }
+  public var endDate: Swift.Int64? {
+    get
+    }
+  @objc public var options: [GetSocialSDK.PollOption] {
+    get
+    }
+  @objc public var totalVotes: Swift.Int {
+    get
+    }
+  @objc public var knownVoters: [GetSocialSDK.UserVotes] {
+    get
+    }
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Poll : Swift.Encodable {
+  public func encode(to encoder: Swift.Encoder) throws
 }
 @objcMembers @objc(GetSocialUserIdList) final public class UserIdList : ObjectiveC.NSObject {
   @objc(create:) public static func create(_ ids: [Swift.String]) -> GetSocialSDK.UserIdList
@@ -2324,6 +2456,16 @@ extension PromoCodeContent : Swift.Decodable {
   }
   @objc override dynamic public init()
   @objc deinit
+}
+@objc final public class PollOptionContent : ObjectiveC.NSObject {
+  final public var optionId: Swift.String?
+  final public var text: Swift.String?
+  final public var attachment: GetSocialSDK.MediaAttachment?
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PollOptionContent : Swift.Decodable {
+  public convenience init(from decoder: Swift.Decoder) throws
 }
 @objcMembers @objc(GetSocialUsersPagingResult) public class UsersPagingResult : GetSocialSDK.PagingResult {
   @objc final public let users: [GetSocialSDK.User]

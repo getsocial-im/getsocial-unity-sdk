@@ -385,6 +385,7 @@ SWIFT_CLASS_NAMED("ActivitiesPagingResult")
 
 
 @class GetSocialUserId;
+enum GetSocialPollStatus : NSInteger;
 @class GetSocialPostActivityTarget;
 @class GetSocialAnnouncementsQuery;
 
@@ -393,6 +394,7 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 @interface GetSocialActivitiesQuery : NSObject
 @property (nonatomic, readonly, strong) GetSocialUserId * _Nullable byUser;
 @property (nonatomic, readonly, copy) NSString * _Nullable tag;
+@property (nonatomic, readonly) enum GetSocialPollStatus pollStatus;
 /// Create a query to get activities for a specific user.
 /// \param id User id.
 ///
@@ -453,6 +455,12 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 - (GetSocialActivitiesQuery * _Nonnull)withTag:(NSString * _Nonnull)tag SWIFT_WARN_UNUSED_RESULT;
+/// Filter activities by poll status.
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
+- (GetSocialActivitiesQuery * _Nonnull)withPollStatus:(enum GetSocialPollStatus)status SWIFT_WARN_UNUSED_RESULT;
 /// Converts query to post target.
 /// - returns:
 /// <code>PostActivityTarget</code> instance.
@@ -485,6 +493,7 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 @class GetSocialUserReactions;
 @class GetSocialMention;
 @class GetSocialCommunitiesEntity;
+@class GetSocialPoll;
 
 /// Describe an activity instance.
 SWIFT_CLASS_NAMED("Activity")
@@ -523,6 +532,8 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly, strong) GetSocialCommunitiesEntity * _Nullable source;
 /// Status of activity. For possible values check {ActivityStatus} class.
 @property (nonatomic, readonly, copy) NSString * _Nonnull status;
+/// Poll
+@property (nonatomic, readonly, strong) GetSocialPoll * _Nullable poll;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -555,6 +566,7 @@ SWIFT_CLASS_NAMED("ActivityButton")
 
 
 
+@class PollContent;
 
 /// Describe Activity content.
 SWIFT_CLASS_NAMED("ActivityContent")
@@ -567,6 +579,7 @@ SWIFT_CLASS_NAMED("ActivityContent")
 @property (nonatomic, strong) GetSocialActivityButton * _Nullable button;
 /// Custom properties.
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+@property (nonatomic, strong) PollContent * _Nullable poll;
 /// Set property.
 /// \param value Value to set.
 ///
@@ -799,6 +812,7 @@ SWIFT_CLASS_NAMED("AnnouncementsPagingResult")
 /// Describe query to get announcements.
 SWIFT_CLASS_NAMED("AnnouncementsQuery")
 @interface GetSocialAnnouncementsQuery : NSObject
+@property (nonatomic, readonly) enum GetSocialPollStatus pollStatus;
 /// Create a query to get announcements for a specific user.
 /// \param id User id.
 ///
@@ -815,12 +829,26 @@ SWIFT_CLASS_NAMED("AnnouncementsQuery")
 ///
 /// New <code>AnnouncementsQuery</code> instance.
 + (GetSocialAnnouncementsQuery * _Nonnull)inTopicWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get announcements in a group.
+/// \param id Group id.
+///
+///
+/// returns:
+///
+/// New <code>AnnouncementsQuery</code> instance.
++ (GetSocialAnnouncementsQuery * _Nonnull)inGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get announcements in user’s timeline.
 ///
 /// returns:
 ///
 /// New <code>AnnouncementsQuery</code> instance.
 + (GetSocialAnnouncementsQuery * _Nonnull)timeline SWIFT_WARN_UNUSED_RESULT;
+/// Filter activities by poll status.
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
+- (GetSocialAnnouncementsQuery * _Nonnull)withPollStatus:(enum GetSocialPollStatus)status SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -1092,6 +1120,8 @@ enum GetSocialReportingReason : NSInteger;
 @class GetSocialUpdateGroupMembersQuery;
 @class RemoveGroupMembersQuery;
 @class GetSocialMembership;
+@class GetSocialVotesPagingQuery;
+@class GetSocialVotesPagingResult;
 
 /// Interface for community related methods.
 SWIFT_CLASS_NAMED("Communities")
@@ -1898,6 +1928,79 @@ SWIFT_CLASS_NAMED("Communities")
 ///   </li>
 /// </ul>
 + (void)chat:(GetSocialChatId * _Nonnull)id success:(void (^ _Nonnull)(GetSocialChat * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Add new votes to an activity, existing votes will be kept.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     pollOptionIds: Votes to add.
+///   </li>
+///   <li>
+///     activityId:       To add the votes to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)addVotes:(NSSet<NSString *> * _Nonnull)pollOptionIds toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Set votes to an activity, existing votes will be removed.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     pollOptionIds:         Votes to add.
+///   </li>
+///   <li>
+///     activityId:       To add the votes to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)setVotes:(NSSet<NSString *> * _Nonnull)pollOptionIds toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Remove votes from an activity.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     pollOptionIds:         Votes to remove.
+///   </li>
+///   <li>
+///     activityId:       To remove the votes from.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)removeVotes:(NSSet<NSString *> * _Nonnull)pollOptionIds fromActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get votes.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called with reactions.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)votesWithQuery:(GetSocialVotesPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialVotesPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -3768,6 +3871,73 @@ SWIFT_CLASS("_TtC12GetSocialSDK16OldInviteContent")
 
 
 
+@class GetSocialPollOption;
+@class GetSocialUserVotes;
+
+/// Describe an activity instance.
+SWIFT_CLASS_NAMED("Poll")
+@interface GetSocialPoll : NSObject
+@property (nonatomic, readonly) BOOL allowMultipleVotes;
+@property (nonatomic, readonly, copy) NSArray<GetSocialPollOption *> * _Nonnull options;
+@property (nonatomic, readonly) NSInteger totalVotes;
+@property (nonatomic, readonly, copy) NSArray<GetSocialUserVotes *> * _Nonnull knownVoters;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK11PollContent")
+@interface PollContent : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+
+
+
+
+/// Describe an activity instance.
+SWIFT_CLASS_NAMED("PollOption")
+@interface GetSocialPollOption : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull optionId;
+@property (nonatomic, readonly, copy) NSString * _Nullable text;
+@property (nonatomic, readonly, strong) GetSocialMediaAttachment * _Nullable attachment;
+@property (nonatomic, readonly) NSInteger voteCount;
+@property (nonatomic, readonly) BOOL isVotedByMe;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK17PollOptionContent")
+@interface PollOptionContent : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+
+
+
+/// Poll Status types.
+typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialPollStatus, "PollStatus", open) {
+/// All activities, with and without polls.
+  GetSocialPollStatusAll = 0,
+/// Activities with poll.
+  GetSocialPollStatusWithPoll = 1,
+/// Activities with poll, voted by current user.
+  GetSocialPollStatusWithPollVotedByMe = 2,
+/// Activities with a poll, not voted by current user.
+  GetSocialPollStatusWithPollNotVotedByMe = 3,
+/// Activities without poll.
+  GetSocialPollStatusWithoutPoll = 4,
+};
+
 
 /// Describe post activity target.
 SWIFT_CLASS_NAMED("PostActivityTarget")
@@ -4729,6 +4899,22 @@ SWIFT_CLASS_NAMED("UserUpdate")
 
 
 
+/// Describe a vote created by a user.
+SWIFT_CLASS_NAMED("UserVotes")
+@interface GetSocialUserVotes : NSObject
+/// User, who created the vote.
+@property (nonatomic, readonly, strong) GetSocialUser * _Nonnull user;
+/// List of votes.
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull votes;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
 /// Describe users paging query.
 SWIFT_CLASS_NAMED("UsersPagingQuery")
 @interface GetSocialUsersPagingQuery : GetSocialPagingQuery
@@ -4788,6 +4974,80 @@ SWIFT_CLASS_NAMED("UsersQuery")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
+
+
+
+
+@class GetSocialVotesQuery;
+
+/// Reactions paging query.
+SWIFT_CLASS_NAMED("VotesPagingQuery")
+@interface GetSocialVotesPagingQuery : GetSocialPagingQuery
+@property (nonatomic, readonly, strong) GetSocialVotesQuery * _Nonnull query;
+/// Constructor.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:    <code>VotesQuery</code> instance.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>VotesPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialVotesQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Result of getting reactions method.
+SWIFT_CLASS_NAMED("VotesPagingResult")
+@interface GetSocialVotesPagingResult : GetSocialPagingResult
+/// List of votes.
+@property (nonatomic, readonly, copy) NSArray<GetSocialUserVotes *> * _Nonnull votes;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe a query to get votes.
+SWIFT_CLASS_NAMED("VotesQuery")
+@interface GetSocialVotesQuery : NSObject
+/// Poll option to filter. If not set, all votes will be returned.
+@property (nonatomic, copy) NSString * _Nullable pollOptionId;
+/// Create query to get votes for an activity.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:       Activity id.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>VoteQuery</code> instance.
++ (GetSocialVotesQuery * _Nonnull)forActivityWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 
 
@@ -5184,6 +5444,7 @@ SWIFT_CLASS_NAMED("ActivitiesPagingResult")
 
 
 @class GetSocialUserId;
+enum GetSocialPollStatus : NSInteger;
 @class GetSocialPostActivityTarget;
 @class GetSocialAnnouncementsQuery;
 
@@ -5192,6 +5453,7 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 @interface GetSocialActivitiesQuery : NSObject
 @property (nonatomic, readonly, strong) GetSocialUserId * _Nullable byUser;
 @property (nonatomic, readonly, copy) NSString * _Nullable tag;
+@property (nonatomic, readonly) enum GetSocialPollStatus pollStatus;
 /// Create a query to get activities for a specific user.
 /// \param id User id.
 ///
@@ -5252,6 +5514,12 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 - (GetSocialActivitiesQuery * _Nonnull)withTag:(NSString * _Nonnull)tag SWIFT_WARN_UNUSED_RESULT;
+/// Filter activities by poll status.
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
+- (GetSocialActivitiesQuery * _Nonnull)withPollStatus:(enum GetSocialPollStatus)status SWIFT_WARN_UNUSED_RESULT;
 /// Converts query to post target.
 /// - returns:
 /// <code>PostActivityTarget</code> instance.
@@ -5284,6 +5552,7 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 @class GetSocialUserReactions;
 @class GetSocialMention;
 @class GetSocialCommunitiesEntity;
+@class GetSocialPoll;
 
 /// Describe an activity instance.
 SWIFT_CLASS_NAMED("Activity")
@@ -5322,6 +5591,8 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly, strong) GetSocialCommunitiesEntity * _Nullable source;
 /// Status of activity. For possible values check {ActivityStatus} class.
 @property (nonatomic, readonly, copy) NSString * _Nonnull status;
+/// Poll
+@property (nonatomic, readonly, strong) GetSocialPoll * _Nullable poll;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -5354,6 +5625,7 @@ SWIFT_CLASS_NAMED("ActivityButton")
 
 
 
+@class PollContent;
 
 /// Describe Activity content.
 SWIFT_CLASS_NAMED("ActivityContent")
@@ -5366,6 +5638,7 @@ SWIFT_CLASS_NAMED("ActivityContent")
 @property (nonatomic, strong) GetSocialActivityButton * _Nullable button;
 /// Custom properties.
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> * _Nonnull properties;
+@property (nonatomic, strong) PollContent * _Nullable poll;
 /// Set property.
 /// \param value Value to set.
 ///
@@ -5598,6 +5871,7 @@ SWIFT_CLASS_NAMED("AnnouncementsPagingResult")
 /// Describe query to get announcements.
 SWIFT_CLASS_NAMED("AnnouncementsQuery")
 @interface GetSocialAnnouncementsQuery : NSObject
+@property (nonatomic, readonly) enum GetSocialPollStatus pollStatus;
 /// Create a query to get announcements for a specific user.
 /// \param id User id.
 ///
@@ -5614,12 +5888,26 @@ SWIFT_CLASS_NAMED("AnnouncementsQuery")
 ///
 /// New <code>AnnouncementsQuery</code> instance.
 + (GetSocialAnnouncementsQuery * _Nonnull)inTopicWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Create a query to get announcements in a group.
+/// \param id Group id.
+///
+///
+/// returns:
+///
+/// New <code>AnnouncementsQuery</code> instance.
++ (GetSocialAnnouncementsQuery * _Nonnull)inGroupWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Create a query to get announcements in user’s timeline.
 ///
 /// returns:
 ///
 /// New <code>AnnouncementsQuery</code> instance.
 + (GetSocialAnnouncementsQuery * _Nonnull)timeline SWIFT_WARN_UNUSED_RESULT;
+/// Filter activities by poll status.
+///
+/// returns:
+///
+/// New <code>ActivitiesQuery</code> instance.
+- (GetSocialAnnouncementsQuery * _Nonnull)withPollStatus:(enum GetSocialPollStatus)status SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -5891,6 +6179,8 @@ enum GetSocialReportingReason : NSInteger;
 @class GetSocialUpdateGroupMembersQuery;
 @class RemoveGroupMembersQuery;
 @class GetSocialMembership;
+@class GetSocialVotesPagingQuery;
+@class GetSocialVotesPagingResult;
 
 /// Interface for community related methods.
 SWIFT_CLASS_NAMED("Communities")
@@ -6697,6 +6987,79 @@ SWIFT_CLASS_NAMED("Communities")
 ///   </li>
 /// </ul>
 + (void)chat:(GetSocialChatId * _Nonnull)id success:(void (^ _Nonnull)(GetSocialChat * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Add new votes to an activity, existing votes will be kept.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     pollOptionIds: Votes to add.
+///   </li>
+///   <li>
+///     activityId:       To add the votes to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)addVotes:(NSSet<NSString *> * _Nonnull)pollOptionIds toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Set votes to an activity, existing votes will be removed.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     pollOptionIds:         Votes to add.
+///   </li>
+///   <li>
+///     activityId:       To add the votes to.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)setVotes:(NSSet<NSString *> * _Nonnull)pollOptionIds toActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Remove votes from an activity.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     pollOptionIds:         Votes to remove.
+///   </li>
+///   <li>
+///     activityId:       To remove the votes from.
+///   </li>
+///   <li>
+///     success:          Called if operation succeeded.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)removeVotes:(NSSet<NSString *> * _Nonnull)pollOptionIds fromActivityWithId:(NSString * _Nonnull)activityId success:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
+/// Get votes.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:            Query parameters.
+///   </li>
+///   <li>
+///     success:          Called with reactions.
+///   </li>
+///   <li>
+///     failure:          Called if operation failed.
+///   </li>
+/// </ul>
++ (void)votesWithQuery:(GetSocialVotesPagingQuery * _Nonnull)query success:(void (^ _Nonnull)(GetSocialVotesPagingResult * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -8567,6 +8930,73 @@ SWIFT_CLASS("_TtC12GetSocialSDK16OldInviteContent")
 
 
 
+@class GetSocialPollOption;
+@class GetSocialUserVotes;
+
+/// Describe an activity instance.
+SWIFT_CLASS_NAMED("Poll")
+@interface GetSocialPoll : NSObject
+@property (nonatomic, readonly) BOOL allowMultipleVotes;
+@property (nonatomic, readonly, copy) NSArray<GetSocialPollOption *> * _Nonnull options;
+@property (nonatomic, readonly) NSInteger totalVotes;
+@property (nonatomic, readonly, copy) NSArray<GetSocialUserVotes *> * _Nonnull knownVoters;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK11PollContent")
+@interface PollContent : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+
+
+
+
+/// Describe an activity instance.
+SWIFT_CLASS_NAMED("PollOption")
+@interface GetSocialPollOption : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull optionId;
+@property (nonatomic, readonly, copy) NSString * _Nullable text;
+@property (nonatomic, readonly, strong) GetSocialMediaAttachment * _Nullable attachment;
+@property (nonatomic, readonly) NSInteger voteCount;
+@property (nonatomic, readonly) BOOL isVotedByMe;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+SWIFT_CLASS("_TtC12GetSocialSDK17PollOptionContent")
+@interface PollOptionContent : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+
+
+
+
+
+/// Poll Status types.
+typedef SWIFT_ENUM_NAMED(NSInteger, GetSocialPollStatus, "PollStatus", open) {
+/// All activities, with and without polls.
+  GetSocialPollStatusAll = 0,
+/// Activities with poll.
+  GetSocialPollStatusWithPoll = 1,
+/// Activities with poll, voted by current user.
+  GetSocialPollStatusWithPollVotedByMe = 2,
+/// Activities with a poll, not voted by current user.
+  GetSocialPollStatusWithPollNotVotedByMe = 3,
+/// Activities without poll.
+  GetSocialPollStatusWithoutPoll = 4,
+};
+
 
 /// Describe post activity target.
 SWIFT_CLASS_NAMED("PostActivityTarget")
@@ -9528,6 +9958,22 @@ SWIFT_CLASS_NAMED("UserUpdate")
 
 
 
+/// Describe a vote created by a user.
+SWIFT_CLASS_NAMED("UserVotes")
+@interface GetSocialUserVotes : NSObject
+/// User, who created the vote.
+@property (nonatomic, readonly, strong) GetSocialUser * _Nonnull user;
+/// List of votes.
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull votes;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
 /// Describe users paging query.
 SWIFT_CLASS_NAMED("UsersPagingQuery")
 @interface GetSocialUsersPagingQuery : GetSocialPagingQuery
@@ -9587,6 +10033,80 @@ SWIFT_CLASS_NAMED("UsersQuery")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
+
+
+
+
+@class GetSocialVotesQuery;
+
+/// Reactions paging query.
+SWIFT_CLASS_NAMED("VotesPagingQuery")
+@interface GetSocialVotesPagingQuery : GetSocialPagingQuery
+@property (nonatomic, readonly, strong) GetSocialVotesQuery * _Nonnull query;
+/// Constructor.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     query:    <code>VotesQuery</code> instance.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>VotesPagingQuery</code> instance.
+- (nonnull instancetype)initWithQuery:(GetSocialVotesQuery * _Nonnull)query OBJC_DESIGNATED_INITIALIZER;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+
+
+
+/// Result of getting reactions method.
+SWIFT_CLASS_NAMED("VotesPagingResult")
+@interface GetSocialVotesPagingResult : GetSocialPagingResult
+/// List of votes.
+@property (nonatomic, readonly, copy) NSArray<GetSocialUserVotes *> * _Nonnull votes;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+@end
+
+
+
+
+/// Describe a query to get votes.
+SWIFT_CLASS_NAMED("VotesQuery")
+@interface GetSocialVotesQuery : NSObject
+/// Poll option to filter. If not set, all votes will be returned.
+@property (nonatomic, copy) NSString * _Nullable pollOptionId;
+/// Create query to get votes for an activity.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     id:       Activity id.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>VoteQuery</code> instance.
++ (GetSocialVotesQuery * _Nonnull)forActivityWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Description.
+@property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
 
 
 

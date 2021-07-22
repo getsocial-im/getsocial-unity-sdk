@@ -30,6 +30,7 @@ namespace GetSocialSdk.Core
     private Pagination _pagination;
     private SGEntity _target;
     private string _orderBy;
+    private AFPollFilterType _withPolls;
 
     public string SessionId
     {
@@ -112,6 +113,24 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// options: [-]status
+    /// 
+    /// <seealso cref="AFPollFilterType"/>
+    /// </summary>
+    public AFPollFilterType WithPolls
+    {
+      get
+      {
+        return _withPolls;
+      }
+      set
+      {
+        __isset.withPolls = true;
+        this._withPolls = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -124,6 +143,7 @@ namespace GetSocialSdk.Core
       public bool pagination;
       public bool target;
       public bool @orderBy;
+      public bool withPolls;
     }
 
     public DDGetAnnouncementsRequest() {
@@ -184,6 +204,13 @@ namespace GetSocialSdk.Core
             case 6:
               if (field.Type == TType.String) {
                 OrderBy = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.I32) {
+                WithPolls = (AFPollFilterType)iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -257,6 +284,14 @@ namespace GetSocialSdk.Core
           oprot.WriteString(OrderBy);
           oprot.WriteFieldEnd();
         }
+        if (__isset.withPolls) {
+          field.Name = "withPolls";
+          field.Type = TType.I32;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32((int)WithPolls);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -304,6 +339,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("OrderBy: ");
         __sb.Append(OrderBy);
+      }
+      if (__isset.withPolls) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("WithPolls: ");
+        __sb.Append(WithPolls);
       }
       __sb.Append(")");
       return __sb.ToString();

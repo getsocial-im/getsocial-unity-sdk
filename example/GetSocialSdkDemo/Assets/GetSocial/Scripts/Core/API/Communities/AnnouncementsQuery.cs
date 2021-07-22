@@ -10,6 +10,9 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("ids")]
         internal CommunitiesIds Ids;
 
+        [JsonSerializationKey("pollStatus")]
+        internal int InternalPollStatus = PollStatus.All;
+
         private AnnouncementsQuery(CommunitiesIds ids)
         {
             Ids = ids;
@@ -37,7 +40,7 @@ namespace GetSocialSdk.Core
         /// </summary>
         /// <param name="group"></param>
         /// <returns>new query.</returns>
-        private static AnnouncementsQuery InGroup(string group)
+        public static AnnouncementsQuery InGroup(string group)
         {
             return new AnnouncementsQuery(CommunitiesIds.Group(group));
         }
@@ -50,6 +53,12 @@ namespace GetSocialSdk.Core
         public static AnnouncementsQuery InUserFeed(UserId userId)
         {
             return new AnnouncementsQuery(CommunitiesIds.User(userId)); 
+        }
+
+        public AnnouncementsQuery WithPollStatus(int pollStatus)
+        {
+            InternalPollStatus = pollStatus;
+            return this;
         }
     }
 }

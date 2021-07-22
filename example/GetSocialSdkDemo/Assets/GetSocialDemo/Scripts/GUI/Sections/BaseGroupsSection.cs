@@ -46,8 +46,11 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         }
         if (!group.Settings.IsPrivate || (membership != null && membership.Status == MemberStatus.Member))
         {
-            popup.AddAction("Feed", () => Feed(group));
+            popup.AddAction("Activities", () => ShowActivities(group));
+            popup.AddAction("Announcements", () => ShowAnnouncements(group));
             popup.AddAction("Feed UI", () => FeedUI(group));
+            popup.AddAction("Activities with Poll", () => ActivitiesWithPoll(group));
+            popup.AddAction("Announcements with Poll", () => AnnouncementsWithPoll(group));
         }
         if (membership != null)
         {
@@ -73,6 +76,7 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
                 if (group.Settings.IsActionAllowed(CommunitiesAction.Post))
                 {
                     popup.AddAction("Post To", () => PostTo(group));
+                    popup.AddAction("Create Poll", () => CreatePoll(group));
                 }
                 if (membership.Role == MemberRole.Admin || membership.Role == MemberRole.Owner)
                 {
@@ -96,6 +100,14 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         }
         popup.AddAction("Cancel", () => { });
         popup.Show();
+    }
+
+    private void CreatePoll(Group group)
+    {
+        demoController.PushMenuSection<CreatePollSection>(section =>
+        {
+            section.Target = PostActivityTarget.Group(group.Id);
+        });
     }
 
     private void ShowAddMember(Group group)
@@ -137,13 +149,38 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         });
     }
     
-    private void Feed(Group group)
+    private void ShowActivities(Group group)
     {
         demoController.PushMenuSection<ActivitiesSection>(section =>
         {
             section.Query = ActivitiesQuery.ActivitiesInGroup(group.Id);
         });
     }
+
+    private void ShowAnnouncements(Group group)
+    {
+        demoController.PushMenuSection<AnnouncementsSection>(section =>
+        {
+            section.Query = AnnouncementsQuery.InGroup(group.Id);
+        });
+    }
+
+    private void ActivitiesWithPoll(Group group)
+    {
+        demoController.PushMenuSection<ActivitiesWithPollSection>(section =>
+        {
+            section.Query = ActivitiesQuery.ActivitiesInGroup(group.Id).WithPollStatus(PollStatus.WithPoll);
+        });
+    }
+
+    private void AnnouncementsWithPoll(Group group)
+    {
+        demoController.PushMenuSection<AnnouncementsWithPollSection>(section =>
+        {
+            section.Query = AnnouncementsQuery.InGroup(group.Id).WithPollStatus(PollStatus.WithPoll);
+        });
+    }
+
 
     private void FeedUI(Group group)
     {

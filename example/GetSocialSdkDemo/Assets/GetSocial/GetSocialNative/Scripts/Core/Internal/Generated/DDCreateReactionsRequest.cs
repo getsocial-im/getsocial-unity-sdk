@@ -28,6 +28,7 @@ namespace GetSocialSdk.Core
     private string _appId;
     private THashSet<SGEntity> _ids;
     private string _reaction;
+    private bool _keepExisting;
 
     public string SessionId
     {
@@ -81,6 +82,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool KeepExisting
+    {
+      get
+      {
+        return _keepExisting;
+      }
+      set
+      {
+        __isset.keepExisting = true;
+        this._keepExisting = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -91,6 +105,7 @@ namespace GetSocialSdk.Core
       public bool appId;
       public bool ids;
       public bool reaction;
+      public bool keepExisting;
     }
 
     public DDCreateReactionsRequest() {
@@ -129,13 +144,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Set) {
                 {
                   Ids = new THashSet<SGEntity>();
-                  TSet _set230 = iprot.ReadSetBegin();
-                  for( int _i231 = 0; _i231 < _set230.Count; ++_i231)
+                  TSet _set259 = iprot.ReadSetBegin();
+                  for( int _i260 = 0; _i260 < _set259.Count; ++_i260)
                   {
-                    SGEntity _elem232;
-                    _elem232 = new SGEntity();
-                    _elem232.Read(iprot);
-                    Ids.Add(_elem232);
+                    SGEntity _elem261;
+                    _elem261 = new SGEntity();
+                    _elem261.Read(iprot);
+                    Ids.Add(_elem261);
                   }
                   iprot.ReadSetEnd();
                 }
@@ -146,6 +161,13 @@ namespace GetSocialSdk.Core
             case 4:
               if (field.Type == TType.String) {
                 Reaction = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.Bool) {
+                KeepExisting = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -194,9 +216,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteSetBegin(new TSet(TType.Struct, Ids.Count));
-            foreach (SGEntity _iter233 in Ids)
+            foreach (SGEntity _iter262 in Ids)
             {
-              _iter233.Write(oprot);
+              _iter262.Write(oprot);
             }
             oprot.WriteSetEnd();
           }
@@ -208,6 +230,14 @@ namespace GetSocialSdk.Core
           field.ID = 4;
           oprot.WriteFieldBegin(field);
           oprot.WriteString(Reaction);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.keepExisting) {
+          field.Name = "keepExisting";
+          field.Type = TType.Bool;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(KeepExisting);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -245,6 +275,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Reaction: ");
         __sb.Append(Reaction);
+      }
+      if (__isset.keepExisting) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("KeepExisting: ");
+        __sb.Append(KeepExisting);
       }
       __sb.Append(")");
       return __sb.ToString();

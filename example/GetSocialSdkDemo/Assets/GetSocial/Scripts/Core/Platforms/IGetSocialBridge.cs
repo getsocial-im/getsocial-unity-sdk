@@ -64,7 +64,12 @@ namespace GetSocialSdk.Core
             Action<GetSocialError> onFailure);
         void GetTags(TagsQuery query, Action<List<string>> onSuccess, Action<GetSocialError> onFailure);
         void ReportActivity(string activityId, ReportingReason reason, string explanation, Action onSuccess, Action<GetSocialError> onError);
-        
+
+        void AddVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError);
+        void SetVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError);
+        void RemoveVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError);
+        void GetVotes(PagingQuery<VotesQuery> query, Action<PagingResult<UserVotes>> onSuccess, Action<GetSocialError> onError);
+
         #endregion
 
         #region Users

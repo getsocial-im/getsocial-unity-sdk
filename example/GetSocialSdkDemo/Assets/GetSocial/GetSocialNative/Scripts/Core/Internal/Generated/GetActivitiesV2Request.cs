@@ -32,6 +32,7 @@ namespace GetSocialSdk.Core
     private SGEntity _target;
     private string _author;
     private List<string> _tags;
+    private AFPollFilterType _withPolls;
 
     public string SessionId
     {
@@ -104,6 +105,24 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// to be discussed, maybe support only one tag instead
+    /// 
+    /// <seealso cref="AFPollFilterType"/>
+    /// </summary>
+    public AFPollFilterType WithPolls
+    {
+      get
+      {
+        return _withPolls;
+      }
+      set
+      {
+        __isset.withPolls = true;
+        this._withPolls = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -115,6 +134,7 @@ namespace GetSocialSdk.Core
       public bool target;
       public bool author;
       public bool tags;
+      public bool withPolls;
     }
 
     public GetActivitiesV2Request() {
@@ -169,15 +189,22 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Tags = new List<string>();
-                  TList _list84 = iprot.ReadListBegin();
-                  for( int _i85 = 0; _i85 < _list84.Count; ++_i85)
+                  TList _list101 = iprot.ReadListBegin();
+                  for( int _i102 = 0; _i102 < _list101.Count; ++_i102)
                   {
-                    string _elem86;
-                    _elem86 = iprot.ReadString();
-                    Tags.Add(_elem86);
+                    string _elem103;
+                    _elem103 = iprot.ReadString();
+                    Tags.Add(_elem103);
                   }
                   iprot.ReadListEnd();
                 }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.I32) {
+                WithPolls = (AFPollFilterType)iprot.ReadI32();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -242,12 +269,20 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-            foreach (string _iter87 in Tags)
+            foreach (string _iter104 in Tags)
             {
-              oprot.WriteString(_iter87);
+              oprot.WriteString(_iter104);
             }
             oprot.WriteListEnd();
           }
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.withPolls) {
+          field.Name = "withPolls";
+          field.Type = TType.I32;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32((int)WithPolls);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -291,6 +326,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Tags: ");
         __sb.Append(Tags.ToDebugString());
+      }
+      if (__isset.withPolls) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("WithPolls: ");
+        __sb.Append(WithPolls);
       }
       __sb.Append(")");
       return __sb.ToString();

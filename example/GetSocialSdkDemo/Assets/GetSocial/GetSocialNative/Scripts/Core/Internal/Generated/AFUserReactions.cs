@@ -33,6 +33,11 @@ namespace GetSocialSdk.Core
     private List<AFReaction> _knownReactors;
     private List<string> _myReactions;
     private int _viewCount;
+    private bool _isViewedByMe;
+    private int _bookmarkCount;
+    private bool _isBookmarkedByMe;
+    private int _shareCount;
+    private bool _isSharedByMe;
 
     public int CommentCount
     {
@@ -118,6 +123,71 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool IsViewedByMe
+    {
+      get
+      {
+        return _isViewedByMe;
+      }
+      set
+      {
+        __isset.isViewedByMe = true;
+        this._isViewedByMe = value;
+      }
+    }
+
+    public int BookmarkCount
+    {
+      get
+      {
+        return _bookmarkCount;
+      }
+      set
+      {
+        __isset.bookmarkCount = true;
+        this._bookmarkCount = value;
+      }
+    }
+
+    public bool IsBookmarkedByMe
+    {
+      get
+      {
+        return _isBookmarkedByMe;
+      }
+      set
+      {
+        __isset.isBookmarkedByMe = true;
+        this._isBookmarkedByMe = value;
+      }
+    }
+
+    public int ShareCount
+    {
+      get
+      {
+        return _shareCount;
+      }
+      set
+      {
+        __isset.shareCount = true;
+        this._shareCount = value;
+      }
+    }
+
+    public bool IsSharedByMe
+    {
+      get
+      {
+        return _isSharedByMe;
+      }
+      set
+      {
+        __isset.isSharedByMe = true;
+        this._isSharedByMe = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -130,6 +200,11 @@ namespace GetSocialSdk.Core
       public bool knownReactors;
       public bool myReactions;
       public bool viewCount;
+      public bool isViewedByMe;
+      public bool bookmarkCount;
+      public bool isBookmarkedByMe;
+      public bool shareCount;
+      public bool isSharedByMe;
     }
 
     public AFUserReactions() {
@@ -161,13 +236,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   KnownCommenters = new List<THPublicUser>();
-                  TList _list12 = iprot.ReadListBegin();
-                  for( int _i13 = 0; _i13 < _list12.Count; ++_i13)
+                  TList _list29 = iprot.ReadListBegin();
+                  for( int _i30 = 0; _i30 < _list29.Count; ++_i30)
                   {
-                    THPublicUser _elem14;
-                    _elem14 = new THPublicUser();
-                    _elem14.Read(iprot);
-                    KnownCommenters.Add(_elem14);
+                    THPublicUser _elem31;
+                    _elem31 = new THPublicUser();
+                    _elem31.Read(iprot);
+                    KnownCommenters.Add(_elem31);
                   }
                   iprot.ReadListEnd();
                 }
@@ -179,14 +254,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   ReactionCount = new Dictionary<string, int>();
-                  TMap _map15 = iprot.ReadMapBegin();
-                  for( int _i16 = 0; _i16 < _map15.Count; ++_i16)
+                  TMap _map32 = iprot.ReadMapBegin();
+                  for( int _i33 = 0; _i33 < _map32.Count; ++_i33)
                   {
-                    string _key17;
-                    int _val18;
-                    _key17 = iprot.ReadString();
-                    _val18 = iprot.ReadI32();
-                    ReactionCount[_key17] = _val18;
+                    string _key34;
+                    int _val35;
+                    _key34 = iprot.ReadString();
+                    _val35 = iprot.ReadI32();
+                    ReactionCount[_key34] = _val35;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -198,13 +273,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   KnownReactors = new List<AFReaction>();
-                  TList _list19 = iprot.ReadListBegin();
-                  for( int _i20 = 0; _i20 < _list19.Count; ++_i20)
+                  TList _list36 = iprot.ReadListBegin();
+                  for( int _i37 = 0; _i37 < _list36.Count; ++_i37)
                   {
-                    AFReaction _elem21;
-                    _elem21 = new AFReaction();
-                    _elem21.Read(iprot);
-                    KnownReactors.Add(_elem21);
+                    AFReaction _elem38;
+                    _elem38 = new AFReaction();
+                    _elem38.Read(iprot);
+                    KnownReactors.Add(_elem38);
                   }
                   iprot.ReadListEnd();
                 }
@@ -216,12 +291,12 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   MyReactions = new List<string>();
-                  TList _list22 = iprot.ReadListBegin();
-                  for( int _i23 = 0; _i23 < _list22.Count; ++_i23)
+                  TList _list39 = iprot.ReadListBegin();
+                  for( int _i40 = 0; _i40 < _list39.Count; ++_i40)
                   {
-                    string _elem24;
-                    _elem24 = iprot.ReadString();
-                    MyReactions.Add(_elem24);
+                    string _elem41;
+                    _elem41 = iprot.ReadString();
+                    MyReactions.Add(_elem41);
                   }
                   iprot.ReadListEnd();
                 }
@@ -232,6 +307,41 @@ namespace GetSocialSdk.Core
             case 6:
               if (field.Type == TType.I32) {
                 ViewCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 7:
+              if (field.Type == TType.Bool) {
+                IsViewedByMe = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 8:
+              if (field.Type == TType.I32) {
+                BookmarkCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.Bool) {
+                IsBookmarkedByMe = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.I32) {
+                ShareCount = iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.Bool) {
+                IsSharedByMe = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -272,9 +382,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, KnownCommenters.Count));
-            foreach (THPublicUser _iter25 in KnownCommenters)
+            foreach (THPublicUser _iter42 in KnownCommenters)
             {
-              _iter25.Write(oprot);
+              _iter42.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -287,10 +397,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.I32, ReactionCount.Count));
-            foreach (string _iter26 in ReactionCount.Keys)
+            foreach (string _iter43 in ReactionCount.Keys)
             {
-              oprot.WriteString(_iter26);
-              oprot.WriteI32(ReactionCount[_iter26]);
+              oprot.WriteString(_iter43);
+              oprot.WriteI32(ReactionCount[_iter43]);
             }
             oprot.WriteMapEnd();
           }
@@ -303,9 +413,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, KnownReactors.Count));
-            foreach (AFReaction _iter27 in KnownReactors)
+            foreach (AFReaction _iter44 in KnownReactors)
             {
-              _iter27.Write(oprot);
+              _iter44.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -318,9 +428,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, MyReactions.Count));
-            foreach (string _iter28 in MyReactions)
+            foreach (string _iter45 in MyReactions)
             {
-              oprot.WriteString(_iter28);
+              oprot.WriteString(_iter45);
             }
             oprot.WriteListEnd();
           }
@@ -332,6 +442,46 @@ namespace GetSocialSdk.Core
           field.ID = 6;
           oprot.WriteFieldBegin(field);
           oprot.WriteI32(ViewCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isViewedByMe) {
+          field.Name = "isViewedByMe";
+          field.Type = TType.Bool;
+          field.ID = 7;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsViewedByMe);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.bookmarkCount) {
+          field.Name = "bookmarkCount";
+          field.Type = TType.I32;
+          field.ID = 8;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(BookmarkCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isBookmarkedByMe) {
+          field.Name = "isBookmarkedByMe";
+          field.Type = TType.Bool;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsBookmarkedByMe);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.shareCount) {
+          field.Name = "shareCount";
+          field.Type = TType.I32;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteI32(ShareCount);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isSharedByMe) {
+          field.Name = "isSharedByMe";
+          field.Type = TType.Bool;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsSharedByMe);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -381,6 +531,36 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("ViewCount: ");
         __sb.Append(ViewCount);
+      }
+      if (__isset.isViewedByMe) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsViewedByMe: ");
+        __sb.Append(IsViewedByMe);
+      }
+      if (__isset.bookmarkCount) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("BookmarkCount: ");
+        __sb.Append(BookmarkCount);
+      }
+      if (__isset.isBookmarkedByMe) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsBookmarkedByMe: ");
+        __sb.Append(IsBookmarkedByMe);
+      }
+      if (__isset.shareCount) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("ShareCount: ");
+        __sb.Append(ShareCount);
+      }
+      if (__isset.isSharedByMe) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsSharedByMe: ");
+        __sb.Append(IsSharedByMe);
       }
       __sb.Append(")");
       return __sb.ToString();

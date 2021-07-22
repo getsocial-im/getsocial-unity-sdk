@@ -121,9 +121,11 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("status")]
         public string Status { get; internal set; }
 
+        [JsonSerializationKey("poll")]
+        public Poll Poll { get; internal set; }
+
         public Activity()
         {
-            
         }
 
         public int GetReactionsCount(string reaction)
@@ -138,7 +140,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Type: {Type}, Announcement: {Announcement}, CommentsCount: {CommentsCount}, ReactionsCount: {ReactionsCount.ToDebugString()}, MyReactions: {MyReactionsList.ToDebugString()},  Properties: {Properties.ToDebugString()}, CreatedAt: {CreatedAt}, Mentions: {Mentions.ToDebugString()}, Button: {Button}, Source: {Source}, Status: {Status}";
+            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Type: {Type}, Announcement: {Announcement}, CommentsCount: {CommentsCount}, ReactionsCount: {ReactionsCount.ToDebugString()}, MyReactions: {MyReactionsList.ToDebugString()},  Properties: {Properties.ToDebugString()}, CreatedAt: {CreatedAt}, Mentions: {Mentions.ToDebugString()}, Button: {Button}, Source: {Source}, Status: {Status}, Polls: {Poll}";
         }
     }
 }

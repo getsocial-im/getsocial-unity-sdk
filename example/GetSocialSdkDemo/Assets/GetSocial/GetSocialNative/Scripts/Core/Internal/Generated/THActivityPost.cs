@@ -295,13 +295,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Mentions = new List<THMention>();
-                  TList _list4 = iprot.ReadListBegin();
-                  for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
+                  TList _list21 = iprot.ReadListBegin();
+                  for( int _i22 = 0; _i22 < _list21.Count; ++_i22)
                   {
-                    THMention _elem6;
-                    _elem6 = new THMention();
-                    _elem6.Read(iprot);
-                    Mentions.Add(_elem6);
+                    THMention _elem23;
+                    _elem23 = new THMention();
+                    _elem23.Read(iprot);
+                    Mentions.Add(_elem23);
                   }
                   iprot.ReadListEnd();
                 }
@@ -417,9 +417,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Mentions.Count));
-            foreach (THMention _iter7 in Mentions)
+            foreach (THMention _iter24 in Mentions)
             {
-              _iter7.Write(oprot);
+              _iter24.Write(oprot);
             }
             oprot.WriteListEnd();
           }

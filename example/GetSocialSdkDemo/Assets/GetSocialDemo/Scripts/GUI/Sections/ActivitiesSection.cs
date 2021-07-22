@@ -49,24 +49,36 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
     {
         var popup = Dialog().WithTitle("Actions");
         popup.AddAction("Info", () => _console.LogD(activity.ToString()));
-        popup.AddAction("Author", () => ShowActions(activity.Author));
+        if (!activity.Author.IsApp)
+        {
+            popup.AddAction("Author", () => ShowActions(activity.Author));
+        }
         popup.AddAction("Details View", () => Details(activity));
-        popup.AddAction("React", () => React(activity));
+        if (activity.Source.IsActionAllowed(CommunitiesAction.React))
+        {
+            popup.AddAction("React", () => React(activity));
+        }
         popup.AddAction("Reactions", () => ListReactions(activity));
         if (!Comments)
         {
             popup.AddAction("Comments", () => ShowComments(activity));
-            popup.AddAction("Post Comment", () => PostComment(activity));
+            if (activity.Source.IsActionAllowed(CommunitiesAction.Comment))
+            {
+                popup.AddAction("Post Comment", () => PostComment(activity));
+            }
         }
         if (activity.Author.Id.Equals(GetSocial.GetCurrentUser().Id))
         {
             popup.AddAction("Edit", () => Edit(activity));
             popup.AddAction("Remove", () => Remove(activity));
         }
-        else
+        else 
         {
-            popup.AddAction("Report as Spam", () => Report(activity, ReportingReason.Spam, "This activity is spam!"));
-            popup.AddAction("Report as Inappropriate", () => Report(activity, ReportingReason.InappropriateContent, "This activity is inappropriate!"));
+            if (!activity.Author.IsApp)
+            {
+                popup.AddAction("Report as Spam", () => Report(activity, ReportingReason.Spam, "This activity is spam!"));
+                popup.AddAction("Report as Inappropriate", () => Report(activity, ReportingReason.InappropriateContent, "This activity is inappropriate!"));
+            }
         }
         popup.AddAction("Cancel", () => { });
         popup.Show();

@@ -19,9 +19,6 @@ using Thrift.Transport;
 namespace GetSocialSdk.Core 
 {
 
-  /// <summary>
-  /// options: [-]status
-  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif
@@ -103,13 +100,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Data = new List<AFAnnouncement>();
-                  TList _list126 = iprot.ReadListBegin();
-                  for( int _i127 = 0; _i127 < _list126.Count; ++_i127)
+                  TList _list143 = iprot.ReadListBegin();
+                  for( int _i144 = 0; _i144 < _list143.Count; ++_i144)
                   {
-                    AFAnnouncement _elem128;
-                    _elem128 = new AFAnnouncement();
-                    _elem128.Read(iprot);
-                    Data.Add(_elem128);
+                    AFAnnouncement _elem145;
+                    _elem145 = new AFAnnouncement();
+                    _elem145.Read(iprot);
+                    Data.Add(_elem145);
                   }
                   iprot.ReadListEnd();
                 }
@@ -121,13 +118,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   EntityDetails = new List<AFEntityReference>();
-                  TList _list129 = iprot.ReadListBegin();
-                  for( int _i130 = 0; _i130 < _list129.Count; ++_i130)
+                  TList _list146 = iprot.ReadListBegin();
+                  for( int _i147 = 0; _i147 < _list146.Count; ++_i147)
                   {
-                    AFEntityReference _elem131;
-                    _elem131 = new AFEntityReference();
-                    _elem131.Read(iprot);
-                    EntityDetails.Add(_elem131);
+                    AFEntityReference _elem148;
+                    _elem148 = new AFEntityReference();
+                    _elem148.Read(iprot);
+                    EntityDetails.Add(_elem148);
                   }
                   iprot.ReadListEnd();
                 }
@@ -170,9 +167,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Data.Count));
-            foreach (AFAnnouncement _iter132 in Data)
+            foreach (AFAnnouncement _iter149 in Data)
             {
-              _iter132.Write(oprot);
+              _iter149.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -185,9 +182,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, EntityDetails.Count));
-            foreach (AFEntityReference _iter133 in EntityDetails)
+            foreach (AFEntityReference _iter150 in EntityDetails)
             {
-              _iter133.Write(oprot);
+              _iter150.Write(oprot);
             }
             oprot.WriteListEnd();
           }

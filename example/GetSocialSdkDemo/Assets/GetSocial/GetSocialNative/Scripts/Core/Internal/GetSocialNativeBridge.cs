@@ -441,6 +441,76 @@ namespace GetSocialSdk.Core
             }, success, failure);
         }
 
+        public void AddVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            WithHadesClient(client =>
+            {
+                var request = new CreateVoteRequest();
+                request.SessionId = SessionId;
+                request.OptionIds = new THashSet<string>();
+                request.OptionIds.AddAll(pollOptionIds);
+                request.KeepExisting = true;
+                request.Target = new SGEntity();
+                request.Target.Id = activityId;
+                request.Target.EntityType = (int)SGEntityType.ACTIVITY;
+                LogRequest("addVotes", request);
+                var response = client.createVote(request);
+                LogResponse("addVotes", response);
+            }, onSuccess, onError);
+        }
+
+        public void SetVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            WithHadesClient(client =>
+            {
+                var request = new CreateVoteRequest();
+                request.SessionId = SessionId;
+                request.OptionIds = new THashSet<string>();
+                request.OptionIds.AddAll(pollOptionIds);
+                request.KeepExisting = false;
+                request.Target = new SGEntity();
+                request.Target.Id = activityId;
+                request.Target.EntityType = (int)SGEntityType.ACTIVITY;
+                LogRequest("setVotes", request);
+                var response = client.createVote(request);
+                LogResponse("setVotes", response);
+            }, onSuccess, onError);
+        }
+
+        public void RemoveVotes(HashSet<string> pollOptionIds, string activityId, Action onSuccess, Action<GetSocialError> onError)
+        {
+            WithHadesClient(client =>
+            {
+                var request = new DeleteVoteRequest();
+                request.SessionId = SessionId;
+                request.OptionIds = new THashSet<string>();
+                request.OptionIds.AddAll(pollOptionIds);
+                request.Target = new SGEntity();
+                request.Target.Id = activityId;
+                request.Target.EntityType = (int)SGEntityType.ACTIVITY;
+                LogRequest("removeVotes", request);
+                var response = client.deleteVote(request);
+                LogResponse("removeVotes", response);
+            }, onSuccess, onError);
+        }
+
+        public void GetVotes(PagingQuery<VotesQuery> query, Action<PagingResult<UserVotes>> onSuccess, Action<GetSocialError> onError)
+        {
+            if (query == null || query.Query == null)
+            {
+                onError(new GetSocialError(ErrorCodes.IllegalArgument, "query parameter is null"));
+                return;
+            }
+            WithHadesClient(client =>
+            {
+                var request = query.ToRpc();
+                request.SessionId = SessionId;
+                var response = client.getVotes(request);
+                LogResponse("getVotes", response);
+                return response.FromRPCModel();
+            }, onSuccess, onError);
+        }
+
         public void GetTags(TagsQuery query, Action<List<string>> onSuccess, Action<GetSocialError> onFailure)
         {
             LogRequest("findTagsV2", "query = " + query);

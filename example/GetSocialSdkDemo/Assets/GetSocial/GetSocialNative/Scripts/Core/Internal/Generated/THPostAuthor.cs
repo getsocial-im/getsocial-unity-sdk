@@ -184,13 +184,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Identities = new List<THIdentity>();
-                  TList _list62 = iprot.ReadListBegin();
-                  for( int _i63 = 0; _i63 < _list62.Count; ++_i63)
+                  TList _list79 = iprot.ReadListBegin();
+                  for( int _i80 = 0; _i80 < _list79.Count; ++_i80)
                   {
-                    THIdentity _elem64;
-                    _elem64 = new THIdentity();
-                    _elem64.Read(iprot);
-                    Identities.Add(_elem64);
+                    THIdentity _elem81;
+                    _elem81 = new THIdentity();
+                    _elem81.Read(iprot);
+                    Identities.Add(_elem81);
                   }
                   iprot.ReadListEnd();
                 }
@@ -216,14 +216,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   PublicProperties = new Dictionary<string, string>();
-                  TMap _map65 = iprot.ReadMapBegin();
-                  for( int _i66 = 0; _i66 < _map65.Count; ++_i66)
+                  TMap _map82 = iprot.ReadMapBegin();
+                  for( int _i83 = 0; _i83 < _map82.Count; ++_i83)
                   {
-                    string _key67;
-                    string _val68;
-                    _key67 = iprot.ReadString();
-                    _val68 = iprot.ReadString();
-                    PublicProperties[_key67] = _val68;
+                    string _key84;
+                    string _val85;
+                    _key84 = iprot.ReadString();
+                    _val85 = iprot.ReadString();
+                    PublicProperties[_key84] = _val85;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -283,9 +283,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Identities.Count));
-            foreach (THIdentity _iter69 in Identities)
+            foreach (THIdentity _iter86 in Identities)
             {
-              _iter69.Write(oprot);
+              _iter86.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -314,10 +314,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, PublicProperties.Count));
-            foreach (string _iter70 in PublicProperties.Keys)
+            foreach (string _iter87 in PublicProperties.Keys)
             {
-              oprot.WriteString(_iter70);
-              oprot.WriteString(PublicProperties[_iter70]);
+              oprot.WriteString(_iter87);
+              oprot.WriteString(PublicProperties[_iter87]);
             }
             oprot.WriteMapEnd();
           }

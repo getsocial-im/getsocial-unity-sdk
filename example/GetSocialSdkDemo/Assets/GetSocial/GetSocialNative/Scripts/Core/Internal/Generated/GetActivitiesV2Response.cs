@@ -121,13 +121,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Data = new List<AFActivity>();
-                  TList _list71 = iprot.ReadListBegin();
-                  for( int _i72 = 0; _i72 < _list71.Count; ++_i72)
+                  TList _list88 = iprot.ReadListBegin();
+                  for( int _i89 = 0; _i89 < _list88.Count; ++_i89)
                   {
-                    AFActivity _elem73;
-                    _elem73 = new AFActivity();
-                    _elem73.Read(iprot);
-                    Data.Add(_elem73);
+                    AFActivity _elem90;
+                    _elem90 = new AFActivity();
+                    _elem90.Read(iprot);
+                    Data.Add(_elem90);
                   }
                   iprot.ReadListEnd();
                 }
@@ -139,13 +139,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   EntityDetails = new List<AFEntityReference>();
-                  TList _list74 = iprot.ReadListBegin();
-                  for( int _i75 = 0; _i75 < _list74.Count; ++_i75)
+                  TList _list91 = iprot.ReadListBegin();
+                  for( int _i92 = 0; _i92 < _list91.Count; ++_i92)
                   {
-                    AFEntityReference _elem76;
-                    _elem76 = new AFEntityReference();
-                    _elem76.Read(iprot);
-                    EntityDetails.Add(_elem76);
+                    AFEntityReference _elem93;
+                    _elem93 = new AFEntityReference();
+                    _elem93.Read(iprot);
+                    EntityDetails.Add(_elem93);
                   }
                   iprot.ReadListEnd();
                 }
@@ -157,15 +157,15 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Authors = new Dictionary<string, THPublicUser>();
-                  TMap _map77 = iprot.ReadMapBegin();
-                  for( int _i78 = 0; _i78 < _map77.Count; ++_i78)
+                  TMap _map94 = iprot.ReadMapBegin();
+                  for( int _i95 = 0; _i95 < _map94.Count; ++_i95)
                   {
-                    string _key79;
-                    THPublicUser _val80;
-                    _key79 = iprot.ReadString();
-                    _val80 = new THPublicUser();
-                    _val80.Read(iprot);
-                    Authors[_key79] = _val80;
+                    string _key96;
+                    THPublicUser _val97;
+                    _key96 = iprot.ReadString();
+                    _val97 = new THPublicUser();
+                    _val97.Read(iprot);
+                    Authors[_key96] = _val97;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -208,9 +208,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Data.Count));
-            foreach (AFActivity _iter81 in Data)
+            foreach (AFActivity _iter98 in Data)
             {
-              _iter81.Write(oprot);
+              _iter98.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -223,9 +223,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, EntityDetails.Count));
-            foreach (AFEntityReference _iter82 in EntityDetails)
+            foreach (AFEntityReference _iter99 in EntityDetails)
             {
-              _iter82.Write(oprot);
+              _iter99.Write(oprot);
             }
             oprot.WriteListEnd();
           }
@@ -238,10 +238,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Authors.Count));
-            foreach (string _iter83 in Authors.Keys)
+            foreach (string _iter100 in Authors.Keys)
             {
-              oprot.WriteString(_iter83);
-              Authors[_iter83].Write(oprot);
+              oprot.WriteString(_iter100);
+              Authors[_iter100].Write(oprot);
             }
             oprot.WriteMapEnd();
           }

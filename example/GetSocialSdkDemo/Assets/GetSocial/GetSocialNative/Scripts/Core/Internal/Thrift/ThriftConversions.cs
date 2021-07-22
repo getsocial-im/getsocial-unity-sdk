@@ -246,6 +246,13 @@ namespace GetSocialSdk.Core
             return request;
         }
 
+        public static GetVotesRequest ToRpc(this PagingQuery<VotesQuery> query)
+        {
+            var request = query.Query.ToRpc();
+            request.Pagination = query.ToPagination();
+            return request;
+        }
+
         public static GetActivitiesV2Request ToRpc(this PagingQuery<ActivitiesQuery> query)
         {
             var request = query.Query.ToRpc();
@@ -257,7 +264,8 @@ namespace GetSocialSdk.Core
         {
             return new GetAnnouncementsRequest
             {
-                Target = query.Ids.ToRpc()
+                Target = query.Ids.ToRpc(),
+                WithPolls = GetPollFilterType(query.InternalPollStatus)
             };
         }
         public static GetReactionsRequest ToRpc(this PagingQuery<ReactionsQuery> query)
@@ -284,12 +292,40 @@ namespace GetSocialSdk.Core
             };
         }
 
+        public static GetVotesRequest ToRpc(this VotesQuery query)
+        {
+            return new GetVotesRequest
+            {
+                Target = query.Ids.ToRpc(),
+                OptionId = query.PollOptionId
+            };
+        }
+
         public static GetActivitiesV2Request ToRpc(this ActivitiesQuery query)
         {
             return new GetActivitiesV2Request
             {
-                Target = query.Ids.ToRpc()
+                Target = query.Ids.ToRpc(),
+                WithPolls = GetPollFilterType(query.InternalPollStatus)
             };
+        }
+
+        private static AFPollFilterType GetPollFilterType(int pollStatus)
+        {
+            switch (pollStatus) {
+                case PollStatus.All:
+                    return AFPollFilterType.all;
+                case PollStatus.WithPoll:
+                    return AFPollFilterType.onlyPolls;
+                case PollStatus.WithPollVotedByMe:
+                    return AFPollFilterType.onlyPollsVotedByMe;
+                case PollStatus.WithPollNotVotedByMe:
+                    return AFPollFilterType.onlyPollsNotVotedByMe;
+                case PollStatus.WithoutPoll:
+                    return AFPollFilterType.onlyWithoutPolls;
+                default:
+                    return AFPollFilterType.all;
+            }
         }
 
         public static AFButton ToRpc(this ActivityButton button)
@@ -408,7 +444,18 @@ namespace GetSocialSdk.Core
         {
             return FromRPCModel(response.Users, response.NextCursor, FromRPCModel);
         }
-        
+
+        public static PagingResult<UserVotes> FromRPCModel(this GetVotesResponse response)
+        {
+            return FromRPCModel(response.Votes, response.NextCursor, FromRPCModel);
+        }
+
+        public static UserVotes FromRPCModel(this AFPollVote vote)
+        {
+            return new UserVotes { User = vote.Creator.FromRPCModel(), VotesList = vote.OptionIds};
+        }
+
+
         public static PagingResult<Activity> FromRPCModel(this GetActivitiesV2Response response)
         {
             var users = response.Authors;
@@ -460,7 +507,37 @@ namespace GetSocialSdk.Core
                 MyReactionsList = activity.Reactions.MyReactions ?? new List<string>(), 
                 Mentions = activity.Mentions.FirstValue(new List<AFMention>()).ConvertAll(FromRPCModel), 
                 Source = (source ?? activity.Source).FromRPCModel(),
-                Status = activity.Status ?? ""
+                Status = activity.Status ?? "",
+                Poll = activity.Poll.FromRPCModel()
+            };
+        }
+
+        public static Poll FromRPCModel(this AFPollContent pollContent)
+        {
+            if (pollContent == null)
+            {
+                return null;
+            }
+            return new Poll
+            {
+                AllowMultipleVotes = pollContent.AllowMultiVotes,
+                EndDate = pollContent.EndsAt,
+                TotalVotes = pollContent.VoteCount,
+                KnownVoters = pollContent.KnownVoters != null ? pollContent.KnownVoters.ConvertAll(FromRPCModel) : new List<UserVotes>(),
+                Options = pollContent.PollOptions.ConvertAll(FromRPCModel)
+            };
+        }
+
+        public static PollOption FromRPCModel(this AFPollOption pollOption)
+        {
+            var content = pollOption.Content.Values.First();
+            return new PollOption
+            {
+                OptionId = pollOption.Id,
+                Text = content.Text,
+                Attachment = content.Attachment.FromRpc(),
+                VoteCount = pollOption.VoteCount,
+                IsVotedByMe = pollOption.IsVotedByMe
             };
         }
 
