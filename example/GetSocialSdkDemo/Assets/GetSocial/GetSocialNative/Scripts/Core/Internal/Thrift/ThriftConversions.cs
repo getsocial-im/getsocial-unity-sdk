@@ -345,13 +345,14 @@ namespace GetSocialSdk.Core
                 Properties = content.Properties,
                 Content = new Dictionary<string, AFContent>
                 {
-                    {lang, new AFContent
+                    { lang, new AFContent
                     {
                         Text = content.Text,
                         Button = content.Button?.ToRpc(),
                         Attachments = content.Attachments.ConvertAll(it => it.ToRpc())
-                    }}
-                }
+                    } }
+                },
+                Poll = content.Poll?.ToRpc(lang)
             };
         }
 
@@ -369,9 +370,40 @@ namespace GetSocialSdk.Core
                         Button = content.Button?.ToRpc(),
                         Attachments = content.Attachments.ConvertAll(it => it.ToRpc())
                     }}
-                }
+                },
+                Poll = content.Poll?.ToRpc(lang)
             };
         }
+
+        public static AFPollContent ToRpc(this PollContent pollContent, string lang)
+        {
+            var retValue = new AFPollContent();
+            retValue.AllowMultiVotes = pollContent.AllowMultipleVotes;
+            retValue.PollOptions = pollContent.Options.ConvertAll(it => it.ToRpc(lang));
+            if (pollContent.EndDate != null)
+            {
+                retValue.EndsAt = pollContent.EndDate.Value.ToUnixTimestamp();
+            }
+            return retValue;
+        }
+
+        public static AFPollOption ToRpc(this PollOptionContent pollOptionContent, string lang)
+        {
+            return new AFPollOption
+            {
+                Id = pollOptionContent.OptionId,
+                Content = new Dictionary<string, AFPollOptionContent>
+                {
+                    { lang, new AFPollOptionContent
+                        {
+                            Text = pollOptionContent.Text,
+                            Attachment = pollOptionContent.Attachment != null ? pollOptionContent.Attachment.ToRpc() : null
+                        }
+                    }
+                },
+            };
+        }
+
         public static MediaAttachment FromRpc(this AFAttachment attachment)
         {
             return new MediaAttachment
@@ -463,9 +495,9 @@ namespace GetSocialSdk.Core
             return FromRPCModel(response.Data, response.NextCursor, af =>
             {
                 var id = af.Author.PublicUser?.Id;
-                var user = id != null && users.ContainsKey(id) ? users[id] : null;
+                var user = id != null && (users != null && users.ContainsKey(id)) ? users[id] : null;
                 var source = FindSource(sources, af.Source);
-                return FromRPCModel(af, user, source);
+                return FromRPCModel(af, null, source);
             });
         }
 
@@ -524,7 +556,7 @@ namespace GetSocialSdk.Core
                 EndDate = pollContent.EndsAt,
                 TotalVotes = pollContent.VoteCount,
                 KnownVoters = pollContent.KnownVoters != null ? pollContent.KnownVoters.ConvertAll(FromRPCModel) : new List<UserVotes>(),
-                Options = pollContent.PollOptions.ConvertAll(FromRPCModel)
+                Options = pollContent.PollOptions != null ? pollContent.PollOptions.ConvertAll(FromRPCModel) : new List<PollOption>()
             };
         }
 
@@ -535,7 +567,7 @@ namespace GetSocialSdk.Core
             {
                 OptionId = pollOption.Id,
                 Text = content.Text,
-                Attachment = content.Attachment.FromRpc(),
+                Attachment = content.Attachment != null ? content.Attachment.FromRpc() : null,
                 VoteCount = pollOption.VoteCount,
                 IsVotedByMe = pollOption.IsVotedByMe
             };

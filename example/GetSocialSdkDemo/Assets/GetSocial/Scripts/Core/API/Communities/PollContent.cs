@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
@@ -13,6 +14,10 @@ namespace GetSocialSdk.Core
             set
             {
                 _endDate = value.HasValue ? value.Value.ToUnixTimestamp() : 0;
+            }
+            internal get
+            {
+                return EndDate;
             }
         }
         [JsonSerializationKey("endDate")]
@@ -40,7 +45,7 @@ namespace GetSocialSdk.Core
             return this;
         }
 
-    public override string ToString()
+        public override string ToString()
         {
             return $"AllowMultipleVotes: {AllowMultipleVotes}, EndDate: {_endDate}, Options: {Options}";
         }
