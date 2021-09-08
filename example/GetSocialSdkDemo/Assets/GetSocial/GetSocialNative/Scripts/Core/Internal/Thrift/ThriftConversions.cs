@@ -497,7 +497,7 @@ namespace GetSocialSdk.Core
                 var id = af.Author.PublicUser?.Id;
                 var user = id != null && (users != null && users.ContainsKey(id)) ? users[id] : null;
                 var source = FindSource(sources, af.Source);
-                return FromRPCModel(af, null, source);
+                return FromRPCModel(af, user, source);
             });
         }
 
@@ -1208,12 +1208,16 @@ namespace GetSocialSdk.Core
             throw new ArgumentException();
         }
 
-        public static Dictionary<string, MemberRole> FromRPCModel(this AreGroupMembersResponse response)
+        public static Dictionary<string, Membership> FromRPCModel(this AreGroupMembersResponse response)
         {
-            var result = new Dictionary<string, MemberRole>();
+            var result = new Dictionary<string, Membership>();
             foreach (var entry in response.Result)
             {
-                result[entry.Key] = MemberRoleFromRPCModel(entry.Value.Role);
+                var membership = entry.Value.FromRPCModel();
+                if (membership != null)
+                {
+                    result[entry.Key] = membership;
+                }
             }
             return result;
         }

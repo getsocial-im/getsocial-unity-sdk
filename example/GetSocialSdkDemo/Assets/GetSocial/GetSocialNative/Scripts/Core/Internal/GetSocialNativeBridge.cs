@@ -164,7 +164,7 @@ namespace GetSocialSdk.Core
                 var response = client.removeIdentity(SessionId, request);
                 LogResponse("removeIdentity", response);
                 _stateController.User = response.ToCurrentUser();
-            });
+            }, callback, failure);
         }
 
         public void ResetUser(Action success, Action<GetSocialError> failure)
@@ -962,7 +962,7 @@ namespace GetSocialSdk.Core
             }, success, failure);
         }
 
-        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, MemberRole>> success, Action<GetSocialError> failure)
+        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, Membership>> success, Action<GetSocialError> failure)
         {
             LogRequest("areMembers", "groupId = " + groupId + " userIdList = " + userIdList);
             WithHadesClient((client) => {

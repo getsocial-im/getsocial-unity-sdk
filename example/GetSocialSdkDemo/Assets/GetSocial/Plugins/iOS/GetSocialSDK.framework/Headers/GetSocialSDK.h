@@ -869,6 +869,8 @@ SWIFT_PROTOCOL("_TtP12GetSocialSDK21AtomicIntegerProvider_")
 /// Describe ban info object.
 SWIFT_CLASS_NAMED("BanInfo")
 @interface GetSocialBanInfo : NSObject
+/// Ban expiration.
+@property (nonatomic, readonly) int64_t expiration;
 /// Ban reason.
 @property (nonatomic, readonly, copy) NSString * _Nullable reason;
 /// Description.
@@ -5928,6 +5930,8 @@ SWIFT_PROTOCOL("_TtP12GetSocialSDK21AtomicIntegerProvider_")
 /// Describe ban info object.
 SWIFT_CLASS_NAMED("BanInfo")
 @interface GetSocialBanInfo : NSObject
+/// Ban expiration.
+@property (nonatomic, readonly) int64_t expiration;
 /// Ban reason.
 @property (nonatomic, readonly, copy) NSString * _Nullable reason;
 /// Description.

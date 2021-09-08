@@ -38,6 +38,23 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         popup.AddAction("Info", () => Print(group));
 
         var membership = group.Membership;
+        popup.AddAction("TEST -> AREMEMBERS", () => {
+            string currentUserId = GetSocial.GetCurrentUser().Id;
+            _console.LogD("CALLING AREMEMBERS");
+            Communities.AreGroupMembers(group.Id, UserIdList.Create(currentUserId), (success) => {
+                _console.LogD("CALLING AREMEMBERS FINISHED");
+                if (success.ContainsKey(currentUserId))
+                {
+                    Membership mship = success[currentUserId];
+                    _console.LogD("Membership is: " + mship);
+                } else
+                {
+                    _console.LogD("Current user is not group member");
+                }
+            }, (error) => {
+                _console.LogE(error.Message);
+            });
+        });
         if (membership == null)
         {
             popup.AddAction("Join", () => {

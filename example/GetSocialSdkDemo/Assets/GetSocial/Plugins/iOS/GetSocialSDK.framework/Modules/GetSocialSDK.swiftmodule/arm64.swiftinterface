@@ -851,7 +851,7 @@ extension PollContent : Swift.Decodable {
   public convenience init(from decoder: Swift.Decoder) throws
 }
 @objcMembers @objc(GetSocialBanInfo) public class BanInfo : ObjectiveC.NSObject {
-  public var expiration: Swift.Int64? {
+  @objc public var expiration: Swift.Int64 {
     get
     }
   @objc public var reason: Swift.String? {

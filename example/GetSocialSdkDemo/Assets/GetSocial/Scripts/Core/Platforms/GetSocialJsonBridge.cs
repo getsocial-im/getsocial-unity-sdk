@@ -317,7 +317,7 @@ namespace GetSocialSdk.Core
             CallAsyncVoid("Communities.removeGroupMembers", GSJson.Serialize(query), success, failure);
         }
 
-        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, MemberRole>> success, Action<GetSocialError> failure)
+        public void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<string, Membership>> success, Action<GetSocialError> failure)
         {
             CallAsync("Communities.areGroupMembers", GSJson.Serialize(new AreGroupMembersBody { GroupId = groupId, UserIdList = userIdList }), success, failure);
         }

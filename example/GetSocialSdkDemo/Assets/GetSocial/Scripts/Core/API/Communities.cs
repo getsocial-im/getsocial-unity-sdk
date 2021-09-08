@@ -252,7 +252,7 @@ namespace GetSocialSdk.Core
             GetSocialFactory.Bridge.RemoveGroupMembers(query, success, failure);
         }
 
-        public static void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, MemberRole>> success, Action<GetSocialError> failure)
+        public static void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, Membership>> success, Action<GetSocialError> failure)
         {
             GetSocialFactory.Bridge.AreGroupMembers(groupId, userIdList, success, failure);
         }

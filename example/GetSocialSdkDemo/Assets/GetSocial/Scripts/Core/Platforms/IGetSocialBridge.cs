@@ -130,7 +130,7 @@ namespace GetSocialSdk.Core
 
         void RemoveGroupMembers(RemoveGroupMembersQuery query, Action success, Action<GetSocialError> failure);
 
-        void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, MemberRole>> success, Action<GetSocialError> failure);
+        void AreGroupMembers(string groupId, UserIdList userIdList, Action<Dictionary<String, Membership>> success, Action<GetSocialError> failure);
 
         #endregion
 
