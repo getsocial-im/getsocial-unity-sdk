@@ -37,6 +37,7 @@ namespace GetSocialSdk.Core
     private SGSettings _settings;
     private int _followersCount;
     private bool _isFollower;
+    private double _score;
 
     public string Id
     {
@@ -168,6 +169,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public double Score
+    {
+      get
+      {
+        return _score;
+      }
+      set
+      {
+        __isset.score = true;
+        this._score = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -184,6 +198,7 @@ namespace GetSocialSdk.Core
       public bool settings;
       public bool followersCount;
       public bool isFollower;
+      public bool score;
     }
 
     public SGTopic() {
@@ -295,6 +310,13 @@ namespace GetSocialSdk.Core
             case 10:
               if (field.Type == TType.Bool) {
                 IsFollower = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.Double) {
+                Score = iprot.ReadDouble();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -416,6 +438,14 @@ namespace GetSocialSdk.Core
           oprot.WriteBool(IsFollower);
           oprot.WriteFieldEnd();
         }
+        if (__isset.score) {
+          field.Name = "score";
+          field.Type = TType.Double;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteDouble(Score);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -487,6 +517,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("IsFollower: ");
         __sb.Append(IsFollower);
+      }
+      if (__isset.score) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Score: ");
+        __sb.Append(Score);
       }
       __sb.Append(")");
       return __sb.ToString();

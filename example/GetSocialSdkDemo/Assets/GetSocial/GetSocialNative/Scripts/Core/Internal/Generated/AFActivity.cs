@@ -41,6 +41,7 @@ namespace GetSocialSdk.Core
     private long _statusUpdatedAt;
     private AFPollContent _poll;
     private bool _allowMultiReactions;
+    private double _score;
 
     public string Id
     {
@@ -230,6 +231,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public double Score
+    {
+      get
+      {
+        return _score;
+      }
+      set
+      {
+        __isset.score = true;
+        this._score = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -250,6 +264,7 @@ namespace GetSocialSdk.Core
       public bool statusUpdatedAt;
       public bool poll;
       public bool allowMultiReactions;
+      public bool score;
     }
 
     public AFActivity() {
@@ -420,6 +435,13 @@ namespace GetSocialSdk.Core
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
+            case 16:
+              if (field.Type == TType.Double) {
+                Score = iprot.ReadDouble();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
             default: 
               TProtocolUtil.Skip(iprot, field.Type);
               break;
@@ -584,6 +606,14 @@ namespace GetSocialSdk.Core
           oprot.WriteBool(AllowMultiReactions);
           oprot.WriteFieldEnd();
         }
+        if (__isset.score) {
+          field.Name = "score";
+          field.Type = TType.Double;
+          field.ID = 16;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteDouble(Score);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -679,6 +709,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("AllowMultiReactions: ");
         __sb.Append(AllowMultiReactions);
+      }
+      if (__isset.score) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Score: ");
+        __sb.Append(Score);
       }
       __sb.Append(")");
       return __sb.ToString();

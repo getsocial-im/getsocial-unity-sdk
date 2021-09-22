@@ -28,6 +28,16 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
     protected void Reload()
     {
         _items.Clear();
+        _query = null;
+        _next = null;
+        LoadMore();
+        Count(CreateQuery(_query), count => _count = count, error => _console.LogE("Failed to load count: " + error.Message));
+    }
+
+    protected void Search()
+    {
+        _items.Clear();
+        _next = null;
         LoadMore();
         Count(CreateQuery(_query), count => _count = count, error => _console.LogE("Failed to load count: " + error.Message));
     }
@@ -44,7 +54,7 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
         {
             GUILayout.BeginHorizontal();
             _query = GUILayout.TextField(_query, GSStyles.TextField);
-            DemoGuiUtils.DrawButton("Search", Reload, style: GSStyles.ShortButton);
+            DemoGuiUtils.DrawButton("Search", Search, style: GSStyles.ShortButton);
             GUILayout.EndHorizontal();
             GUILayout.Space(20);
         }

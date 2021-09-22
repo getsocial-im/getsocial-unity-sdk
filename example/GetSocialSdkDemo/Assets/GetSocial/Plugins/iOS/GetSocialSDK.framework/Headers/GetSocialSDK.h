@@ -392,6 +392,7 @@ enum GetSocialPollStatus : NSInteger;
 /// Describe query to get activities.
 SWIFT_CLASS_NAMED("ActivitiesQuery")
 @interface GetSocialActivitiesQuery : NSObject
+@property (nonatomic, readonly) BOOL trending;
 @property (nonatomic, readonly, strong) GetSocialUserId * _Nullable byUser;
 @property (nonatomic, readonly, copy) NSString * _Nullable tag;
 @property (nonatomic, readonly) enum GetSocialPollStatus pollStatus;
@@ -461,6 +462,14 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 - (GetSocialActivitiesQuery * _Nonnull)withPollStatus:(enum GetSocialPollStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending activities and orders them by popularity.
+/// \param trending Bool
+///
+///
+/// returns:
+///
+/// New ActivitiesQuery instance.
+- (GetSocialActivitiesQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Converts query to post target.
 /// - returns:
 /// <code>PostActivityTarget</code> instance.
@@ -479,6 +488,7 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 + (GetSocialActivitiesQuery * _Nonnull)commentsToActivityWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -534,6 +544,7 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly, copy) NSString * _Nonnull status;
 /// Poll
 @property (nonatomic, readonly, strong) GetSocialPoll * _Nullable poll;
+@property (nonatomic, readonly) double popularity;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -2648,6 +2659,7 @@ SWIFT_CLASS_NAMED("Group")
 @property (nonatomic, readonly) NSInteger membersCount;
 /// Membership info
 @property (nonatomic, readonly, strong) GetSocialMembership * _Nullable membership;
+@property (nonatomic, readonly) double popularity;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -2775,6 +2787,14 @@ SWIFT_CLASS_NAMED("GroupsQuery")
 /// \param id User id.
 ///
 - (GetSocialGroupsQuery * _Nonnull)byMemberId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending groups and orders them by popularity.
+/// \param trending Bool
+///
+///
+/// returns:
+///
+/// New GroupsQuery instance.
+- (GetSocialGroupsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -2803,6 +2823,23 @@ SWIFT_CLASS_NAMED("Identity")
 /// - returns:
 /// New <code>Identity</code> instance.
 + (GetSocialIdentity * _Nonnull)customIdentityWithProviderId:(NSString * _Nonnull)providerId userId:(NSString * _Nonnull)userId accessToken:(NSString * _Nonnull)accessToken SWIFT_WARN_UNUSED_RESULT;
+/// Create an identity with trusted access token.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     providerId: Trusted provider id.
+///   </li>
+///   <li>
+///     accessToken:      Access token.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>Identity</code> instance.
++ (GetSocialIdentity * _Nonnull)trustedIdentityWithProviderId:(NSString * _Nonnull)providerId accessToken:(NSString * _Nonnull)accessToken SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -4589,6 +4626,14 @@ SWIFT_CLASS_NAMED("TagsQuery")
 ///
 /// New <code>TagsQuery</code> instance.
 + (GetSocialTagsQuery * _Nonnull)find:(NSString * _Nonnull)searchTerm SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending tags and orders them by popularity.
+/// \param trending Bool
+///
+///
+/// returns:
+///
+/// New TagsQuery instance.
+- (GetSocialTagsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -4621,6 +4666,7 @@ SWIFT_CLASS_NAMED("Topic")
 @property (nonatomic, readonly) NSInteger followersCount;
 /// Current user is follower or not
 @property (nonatomic, readonly) BOOL isFollowedByMe;
+@property (nonatomic, readonly) double popularity;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -4682,9 +4728,25 @@ SWIFT_CLASS_NAMED("TopicsQuery")
 /// New <code>TopicsQuery</code> instance.
 + (GetSocialTopicsQuery * _Nonnull)all SWIFT_WARN_UNUSED_RESULT;
 /// Filters topics followed by a specific user.
-/// \param id User id.
+/// <ul>
+///   <li>
+///     parameters:
+///     - id:       User id.
+///   </li>
+/// </ul>
 ///
+/// returns:
+///
+/// New TopicsQuery instance.
 - (GetSocialTopicsQuery * _Nonnull)followedByUserWithId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending topics and orders them by popularity.
+/// \param trending String
+///
+///
+/// returns:
+///
+/// New TopicsQuery instance.
+- (GetSocialTopicsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -5453,6 +5515,7 @@ enum GetSocialPollStatus : NSInteger;
 /// Describe query to get activities.
 SWIFT_CLASS_NAMED("ActivitiesQuery")
 @interface GetSocialActivitiesQuery : NSObject
+@property (nonatomic, readonly) BOOL trending;
 @property (nonatomic, readonly, strong) GetSocialUserId * _Nullable byUser;
 @property (nonatomic, readonly, copy) NSString * _Nullable tag;
 @property (nonatomic, readonly) enum GetSocialPollStatus pollStatus;
@@ -5522,6 +5585,14 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 ///
 /// New <code>ActivitiesQuery</code> instance.
 - (GetSocialActivitiesQuery * _Nonnull)withPollStatus:(enum GetSocialPollStatus)status SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending activities and orders them by popularity.
+/// \param trending Bool
+///
+///
+/// returns:
+///
+/// New ActivitiesQuery instance.
+- (GetSocialActivitiesQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Converts query to post target.
 /// - returns:
 /// <code>PostActivityTarget</code> instance.
@@ -5540,6 +5611,7 @@ SWIFT_CLASS_NAMED("ActivitiesQuery")
 + (GetSocialActivitiesQuery * _Nonnull)commentsToActivityWithId:(NSString * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -5595,6 +5667,7 @@ SWIFT_CLASS_NAMED("Activity")
 @property (nonatomic, readonly, copy) NSString * _Nonnull status;
 /// Poll
 @property (nonatomic, readonly, strong) GetSocialPoll * _Nullable poll;
+@property (nonatomic, readonly) double popularity;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -7709,6 +7782,7 @@ SWIFT_CLASS_NAMED("Group")
 @property (nonatomic, readonly) NSInteger membersCount;
 /// Membership info
 @property (nonatomic, readonly, strong) GetSocialMembership * _Nullable membership;
+@property (nonatomic, readonly) double popularity;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -7836,6 +7910,14 @@ SWIFT_CLASS_NAMED("GroupsQuery")
 /// \param id User id.
 ///
 - (GetSocialGroupsQuery * _Nonnull)byMemberId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending groups and orders them by popularity.
+/// \param trending Bool
+///
+///
+/// returns:
+///
+/// New GroupsQuery instance.
+- (GetSocialGroupsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -7864,6 +7946,23 @@ SWIFT_CLASS_NAMED("Identity")
 /// - returns:
 /// New <code>Identity</code> instance.
 + (GetSocialIdentity * _Nonnull)customIdentityWithProviderId:(NSString * _Nonnull)providerId userId:(NSString * _Nonnull)userId accessToken:(NSString * _Nonnull)accessToken SWIFT_WARN_UNUSED_RESULT;
+/// Create an identity with trusted access token.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     providerId: Trusted provider id.
+///   </li>
+///   <li>
+///     accessToken:      Access token.
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New <code>Identity</code> instance.
++ (GetSocialIdentity * _Nonnull)trustedIdentityWithProviderId:(NSString * _Nonnull)providerId accessToken:(NSString * _Nonnull)accessToken SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -9650,6 +9749,14 @@ SWIFT_CLASS_NAMED("TagsQuery")
 ///
 /// New <code>TagsQuery</code> instance.
 + (GetSocialTagsQuery * _Nonnull)find:(NSString * _Nonnull)searchTerm SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending tags and orders them by popularity.
+/// \param trending Bool
+///
+///
+/// returns:
+///
+/// New TagsQuery instance.
+- (GetSocialTagsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -9682,6 +9789,7 @@ SWIFT_CLASS_NAMED("Topic")
 @property (nonatomic, readonly) NSInteger followersCount;
 /// Current user is follower or not
 @property (nonatomic, readonly) BOOL isFollowedByMe;
+@property (nonatomic, readonly) double popularity;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -9743,9 +9851,25 @@ SWIFT_CLASS_NAMED("TopicsQuery")
 /// New <code>TopicsQuery</code> instance.
 + (GetSocialTopicsQuery * _Nonnull)all SWIFT_WARN_UNUSED_RESULT;
 /// Filters topics followed by a specific user.
-/// \param id User id.
+/// <ul>
+///   <li>
+///     parameters:
+///     - id:       User id.
+///   </li>
+/// </ul>
 ///
+/// returns:
+///
+/// New TopicsQuery instance.
 - (GetSocialTopicsQuery * _Nonnull)followedByUserWithId:(GetSocialUserId * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
+/// Filters trending topics and orders them by popularity.
+/// \param trending String
+///
+///
+/// returns:
+///
+/// New TopicsQuery instance.
+- (GetSocialTopicsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;

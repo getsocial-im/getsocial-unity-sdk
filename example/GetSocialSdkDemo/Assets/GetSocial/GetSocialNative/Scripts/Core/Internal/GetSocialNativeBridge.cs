@@ -1541,7 +1541,7 @@ namespace GetSocialSdk.Core
                 var log = parameters == null
                     ? string.Format("[Request] {0}", method)
                     : string.Format("[Request] {0}, body: {1}", method, parameters);
-                GetSocialLogs.D(log);
+                Debug.Log(log);
             }
             catch
             {

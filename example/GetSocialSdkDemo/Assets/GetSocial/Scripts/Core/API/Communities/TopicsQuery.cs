@@ -13,6 +13,9 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("followerId")]
         internal UserId FollowerId;
 
+        [JsonSerializationKey("trending")]
+        internal bool InternalTrending = false;
+
         TopicsQuery(string searchTerm)
         {
             this.SearchTerm = searchTerm;
@@ -45,6 +48,17 @@ namespace GetSocialSdk.Core
             var query = All();
             query.FollowerId = userId;
             return query;
+        }
+
+        public TopicsQuery OnlyTrending(bool trending)
+        {
+            this.InternalTrending = trending;
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return $"SearchTerm: {SearchTerm}, FollowerId: {FollowerId}, Trending: {InternalTrending}";
         }
 
     }

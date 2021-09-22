@@ -39,6 +39,7 @@ namespace GetSocialSdk.Core
     private bool _isFollower;
     private int _membersCount;
     private SGMembershipInfo _membership;
+    private double _score;
 
     public string Id
     {
@@ -202,6 +203,22 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// info for current user, how is he related to the group
+    /// </summary>
+    public double Score
+    {
+      get
+      {
+        return _score;
+      }
+      set
+      {
+        __isset.score = true;
+        this._score = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -220,6 +237,7 @@ namespace GetSocialSdk.Core
       public bool isFollower;
       public bool membersCount;
       public bool membership;
+      public bool score;
     }
 
     public SGGroup() {
@@ -346,6 +364,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Struct) {
                 Membership = new SGMembershipInfo();
                 Membership.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 13:
+              if (field.Type == TType.Double) {
+                Score = iprot.ReadDouble();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -483,6 +508,14 @@ namespace GetSocialSdk.Core
           Membership.Write(oprot);
           oprot.WriteFieldEnd();
         }
+        if (__isset.score) {
+          field.Name = "score";
+          field.Type = TType.Double;
+          field.ID = 13;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteDouble(Score);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -566,6 +599,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Membership: ");
         __sb.Append(Membership== null ? "<null>" : Membership.ToString());
+      }
+      if (__isset.score) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Score: ");
+        __sb.Append(Score);
       }
       __sb.Append(")");
       return __sb.ToString();

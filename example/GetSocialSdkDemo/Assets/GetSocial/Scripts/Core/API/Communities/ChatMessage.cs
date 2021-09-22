@@ -58,7 +58,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Id: {Id}, Text: {Text}, Author: {Author}, MediaAttachments: {MediaAttachments.ToDebugString()}, Properties: {Properties.ToDebugString()}, SentAt: {SentAt}";
+            return $"Id: {Id}, Text: {Text}, Author:( {Author}), MediaAttachments: {MediaAttachments.ToDebugString()}, Properties: {Properties.ToDebugString()}, SentAt: {SentAt}";
         }
     }
 }

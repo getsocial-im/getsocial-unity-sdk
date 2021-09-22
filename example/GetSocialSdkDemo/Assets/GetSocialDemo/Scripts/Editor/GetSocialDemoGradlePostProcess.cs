@@ -17,8 +17,8 @@ namespace GetSocialSdk.Editor
         public void OnPostGenerateGradleAndroidProject(string path)
         {
             Debug.Log("GetSocialDemoGradlePostProcess.OnPostGenerateGradleAndroidProject at path " + path);
-//             File.AppendAllText(path + "/../gradle.properties", 
-//                         Environment.NewLine + "systemProp.im.getsocial.plugin.developerMode=true" + Environment.NewLine);
+            File.AppendAllText(path + "/../gradle.properties", 
+                        Environment.NewLine + "systemProp.im.getsocial.plugin.developerMode=true" + Environment.NewLine);
         }
     }
 }

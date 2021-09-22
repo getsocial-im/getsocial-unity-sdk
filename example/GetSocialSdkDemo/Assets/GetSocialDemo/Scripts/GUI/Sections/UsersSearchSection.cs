@@ -22,6 +22,7 @@ public class UsersSearchSection : BaseUsersListSection<UsersQuery>
 
     protected override UsersQuery CreateQuery(string query)
     {
-        return UsersQuery.Find(query);
+        var searchTerm = query ?? "";
+        return UsersQuery.Find(searchTerm);
     }
 }

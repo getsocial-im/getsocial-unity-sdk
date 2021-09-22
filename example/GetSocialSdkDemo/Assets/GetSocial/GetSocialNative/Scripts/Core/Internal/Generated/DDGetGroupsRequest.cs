@@ -120,7 +120,7 @@ namespace GetSocialSdk.Core
     }
 
     /// <summary>
-    /// options: [-]id, [-]createdAt
+    /// options: [-]id, [-]createdAt, [-]popularity
     /// </summary>
     public string OrderBy
     {

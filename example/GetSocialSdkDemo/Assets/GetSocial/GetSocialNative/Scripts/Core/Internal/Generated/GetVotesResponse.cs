@@ -88,13 +88,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Votes = new List<AFPollVote>();
-                  TList _list247 = iprot.ReadListBegin();
-                  for( int _i248 = 0; _i248 < _list247.Count; ++_i248)
+                  TList _list269 = iprot.ReadListBegin();
+                  for( int _i270 = 0; _i270 < _list269.Count; ++_i270)
                   {
-                    AFPollVote _elem249;
-                    _elem249 = new AFPollVote();
-                    _elem249.Read(iprot);
-                    Votes.Add(_elem249);
+                    AFPollVote _elem271;
+                    _elem271 = new AFPollVote();
+                    _elem271.Read(iprot);
+                    Votes.Add(_elem271);
                   }
                   iprot.ReadListEnd();
                 }
@@ -137,9 +137,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Votes.Count));
-            foreach (AFPollVote _iter250 in Votes)
+            foreach (AFPollVote _iter272 in Votes)
             {
-              _iter250.Write(oprot);
+              _iter272.Write(oprot);
             }
             oprot.WriteListEnd();
           }

@@ -17,6 +17,9 @@ namespace GetSocialSdk.Core {
         [JsonSerializationKey("pollStatus")]
         internal int InternalPollStatus = PollStatus.All;
 
+        [JsonSerializationKey("trending")]
+        internal bool InternalTrending = false;
+
         private ActivitiesQuery (CommunitiesIds ids) {
             Ids = ids;
         }
@@ -107,5 +110,10 @@ namespace GetSocialSdk.Core {
             return this;
         }
 
+        public ActivitiesQuery OnlyTrending(bool trending)
+        {
+            this.InternalTrending = trending;
+            return this;
+        }
     }
 }

@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
 using GetSocialSdk.Core;
 using UnityEngine;
 
 public class TagsSection : BaseListSection<TagsQuery, string>
 {
+
+    private bool _isTrending = false;
+
     protected override string GetSectionName()
     {
         return "Tags";
@@ -22,6 +26,18 @@ public class TagsSection : BaseListSection<TagsQuery, string>
         }, style: GSStyles.Button);
     }
 
+    protected override void DrawHeader()
+    {
+        GUILayout.BeginHorizontal();
+        DemoGuiUtils.DrawButton(_isTrending ? "All" : "Only Trending", () =>
+        {
+            _isTrending = !_isTrending;
+            Reload();
+        }, style: GSStyles.Button);
+        DemoGuiUtils.Space();
+        GUILayout.EndHorizontal();
+    }
+
     protected override void Load(PagingQuery<TagsQuery> query, Action<PagingResult<string>> success, Action<GetSocialError> error)
     {
         Communities.GetTags(query.Query, list => success(new PagingResult<string> { Entries = list }), error);
@@ -32,9 +48,11 @@ public class TagsSection : BaseListSection<TagsQuery, string>
         // not supported
     }
 
-    protected override TagsQuery CreateQuery(string query)
+    protected override TagsQuery CreateQuery(string searchTerm)
     {
-        return TagsQuery.Find(query);
+        var query = TagsQuery.Find(searchTerm);
+        query = query.OnlyTrending(_isTrending);
+        return query;
     }
 }
 

@@ -9,6 +9,9 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
 {
     public ActivitiesQuery Query;
     public bool Comments;
+    private bool _isTrending = false;
+    public bool ShowFilter = true;
+
     protected override string GetSectionName()
     {
         return "Activities";
@@ -41,7 +44,8 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
                 GetSocial.Handle(item.Button.Action);
             }, style: GSStyles.Button);
         }
-
+        GUILayout.Label("Created at: " + DateUtils.FromUnixTime(item.CreatedAt).ToShortDateString(), GSStyles.NormalLabelText);
+        GUILayout.Label("Popularity: " + item.Popularity, GSStyles.NormalLabelText);
         DemoGuiUtils.DrawButton("Actions", () => ShowActions(item), style:GSStyles.Button);
     }
 
@@ -136,6 +140,7 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
         demoController.PushMenuSection<ActivitiesSection>(section =>
         {
             section.Comments = true;
+            section.ShowFilter = false;
             section.Query = ActivitiesQuery.CommentsToActivity(activity.Id);
         });
     }
@@ -179,6 +184,21 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
         popup.Show();
     }
 
+    protected override void DrawHeader()
+    {
+        if (this.ShowFilter)
+        {
+            GUILayout.BeginHorizontal();
+            DemoGuiUtils.DrawButton(_isTrending ? "All" : "Only Trending", () =>
+            {
+                _isTrending = !_isTrending;
+                Reload();
+            }, style: GSStyles.Button);
+            DemoGuiUtils.Space();
+            GUILayout.EndHorizontal();
+        }
+    }
+
     private void Refresh(Activity activity)
     {
         Communities.GetActivity(activity.Id, refreshed =>
@@ -189,6 +209,7 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
 
     protected override ActivitiesQuery CreateQuery(string query)
     {
+        Query = Query.OnlyTrending(_isTrending);
         return Query;
     }
     

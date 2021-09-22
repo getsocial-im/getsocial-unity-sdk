@@ -33,7 +33,7 @@ public class ReferredUsersSection : BaseListSection<ReferralUsersQuery, Referral
 
     protected override ReferralUsersQuery CreateQuery(string query)
     {
-        return query.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(query);
+        return query == null || query.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(query);
     }
 }
 

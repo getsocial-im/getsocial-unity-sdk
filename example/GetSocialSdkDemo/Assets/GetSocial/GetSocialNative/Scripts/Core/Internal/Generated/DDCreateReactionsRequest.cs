@@ -144,13 +144,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Set) {
                 {
                   Ids = new THashSet<SGEntity>();
-                  TSet _set259 = iprot.ReadSetBegin();
-                  for( int _i260 = 0; _i260 < _set259.Count; ++_i260)
+                  TSet _set281 = iprot.ReadSetBegin();
+                  for( int _i282 = 0; _i282 < _set281.Count; ++_i282)
                   {
-                    SGEntity _elem261;
-                    _elem261 = new SGEntity();
-                    _elem261.Read(iprot);
-                    Ids.Add(_elem261);
+                    SGEntity _elem283;
+                    _elem283 = new SGEntity();
+                    _elem283.Read(iprot);
+                    Ids.Add(_elem283);
                   }
                   iprot.ReadSetEnd();
                 }
@@ -216,9 +216,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteSetBegin(new TSet(TType.Struct, Ids.Count));
-            foreach (SGEntity _iter262 in Ids)
+            foreach (SGEntity _iter284 in Ids)
             {
-              _iter262.Write(oprot);
+              _iter284.Write(oprot);
             }
             oprot.WriteSetEnd();
           }

@@ -16,6 +16,9 @@ public sealed class GroupsQuery
         [JsonSerializationKey("memberId")]
         internal UserId MemberId;
 
+        [JsonSerializationKey("trending")]
+        internal bool InternalTrending = false;
+
         GroupsQuery(string searchTerm)
         {
             this.SearchTerm = searchTerm;
@@ -39,5 +42,10 @@ public sealed class GroupsQuery
             return this;
         }
 
+        public GroupsQuery OnlyTrending(bool trending)
+        {
+            this.InternalTrending = trending;
+            return this;
+        }
     }
 }

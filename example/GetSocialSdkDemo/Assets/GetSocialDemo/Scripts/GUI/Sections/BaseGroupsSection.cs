@@ -26,6 +26,7 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         GUILayout.Label(item.Title, GSStyles.BigLabelText);
         GUILayout.Label(item.Id, GSStyles.NormalLabelText);
         GUILayout.Label(item.AvatarUrl, GSStyles.NormalLabelText);
+        GUILayout.Label("Popularity: " + item.Popularity, GSStyles.NormalLabelText);
         DemoGuiUtils.DrawButton("Actions", () =>
         {
             ShowActions(item);

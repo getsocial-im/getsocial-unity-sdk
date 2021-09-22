@@ -288,7 +288,9 @@ namespace GetSocialSdk.Core
             return new FindTagsRequest
             {
                 SearchTerm = query.Query,
-                Target = query.Target?.Ids.ToRpc()
+                Target = query.Target?.Ids.ToRpc(),
+                IsTrending = query.InternalTrending,
+                //OrderBy = query.InternalSortOrder
             };
         }
 
@@ -306,7 +308,9 @@ namespace GetSocialSdk.Core
             return new GetActivitiesV2Request
             {
                 Target = query.Ids.ToRpc(),
-                WithPolls = GetPollFilterType(query.InternalPollStatus)
+                WithPolls = GetPollFilterType(query.InternalPollStatus),
+                IsTrending = query.InternalTrending,
+                //OrderBy = query.InternalSortOrder
             };
         }
 
@@ -540,7 +544,8 @@ namespace GetSocialSdk.Core
                 Mentions = activity.Mentions.FirstValue(new List<AFMention>()).ConvertAll(FromRPCModel), 
                 Source = (source ?? activity.Source).FromRPCModel(),
                 Status = activity.Status ?? "",
-                Poll = activity.Poll.FromRPCModel()
+                Poll = activity.Poll.FromRPCModel(),
+                Popularity = activity.Score
             };
         }
 
@@ -728,6 +733,8 @@ namespace GetSocialSdk.Core
             var request = new GetTopicsRequest();
             request.FollowedByUserId = query.FollowerId.ToRpc();
             request.SearchTerm = query.SearchTerm;
+            request.IsTrending = query.InternalTrending;
+            //request.OrderBy = query.InternalSortOrder;
             return request;
         }
 
@@ -790,6 +797,8 @@ namespace GetSocialSdk.Core
             request.FollowedByUserId = query.FollowerId.ToRpc();
             request.MemberUserId = query.MemberId.ToRpc();
             request.SearchTerm = query.SearchTerm;
+            request.IsTrending = query.InternalTrending;
+            //request.OrderBy = query.InternalSortOrder;
             return request;
         }
 
@@ -883,6 +892,7 @@ namespace GetSocialSdk.Core
             topic.Title = new LocalizableText(rpcTopic.Title).LocalizedValue();
             topic.Settings = rpcTopic.Settings.FromRPC();
             topic.UpdatedAt = rpcTopic.UpdatedAt;
+            topic.Popularity = rpcTopic.Score;
             return topic;
         }
 
@@ -1057,6 +1067,7 @@ namespace GetSocialSdk.Core
             group.Membership = rpcGroup.Membership.FromRPCModel();
             group.Settings = rpcGroup.Settings.FromRPC();
             group.UpdatedAt = rpcGroup.UpdatedAt;
+            group.Popularity = rpcGroup.Score;
             return group;
         }
 

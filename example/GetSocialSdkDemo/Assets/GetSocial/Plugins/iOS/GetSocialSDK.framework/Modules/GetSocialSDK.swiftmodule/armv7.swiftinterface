@@ -529,6 +529,7 @@ extension ReferralData : Swift.Encodable {
   @objc(find:) public static func find(_ searchTerm: Swift.String) -> GetSocialSDK.TopicsQuery
   @objc(all) public static func all() -> GetSocialSDK.TopicsQuery
   @objc(followedByUserWithId:) final public func followedBy(_ id: GetSocialSDK.UserId) -> GetSocialSDK.TopicsQuery
+  @objc(onlyTrending:) final public func onlyTrending(_ trending: Swift.Bool = true) -> GetSocialSDK.TopicsQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
@@ -564,6 +565,9 @@ extension FollowersPagingResult : Swift.Encodable {
   }
 }
 @objcMembers @objc(GetSocialActivitiesQuery) final public class ActivitiesQuery : ObjectiveC.NSObject {
+  @objc final public var trending: Swift.Bool {
+    get
+    }
   @objc final public var byUser: GetSocialSDK.UserId? {
     get
     }
@@ -583,12 +587,14 @@ extension FollowersPagingResult : Swift.Encodable {
   @objc(byUserWithId:) final public func byUser(_ id: GetSocialSDK.UserId) -> GetSocialSDK.ActivitiesQuery
   @objc(withTag:) final public func withTag(_ tag: Swift.String) -> GetSocialSDK.ActivitiesQuery
   @objc(withPollStatus:) final public func withPollStatus(_ status: GetSocialSDK.PollStatus) -> GetSocialSDK.ActivitiesQuery
+  @objc(onlyTrending:) final public func onlyTrending(_ trending: Swift.Bool = true) -> GetSocialSDK.ActivitiesQuery
   @objc final public func asPostTarget() -> GetSocialSDK.PostActivityTarget?
   @objc final public func asAnnouncementsQuery() -> GetSocialSDK.AnnouncementsQuery?
   @objc(commentsToActivityWithId:) public static func commentsToActivity(_ id: Swift.String) -> GetSocialSDK.ActivitiesQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
+  @objc(copyWithZone:) final public func copy(with zone: ObjectiveC.NSZone? = nil) -> Any
   @objc override dynamic public init()
   @objc deinit
 }
@@ -1018,6 +1024,9 @@ extension InviteChannel : Swift.Encodable {
   @objc public var membership: GetSocialSDK.Membership? {
     get
     }
+  @objc public var popularity: Swift.Double {
+    get
+    }
   @objc override dynamic public var description: Swift.String {
     @objc get
   }
@@ -1292,6 +1301,9 @@ open class KeychainWrapper {
   @objc public var poll: GetSocialSDK.Poll? {
     get
     }
+  @objc public var popularity: Swift.Double {
+    get
+    }
   @objc override dynamic public var description: Swift.String {
     @objc get
   }
@@ -1365,6 +1377,9 @@ extension ChatMessageContent : Swift.Decodable {
     get
     }
   @objc public var isFollowedByMe: Swift.Bool {
+    get
+    }
+  @objc public var popularity: Swift.Double {
     get
     }
   @objc override dynamic public var description: Swift.String {
@@ -1560,6 +1575,7 @@ extension NotificationContent : Swift.Decodable {
   @objc(all) public static func all() -> GetSocialSDK.GroupsQuery
   @objc(followedByUserWithId:) final public func followedBy(_ id: GetSocialSDK.UserId) -> GetSocialSDK.GroupsQuery
   @objc(byMemberId:) final public func byMember(_ id: GetSocialSDK.UserId) -> GetSocialSDK.GroupsQuery
+  @objc(onlyTrending:) final public func onlyTrending(_ trending: Swift.Bool = true) -> GetSocialSDK.GroupsQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
@@ -1655,6 +1671,7 @@ extension MediaAttachment : Swift.Codable {
 @objcMembers @objc(GetSocialTagsQuery) final public class TagsQuery : ObjectiveC.NSObject {
   @objc final public var inTarget: GetSocialSDK.PostActivityTarget?
   @objc(find:) public static func find(_ searchTerm: Swift.String) -> GetSocialSDK.TagsQuery
+  @objc(onlyTrending:) final public func onlyTrending(_ trending: Swift.Bool = true) -> GetSocialSDK.TagsQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
@@ -1804,6 +1821,7 @@ extension ReactionsQuery : Swift.Decodable {
 @objc(GetSocialIdentity) @objcMembers final public class Identity : ObjectiveC.NSObject {
   @objc(facebookIdentityWithAccessToken:) public static func facebook(withAccessToken accessToken: Swift.String) -> GetSocialSDK.Identity
   @objc(customIdentityWithProviderId:userId:accessToken:) public static func custom(providerId: Swift.String, userId: Swift.String, accessToken: Swift.String) -> GetSocialSDK.Identity
+  @objc(trustedIdentityWithProviderId:accessToken:) public static func trusted(providerId: Swift.String, withAccessToken accessToken: Swift.String) -> GetSocialSDK.Identity
   @objc override final public var description: Swift.String {
     @objc get
   }

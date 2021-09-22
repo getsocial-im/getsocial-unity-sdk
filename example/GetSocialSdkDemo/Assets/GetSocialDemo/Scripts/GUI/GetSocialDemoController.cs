@@ -361,8 +361,8 @@ public class GetSocialDemoController : MonoBehaviour {
     private string _identityId;
     private string _identityToken;
 
-    void DrawMainView () {
-        GUILayout.Label ("API", GSStyles.NormalLabelText);
+    void DrawMainView() {
+        GUILayout.Label("API", GSStyles.NormalLabelText);
         if (!_isInitialized)
         {
             _isInitialized = GetSocial.IsInitialized;
@@ -394,21 +394,24 @@ public class GetSocialDemoController : MonoBehaviour {
             Button("Init with FB", InitWithFacebook);
         }
         Button("InApp Purchase Api", ShowMenuSection<InAppPurchaseApiSection>);
-        Button ("Promo Codes", ShowMenuSection<PromoCodesSection>);
-        Button ("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
-        GUILayout.Space (30f);
-        GUILayout.Label ("Invites", GSStyles.NormalLabelText);
-        Button ("Smart Invites", ShowMenuSection<SmartInvitesApiSection>);
-        Button ("Set Referrer", ShowMenuSection<SetReferrerSection>);
-        Button ("Referred Users", ShowMenuSection<ReferredUsersSection>);
-        Button ("Referrer Users", ShowMenuSection<ReferrerUsersSection>);
-        GUILayout.Space (30f);
-        GUILayout.Label ("Notification", GSStyles.NormalLabelText);
-        Button ("Send Notification", ShowMenuSection<SendNotificationSection>);
-        Button ("Notifications", ShowMenuSection<NotificationsSection>);
-        GUILayout.Space (30f);
-        GUILayout.Label ("Communities", GSStyles.NormalLabelText);
-        Button ("Timeline", () => PushMenuSection<ActivitiesSection>(section => section.Query = ActivitiesQuery.Timeline() ));
+        Button("Promo Codes", ShowMenuSection<PromoCodesSection>);
+        Button("Custom Analytics Events", ShowMenuSection<CustomAnalyticsEventSection>);
+        GUILayout.Space(30f);
+        GUILayout.Label("Invites", GSStyles.NormalLabelText);
+        Button("Smart Invites", ShowMenuSection<SmartInvitesApiSection>);
+        Button("Set Referrer", ShowMenuSection<SetReferrerSection>);
+        Button("Referred Users", ShowMenuSection<ReferredUsersSection>);
+        Button("Referrer Users", ShowMenuSection<ReferrerUsersSection>);
+        GUILayout.Space(30f);
+        GUILayout.Label("Notification", GSStyles.NormalLabelText);
+        Button("Send Notification", ShowMenuSection<SendNotificationSection>);
+        Button("Notifications", ShowMenuSection<NotificationsSection>);
+        GUILayout.Space(30f);
+        GUILayout.Label("Communities", GSStyles.NormalLabelText);
+        Button("Timeline", () => PushMenuSection<ActivitiesSection>(section => {
+            section.Query = ActivitiesQuery.Timeline();
+            section.ShowFilter = false; 
+        }));
         Button ("Find Tags", ShowMenuSection<TagsSection>);
         Button ("Post to Timeline", () => PushMenuSection<PostActivitySection>(section => section.Target = PostActivityTarget.Timeline() ));
         Button ("My Friends", () => PushMenuSection<FriendsSection>(section => section.User = UserId.CurrentUser()));

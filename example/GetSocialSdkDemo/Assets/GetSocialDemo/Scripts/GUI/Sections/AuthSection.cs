@@ -45,6 +45,9 @@ public class AuthSection : DemoMenuSection
     string _customUserId = "UnityUser";
     string _customProviderToken = "custom_provider_token";
 
+    string _trustedProviderId = "jwt";
+    string _trustedProviderToken = "trusted_provider_token";
+
     private string _key = "key", _val = "value";
     private string _keyPrivate = "key", _valPrivate = "value";
     private string _keyIncrement = "token", _valIncrement = "10.5";
@@ -52,6 +55,10 @@ public class AuthSection : DemoMenuSection
     private readonly List<PropertiesUpdate> _batchUpdatePublicProperties = new List<PropertiesUpdate>();
     private readonly List<PropertiesUpdate> _batchUpdatePrivateProperties = new List<PropertiesUpdate>();
     private bool _useAvatarUrl;
+    private bool _hadConflictWithFBIdentity = false;
+    private bool _hadConflictWithCustomIdentity = false;
+    private bool _hadConflictWithTrustedIdentity = false;
+    private bool _initButtonsEnabled = false;
 
     protected override void InitGuiElements()
     {
@@ -72,13 +79,15 @@ public class AuthSection : DemoMenuSection
         // facebook
         DrawAddRemoveProvider("Facebook Identity", () =>
         {
-            DemoGuiUtils.DrawButton("Add", AddFacebookUserIdentity, !UserHasFacebookIdentity(), GSStyles.Button);
+            DemoGuiUtils.DrawButton("Add", AddFacebookUserIdentity, !UserHasFacebookIdentity() && !_initButtonsEnabled, GSStyles.Button);
             DemoGuiUtils.DrawButton("Remove", RemoveFacebookUserIdentity, UserHasFacebookIdentity(), GSStyles.Button);
-            DemoGuiUtils.DrawButton("Switch User", SwitchToFacebookUser, true, GSStyles.Button);
+            DemoGuiUtils.DrawButton("Switch User", SwitchToFacebookUser, _hadConflictWithFBIdentity, GSStyles.Button);
+            DemoGuiUtils.DrawButton("Init", InitWithFBIdentity, _initButtonsEnabled, GSStyles.Button);
         });
 
         // custom provider
         DrawAddRemoveCustomProvider();
+        DrawAddRemoveTrustedProvider();
         DrawAddRemoveProperty();
         DrawBatchUpdateSection();
 
@@ -93,19 +102,18 @@ public class AuthSection : DemoMenuSection
                 },
                 error => _console.LogE("Failed to log out user, error: " + error)
             );
-        }, true, GSStyles.Button);
+        },  !_initButtonsEnabled, GSStyles.Button);
 
         DemoGuiUtils.DrawButton("Reset without init", () => 
         {
             GetSocial.Reset(() => 
             {
-                demoController.PopMenuSection();
-                demoController.FetchCurrentUserData();
+                _initButtonsEnabled = true;
             }, error => 
             {
                 _console.LogE("Failed to reset user: " + error);
             });
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
     }
 
     private void DrawBatchUpdateSection()
@@ -123,7 +131,7 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("User updated");
                 demoController.FetchCurrentUserData();
-            }, error => { _console.LogE("Failed to update user SetUserDetails: " + error); }), true, GSStyles.Button);
+            }, error => { _console.LogE("Failed to update user SetUserDetails: " + error); }), !_initButtonsEnabled, GSStyles.Button);
         
         GUILayout.EndVertical();
     }
@@ -141,7 +149,7 @@ public class AuthSection : DemoMenuSection
             }, error => {
                 _console.LogE("Failed to get users by auth identities: " + error);
             });
-        });
+        }, !_initButtonsEnabled);
         GUILayout.EndVertical();
     }
 
@@ -186,20 +194,26 @@ public class AuthSection : DemoMenuSection
             {
                 var update = new UserUpdate().AddPublicProperty(_key, _val);
                 GetSocial.GetCurrentUser().UpdateDetails(update,
-                    () => _console.LogD(
-                        "Property added for key: " + _key + "=" + GetSocial.GetCurrentUser().PublicProperties[_key]),
+                    () => {
+                        _console.LogD(
+                            "Property added for key: " + _key + "=" + GetSocial.GetCurrentUser().PublicProperties[_key]);
+                        demoController.FetchCurrentUserData();
+                    },
                     error => _console.LogE("Failed to add property for key: " + _key + ", error: " + error)
                 );
             }
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
         DemoGuiUtils.DrawButton("Remove", () =>
         {
             var update = new UserUpdate().RemovePublicProperty(_key);
             GetSocial.GetCurrentUser().UpdateDetails(update,
-                () => _console.LogD("Property removed for key: " + _key),
+                () => {
+                    _console.LogD("Property removed for key: " + _key);
+                    demoController.FetchCurrentUserData();
+                },
                 error => _console.LogE("Failed to remove property for key: " + _key + ", error: " + error)
             );
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
         GUILayout.EndHorizontal();
 
 
@@ -218,22 +232,28 @@ public class AuthSection : DemoMenuSection
             }
             else
             {
-                var update = new UserUpdate().AddPrivateProperty(_key, _val);
+                var update = new UserUpdate().AddPrivateProperty(_keyPrivate, _valPrivate);
                 GetSocial.GetCurrentUser().UpdateDetails(update, 
-                    () => _console.LogD("Property added for key: " + _keyPrivate + "=" +
-                                        GetSocial.GetCurrentUser().PrivateProperties[_keyPrivate]),
+                    () => {
+                        _console.LogD("Property added for key: " + _keyPrivate + "=" +
+                                            GetSocial.GetCurrentUser().PrivateProperties[_keyPrivate]);
+                        demoController.FetchCurrentUserData();
+                    },
                     error => _console.LogE("Failed to add property for key: " + _keyPrivate + ", error: " + error)
                 );
             }
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
         DemoGuiUtils.DrawButton("Remove", () =>
         {
-            var update = new UserUpdate().RemovePrivateProperty(_key);
+            var update = new UserUpdate().RemovePrivateProperty(_keyPrivate);
             GetSocial.GetCurrentUser().UpdateDetails(update,
-                () => _console.LogD("Property removed for key: " + _keyPrivate),
+                () => {
+                    _console.LogD("Property removed for key: " + _keyPrivate);
+                    demoController.FetchCurrentUserData();
+                },
                 error => _console.LogE("Failed to remove property for key: " + _keyPrivate + ", error: " + error)
             );
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
 
         GUILayout.EndHorizontal();
 
@@ -253,7 +273,7 @@ public class AuthSection : DemoMenuSection
                 },
                 error => _console.LogE("Failed to increment property for key: " + _keyIncrement + ", error: " + error)
             );
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
         DemoGuiUtils.DrawButton("Decrement", () =>
         {
             var update = new UserUpdate().DecrementPublicProperty(_keyIncrement, double.Parse(_valIncrement));
@@ -266,7 +286,7 @@ public class AuthSection : DemoMenuSection
                 },
                 error => _console.LogE("Failed to decrement property for key: " + _keyIncrement + ", error: " + error)
             );
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
 
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
@@ -282,7 +302,7 @@ public class AuthSection : DemoMenuSection
                     _console.LogE("Failed to refresh Current User, error: " + error);
                 }
             );
-        }, true, GSStyles.Button);
+        }, !_initButtonsEnabled, GSStyles.Button);
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
     }
@@ -312,7 +332,7 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("User display name has been changed");
                 demoController.FetchCurrentUserData();
-            }, error => { _console.LogE("Failed to change user DisplayName: " + error); }), true, GSStyles.Button);
+            }, error => { _console.LogE("Failed to change user DisplayName: " + error); }), !_initButtonsEnabled, GSStyles.Button);
         GUILayout.EndHorizontal();
 
         //user avatar
@@ -322,7 +342,7 @@ public class AuthSection : DemoMenuSection
         {
             _console.LogD("User avatar url has been changed");
             demoController.FetchCurrentUserData();
-        }, error => { _console.LogE("Failed to change user AvatarURL: " + error); }), true, GSStyles.Button);
+        }, error => { _console.LogE("Failed to change user AvatarURL: " + error); }), !_initButtonsEnabled, GSStyles.Button);
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal();
@@ -330,14 +350,14 @@ public class AuthSection : DemoMenuSection
         {
             _console.LogD("User avatar has been changed");
             demoController.FetchCurrentUserData();
-        }, error => { _console.LogE("Failed to change user Avatar: " + error); }), true, GSStyles.Button);
+        }, error => { _console.LogE("Failed to change user Avatar: " + error); }), !_initButtonsEnabled, GSStyles.Button);
         GUILayout.EndHorizontal();
 
 
         // token
         GUILayout.BeginHorizontal();
         GUILayout.Label("Token: ", GSStyles.NormalLabelText, GUILayout.Width(100f));
-        _customProviderToken = GUILayout.TextField(_customProviderToken, GSStyles.TextField);
+        _customProviderToken = GUILayout.TextField(_customProviderToken, GSStyles.TextField, GUILayout.MaxWidth(Screen.width - 100f));
         GUILayout.EndHorizontal();
 
         if (string.IsNullOrEmpty(_customProviderToken))
@@ -347,10 +367,52 @@ public class AuthSection : DemoMenuSection
 
         GUILayout.BeginHorizontal();
         GUI.enabled = !string.IsNullOrEmpty(_customProviderToken) && !string.IsNullOrEmpty(_customUserId);
-        DemoGuiUtils.DrawButton("Add", AddCustomUserIdentity, !UserHasCustomIdentity(), GSStyles.Button);
+        DemoGuiUtils.DrawButton("Add", AddCustomUserIdentity, !UserHasCustomIdentity() && !_initButtonsEnabled, GSStyles.Button);
         GUI.enabled = true;
         DemoGuiUtils.DrawButton("Remove", RemoveCustomUserIdentity, UserHasCustomIdentity(), GSStyles.Button);
-        DemoGuiUtils.DrawButton("Switch User", SwitchToCustomIdentityUser, true, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Switch User", SwitchToCustomIdentityUser, _hadConflictWithCustomIdentity, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Init", InitWithCustomIdentity, _initButtonsEnabled, GSStyles.Button);
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
+        DemoGuiUtils.Space();
+    }
+
+    void DrawAddRemoveTrustedProvider()
+    {
+        DemoGuiUtils.Space();
+        GUILayout.BeginVertical("Box");
+        GUILayout.Label("Trusted Identity Provider", GSStyles.NormalLabelText);
+
+        // provider
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Provider: ", GSStyles.NormalLabelText, GUILayout.Width(100f));
+        _trustedProviderId = GUILayout.TextField(_trustedProviderId, GSStyles.TextField).ToLower();
+        GUILayout.EndHorizontal();
+
+        if (string.IsNullOrEmpty(_trustedProviderId))
+        {
+            GUILayout.Label("Trusted ProviderId cannot be empty", GSStyles.NormalLabelTextRed);
+        }
+
+
+        // token
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Token: ", GSStyles.NormalLabelText, GUILayout.Width(100f));
+        _trustedProviderToken = GUILayout.TextField(_trustedProviderToken, GSStyles.TextField, GUILayout.MaxWidth(Screen.width - 100f));
+        GUILayout.EndHorizontal();
+
+        if (string.IsNullOrEmpty(_trustedProviderToken))
+        {
+            GUILayout.Label("Trusted Provider access token cannot be empty", GSStyles.NormalLabelTextRed);
+        }
+
+        GUILayout.BeginHorizontal();
+        GUI.enabled = !string.IsNullOrEmpty(_trustedProviderToken) && !string.IsNullOrEmpty(_trustedProviderId);
+        DemoGuiUtils.DrawButton("Add", AddTrustedUserIdentity, !UserHasTrustedIdentity() && !_initButtonsEnabled, GSStyles.Button);
+        GUI.enabled = true;
+        DemoGuiUtils.DrawButton("Remove", RemoveTrustedUserIdentity, UserHasTrustedIdentity(), GSStyles.Button);
+        DemoGuiUtils.DrawButton("Switch User", SwitchToTrustedIdentityUser, _hadConflictWithTrustedIdentity, GSStyles.Button);
+        DemoGuiUtils.DrawButton("Init", InitWithTrustedIdentity, _initButtonsEnabled, GSStyles.Button);
         GUILayout.EndHorizontal();
         GUILayout.EndVertical();
         DemoGuiUtils.Space();
@@ -375,6 +437,11 @@ public class AuthSection : DemoMenuSection
     bool UserHasCustomIdentity()
     {
         return demoController.HasIdentity(CustomProviderId);
+    }
+
+    bool UserHasTrustedIdentity()
+    {
+        return demoController.HasIdentity(_trustedProviderId.ToLower());
     }
 
     #region switch_user
@@ -413,6 +480,7 @@ public class AuthSection : DemoMenuSection
         GetSocial.SwitchUser(Identity.Facebook(AccessToken.CurrentAccessToken.TokenString),
             () =>
             {
+                _hadConflictWithFBIdentity = false;
                 _console.LogD("Successfully switched to FB user");
                 demoController.FetchCurrentUserData();
                 SetFacebookUserDetails();
@@ -451,6 +519,41 @@ public class AuthSection : DemoMenuSection
         }
     }
 
+    public void InitWithFBIdentity()
+    {
+        FB.LogInWithReadPermissions(FacebookPermissions, result =>
+        {
+            if (result.Cancelled)
+            {
+                _console.LogE("Facebook login was cancelled");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(result.Error))
+            {
+                _console.LogE("Error happened during Facebook login: " + result.Error);
+                return;
+            }
+
+            _console.LogD("Logged in to Facebook: " + result.RawResult);
+            InitWithFBIdentityInternal();
+        });
+    }
+
+    void InitWithFBIdentityInternal()
+    {
+        GetSocial.Init(Identity.Facebook(AccessToken.CurrentAccessToken.TokenString),
+            () =>
+            {
+                _initButtonsEnabled = false;
+                _console.LogD("Successfully initialized with FB identity");
+                demoController.FetchCurrentUserData();
+                SetFacebookUserDetails();
+            }, error => _console.LogE(string.Format("Failed to initialize with FB user identity '{0}', reason: {1}", error,
+                error))
+            );
+    }
+
     void AddFacebookUserIdentityInternal()
     {
         _console.LogD(string.Format("Adding FB identity, token: {0}", AccessToken.CurrentAccessToken.TokenString));
@@ -460,7 +563,10 @@ public class AuthSection : DemoMenuSection
                 _console.LogD("Successfully added Facebook Identity");
                 demoController.FetchCurrentUserData();
                 SetFacebookUserDetails();
-            }, OnAddUserIdentityConflict, 
+            }, (ConflictUser obj) => {
+                _hadConflictWithFBIdentity = true;
+                OnAddUserIdentityConflict(obj);
+            },
             error => _console.LogE("Adding Facebook identity failed, reason: " + error)
             );
     }
@@ -492,6 +598,32 @@ public class AuthSection : DemoMenuSection
 
     #region add_remove_identity_custom
 
+    void InitWithCustomIdentity()
+    {
+        GetSocial.Init(Identity.Custom(CustomProviderId, _customUserId, _customProviderToken),
+            () =>
+            {
+                _initButtonsEnabled = false;
+                _console.LogD("Successfully initialized with custom identity");
+                demoController.FetchCurrentUserData();
+            }, error => _console.LogE(string.Format("Failed to initialize with custom user identity '{0}', reason: {1}", CustomProviderId,
+                error))
+            );
+    }
+
+    void InitWithTrustedIdentity()
+    {
+        GetSocial.Init(Identity.Trusted(_trustedProviderId, _trustedProviderToken),
+            () =>
+            {
+                _initButtonsEnabled = false;
+                _console.LogD("Successfully initialized with trusted identity");
+                demoController.FetchCurrentUserData();
+            }, error => _console.LogE(string.Format("Failed to initialize with trusted user identity '{0}', reason: {1}", _trustedProviderId,
+                error))
+            );
+    }
+
     void AddCustomUserIdentity()
     {
         GetSocial.GetCurrentUser().AddIdentity(
@@ -500,8 +632,28 @@ public class AuthSection : DemoMenuSection
             {
                 _console.LogD("Successfully added custom identity");
                 demoController.FetchCurrentUserData();
-            }, OnAddUserIdentityConflict, 
+            }, (ConflictUser obj) => {
+                _hadConflictWithCustomIdentity = true;
+                OnAddUserIdentityConflict(obj);
+            },
             error => _console.LogE(string.Format("Failed to add user identity '{0}', reason: {1}", CustomProviderId,
+                error))
+            );
+    }
+
+    void AddTrustedUserIdentity()
+    {
+        GetSocial.GetCurrentUser().AddIdentity(
+            Identity.Trusted(_trustedProviderId, _trustedProviderToken),
+            () =>
+            {
+                _console.LogD("Successfully added trusted user identity");
+                demoController.FetchCurrentUserData();
+            }, (ConflictUser obj) => {
+                _hadConflictWithTrustedIdentity = true;
+                OnAddUserIdentityConflict(obj);
+            },
+            error => _console.LogE(string.Format("Failed to add trusted identity '{0}', reason: {1}", _trustedProviderId,
                 error))
             );
     }
@@ -519,16 +671,43 @@ public class AuthSection : DemoMenuSection
         );
     }
 
+    void RemoveTrustedUserIdentity()
+    {
+        GetSocial.GetCurrentUser().RemoveIdentity(_trustedProviderId,
+            () =>
+            {
+                _console.LogD(string.Format("Successfully removed trusted user identity '{0}'", _trustedProviderId));
+                demoController.FetchCurrentUserData();
+            },
+            error => _console.LogE(string.Format("Failed to remove trusted user identity '{0}', reason: {1}", _trustedProviderId,
+                error))
+        );
+    }
+
     void SwitchToCustomIdentityUser()
     {
         GetSocial.SwitchUser(
             Identity.Custom(CustomProviderId, _customUserId, _customProviderToken),
             () =>
             {
+                _hadConflictWithCustomIdentity = false;
                 _console.LogD("Successfully switched to Custom provider user");
                 demoController.FetchCurrentUserData();
             },
             error => _console.LogE("Switching to custom provider user failed, reason: " + error));
+    }
+
+    void SwitchToTrustedIdentityUser()
+    {
+        GetSocial.SwitchUser(
+            Identity.Trusted(_trustedProviderId, _trustedProviderToken),
+            () =>
+            {
+                _hadConflictWithTrustedIdentity = false;
+                _console.LogD("Successfully switched to Trusted provider user");
+                demoController.FetchCurrentUserData();
+            },
+            error => _console.LogE("Switching to trusted provider user failed, reason: " + error));
     }
 
     void OnAddUserIdentityConflict(ConflictUser user)

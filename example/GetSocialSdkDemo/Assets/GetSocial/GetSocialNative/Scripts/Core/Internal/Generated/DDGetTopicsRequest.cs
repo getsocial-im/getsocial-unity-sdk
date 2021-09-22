@@ -27,6 +27,7 @@ namespace GetSocialSdk.Core
     private string _sessionId;
     private string _appId;
     private string _searchTerm;
+    private bool _isTrending;
     private Pagination _pagination;
     private string _orderBy;
 
@@ -69,6 +70,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool IsTrending
+    {
+      get
+      {
+        return _isTrending;
+      }
+      set
+      {
+        __isset.isTrending = true;
+        this._isTrending = value;
+      }
+    }
+
     public Pagination Pagination
     {
       get
@@ -82,6 +96,9 @@ namespace GetSocialSdk.Core
       }
     }
 
+    /// <summary>
+    /// options: [-]id, [-]createdAt, [-]popularity
+    /// </summary>
     public string OrderBy
     {
       get
@@ -104,6 +121,7 @@ namespace GetSocialSdk.Core
       public bool sessionId;
       public bool appId;
       public bool searchTerm;
+      public bool isTrending;
       public bool pagination;
       public bool @orderBy;
     }
@@ -143,6 +161,13 @@ namespace GetSocialSdk.Core
             case 3:
               if (field.Type == TType.String) {
                 SearchTerm = iprot.ReadString();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Bool) {
+                IsTrending = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -223,6 +248,14 @@ namespace GetSocialSdk.Core
           oprot.WriteString(OrderBy);
           oprot.WriteFieldEnd();
         }
+        if (__isset.isTrending) {
+          field.Name = "isTrending";
+          field.Type = TType.Bool;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsTrending);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -252,6 +285,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("SearchTerm: ");
         __sb.Append(SearchTerm);
+      }
+      if (__isset.isTrending) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsTrending: ");
+        __sb.Append(IsTrending);
       }
       if (Pagination != null && __isset.pagination) {
         if(!__first) { __sb.Append(", "); }

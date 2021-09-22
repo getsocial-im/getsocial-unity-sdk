@@ -33,6 +33,7 @@ namespace GetSocialSdk.Core
     private string _author;
     private List<string> _tags;
     private AFPollFilterType _withPolls;
+    private bool _isTrending;
 
     public string SessionId
     {
@@ -165,6 +166,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool IsTrending
+    {
+      get
+      {
+        return _isTrending;
+      }
+      set
+      {
+        __isset.isTrending = true;
+        this._isTrending = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -180,6 +194,7 @@ namespace GetSocialSdk.Core
       public bool author;
       public bool tags;
       public bool withPolls;
+      public bool isTrending;
     }
 
     public DDGetActivitiesRequest() {
@@ -255,12 +270,12 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Tags = new List<string>();
-                  TList _list122 = iprot.ReadListBegin();
-                  for( int _i123 = 0; _i123 < _list122.Count; ++_i123)
+                  TList _list144 = iprot.ReadListBegin();
+                  for( int _i145 = 0; _i145 < _list144.Count; ++_i145)
                   {
-                    string _elem124;
-                    _elem124 = iprot.ReadString();
-                    Tags.Add(_elem124);
+                    string _elem146;
+                    _elem146 = iprot.ReadString();
+                    Tags.Add(_elem146);
                   }
                   iprot.ReadListEnd();
                 }
@@ -271,6 +286,13 @@ namespace GetSocialSdk.Core
             case 9:
               if (field.Type == TType.I32) {
                 WithPolls = (AFPollFilterType)iprot.ReadI32();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.Bool) {
+                IsTrending = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -359,9 +381,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-            foreach (string _iter125 in Tags)
+            foreach (string _iter147 in Tags)
             {
-              oprot.WriteString(_iter125);
+              oprot.WriteString(_iter147);
             }
             oprot.WriteListEnd();
           }
@@ -373,6 +395,14 @@ namespace GetSocialSdk.Core
           field.ID = 9;
           oprot.WriteFieldBegin(field);
           oprot.WriteI32((int)WithPolls);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isTrending) {
+          field.Name = "isTrending";
+          field.Type = TType.Bool;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsTrending);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -440,6 +470,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("WithPolls: ");
         __sb.Append(WithPolls);
+      }
+      if (__isset.isTrending) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsTrending: ");
+        __sb.Append(IsTrending);
       }
       __sb.Append(")");
       return __sb.ToString();

@@ -70,6 +70,9 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("isFollowedByMe")]
         public bool IsFollowedByMe { get; internal set; }
 
+        [JsonSerializationKey("popularity")]
+        public double Popularity { get; internal set; } = 0;
+
         public Topic()
         {
 
@@ -77,7 +80,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Id: {Id}, Title: {Title}, Description: {Description}, AvatarUrl: {AvatarUrl}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}, Settings: {Settings}, FollowersCount: {FollowersCount}, isFollowedByMe: {IsFollowedByMe}";
+            return $"Id: {Id}, Title: {Title}, Description: {Description}, AvatarUrl: {AvatarUrl}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}, Settings: {Settings}, FollowersCount: {FollowersCount}, isFollowedByMe: {IsFollowedByMe}, popularity: {Popularity}";
         }
     }
 }

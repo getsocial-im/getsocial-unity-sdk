@@ -56,6 +56,9 @@ namespace GetSocialSdk.Core
         [JsonSerializationKey("membership")]
         public Membership Membership { get; internal set; }
 
+        [JsonSerializationKey("popularity")]
+        public double Popularity { get; internal set; } = 0;
+
         public Group()
         {
 
@@ -63,7 +66,7 @@ namespace GetSocialSdk.Core
 
         public override string ToString()
         {
-            return $"Id: {Id}, Title: {Title}, Description: {Description}, AvatarUrl: {AvatarUrl},  Settings: {Settings}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}, Membership: {Membership}";
+            return $"Id: {Id}, Title: {Title}, Description: {Description}, AvatarUrl: {AvatarUrl},  Settings: {Settings}, CreatedAt: {CreatedAt}, UpdatedAt: {UpdatedAt}, Membership: {Membership}, popularity: {Popularity}";
         }
 
     }

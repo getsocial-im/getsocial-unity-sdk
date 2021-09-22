@@ -21,6 +21,11 @@ namespace GetSocialSdk.Core
         /// Send notification to user who invited you - if exists.
         /// </summary>
         public const string Referrer = "referrer";
+
+        /// <summary>
+        /// Send notification to all users who follows the current user.
+        /// </summary>
+        public const string Followers = "followers";
     }
 
     public sealed class SendNotificationTarget

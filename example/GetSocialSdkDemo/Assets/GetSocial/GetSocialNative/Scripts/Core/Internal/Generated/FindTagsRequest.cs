@@ -31,6 +31,8 @@ namespace GetSocialSdk.Core
     private string _searchTerm;
     private Pagination _pagination;
     private SGEntity _target;
+    private bool _isTrending;
+    private string _orderBy;
 
     public string SessionId
     {
@@ -87,6 +89,35 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool IsTrending
+    {
+      get
+      {
+        return _isTrending;
+      }
+      set
+      {
+        __isset.isTrending = true;
+        this._isTrending = value;
+      }
+    }
+
+    /// <summary>
+    /// options: [-]name, [-]popularity
+    /// </summary>
+    public string OrderBy
+    {
+      get
+      {
+        return _orderBy;
+      }
+      set
+      {
+        __isset.@orderBy = true;
+        this._orderBy = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -97,6 +128,8 @@ namespace GetSocialSdk.Core
       public bool searchTerm;
       public bool pagination;
       public bool target;
+      public bool isTrending;
+      public bool @orderBy;
     }
 
     public FindTagsRequest() {
@@ -143,6 +176,20 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Struct) {
                 Target = new SGEntity();
                 Target.Read(iprot);
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 6:
+              if (field.Type == TType.Bool) {
+                IsTrending = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 5:
+              if (field.Type == TType.String) {
+                OrderBy = iprot.ReadString();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -200,6 +247,22 @@ namespace GetSocialSdk.Core
           Target.Write(oprot);
           oprot.WriteFieldEnd();
         }
+        if (OrderBy != null && __isset.@orderBy) {
+          field.Name = "orderBy";
+          field.Type = TType.String;
+          field.ID = 5;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(OrderBy);
+          oprot.WriteFieldEnd();
+        }
+        if (__isset.isTrending) {
+          field.Name = "isTrending";
+          field.Type = TType.Bool;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(IsTrending);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -235,6 +298,18 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Target: ");
         __sb.Append(Target== null ? "<null>" : Target.ToString());
+      }
+      if (__isset.isTrending) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("IsTrending: ");
+        __sb.Append(IsTrending);
+      }
+      if (OrderBy != null && __isset.@orderBy) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("OrderBy: ");
+        __sb.Append(OrderBy);
       }
       __sb.Append(")");
       return __sb.ToString();

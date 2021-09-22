@@ -19,9 +19,6 @@ using Thrift.Transport;
 namespace GetSocialSdk.Core 
 {
 
-  /// <summary>
-  /// default: -createdAt. possible values: -id, id, -createdAt, createdAt. `-` negates order
-  /// </summary>
   #if !SILVERLIGHT
   [Serializable]
   #endif

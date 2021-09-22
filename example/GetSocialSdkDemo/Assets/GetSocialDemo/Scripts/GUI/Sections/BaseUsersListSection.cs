@@ -83,6 +83,7 @@ public abstract class BaseUsersListSection<Q> : BaseListSection<Q, User>
     {
         demoController.PushMenuSection<ActivitiesSection>(section =>
         {
+            section.ShowFilter = false;
             section.Query = ActivitiesQuery.FeedOf(UserId.Create(user.Id));
         });
     }
@@ -92,6 +93,7 @@ public abstract class BaseUsersListSection<Q> : BaseListSection<Q, User>
         demoController.PushMenuSection<ActivitiesSection>(section =>
         {
             section.Query = ActivitiesQuery.Everywhere().ByUser(UserId.Create(user.Id));
+            section.ShowFilter = false;
         });
     }
     private void AddFriend(User user)

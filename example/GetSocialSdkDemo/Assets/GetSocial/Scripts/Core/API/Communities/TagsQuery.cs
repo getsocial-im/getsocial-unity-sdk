@@ -6,7 +6,11 @@ namespace GetSocialSdk.Core {
 
         [JsonSerializationKey ("target")]
         internal PostActivityTarget Target;
-        private TagsQuery (string term) {
+
+		[JsonSerializationKey("trending")]
+		internal bool InternalTrending = false;
+
+		private TagsQuery (string term) {
             Query = term;
         }
 
@@ -14,9 +18,21 @@ namespace GetSocialSdk.Core {
             return new TagsQuery (term);
         }
 
-        public TagsQuery InTarget (PostActivityTarget target) {
+		public TagsQuery OnlyTrending(bool trending)
+		{
+			this.InternalTrending = trending;
+			return this;
+		}
+
+		public TagsQuery InTarget (PostActivityTarget target) {
             Target = target;
             return this;
         }
+
+        public override string ToString()
+        {
+            return $"TagsQuery: Query: {Query}, target: {Target}, trending: {InternalTrending}";
+        }
+
     }
 }
