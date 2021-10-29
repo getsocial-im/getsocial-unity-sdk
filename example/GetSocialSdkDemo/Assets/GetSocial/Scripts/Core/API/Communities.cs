@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GetSocialSdk.Core
 {
@@ -111,9 +112,9 @@ namespace GetSocialSdk.Core
         {
             GetUsers(UserIdList.CreateWithProvider(userId.Provider, userId.Id), result =>
             {
-                if (result.ContainsKey(userId.Id))
+                if (result.Count == 1)
                 {
-                    success(result[userId.Id]);
+                    success(result.First().Value);
                 }
                 else
                 {
