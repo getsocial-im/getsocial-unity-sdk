@@ -95,7 +95,7 @@ allprojects {
 apply plugin: 'im.getsocial'
 getsocial {{
     appId '{0}'
-    version '7.6.5'
+    version '7.6.6'
 }}
 ", GetSocialSettings.AppId);
         }
