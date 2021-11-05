@@ -176,7 +176,7 @@ public class AnnouncementsSection : BaseListSection<AnnouncementsQuery, Activity
         }, error => _console.LogE(error.ToString()));
     }
 
-    protected override AnnouncementsQuery CreateQuery(string query)
+    protected override AnnouncementsQuery CreateQuery(QueryObject queryObject)
     {
         return Query;
     }

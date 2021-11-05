@@ -20,6 +20,8 @@ namespace GetSocialSdk.Core
     USER = 4,
     CHAT = 5,
     ACTIVITY = 6,
+    COMMENT = 7,
+    HASHTAG = 8,
   }
 }
 #endif

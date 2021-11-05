@@ -32,6 +32,7 @@ namespace GetSocialSdk.Core
     private Dictionary<string, string> _properties;
     private bool _isDiscoverable;
     private bool _isPrivate;
+    private List<string> _labels;
 
     public Dictionary<int, int> Permissions
     {
@@ -104,6 +105,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public List<string> Labels
+    {
+      get
+      {
+        return _labels;
+      }
+      set
+      {
+        __isset.labels = true;
+        this._labels = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -115,6 +129,7 @@ namespace GetSocialSdk.Core
       public bool properties;
       public bool isDiscoverable;
       public bool isPrivate;
+      public bool labels;
     }
 
     public SGSettings() {
@@ -206,6 +221,23 @@ namespace GetSocialSdk.Core
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
+            case 6:
+              if (field.Type == TType.List) {
+                {
+                  Labels = new List<string>();
+                  TList _list12 = iprot.ReadListBegin();
+                  for( int _i13 = 0; _i13 < _list12.Count; ++_i13)
+                  {
+                    string _elem14;
+                    _elem14 = iprot.ReadString();
+                    Labels.Add(_elem14);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
             default: 
               TProtocolUtil.Skip(iprot, field.Type);
               break;
@@ -234,10 +266,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.I32, TType.I32, Permissions.Count));
-            foreach (int _iter12 in Permissions.Keys)
+            foreach (int _iter15 in Permissions.Keys)
             {
-              oprot.WriteI32(_iter12);
-              oprot.WriteI32(Permissions[_iter12]);
+              oprot.WriteI32(_iter15);
+              oprot.WriteI32(Permissions[_iter15]);
             }
             oprot.WriteMapEnd();
           }
@@ -250,10 +282,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.I32, TType.Bool, AllowedActions.Count));
-            foreach (int _iter13 in AllowedActions.Keys)
+            foreach (int _iter16 in AllowedActions.Keys)
             {
-              oprot.WriteI32(_iter13);
-              oprot.WriteBool(AllowedActions[_iter13]);
+              oprot.WriteI32(_iter16);
+              oprot.WriteBool(AllowedActions[_iter16]);
             }
             oprot.WriteMapEnd();
           }
@@ -266,10 +298,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter14 in Properties.Keys)
+            foreach (string _iter17 in Properties.Keys)
             {
-              oprot.WriteString(_iter14);
-              oprot.WriteString(Properties[_iter14]);
+              oprot.WriteString(_iter17);
+              oprot.WriteString(Properties[_iter17]);
             }
             oprot.WriteMapEnd();
           }
@@ -289,6 +321,21 @@ namespace GetSocialSdk.Core
           field.ID = 5;
           oprot.WriteFieldBegin(field);
           oprot.WriteBool(IsPrivate);
+          oprot.WriteFieldEnd();
+        }
+        if (Labels != null && __isset.labels) {
+          field.Name = "labels";
+          field.Type = TType.List;
+          field.ID = 6;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Labels.Count));
+            foreach (string _iter18 in Labels)
+            {
+              oprot.WriteString(_iter18);
+            }
+            oprot.WriteListEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -332,6 +379,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("IsPrivate: ");
         __sb.Append(IsPrivate);
+      }
+      if (Labels != null && __isset.labels) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Labels: ");
+        __sb.Append(Labels.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

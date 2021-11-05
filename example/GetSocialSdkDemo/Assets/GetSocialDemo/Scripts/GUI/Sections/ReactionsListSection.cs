@@ -29,7 +29,7 @@ public class ReactionsListSection : BaseListSection<ReactionsQuery, UserReaction
         DemoGuiUtils.DrawButton("Actions", () => ShowActions(item.User), style:GSStyles.Button);
     }
 
-    protected override ReactionsQuery CreateQuery(string query)
+    protected override ReactionsQuery CreateQuery(QueryObject queryObject)
     {
         return ReactionsQuery.ForActivity(Activity.Id);
     }

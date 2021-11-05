@@ -58,6 +58,28 @@ namespace GetSocialSdk.Core
         public int CommentsCount { get; internal set; }
 
         /// <summary>
+        /// Known commenters.
+        /// </summary>
+        /// <value>list of known commenters.</value>
+        [JsonSerializationKey("commenters")]
+        internal List<User> CommentersList { get; set; }
+        /// <summary>
+        /// Number of comments under the activity
+        /// </summary>
+        /// <value>total number of comments to this activity.</value>
+        public HashSet<User> Commenters
+        {
+            get { return new HashSet<User>(CommentersList); }
+        }
+
+        /// <summary>
+        /// Reactions by known users.
+        /// </summary>
+        /// <value>list of reactions of known users.</value>
+        [JsonSerializationKey("reactions")]
+        public List<UserReactions> Reactions { get; internal set; }
+
+        /// <summary>
         /// Map of the reactions count. Key is reaction name - one of <see cref="Reactions"/>.
         /// Value is number of users reacted with this reaction.
         /// Use <see cref="GetReactionsCount(string)"/> or <see cref="GetTotalReactionsCount"/> for a null safety.

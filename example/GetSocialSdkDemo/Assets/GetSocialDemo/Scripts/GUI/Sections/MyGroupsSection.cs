@@ -8,8 +8,8 @@ public class MyGroupsSection : BaseGroupsSection
         return "MyGroups";
     }
 
-    protected override GroupsQuery CreateQuery(string query)
+    protected override GroupsQuery CreateQuery(QueryObject queryObject)
     {
-        return GroupsQuery.Find(query).ByMember(UserId.CurrentUser());
+        return GroupsQuery.Find(queryObject.SearchTerm).ByMember(UserId.CurrentUser());
     }
 }

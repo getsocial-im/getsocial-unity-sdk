@@ -20,7 +20,7 @@ public class FollowersSection: BaseUsersListSection<FollowersQuery>
         Communities.GetFollowersCount(query, success, error);
     }
 
-    protected override FollowersQuery CreateQuery(string query)
+    protected override FollowersQuery CreateQuery(QueryObject queryObject)
     {
         return Query;
     }

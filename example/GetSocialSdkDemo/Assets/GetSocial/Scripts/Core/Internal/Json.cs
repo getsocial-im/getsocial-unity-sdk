@@ -750,7 +750,7 @@ namespace GetSocialSdk.MiniJSON
             private static IDictionary ToDictionary(object value)
             {
                 var type = value.GetType();
-                var dictionary = new Dictionary<string, object>();
+                var dictionary = new SortedDictionary<string, object>();
                 Action<FieldInfo> attrField = field =>
                 {
                     var attrs = (JsonSerializationKey[]) field.GetCustomAttributes

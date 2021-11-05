@@ -2083,6 +2083,7 @@ SWIFT_CLASS_NAMED("CommunitiesSettings")
 @property (nonatomic, readonly) BOOL isDiscovarable;
 /// Is private.
 @property (nonatomic, readonly) BOOL isPrivate;
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull labels;
 /// Check if specified action is available or not.
 /// - parameters:
 /// - action:       The action to check.
@@ -2685,6 +2686,7 @@ SWIFT_CLASS_NAMED("GroupContent")
 @property (nonatomic) BOOL isDiscoverable;
 /// Defines if users can join without approval or not
 @property (nonatomic) BOOL isPrivate;
+@property (nonatomic, copy) NSArray<NSString *> * _Nonnull labels;
 /// Create a new group content to create a group.
 /// \param groupId Group id.
 ///
@@ -2795,6 +2797,34 @@ SWIFT_CLASS_NAMED("GroupsQuery")
 ///
 /// New GroupsQuery instance.
 - (GetSocialGroupsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups by the specified labels.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     labels: [String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New GroupsQuery instance.
+- (GetSocialGroupsQuery * _Nonnull)withLabels:(NSArray<NSString *> * _Nonnull)labels SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups by the specified properties.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     properties: [String: String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New GroupsQuery instance.
+- (GetSocialGroupsQuery * _Nonnull)withProperties:(NSDictionary<NSString *, NSString *> * _Nonnull)properties SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -4747,6 +4777,34 @@ SWIFT_CLASS_NAMED("TopicsQuery")
 ///
 /// New TopicsQuery instance.
 - (GetSocialTopicsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
+/// Filters topics by the specified labels.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     labels: [String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New TopicsQuery instance.
+- (GetSocialTopicsQuery * _Nonnull)withLabels:(NSArray<NSString *> * _Nonnull)labels SWIFT_WARN_UNUSED_RESULT;
+/// Filters topics by the specified properties.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     properties: [String: String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New TopicsQuery instance.
+- (GetSocialTopicsQuery * _Nonnull)withProperties:(NSDictionary<NSString *, NSString *> * _Nonnull)properties SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -7206,6 +7264,7 @@ SWIFT_CLASS_NAMED("CommunitiesSettings")
 @property (nonatomic, readonly) BOOL isDiscovarable;
 /// Is private.
 @property (nonatomic, readonly) BOOL isPrivate;
+@property (nonatomic, readonly, copy) NSArray<NSString *> * _Nonnull labels;
 /// Check if specified action is available or not.
 /// - parameters:
 /// - action:       The action to check.
@@ -7808,6 +7867,7 @@ SWIFT_CLASS_NAMED("GroupContent")
 @property (nonatomic) BOOL isDiscoverable;
 /// Defines if users can join without approval or not
 @property (nonatomic) BOOL isPrivate;
+@property (nonatomic, copy) NSArray<NSString *> * _Nonnull labels;
 /// Create a new group content to create a group.
 /// \param groupId Group id.
 ///
@@ -7918,6 +7978,34 @@ SWIFT_CLASS_NAMED("GroupsQuery")
 ///
 /// New GroupsQuery instance.
 - (GetSocialGroupsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups by the specified labels.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     labels: [String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New GroupsQuery instance.
+- (GetSocialGroupsQuery * _Nonnull)withLabels:(NSArray<NSString *> * _Nonnull)labels SWIFT_WARN_UNUSED_RESULT;
+/// Filters groups by the specified properties.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     properties: [String: String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New GroupsQuery instance.
+- (GetSocialGroupsQuery * _Nonnull)withProperties:(NSDictionary<NSString *, NSString *> * _Nonnull)properties SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -9870,6 +9958,34 @@ SWIFT_CLASS_NAMED("TopicsQuery")
 ///
 /// New TopicsQuery instance.
 - (GetSocialTopicsQuery * _Nonnull)onlyTrending:(BOOL)trending SWIFT_WARN_UNUSED_RESULT;
+/// Filters topics by the specified labels.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     labels: [String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New TopicsQuery instance.
+- (GetSocialTopicsQuery * _Nonnull)withLabels:(NSArray<NSString *> * _Nonnull)labels SWIFT_WARN_UNUSED_RESULT;
+/// Filters topics by the specified properties.
+/// <ul>
+///   <li>
+///     parameters:
+///   </li>
+///   <li>
+///     properties: [String: String]
+///   </li>
+/// </ul>
+///
+/// returns:
+///
+/// New TopicsQuery instance.
+- (GetSocialTopicsQuery * _Nonnull)withProperties:(NSDictionary<NSString *, NSString *> * _Nonnull)properties SWIFT_WARN_UNUSED_RESULT;
 /// Description.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;

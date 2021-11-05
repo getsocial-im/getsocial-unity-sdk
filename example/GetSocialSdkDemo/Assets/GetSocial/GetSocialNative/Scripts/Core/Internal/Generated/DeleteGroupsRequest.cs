@@ -95,12 +95,12 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Ids = new List<string>();
-                  TList _list50 = iprot.ReadListBegin();
-                  for( int _i51 = 0; _i51 < _list50.Count; ++_i51)
+                  TList _list58 = iprot.ReadListBegin();
+                  for( int _i59 = 0; _i59 < _list58.Count; ++_i59)
                   {
-                    string _elem52;
-                    _elem52 = iprot.ReadString();
-                    Ids.Add(_elem52);
+                    string _elem60;
+                    _elem60 = iprot.ReadString();
+                    Ids.Add(_elem60);
                   }
                   iprot.ReadListEnd();
                 }
@@ -144,9 +144,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, Ids.Count));
-            foreach (string _iter53 in Ids)
+            foreach (string _iter61 in Ids)
             {
-              oprot.WriteString(_iter53);
+              oprot.WriteString(_iter61);
             }
             oprot.WriteListEnd();
           }

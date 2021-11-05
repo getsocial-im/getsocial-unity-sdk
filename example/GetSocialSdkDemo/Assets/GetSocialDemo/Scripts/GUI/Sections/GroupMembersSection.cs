@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using GetSocialSdk.Core;
-using GetSocialSdk.Ui;
 using UnityEngine;
 
 public class GroupMembersSection : BaseListSection<MembersQuery, GroupMember>
@@ -16,7 +14,7 @@ public class GroupMembersSection : BaseListSection<MembersQuery, GroupMember>
         return "Group Members";
     }
 
-    protected override MembersQuery CreateQuery(string query)
+    protected override MembersQuery CreateQuery(QueryObject queryObject)
     {
         return Query;
     }

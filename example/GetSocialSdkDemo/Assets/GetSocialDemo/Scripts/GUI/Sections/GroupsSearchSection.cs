@@ -19,9 +19,21 @@ public class GroupsSearchSection : BaseGroupsSection
         GUILayout.EndHorizontal();
     }
 
-    protected override GroupsQuery CreateQuery(string searchTerm)
+    protected override bool HasQuery()
     {
-        var query = GroupsQuery.Find(searchTerm);
+        return false;
+    }
+
+    protected override bool HasAdvancedQuery()
+    {
+        return true;
+    }
+
+    protected override GroupsQuery CreateQuery(QueryObject queryObject)
+    {
+        var query = GroupsQuery.Find(queryObject.SearchTerm);
+        query.WithLabels(queryObject.SearchLabels);
+        query.WithProperties(queryObject.SearchProperties);
         query = query.OnlyTrending(_isTrending);
         return query;
     }

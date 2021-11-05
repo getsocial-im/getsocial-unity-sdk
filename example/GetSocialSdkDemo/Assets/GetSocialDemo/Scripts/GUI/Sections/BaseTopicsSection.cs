@@ -28,6 +28,8 @@ public abstract class BaseTopicsSection : BaseListSection<TopicsQuery, Topic>
         GUILayout.Label(item.AvatarUrl, GSStyles.NormalLabelText);
         GUILayout.Label("Created at: " + DateUtils.FromUnixTime(item.CreatedAt).ToShortDateString(), GSStyles.NormalLabelText);
         GUILayout.Label("Popularity: " + item.Popularity, GSStyles.NormalLabelText);
+        GUILayout.Label("Labels: " + item.Settings.Labels.Print(), GSStyles.NormalLabelText);
+        GUILayout.Label("Properties: " + item.Settings.Properties.Print(), GSStyles.NormalLabelText);
         DemoGuiUtils.DrawButton("Actions", () =>
         {
             ShowActions(item);

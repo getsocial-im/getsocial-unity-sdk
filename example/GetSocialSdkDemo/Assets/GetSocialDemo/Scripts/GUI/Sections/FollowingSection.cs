@@ -21,7 +21,7 @@ public class FollowingSection : BaseUsersListSection<UsersQuery>
         Communities.GetUsersCount(query, success, error);
     }
 
-    protected override UsersQuery CreateQuery(string query)
+    protected override UsersQuery CreateQuery(QueryObject queryObject)
     {
         return UsersQuery.FollowedByUser(User);
     }

@@ -33,6 +33,7 @@ namespace GetSocialSdk.Core
     private SGEntity _target;
     private AFPollContent _poll;
     private bool _allowMultiReactions;
+    private List<string> _labels;
 
     public string SessionId
     {
@@ -151,6 +152,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public List<string> Labels
+    {
+      get
+      {
+        return _labels;
+      }
+      set
+      {
+        __isset.labels = true;
+        this._labels = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -166,6 +180,7 @@ namespace GetSocialSdk.Core
       public bool target;
       public bool poll;
       public bool allowMultiReactions;
+      public bool labels;
     }
 
     public DDCreateAnnouncementRequest() {
@@ -204,15 +219,15 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Content = new Dictionary<string, AFContent>();
-                  TMap _map231 = iprot.ReadMapBegin();
-                  for( int _i232 = 0; _i232 < _map231.Count; ++_i232)
+                  TMap _map273 = iprot.ReadMapBegin();
+                  for( int _i274 = 0; _i274 < _map273.Count; ++_i274)
                   {
-                    string _key233;
-                    AFContent _val234;
-                    _key233 = iprot.ReadString();
-                    _val234 = new AFContent();
-                    _val234.Read(iprot);
-                    Content[_key233] = _val234;
+                    string _key275;
+                    AFContent _val276;
+                    _key275 = iprot.ReadString();
+                    _val276 = new AFContent();
+                    _val276.Read(iprot);
+                    Content[_key275] = _val276;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -238,14 +253,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Properties = new Dictionary<string, string>();
-                  TMap _map235 = iprot.ReadMapBegin();
-                  for( int _i236 = 0; _i236 < _map235.Count; ++_i236)
+                  TMap _map277 = iprot.ReadMapBegin();
+                  for( int _i278 = 0; _i278 < _map277.Count; ++_i278)
                   {
-                    string _key237;
-                    string _val238;
-                    _key237 = iprot.ReadString();
-                    _val238 = iprot.ReadString();
-                    Properties[_key237] = _val238;
+                    string _key279;
+                    string _val280;
+                    _key279 = iprot.ReadString();
+                    _val280 = iprot.ReadString();
+                    Properties[_key279] = _val280;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -272,6 +287,23 @@ namespace GetSocialSdk.Core
             case 9:
               if (field.Type == TType.Bool) {
                 AllowMultiReactions = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.List) {
+                {
+                  Labels = new List<string>();
+                  TList _list281 = iprot.ReadListBegin();
+                  for( int _i282 = 0; _i282 < _list281.Count; ++_i282)
+                  {
+                    string _elem283;
+                    _elem283 = iprot.ReadString();
+                    Labels.Add(_elem283);
+                  }
+                  iprot.ReadListEnd();
+                }
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -320,10 +352,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
-            foreach (string _iter239 in Content.Keys)
+            foreach (string _iter284 in Content.Keys)
             {
-              oprot.WriteString(_iter239);
-              Content[_iter239].Write(oprot);
+              oprot.WriteString(_iter284);
+              Content[_iter284].Write(oprot);
             }
             oprot.WriteMapEnd();
           }
@@ -352,10 +384,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter240 in Properties.Keys)
+            foreach (string _iter285 in Properties.Keys)
             {
-              oprot.WriteString(_iter240);
-              oprot.WriteString(Properties[_iter240]);
+              oprot.WriteString(_iter285);
+              oprot.WriteString(Properties[_iter285]);
             }
             oprot.WriteMapEnd();
           }
@@ -383,6 +415,21 @@ namespace GetSocialSdk.Core
           field.ID = 9;
           oprot.WriteFieldBegin(field);
           oprot.WriteBool(AllowMultiReactions);
+          oprot.WriteFieldEnd();
+        }
+        if (Labels != null && __isset.labels) {
+          field.Name = "labels";
+          field.Type = TType.List;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Labels.Count));
+            foreach (string _iter286 in Labels)
+            {
+              oprot.WriteString(_iter286);
+            }
+            oprot.WriteListEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -450,6 +497,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("AllowMultiReactions: ");
         __sb.Append(AllowMultiReactions);
+      }
+      if (Labels != null && __isset.labels) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Labels: ");
+        __sb.Append(Labels.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

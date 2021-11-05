@@ -13,10 +13,10 @@ namespace GetSocialSdk.Core
         internal readonly List<string> Statuses;
 
         [JsonSerializationKey("types")] 
-        internal List<string> Types;
+        internal List<string> Types = new List<string>();
 
         [JsonSerializationKey("actions")]
-        internal List<string> Actions;
+        internal List<string> Actions = new List<string>();
 #pragma warning restore 414
         
         private NotificationsQuery(List<string> statuses)

@@ -86,7 +86,7 @@ public class NotificationsSection : BaseListSection<NotificationsQuery, Notifica
         _console.LogD(notification.ToString());
     }
 
-    protected override NotificationsQuery CreateQuery(string query)
+    protected override NotificationsQuery CreateQuery(QueryObject queryObject)
     {
         return Query;
     }

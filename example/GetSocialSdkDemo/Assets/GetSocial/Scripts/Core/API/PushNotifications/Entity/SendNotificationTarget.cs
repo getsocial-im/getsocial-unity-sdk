@@ -43,9 +43,14 @@ namespace GetSocialSdk.Core
             PlaceholderIds = new List<string>();
         }
 
+        internal SendNotificationTarget()
+        {
+            PlaceholderIds = new List<string>();
+        }
+
         public static SendNotificationTarget Placeholder(string placeholder)
         {
-            return new SendNotificationTarget(new UserIdList()).AddPlaceholder(placeholder);
+            return new SendNotificationTarget().AddPlaceholder(placeholder);
         }
 
         public static SendNotificationTarget Users(UserIdList userIdList)

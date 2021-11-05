@@ -12,6 +12,7 @@ public class CreateGroupSection : DemoMenuSection
     private string _name;
     private string _description;
     private string _avatarUrl = "";
+    private string _labels = "";
     private readonly List<Data> _properties = new List<Data>();
     
     private bool _useCustomImage = false;
@@ -20,10 +21,12 @@ public class CreateGroupSection : DemoMenuSection
     private Group oldGroup;
     private MemberRole _allowPost;
     private MemberRole _allowInteract;
+    private Action<Group> _onUpdate;
 
-    public void SetGroup(Group group)
+    public void SetGroup(Group group, Action<Group> onUpdate)
     {
         oldGroup = group;
+        _onUpdate = onUpdate;
         _id = oldGroup.Id;
         _name = oldGroup.Title;
         _description = oldGroup.Description;
@@ -61,6 +64,7 @@ public class CreateGroupSection : DemoMenuSection
         {
             _allowInteract = MemberRole.Member;
         }
+        _labels = oldGroup.Settings.Labels.Print();
     }
 
     protected override string GetTitle()
@@ -142,6 +146,12 @@ public class CreateGroupSection : DemoMenuSection
 
         DemoGuiUtils.DynamicRowFor(_properties, "Properties");
 
+        DemoGuiUtils.DrawRow(() =>
+        {
+            GUILayout.Label("Labels: ", GSStyles.NormalLabelText);
+            _labels = GUILayout.TextField(_labels, GSStyles.TextField);
+        });
+
         if (GUILayout.Button(oldGroup == null ? "Create" : "Update", GSStyles.Button))
         {
             if (_id == null || _id.Length == 0)
@@ -170,6 +180,7 @@ public class CreateGroupSection : DemoMenuSection
             content.Permissions[CommunitiesAction.React] = _allowInteract;
             content.IsDiscoverable = _isDiscoverable;
             content.IsPrivate = _isPrivate;
+            content.AddLabels(Collections.BuildList(_labels));
             if (oldGroup == null) 
             {
                 Communities.CreateGroup(content, created => 
@@ -184,7 +195,8 @@ public class CreateGroupSection : DemoMenuSection
                 Communities.UpdateGroup(oldGroup.Id, content, updated => 
                 {
                     _console.LogD("Group updated: " + Print(updated));
-                    SetGroup(updated);
+                    SetGroup(updated, _onUpdate);
+                    _onUpdate?.Invoke(updated);
                 }, error => 
                 {
                     _console.LogE("Failed to update: " + error);

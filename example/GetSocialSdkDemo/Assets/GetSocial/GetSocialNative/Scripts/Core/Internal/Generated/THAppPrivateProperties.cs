@@ -88,6 +88,7 @@ namespace GetSocialSdk.Core
     private string _clevertapLocation;
     private Dictionary<string, string> _fallbackUrlByCountry;
     private Dictionary<string, string> _desktopRedirectURLByCountry;
+    private bool _onlyAllowTrustedIdentities;
 
     public string InviteDomain
     {
@@ -924,6 +925,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public bool OnlyAllowTrustedIdentities
+    {
+      get
+      {
+        return _onlyAllowTrustedIdentities;
+      }
+      set
+      {
+        __isset.onlyAllowTrustedIdentities = true;
+        this._onlyAllowTrustedIdentities = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -994,6 +1008,7 @@ namespace GetSocialSdk.Core
       public bool clevertapLocation;
       public bool fallbackUrlByCountry;
       public bool desktopRedirectURLByCountry;
+      public bool onlyAllowTrustedIdentities;
     }
 
     public THAppPrivateProperties() {
@@ -1516,6 +1531,13 @@ namespace GetSocialSdk.Core
                   }
                   iprot.ReadMapEnd();
                 }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 65:
+              if (field.Type == TType.Bool) {
+                OnlyAllowTrustedIdentities = iprot.ReadBool();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -2092,6 +2114,14 @@ namespace GetSocialSdk.Core
           }
           oprot.WriteFieldEnd();
         }
+        if (__isset.onlyAllowTrustedIdentities) {
+          field.Name = "onlyAllowTrustedIdentities";
+          field.Type = TType.Bool;
+          field.ID = 65;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteBool(OnlyAllowTrustedIdentities);
+          oprot.WriteFieldEnd();
+        }
         oprot.WriteFieldStop();
         oprot.WriteStructEnd();
       }
@@ -2487,6 +2517,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("DesktopRedirectURLByCountry: ");
         __sb.Append(DesktopRedirectURLByCountry.ToDebugString());
+      }
+      if (__isset.onlyAllowTrustedIdentities) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("OnlyAllowTrustedIdentities: ");
+        __sb.Append(OnlyAllowTrustedIdentities);
       }
       __sb.Append(")");
       return __sb.ToString();

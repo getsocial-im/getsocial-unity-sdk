@@ -27,6 +27,8 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         GUILayout.Label(item.Id, GSStyles.NormalLabelText);
         GUILayout.Label(item.AvatarUrl, GSStyles.NormalLabelText);
         GUILayout.Label("Popularity: " + item.Popularity, GSStyles.NormalLabelText);
+        GUILayout.Label("Labels: " + item.Settings.Labels.Print(), GSStyles.NormalLabelText);
+        GUILayout.Label("Properties: " + item.Settings.Properties.Print(), GSStyles.NormalLabelText);
         DemoGuiUtils.DrawButton("Actions", () =>
         {
             ShowActions(item);
@@ -101,7 +103,9 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
                     popup.AddAction("Edit", () => {
                         demoController.PushMenuSection<CreateGroupSection>(section =>
                         {
-                            section.SetGroup(group);
+                            section.SetGroup(group, (updatedGroup) => {
+                                Refresh(group, updatedGroup);
+                            });
                         });
                     });
                     popup.AddAction("Delete", () => {
@@ -119,6 +123,12 @@ public abstract class BaseGroupsSection : BaseListSection<GroupsQuery, Group>
         popup.AddAction("Cancel", () => { });
         popup.Show();
     }
+
+    private void Refresh(Group old, Group updated)
+    {
+        _items[_items.FindIndex(item => item == old)] = updated;
+    }
+
 
     private void CreatePoll(Group group)
     {

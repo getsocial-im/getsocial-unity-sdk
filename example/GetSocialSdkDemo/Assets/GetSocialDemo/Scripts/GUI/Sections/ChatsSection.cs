@@ -10,7 +10,7 @@ public class ChatsSection : BaseListSection<SimplePagingQuery, Chat>
         // not implemented
     }
 
-    protected override SimplePagingQuery CreateQuery(string query)
+    protected override SimplePagingQuery CreateQuery(QueryObject queryObject)
     {
         return new SimplePagingQuery();
     }

@@ -42,6 +42,7 @@ namespace GetSocialSdk.Core
     private AFPollContent _poll;
     private bool _allowMultiReactions;
     private double _score;
+    private List<string> _labels;
 
     public string Id
     {
@@ -244,6 +245,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public List<string> Labels
+    {
+      get
+      {
+        return _labels;
+      }
+      set
+      {
+        __isset.labels = true;
+        this._labels = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -265,6 +279,7 @@ namespace GetSocialSdk.Core
       public bool poll;
       public bool allowMultiReactions;
       public bool score;
+      public bool labels;
     }
 
     public AFActivity() {
@@ -442,6 +457,23 @@ namespace GetSocialSdk.Core
                 TProtocolUtil.Skip(iprot, field.Type);
               }
               break;
+            case 17:
+              if (field.Type == TType.List) {
+                {
+                  Labels = new List<string>();
+                  TList _list61 = iprot.ReadListBegin();
+                  for( int _i62 = 0; _i62 < _list61.Count; ++_i62)
+                  {
+                    string _elem63;
+                    _elem63 = iprot.ReadString();
+                    Labels.Add(_elem63);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
             default: 
               TProtocolUtil.Skip(iprot, field.Type);
               break;
@@ -478,10 +510,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.Struct, Content.Count));
-            foreach (string _iter61 in Content.Keys)
+            foreach (string _iter64 in Content.Keys)
             {
-              oprot.WriteString(_iter61);
-              Content[_iter61].Write(oprot);
+              oprot.WriteString(_iter64);
+              Content[_iter64].Write(oprot);
             }
             oprot.WriteMapEnd();
           }
@@ -510,10 +542,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter62 in Properties.Keys)
+            foreach (string _iter65 in Properties.Keys)
             {
-              oprot.WriteString(_iter62);
-              oprot.WriteString(Properties[_iter62]);
+              oprot.WriteString(_iter65);
+              oprot.WriteString(Properties[_iter65]);
             }
             oprot.WriteMapEnd();
           }
@@ -550,14 +582,14 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.List, Mentions.Count));
-            foreach (string _iter63 in Mentions.Keys)
+            foreach (string _iter66 in Mentions.Keys)
             {
-              oprot.WriteString(_iter63);
+              oprot.WriteString(_iter66);
               {
-                oprot.WriteListBegin(new TList(TType.Struct, Mentions[_iter63].Count));
-                foreach (AFMention _iter64 in Mentions[_iter63])
+                oprot.WriteListBegin(new TList(TType.Struct, Mentions[_iter66].Count));
+                foreach (AFMention _iter67 in Mentions[_iter66])
                 {
-                  _iter64.Write(oprot);
+                  _iter67.Write(oprot);
                 }
                 oprot.WriteListEnd();
               }
@@ -612,6 +644,21 @@ namespace GetSocialSdk.Core
           field.ID = 16;
           oprot.WriteFieldBegin(field);
           oprot.WriteDouble(Score);
+          oprot.WriteFieldEnd();
+        }
+        if (Labels != null && __isset.labels) {
+          field.Name = "labels";
+          field.Type = TType.List;
+          field.ID = 17;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Labels.Count));
+            foreach (string _iter68 in Labels)
+            {
+              oprot.WriteString(_iter68);
+            }
+            oprot.WriteListEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -715,6 +762,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Score: ");
         __sb.Append(Score);
+      }
+      if (Labels != null && __isset.labels) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Labels: ");
+        __sb.Append(Labels.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

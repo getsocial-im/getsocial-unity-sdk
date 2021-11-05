@@ -48,9 +48,9 @@ public class TagsSection : BaseListSection<TagsQuery, string>
         // not supported
     }
 
-    protected override TagsQuery CreateQuery(string searchTerm)
+    protected override TagsQuery CreateQuery(QueryObject queryObject)
     {
-        var query = TagsQuery.Find(searchTerm);
+        var query = TagsQuery.Find(queryObject.SearchTerm);
         query = query.OnlyTrending(_isTrending);
         return query;
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GetSocialSdk.MiniJSON;
 
 namespace GetSocialSdk.Core
@@ -18,6 +19,12 @@ public sealed class GroupsQuery
 
         [JsonSerializationKey("trending")]
         internal bool InternalTrending = false;
+
+        [JsonSerializationKey("labels")]
+        internal List<string> Labels;
+
+        [JsonSerializationKey("properties")]
+        internal Dictionary<string, string> Properties;
 
         GroupsQuery(string searchTerm)
         {
@@ -47,5 +54,23 @@ public sealed class GroupsQuery
             this.InternalTrending = trending;
             return this;
         }
+
+        public GroupsQuery WithLabels(List<string> labels)
+        {
+            this.Labels= labels;
+            return this;
+        }
+
+        public GroupsQuery WithProperties(Dictionary<string, string> properties)
+        {
+            this.Properties = properties;
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return $"SearchTerm: {SearchTerm}, FollowerId: {FollowerId}, MemberId: {MemberId}, Trending: {InternalTrending}, Labels: {Labels}, Properties: {Properties}";
+        }
+
     }
 }

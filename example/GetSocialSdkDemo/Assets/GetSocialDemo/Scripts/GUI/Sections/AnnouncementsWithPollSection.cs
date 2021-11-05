@@ -89,7 +89,7 @@ public class AnnouncementsWithPollSection : BaseListSection<AnnouncementsQuery, 
         });
     }
 
-    protected override AnnouncementsQuery CreateQuery(string query)
+    protected override AnnouncementsQuery CreateQuery(QueryObject queryObject)
     {
         return Query;
     }

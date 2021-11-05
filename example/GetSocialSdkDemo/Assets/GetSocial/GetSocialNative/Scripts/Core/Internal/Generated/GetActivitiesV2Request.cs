@@ -32,6 +32,9 @@ namespace GetSocialSdk.Core
     private SGEntity _target;
     private string _author;
     private List<string> _tags;
+    private List<string> _labels;
+    private Dictionary<string, string> _properties;
+    private string _searchTerm;
     private AFPollFilterType _withPolls;
     private bool _isTrending;
     private string _orderBy;
@@ -109,6 +112,54 @@ namespace GetSocialSdk.Core
 
     /// <summary>
     /// to be discussed, maybe support only one tag instead
+    /// </summary>
+    public List<string> Labels
+    {
+      get
+      {
+        return _labels;
+      }
+      set
+      {
+        __isset.labels = true;
+        this._labels = value;
+      }
+    }
+
+    /// <summary>
+    /// labels to filter by (not internal labels but developer labels)
+    /// </summary>
+    public Dictionary<string, string> Properties
+    {
+      get
+      {
+        return _properties;
+      }
+      set
+      {
+        __isset.properties = true;
+        this._properties = value;
+      }
+    }
+
+    /// <summary>
+    /// kv pairs to filter by
+    /// </summary>
+    public string SearchTerm
+    {
+      get
+      {
+        return _searchTerm;
+      }
+      set
+      {
+        __isset.searchTerm = true;
+        this._searchTerm = value;
+      }
+    }
+
+    /// <summary>
+    /// search text to be searched in activity.content
     /// 
     /// <seealso cref="AFPollFilterType"/>
     /// </summary>
@@ -165,6 +216,9 @@ namespace GetSocialSdk.Core
       public bool target;
       public bool author;
       public bool tags;
+      public bool labels;
+      public bool properties;
+      public bool searchTerm;
       public bool withPolls;
       public bool isTrending;
       public bool @orderBy;
@@ -222,15 +276,58 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Tags = new List<string>();
-                  TList _list101 = iprot.ReadListBegin();
-                  for( int _i102 = 0; _i102 < _list101.Count; ++_i102)
+                  TList _list105 = iprot.ReadListBegin();
+                  for( int _i106 = 0; _i106 < _list105.Count; ++_i106)
                   {
-                    string _elem103;
-                    _elem103 = iprot.ReadString();
-                    Tags.Add(_elem103);
+                    string _elem107;
+                    _elem107 = iprot.ReadString();
+                    Tags.Add(_elem107);
                   }
                   iprot.ReadListEnd();
                 }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 9:
+              if (field.Type == TType.List) {
+                {
+                  Labels = new List<string>();
+                  TList _list108 = iprot.ReadListBegin();
+                  for( int _i109 = 0; _i109 < _list108.Count; ++_i109)
+                  {
+                    string _elem110;
+                    _elem110 = iprot.ReadString();
+                    Labels.Add(_elem110);
+                  }
+                  iprot.ReadListEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 10:
+              if (field.Type == TType.Map) {
+                {
+                  Properties = new Dictionary<string, string>();
+                  TMap _map111 = iprot.ReadMapBegin();
+                  for( int _i112 = 0; _i112 < _map111.Count; ++_i112)
+                  {
+                    string _key113;
+                    string _val114;
+                    _key113 = iprot.ReadString();
+                    _val114 = iprot.ReadString();
+                    Properties[_key113] = _val114;
+                  }
+                  iprot.ReadMapEnd();
+                }
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.String) {
+                SearchTerm = iprot.ReadString();
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -316,9 +413,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-            foreach (string _iter104 in Tags)
+            foreach (string _iter115 in Tags)
             {
-              oprot.WriteString(_iter104);
+              oprot.WriteString(_iter115);
             }
             oprot.WriteListEnd();
           }
@@ -346,6 +443,45 @@ namespace GetSocialSdk.Core
           field.ID = 8;
           oprot.WriteFieldBegin(field);
           oprot.WriteBool(IsTrending);
+          oprot.WriteFieldEnd();
+        }
+        if (Labels != null && __isset.labels) {
+          field.Name = "labels";
+          field.Type = TType.List;
+          field.ID = 9;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Labels.Count));
+            foreach (string _iter116 in Labels)
+            {
+              oprot.WriteString(_iter116);
+            }
+            oprot.WriteListEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (Properties != null && __isset.properties) {
+          field.Name = "properties";
+          field.Type = TType.Map;
+          field.ID = 10;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
+            foreach (string _iter117 in Properties.Keys)
+            {
+              oprot.WriteString(_iter117);
+              oprot.WriteString(Properties[_iter117]);
+            }
+            oprot.WriteMapEnd();
+          }
+          oprot.WriteFieldEnd();
+        }
+        if (SearchTerm != null && __isset.searchTerm) {
+          field.Name = "searchTerm";
+          field.Type = TType.String;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          oprot.WriteString(SearchTerm);
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -389,6 +525,24 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("Tags: ");
         __sb.Append(Tags.ToDebugString());
+      }
+      if (Labels != null && __isset.labels) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Labels: ");
+        __sb.Append(Labels.ToDebugString());
+      }
+      if (Properties != null && __isset.properties) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Properties: ");
+        __sb.Append(Properties.ToDebugString());
+      }
+      if (SearchTerm != null && __isset.searchTerm) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("SearchTerm: ");
+        __sb.Append(SearchTerm);
       }
       if (__isset.withPolls) {
         if(!__first) { __sb.Append(", "); }

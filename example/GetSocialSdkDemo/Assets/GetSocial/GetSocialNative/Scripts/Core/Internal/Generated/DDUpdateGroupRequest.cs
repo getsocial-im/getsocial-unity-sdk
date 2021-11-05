@@ -37,6 +37,7 @@ namespace GetSocialSdk.Core
     private Dictionary<string, string> _properties;
     private bool _isDiscoverable;
     private bool _isPrivate;
+    private List<string> _labels;
 
     public string SessionId
     {
@@ -174,6 +175,19 @@ namespace GetSocialSdk.Core
       }
     }
 
+    public List<string> Labels
+    {
+      get
+      {
+        return _labels;
+      }
+      set
+      {
+        __isset.labels = true;
+        this._labels = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -190,6 +204,7 @@ namespace GetSocialSdk.Core
       public bool properties;
       public bool isDiscoverable;
       public bool isPrivate;
+      public bool labels;
     }
 
     public DDUpdateGroupRequest() {
@@ -235,14 +250,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Title = new Dictionary<string, string>();
-                  TMap _map103 = iprot.ReadMapBegin();
-                  for( int _i104 = 0; _i104 < _map103.Count; ++_i104)
+                  TMap _map124 = iprot.ReadMapBegin();
+                  for( int _i125 = 0; _i125 < _map124.Count; ++_i125)
                   {
-                    string _key105;
-                    string _val106;
-                    _key105 = iprot.ReadString();
-                    _val106 = iprot.ReadString();
-                    Title[_key105] = _val106;
+                    string _key126;
+                    string _val127;
+                    _key126 = iprot.ReadString();
+                    _val127 = iprot.ReadString();
+                    Title[_key126] = _val127;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -254,14 +269,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   GroupDescription = new Dictionary<string, string>();
-                  TMap _map107 = iprot.ReadMapBegin();
-                  for( int _i108 = 0; _i108 < _map107.Count; ++_i108)
+                  TMap _map128 = iprot.ReadMapBegin();
+                  for( int _i129 = 0; _i129 < _map128.Count; ++_i129)
                   {
-                    string _key109;
-                    string _val110;
-                    _key109 = iprot.ReadString();
-                    _val110 = iprot.ReadString();
-                    GroupDescription[_key109] = _val110;
+                    string _key130;
+                    string _val131;
+                    _key130 = iprot.ReadString();
+                    _val131 = iprot.ReadString();
+                    GroupDescription[_key130] = _val131;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -280,14 +295,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Permissions = new Dictionary<int, int>();
-                  TMap _map111 = iprot.ReadMapBegin();
-                  for( int _i112 = 0; _i112 < _map111.Count; ++_i112)
+                  TMap _map132 = iprot.ReadMapBegin();
+                  for( int _i133 = 0; _i133 < _map132.Count; ++_i133)
                   {
-                    int _key113;
-                    int _val114;
-                    _key113 = iprot.ReadI32();
-                    _val114 = iprot.ReadI32();
-                    Permissions[_key113] = _val114;
+                    int _key134;
+                    int _val135;
+                    _key134 = iprot.ReadI32();
+                    _val135 = iprot.ReadI32();
+                    Permissions[_key134] = _val135;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -299,14 +314,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Properties = new Dictionary<string, string>();
-                  TMap _map115 = iprot.ReadMapBegin();
-                  for( int _i116 = 0; _i116 < _map115.Count; ++_i116)
+                  TMap _map136 = iprot.ReadMapBegin();
+                  for( int _i137 = 0; _i137 < _map136.Count; ++_i137)
                   {
-                    string _key117;
-                    string _val118;
-                    _key117 = iprot.ReadString();
-                    _val118 = iprot.ReadString();
-                    Properties[_key117] = _val118;
+                    string _key138;
+                    string _val139;
+                    _key138 = iprot.ReadString();
+                    _val139 = iprot.ReadString();
+                    Properties[_key138] = _val139;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -324,6 +339,23 @@ namespace GetSocialSdk.Core
             case 10:
               if (field.Type == TType.Bool) {
                 IsPrivate = iprot.ReadBool();
+              } else { 
+                TProtocolUtil.Skip(iprot, field.Type);
+              }
+              break;
+            case 11:
+              if (field.Type == TType.List) {
+                {
+                  Labels = new List<string>();
+                  TList _list140 = iprot.ReadListBegin();
+                  for( int _i141 = 0; _i141 < _list140.Count; ++_i141)
+                  {
+                    string _elem142;
+                    _elem142 = iprot.ReadString();
+                    Labels.Add(_elem142);
+                  }
+                  iprot.ReadListEnd();
+                }
               } else { 
                 TProtocolUtil.Skip(iprot, field.Type);
               }
@@ -380,10 +412,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Title.Count));
-            foreach (string _iter119 in Title.Keys)
+            foreach (string _iter143 in Title.Keys)
             {
-              oprot.WriteString(_iter119);
-              oprot.WriteString(Title[_iter119]);
+              oprot.WriteString(_iter143);
+              oprot.WriteString(Title[_iter143]);
             }
             oprot.WriteMapEnd();
           }
@@ -396,10 +428,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, GroupDescription.Count));
-            foreach (string _iter120 in GroupDescription.Keys)
+            foreach (string _iter144 in GroupDescription.Keys)
             {
-              oprot.WriteString(_iter120);
-              oprot.WriteString(GroupDescription[_iter120]);
+              oprot.WriteString(_iter144);
+              oprot.WriteString(GroupDescription[_iter144]);
             }
             oprot.WriteMapEnd();
           }
@@ -420,10 +452,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.I32, TType.I32, Permissions.Count));
-            foreach (int _iter121 in Permissions.Keys)
+            foreach (int _iter145 in Permissions.Keys)
             {
-              oprot.WriteI32(_iter121);
-              oprot.WriteI32(Permissions[_iter121]);
+              oprot.WriteI32(_iter145);
+              oprot.WriteI32(Permissions[_iter145]);
             }
             oprot.WriteMapEnd();
           }
@@ -436,10 +468,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter122 in Properties.Keys)
+            foreach (string _iter146 in Properties.Keys)
             {
-              oprot.WriteString(_iter122);
-              oprot.WriteString(Properties[_iter122]);
+              oprot.WriteString(_iter146);
+              oprot.WriteString(Properties[_iter146]);
             }
             oprot.WriteMapEnd();
           }
@@ -459,6 +491,21 @@ namespace GetSocialSdk.Core
           field.ID = 10;
           oprot.WriteFieldBegin(field);
           oprot.WriteBool(IsPrivate);
+          oprot.WriteFieldEnd();
+        }
+        if (Labels != null && __isset.labels) {
+          field.Name = "labels";
+          field.Type = TType.List;
+          field.ID = 11;
+          oprot.WriteFieldBegin(field);
+          {
+            oprot.WriteListBegin(new TList(TType.String, Labels.Count));
+            foreach (string _iter147 in Labels)
+            {
+              oprot.WriteString(_iter147);
+            }
+            oprot.WriteListEnd();
+          }
           oprot.WriteFieldEnd();
         }
         oprot.WriteFieldStop();
@@ -532,6 +579,12 @@ namespace GetSocialSdk.Core
         __first = false;
         __sb.Append("IsPrivate: ");
         __sb.Append(IsPrivate);
+      }
+      if (Labels != null && __isset.labels) {
+        if(!__first) { __sb.Append(", "); }
+        __first = false;
+        __sb.Append("Labels: ");
+        __sb.Append(Labels.ToDebugString());
       }
       __sb.Append(")");
       return __sb.ToString();

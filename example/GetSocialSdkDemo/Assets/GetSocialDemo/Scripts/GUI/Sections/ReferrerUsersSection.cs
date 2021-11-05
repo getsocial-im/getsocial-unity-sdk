@@ -31,9 +31,9 @@ public class ReferrerUsersSection : BaseListSection<ReferralUsersQuery, Referral
         // not supported
     }
 
-    protected override ReferralUsersQuery CreateQuery(string query)
+    protected override ReferralUsersQuery CreateQuery(QueryObject queryObject)
     {
-        return query == null || query.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(query);
+        return queryObject.SearchTerm == null || queryObject.SearchTerm.Length == 0 ? ReferralUsersQuery.AllUsers() : ReferralUsersQuery.UsersForEvent(queryObject.SearchTerm);
     }
 }
 

@@ -81,11 +81,10 @@ namespace GetSocialSdk.Core
             }
             var sb = new StringBuilder();
             sb.Append("[");
-            sb.Append("\n");
             foreach(var item in list)
             {
                 sb.Append(item);
-                sb.Append("\n");
+                sb.Append(", ");
             }
 
             sb.Append("]");

@@ -6,7 +6,9 @@ using UnityEngine;
 public abstract class BaseListSection<Q, I> : DemoMenuSection
 {
 
-    private string _query = "";
+    private string _searchTerm = "";
+    private string _searchLabels = "";
+    private string _searchProperties = "";
     protected readonly List<I> _items = new List<I>();
     private bool _loadMore;
     private string _next = "";
@@ -28,10 +30,12 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
     protected void Reload()
     {
         _items.Clear();
-        _query = null;
+        _searchTerm = null;
+        _searchLabels = null;
+        _searchProperties = null;
         _next = null;
         LoadMore();
-        Count(CreateQuery(_query), count => _count = count, error => _console.LogE("Failed to load count: " + error.Message));
+        Count(CreateQuery(CreateQueryObject()), count => _count = count, error => _console.LogE("Failed to load count: " + error.Message));
     }
 
     protected void Search()
@@ -39,7 +43,7 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
         _items.Clear();
         _next = null;
         LoadMore();
-        Count(CreateQuery(_query), count => _count = count, error => _console.LogE("Failed to load count: " + error.Message));
+        Count(CreateQuery(CreateQueryObject()), count => _count = count, error => _console.LogE("Failed to load count: " + error.Message));
     }
 
     protected virtual void DrawHeader()
@@ -53,9 +57,26 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
         if (HasQuery())
         {
             GUILayout.BeginHorizontal();
-            _query = GUILayout.TextField(_query, GSStyles.TextField);
+            _searchTerm = GUILayout.TextField(_searchTerm, GSStyles.TextField);
             DemoGuiUtils.DrawButton("Search", Search, style: GSStyles.ShortButton);
             GUILayout.EndHorizontal();
+            GUILayout.Space(20);
+        }
+        if (HasAdvancedQuery())
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Text: ", GSStyles.NormalLabelTextNoStretch);
+            _searchTerm = GUILayout.TextField(_searchTerm, GSStyles.TextField);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Labels: ", GSStyles.NormalLabelTextNoStretch);
+            _searchLabels = GUILayout.TextField(_searchLabels, GSStyles.TextField);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Properties: ", GSStyles.NormalLabelTextNoStretch);
+            _searchProperties = GUILayout.TextField(_searchProperties, GSStyles.TextField);
+            GUILayout.EndHorizontal();
+            DemoGuiUtils.DrawButton("Search", Search, style: GSStyles.ShortButton);
             GUILayout.Space(20);
         }
         foreach (var item in _items)
@@ -74,11 +95,16 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
     {
         return true;
     }
-    
+
+    protected virtual bool HasAdvancedQuery()
+    {
+        return false;
+    }
+
     private void LoadMore()
     {
         _loadMore = false;
-        var query = CreateQuery(_query);
+        var query = CreateQuery(CreateQueryObject());
         var paging = Paging(query, _next, 20);
         
         Load(paging, result =>
@@ -88,6 +114,15 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
             _next = result.NextCursor;
             OnDataChanged(_items);
         }, error => _console.LogE(error.Message));
+    }
+
+    private QueryObject CreateQueryObject()
+    {
+        var query = new QueryObject();
+        query.SearchTerm = _searchTerm;
+        query.SearchLabels = Collections.BuildList(_searchLabels);
+        query.SearchProperties = Collections.BuildDictionary(_searchProperties);
+        return query;
     }
 
     protected virtual PagingQuery<Q> Paging(Q query, string next, int limit)
@@ -105,7 +140,7 @@ public abstract class BaseListSection<Q, I> : DemoMenuSection
 
     protected abstract void DrawItem(I item);
 
-    protected abstract Q CreateQuery(string query);
+    protected abstract Q CreateQuery(QueryObject queryObject);
 
     protected void ShowActions(User user)
     {

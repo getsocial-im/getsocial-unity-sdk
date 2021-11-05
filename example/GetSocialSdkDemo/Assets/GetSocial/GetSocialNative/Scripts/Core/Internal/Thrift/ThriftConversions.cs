@@ -707,7 +707,8 @@ namespace GetSocialSdk.Core
                 AllowedActions = ConvertAllowableActions(rpcSettings.AllowedActions),
                 IsPrivate = rpcSettings.IsPrivate,
                 IsDiscoverable = rpcSettings.IsDiscoverable,
-                Permissions = permissions
+                Permissions = permissions,
+                Labels = rpcSettings.Labels,
             };
         }
 
@@ -735,6 +736,8 @@ namespace GetSocialSdk.Core
             request.SearchTerm = query.SearchTerm;
             request.IsTrending = query.InternalTrending;
             //request.OrderBy = query.InternalSortOrder;
+            request.Labels = query.Labels;
+            request.Properties = query.Properties;
             return request;
         }
 
@@ -799,6 +802,8 @@ namespace GetSocialSdk.Core
             request.SearchTerm = query.SearchTerm;
             request.IsTrending = query.InternalTrending;
             //request.OrderBy = query.InternalSortOrder;
+            request.Labels = query.Labels;
+            request.Properties = query.Properties;
             return request;
         }
 
@@ -807,14 +812,8 @@ namespace GetSocialSdk.Core
             var request = new UpdateGroupMembersRequest();
             request.GroupId = query.GroupId;
             request.UserIds = query.UserIdList.AsString();
-            if (query.Status != null)
-            {
-                request.Status = (int)query.Status;
-            }
-            if (query.Role != null)
-            {
-                request.Role = (int)query.Role;
-            }
+            request.Status = (int)query.Status;
+            request.Role = (int)query.Role;
             request.InvitationToken = query.InvitationToken;
             return request;
         }
@@ -1022,6 +1021,7 @@ namespace GetSocialSdk.Core
             }
             request.Permissions = permissions;
             request.Properties = content.Properties;
+            request.Labels = content.Labels;
             return request;
         }
 
@@ -1050,6 +1050,7 @@ namespace GetSocialSdk.Core
             }
             request.Permissions = permissions;
             request.Properties = content.Properties;
+            request.Labels = content.Labels;
             return request;
         }
 

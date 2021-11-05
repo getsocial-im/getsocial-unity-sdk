@@ -34,7 +34,7 @@ namespace GetSocialSdk.Core
 
         public static CommunitiesIds Groups(List<string> groups)
         {
-            return new CommunitiesIds(CommunitiesEntityType.Topic, groups);
+            return new CommunitiesIds(CommunitiesEntityType.Group, groups);
         }
 
         public static CommunitiesIds User(UserId userId)

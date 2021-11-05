@@ -70,13 +70,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Users = new List<THReferralUser>();
-                  TList _list102 = iprot.ReadListBegin();
-                  for( int _i103 = 0; _i103 < _list102.Count; ++_i103)
+                  TList _list132 = iprot.ReadListBegin();
+                  for( int _i133 = 0; _i133 < _list132.Count; ++_i133)
                   {
-                    THReferralUser _elem104;
-                    _elem104 = new THReferralUser();
-                    _elem104.Read(iprot);
-                    Users.Add(_elem104);
+                    THReferralUser _elem134;
+                    _elem134 = new THReferralUser();
+                    _elem134.Read(iprot);
+                    Users.Add(_elem134);
                   }
                   iprot.ReadListEnd();
                 }
@@ -112,9 +112,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Users.Count));
-            foreach (THReferralUser _iter105 in Users)
+            foreach (THReferralUser _iter135 in Users)
             {
-              _iter105.Write(oprot);
+              _iter135.Write(oprot);
             }
             oprot.WriteListEnd();
           }

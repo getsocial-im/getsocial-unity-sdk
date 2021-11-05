@@ -20,9 +20,9 @@ public class UsersSearchSection : BaseUsersListSection<UsersQuery>
         Communities.GetUsersCount(query, success, error);
     }
 
-    protected override UsersQuery CreateQuery(string query)
+    protected override UsersQuery CreateQuery(QueryObject queryObject)
     {
-        var searchTerm = query ?? "";
+        var searchTerm = queryObject.SearchTerm ?? "";
         return UsersQuery.Find(searchTerm);
     }
 }

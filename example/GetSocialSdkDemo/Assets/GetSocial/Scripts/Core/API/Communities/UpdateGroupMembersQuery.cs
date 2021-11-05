@@ -14,10 +14,10 @@ namespace GetSocialSdk.Core
         internal UserIdList UserIdList;
 
         [JsonSerializationKey("status")]
-        internal MemberStatus? Status;
+        internal MemberStatus Status = MemberStatus.Member;
 
         [JsonSerializationKey("role")]
-        internal MemberRole? Role;
+        internal MemberRole? Role = MemberRole.Member;
 
         [JsonSerializationKey("invitationToken")]
         internal string InvitationToken;

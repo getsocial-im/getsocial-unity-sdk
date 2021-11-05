@@ -14,7 +14,7 @@ public class FriendsSection : BaseUsersListSection<FriendsQuery>
         Communities.GetFriendsCount(query, success, error);
     }
 
-    protected override FriendsQuery CreateQuery(string query)
+    protected override FriendsQuery CreateQuery(QueryObject queryObject)
     {
         return FriendsQuery.OfUser(User);
     }

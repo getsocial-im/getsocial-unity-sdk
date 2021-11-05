@@ -70,13 +70,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Members = new List<SGGroupMember>();
-                  TList _list139 = iprot.ReadListBegin();
-                  for( int _i140 = 0; _i140 < _list139.Count; ++_i140)
+                  TList _list173 = iprot.ReadListBegin();
+                  for( int _i174 = 0; _i174 < _list173.Count; ++_i174)
                   {
-                    SGGroupMember _elem141;
-                    _elem141 = new SGGroupMember();
-                    _elem141.Read(iprot);
-                    Members.Add(_elem141);
+                    SGGroupMember _elem175;
+                    _elem175 = new SGGroupMember();
+                    _elem175.Read(iprot);
+                    Members.Add(_elem175);
                   }
                   iprot.ReadListEnd();
                 }
@@ -112,9 +112,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Members.Count));
-            foreach (SGGroupMember _iter142 in Members)
+            foreach (SGGroupMember _iter176 in Members)
             {
-              _iter142.Write(oprot);
+              _iter176.Write(oprot);
             }
             oprot.WriteListEnd();
           }

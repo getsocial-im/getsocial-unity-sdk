@@ -83,7 +83,7 @@ public class ActivitiesWithPollSection : BaseListSection<ActivitiesQuery, Activi
         });
     }
 
-    protected override ActivitiesQuery CreateQuery(string query)
+    protected override ActivitiesQuery CreateQuery(QueryObject queryObject)
     {
         return Query;
     }

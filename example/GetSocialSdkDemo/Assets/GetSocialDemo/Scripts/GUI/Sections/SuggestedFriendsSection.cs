@@ -31,7 +31,7 @@ public class SuggestedFriendsSection : BaseListSection<object, SuggestedFriend>
         // not supported
     }
 
-    protected override object CreateQuery(string query)
+    protected override object CreateQuery(QueryObject queryObject)
     {
         return null;
     }

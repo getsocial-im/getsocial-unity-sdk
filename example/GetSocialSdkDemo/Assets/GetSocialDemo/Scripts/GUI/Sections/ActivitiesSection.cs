@@ -207,7 +207,7 @@ public class ActivitiesSection : BaseListSection<ActivitiesQuery, Activity>
         }, error => _console.LogE(error.ToString()));
     }
 
-    protected override ActivitiesQuery CreateQuery(string query)
+    protected override ActivitiesQuery CreateQuery(QueryObject queryObject)
     {
         Query = Query.OnlyTrending(_isTrending);
         return Query;

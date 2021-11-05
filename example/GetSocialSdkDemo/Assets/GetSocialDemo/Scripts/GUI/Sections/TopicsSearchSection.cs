@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using GetSocialSdk.Core;
 using UnityEngine;
 
@@ -19,9 +18,21 @@ public class TopicsSearchSection : BaseTopicsSection
         GUILayout.EndHorizontal();
     }
 
-    protected override TopicsQuery CreateQuery(string searchTerm)
+    protected override bool HasQuery()
     {
-        var query = TopicsQuery.Find(searchTerm);
+        return false;
+    }
+
+    protected override bool HasAdvancedQuery()
+    {
+        return true;
+    }
+
+    protected override TopicsQuery CreateQuery(QueryObject queryObject)
+    {
+        var query = TopicsQuery.Find(queryObject.SearchTerm);
+        query.WithLabels(queryObject.SearchLabels);
+        query.WithProperties(queryObject.SearchProperties);
         query = query.OnlyTrending(_isTrending);
         return query;
     }

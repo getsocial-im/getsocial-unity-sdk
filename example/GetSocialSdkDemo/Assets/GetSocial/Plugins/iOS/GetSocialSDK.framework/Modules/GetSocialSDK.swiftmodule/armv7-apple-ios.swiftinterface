@@ -337,6 +337,7 @@ extension SuggestedFriendsPagingQuery : Swift.Decodable {
   @objc final public var properties: [Swift.String : Swift.String]
   @objc final public var isDiscoverable: Swift.Bool
   @objc final public var isPrivate: Swift.Bool
+  @objc final public var labels: [Swift.String]
   @objc public init(groupId: Swift.String)
   @objc(setPermissionRole:forAction:) final public func setPermission(role: GetSocialSDK.Role, action: GetSocialSDK.CommunitiesAction)
   @objc override dynamic public init()
@@ -530,6 +531,8 @@ extension ReferralData : Swift.Encodable {
   @objc(all) public static func all() -> GetSocialSDK.TopicsQuery
   @objc(followedByUserWithId:) final public func followedBy(_ id: GetSocialSDK.UserId) -> GetSocialSDK.TopicsQuery
   @objc(onlyTrending:) final public func onlyTrending(_ trending: Swift.Bool = true) -> GetSocialSDK.TopicsQuery
+  @objc(withLabels:) final public func withLabels(_ labels: [Swift.String]) -> GetSocialSDK.TopicsQuery
+  @objc(withProperties:) final public func withProperties(_ properties: [Swift.String : Swift.String]) -> GetSocialSDK.TopicsQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
@@ -1576,6 +1579,8 @@ extension NotificationContent : Swift.Decodable {
   @objc(followedByUserWithId:) final public func followedBy(_ id: GetSocialSDK.UserId) -> GetSocialSDK.GroupsQuery
   @objc(byMemberId:) final public func byMember(_ id: GetSocialSDK.UserId) -> GetSocialSDK.GroupsQuery
   @objc(onlyTrending:) final public func onlyTrending(_ trending: Swift.Bool = true) -> GetSocialSDK.GroupsQuery
+  @objc(withLabels:) final public func withLabels(_ labels: [Swift.String]) -> GetSocialSDK.GroupsQuery
+  @objc(withProperties:) final public func withProperties(_ properties: [Swift.String : Swift.String]) -> GetSocialSDK.GroupsQuery
   @objc override final public var description: Swift.String {
     @objc get
   }
@@ -1941,6 +1946,9 @@ extension UserReference : Swift.Encodable {
     get
     }
   @objc public var isPrivate: Swift.Bool {
+    get
+    }
+  @objc public var labels: [Swift.String] {
     get
     }
   @objc public func isActionAllowed(action: GetSocialSDK.CommunitiesAction) -> Swift.Bool

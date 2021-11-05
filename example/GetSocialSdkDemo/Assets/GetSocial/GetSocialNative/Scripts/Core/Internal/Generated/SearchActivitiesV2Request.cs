@@ -216,14 +216,14 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.Map) {
                 {
                   Properties = new Dictionary<string, string>();
-                  TMap _map118 = iprot.ReadMapBegin();
-                  for( int _i119 = 0; _i119 < _map118.Count; ++_i119)
+                  TMap _map131 = iprot.ReadMapBegin();
+                  for( int _i132 = 0; _i132 < _map131.Count; ++_i132)
                   {
-                    string _key120;
-                    string _val121;
-                    _key120 = iprot.ReadString();
-                    _val121 = iprot.ReadString();
-                    Properties[_key120] = _val121;
+                    string _key133;
+                    string _val134;
+                    _key133 = iprot.ReadString();
+                    _val134 = iprot.ReadString();
+                    Properties[_key133] = _val134;
                   }
                   iprot.ReadMapEnd();
                 }
@@ -249,12 +249,12 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Tags = new List<string>();
-                  TList _list122 = iprot.ReadListBegin();
-                  for( int _i123 = 0; _i123 < _list122.Count; ++_i123)
+                  TList _list135 = iprot.ReadListBegin();
+                  for( int _i136 = 0; _i136 < _list135.Count; ++_i136)
                   {
-                    string _elem124;
-                    _elem124 = iprot.ReadString();
-                    Tags.Add(_elem124);
+                    string _elem137;
+                    _elem137 = iprot.ReadString();
+                    Tags.Add(_elem137);
                   }
                   iprot.ReadListEnd();
                 }
@@ -329,10 +329,10 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteMapBegin(new TMap(TType.String, TType.String, Properties.Count));
-            foreach (string _iter125 in Properties.Keys)
+            foreach (string _iter138 in Properties.Keys)
             {
-              oprot.WriteString(_iter125);
-              oprot.WriteString(Properties[_iter125]);
+              oprot.WriteString(_iter138);
+              oprot.WriteString(Properties[_iter138]);
             }
             oprot.WriteMapEnd();
           }
@@ -361,9 +361,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.String, Tags.Count));
-            foreach (string _iter126 in Tags)
+            foreach (string _iter139 in Tags)
             {
-              oprot.WriteString(_iter126);
+              oprot.WriteString(_iter139);
             }
             oprot.WriteListEnd();
           }

@@ -6,7 +6,7 @@ namespace GetSocialSdk.Core
     {
 
         [JsonSerializationKey("badge")]
-        internal int Value = int.MinValue;
+        internal int Value;
 
         [JsonSerializationKey("increase")]
         internal int Increase;

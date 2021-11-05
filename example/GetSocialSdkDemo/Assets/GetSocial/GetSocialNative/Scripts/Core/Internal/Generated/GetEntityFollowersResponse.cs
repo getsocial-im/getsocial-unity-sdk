@@ -103,13 +103,13 @@ namespace GetSocialSdk.Core
               if (field.Type == TType.List) {
                 {
                   Followers = new List<THPublicUser>();
-                  TList _list85 = iprot.ReadListBegin();
-                  for( int _i86 = 0; _i86 < _list85.Count; ++_i86)
+                  TList _list115 = iprot.ReadListBegin();
+                  for( int _i116 = 0; _i116 < _list115.Count; ++_i116)
                   {
-                    THPublicUser _elem87;
-                    _elem87 = new THPublicUser();
-                    _elem87.Read(iprot);
-                    Followers.Add(_elem87);
+                    THPublicUser _elem117;
+                    _elem117 = new THPublicUser();
+                    _elem117.Read(iprot);
+                    Followers.Add(_elem117);
                   }
                   iprot.ReadListEnd();
                 }
@@ -159,9 +159,9 @@ namespace GetSocialSdk.Core
           oprot.WriteFieldBegin(field);
           {
             oprot.WriteListBegin(new TList(TType.Struct, Followers.Count));
-            foreach (THPublicUser _iter88 in Followers)
+            foreach (THPublicUser _iter118 in Followers)
             {
-              _iter88.Write(oprot);
+              _iter118.Write(oprot);
             }
             oprot.WriteListEnd();
           }

@@ -29,7 +29,7 @@ public class VotesListSection : BaseListSection<VotesQuery, UserVotes>
         DemoGuiUtils.DrawButton("Actions", () => ShowActions(item.User), style:GSStyles.Button);
     }
 
-    protected override VotesQuery CreateQuery(string query)
+    protected override VotesQuery CreateQuery(QueryObject queryObject)
     {
         return VotesQuery.ForActivity(Activity.Id);
     }

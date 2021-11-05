@@ -20,6 +20,7 @@ public static class GSStyles
 {
     public static readonly GUIStyle BigLabelText;
     public static readonly GUIStyle NormalLabelText;
+    public static readonly GUIStyle NormalLabelTextNoStretch;
     public static readonly GUIStyle NormalLabelTextRed;
     public static readonly GUIStyle LeftAlignedChatText;
     public static readonly GUIStyle RightAlignedChatText;
@@ -53,6 +54,16 @@ public static class GSStyles
             wordWrap = true,
             richText = false,
             stretchWidth = true
+        };
+
+        NormalLabelTextNoStretch = new GUIStyle
+        {
+            margin = new RectOffset(4, 4, 4, 4),
+            fontSize = 28,
+            alignment = TextAnchor.UpperLeft,
+            wordWrap = true,
+            richText = false,
+            stretchWidth = false
         };
 
         NormalLabelTextRed = new GUIStyle(NormalLabelText) {normal = {textColor = Color.red}};
